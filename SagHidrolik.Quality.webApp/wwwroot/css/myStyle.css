@@ -1,0 +1,84 @@
+﻿
+.right_col{
+    overflow:auto;
+}
+.alert-welcomePage {
+    background-color: #e73c68;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+}
+.welcomepage-conainer {
+    margin-top: 6%;
+    margin-left: 5  %;
+}
+.first-sec {
+    width:100%;
+}
+.welcomepage-conainer a {
+    color: white !important;
+    background-color: #2A3F54;
+    height: 9rem;
+    text-align: center;
+    padding-top: 6%;
+}
+    .welcomepage-conainer a:hover {
+        background-color: #e73c68;
+        color: white;
+        cursor: pointer;
+    } 
+.first-sec {
+    margin-bottom:3rem;
+
+}
+.first-sec a:nth-child(1),.second-sec a:nth-child(1){
+    width:45%;
+}
+.first-sec a:nth-child(2), .second-sec a:nth-child(2) {
+    width: 45%;
+    margin-left:3rem;
+}
+.demo-form-label {
+    color: black;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    border-bottom: 1.5px solid red;
+}
+.demo-form input{
+    color:black !important;
+}
+.select2-results__option[aria-selected] {
+    color: #2A3F54;
+    font-weight:bold;
+    font-size:0.8rem;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #2A3F54;
+    color:white;
+    font-size:1rem;
+}
+.select2-container {
+    margin-bottom: 0.5rem;
+}
+.p-rotate{
+    margin-bottom:1rem;
+}
+.mdi-check:after label {
+    font-weight: bold !important;
+    color:black !important;
+}
+#btn-NewNC-submit :focus{
+    border-color:none;
+}
+#btn-NewNC-submit {
+    background-color: #2a3f54;
+    color: white !important;
+    border-color: none;
+    float: right;
+    margin-top: 3%;
+}
+.nav-sm .nav.side-menu li a 
+{
+    font-size:1rem;
+}

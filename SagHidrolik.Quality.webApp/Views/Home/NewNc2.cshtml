@@ -1,0 +1,144 @@
+﻿<form class="demo-form">
+   
+     
+            <div>
+                <label class="demo-form-label">NC Type :</label>
+                <select required id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                </select>
+            </div>
+            <div>
+                <label class="demo-form-label">NC Id Def :</label>
+                <input type="text" id="fullname" class="form-control" name="fullname" required />
+            </div>
+            <div>
+                <label class="demo-form-label">Activity Type :</label>
+                <br />
+                <div class="pretty p-icon p-rotate">
+                    <input type="radio" name="tt" />
+                    <div class="state p-success">
+                        <i class="icon mdi mdi-check"></i>
+                        <label>Corrective.</label>
+                    </div>
+                </div>
+                <br />
+                <div class="pretty p-icon p-rotate">
+                    <input type="radio" name="tt" />
+                    <div class="state p-success">
+                        <i class="icon mdi mdi-check"></i>
+                        <label>Preventative.</label>
+                    </div>
+                </div>
+                <br />
+                <div class="pretty p-icon p-rotate">
+                    <input type="radio" name="tt" />
+                    <div class="state p-success">
+                        <i class="icon mdi mdi-check"></i>
+                        <label>Repetitive.</label>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="demo-form-label">NC Customer Supplier :</label>
+                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="demo-form-label">Departman :</label>
+                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                </select>
+            </div>
+
+
+            <div>
+                <label class="demo-form-label">Process :</label>
+                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                </select>
+            </div>
+
+
+            <div>
+                <label class="demo-form-label">Part No :</label>
+                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                </select>
+            </div>
+        
+            <div>
+                <label class="demo-form-label">Non conformity :</label>
+                <textarea rows="2" class="form-control"></textarea>
+            </div>
+            <div>
+                <label class="demo-form-label">QTY : </label>
+                <input type="text" id="fullname" class="form-control" name="fullname" required />
+            </div>
+
+            <div>
+                <label class="demo-form-label">NC OpenedBy</label>
+                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="demo-form-label">NC Open Date</label>
+                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                    <option value="ahmet">ahmet</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="demo-form-label">NC Resposible : </label>
+                <input type="date" id="fullname" class="form-control" name="fullname" required />
+            </div>
+
+            <div>
+                <label class="demo-form-label">NC Target Date : </label>
+                <input type="date" id="fullname" class="form-control" name="fullname" required />
+            </div>
+
+            <div>
+                <label class="demo-form-label">NC Close Date : </label>
+                <input type="date" id="fullname" class="form-control" name="fullname" required />
+            </div>
+
+    <input id="btn-NewNC-submit" class="btn btn-dark" type="submit" value="Kaydet" />
+</form>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $(".limitedNumbSelect2").select2({
+            maximumSelectionLength: 1,
+            placeholder: "operator Seçiniz"
+        })
+    });
+</script>
