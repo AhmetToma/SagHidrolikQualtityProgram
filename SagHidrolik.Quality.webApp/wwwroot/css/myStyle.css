@@ -1,4 +1,4 @@
-﻿
+﻿/* welcome page*/
 .right_col{
     overflow:auto;
 }
@@ -82,3 +82,60 @@
 {
     font-size:1rem;
 }
+
+/*end welcome page*/
+/* start review page*/
+.nav-review {
+    margin-left: 42% !important;
+  
+}
+.nav-review li{
+    margin-left:0.5rem;
+}
+.nav-review li a {
+    background-color: #2A3F54;
+    color: white !important;
+}
+    .nav-review li a:hover {
+        background-color: #e73c68;
+        color: white ;
+        cursor: pointer;
+    }
+.table-review tbody tr:hover {
+    background-color: #e73c68;
+    color: white;
+    cursor:pointer;
+}
+/* end review page*/
+/* start setUp page*/
+.container-setUp .nav-tabs li {
+    width: 16%;
+
+}
+.container-setUp .nav-tabs li a {
+        border-radius: 4rem;
+        text-align: center;
+}
+    .container-setUp .nav-tabs li a:hover {
+        color: white;
+        background-color: #2A3F54;
+        cursor:pointer;
+    }
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+        color: white;
+        background-color: #2A3F54;
+    }
+
+.container-setUp-partial table {
+    margin-top: 1rem;
+}
+    .container-setUp-partial table thead {
+        background-color: black;
+        color: white;
+    }
+
+    /* end setUp page*/
+
+
+
+
