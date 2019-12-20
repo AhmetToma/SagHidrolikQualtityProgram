@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SagHidrolik.Quality.Models.ViewModesl
+{
+    public class RequestQuery
+    {
+        public int  pageSize { get; set; }
+        public int pageNumber { get; set; }
+
+    }
+}

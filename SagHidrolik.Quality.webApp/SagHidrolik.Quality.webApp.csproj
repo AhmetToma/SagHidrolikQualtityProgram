@@ -15,7 +15,11 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="wwwroot\JavaScriptForData\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\SagHidrolik.Quality.DataAccesslayer\SagHidrolik.Quality.DataAccesslayer.csproj" />
   </ItemGroup>
 
 </Project>

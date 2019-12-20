@@ -1,4 +1,8 @@
 ﻿/* welcome page*/
+
+i {
+    cursor: pointer;
+}
 .right_col{
     overflow:auto;
 }
@@ -85,9 +89,17 @@
 
 /*end welcome page*/
 /* start review page*/
+.recordNotFound {
+    text-align:center;
+    color:black;
+    display:none;
+}
+.tableCount {
+    color: #10070a;
+    font-weight: bold;
+}
 .nav-review {
     margin-left: 42% !important;
-  
 }
 .nav-review li{
     margin-left:0.5rem;
@@ -125,26 +137,42 @@
         color: white;
         background-color: #2A3F54;
     }
-
-.container-setUp-partial table {
-    margin-top: 2rem;
-}
     .container-setUp-partial table thead {
-        background-color: #e73c68;
+        background-color: #10070a;
         color: white;
     }
 
-    /* end setUp page*/
 
+.container-claimtype .form-group {
+    margin-top:1rem;
+}
+.container-claimtype .form-group label{
+    color:black;
+    font-weight:500;
+    font-size:1rem;
+}
+.container-claimtype .form-group select {
+    width: 50%;
+    color:black;
+    font-weight:bold;
+}
+.container-claimtype .btn-success{
+    margin-top:1.8rem;
+}
+/* end setUp page*/
 /*start details */
-.modal-dialog {
-    margin:0;
+#detailsMoal {
+    margin: 0;
+    top:-2rem;
 }
 .modal-content {
     padding: 0.5rem;
 }
-
-
+#claimType-AddModel label{
+    color:black;
+    font-weight:bold;
+    font-size:0.8rem;
+}
 .modal-lg, .modal-xl {
     max-width: 100% !important;
 }

@@ -17,18 +17,22 @@
     <link href="~/css/nprogress.css" rel="stylesheet">
     <!-- jQuery custom content scroller -->
     <link href="~/css/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
-<link href="~/css/pretty-checkbox.min.css" rel="stylesheet" />
+    <link href="~/css/pretty-checkbox.min.css" rel="stylesheet" />
     <!-- Custom Theme Style -->
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.css">
     <link href="~/css/custom.css" rel="stylesheet">
     <link href="~/css/select2.min.css" rel="stylesheet" />
     <link href="~/css/myStyle.css" rel="stylesheet">
+    <link href="~/css/loader.css" rel="stylesheet" />
 
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/select2.min.js"></script>
 
 </head>
 <body class="nav-md footer_fixed">
+    <div class="loader-Container">
+        <div class="lds-hourglass"></div>
+    </div>
     <div class="container body">
         <div class="main_container">
             <div class="col-md-3 left_col">
@@ -164,7 +168,7 @@
             <!-- page content -->
             <div class="right_col" role="main">
                 @RenderBody();
-               
+
             </div>
         </div>
     </div>
@@ -182,5 +186,9 @@
 
     <script src="~/js/custom.min.js"></script>
     <script src="~/js/select2.min.js"></script>
+    <script src="~/js/sweetalert2.min.js" ></script>
+
+    <script src="~/JavaScriptForData/Source.js"></script>
+    <script src="~/JavaScriptForData/SetUp/claimType.js"></script>
 </body>
 </html>
