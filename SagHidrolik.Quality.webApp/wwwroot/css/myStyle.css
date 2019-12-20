@@ -10,7 +10,7 @@
 }
 .welcomepage-conainer {
     margin-top: 6%;
-    margin-left: 5  %;
+    margin-left: 5%;
 }
 .first-sec {
     width:100%;
@@ -127,15 +127,101 @@
     }
 
 .container-setUp-partial table {
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
     .container-setUp-partial table thead {
-        background-color: black;
+        background-color: #e73c68;
         color: white;
     }
 
     /* end setUp page*/
 
+/*start details */
+.modal-dialog {
+    margin:0;
+}
+.modal-content {
+    padding: 0.5rem;
+}
 
+
+.modal-lg, .modal-xl {
+    max-width: 100% !important;
+}
+.Header-detailsNc div:nth-child(1) {
+    background: rgba(38, 185, 154, 0.88);
+    color: wheat;
+    border-radius: 50%;
+    height: 3rem;
+    width: 3rem;
+    text-align: center
+}
+.Header-detailsNc span{
+ position:relative;
+ top:1rem;
+}
+.Header-detailsNc ul {
+    list-style: none;
+    float: left;
+}
+.Header-detailsNc ul li{
+    float:right;
+    margin-left:1rem;
+    font-weight:bold
+}
+.NcDetails-formControl .select2-container--default .select2-selection--multiple {
+    width: 25.6rem !important;
+}
+.container-NcDetails .select2-container--default .select2-selection--multiple {
+    width: 25.6rem !important;
+}
+.NcDetails-formControl {
+    margin-bottom:1rem;
+
+}
+.NcDetails-formControl label
+{
+    margin-left:0.5rem;
+    margin-right:0.5rem;
+}
+  .NcDetails-formControl  input{
+        margin-left:0.5rem !important;
+    }
+
+.modal {
+       z-index:100;
+
+}
+.modal-backdrop {
+    z-index:50;
+}
+
+.immediateAction button:nth-child(1) {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+    .immediateAction button:nth-child(1):hover ,.immediateAction button:nth-child(1):focus {
+        background-color: #e73c68;
+        color: white;
+    }
+.immediateAction input {
+    height: 2rem;
+    border: 1.5px solid #2A3F54;
+    padding: 4.5px;
+    color: black;
+    font-weight: 500;
+}
+.immediateAction .select2-container--default .select2-selection--multiple {
+    width: 10rem !important;
+    height: 2.7rem;
+}
+    .immediateAction .select2-container--default .select2-selection--multiple :focus {
+        border-radius: 1rem !important;
+    }
+.doc-details .select2-container--default .select2-selection--multiple {
+    width: 10rem !important;
+}
+
+/*end details*/
 
 

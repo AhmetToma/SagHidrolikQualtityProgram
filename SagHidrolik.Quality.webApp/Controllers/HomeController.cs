@@ -36,5 +36,10 @@ namespace SagHidrolik.Quality.webApp.Controllers
         {
             return View();
         }
+        public IActionResult DetailsNc()
+        {
+            return View();
+        }
+
     }
 }
