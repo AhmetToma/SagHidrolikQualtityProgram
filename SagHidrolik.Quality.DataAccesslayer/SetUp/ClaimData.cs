@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Dapper;
 namespace SagHidrolik.Quality.DataAccesslayer.SetUp
 {
-   public static  class SetUpGetData
+   public static  class ClaimData
     { 
         public static async Task<IEnumerable<ClaimTypeViewModel>> GetAllClaim(RequestQuery requestQuery)
         {
@@ -36,6 +36,26 @@ namespace SagHidrolik.Quality.DataAccesslayer.SetUp
                 await connection.OpenAsync();
                 var count = await connection.ExecuteAsync(SqlQueryRepo.AddClaimType(claimTypeViewModel));
                 return count ;
+            }
+        }
+
+        public static async Task<int> DeleteClaimType(int  claimId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.DeleteClaimType(claimId));
+                return count;
+            }
+        }
+
+        public static async Task<int> UpdateClaimType(ClaimTypeViewModel claimTypeViewModel)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.UpdateClaimType(claimTypeViewModel));
+                return count;
             }
         }
     }

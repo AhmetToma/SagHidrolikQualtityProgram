@@ -8,14 +8,13 @@ using SagHidrolik.Quality.Models.ViewModesl;
 
 namespace SagHidrolik.Quality.webApp.Controllers
 {
-    public class SetupGetDataController : Controller
+    public class ClaimGetDataController : Controller
     {
         public JsonResult GetAllClaim([FromBody] RequestQuery requestQuery)
         {
-            var list = SetUpGetData.GetAllClaim(requestQuery).Result;
+            var list = ClaimData.GetAllClaim(requestQuery).Result;
             return Json(list);
         }
-
         public JsonResult GetAllClaimCount()
         {
             RequestQuery requestQuery = new RequestQuery()
@@ -23,14 +22,22 @@ namespace SagHidrolik.Quality.webApp.Controllers
                 pageNumber = 1,
                 pageSize = 10
             };
-            var list = SetUpGetData.GetAllClaimCount().Result;
+            var list = ClaimData.GetAllClaimCount().Result;
             return Json(list);
         }
-
-
         public JsonResult AddClaimType([FromBody] ClaimTypeViewModel claimTypeViewModel)
         {
-          var count= SetUpGetData.AddClaimType(claimTypeViewModel).Result;
+          var count= ClaimData.AddClaimType(claimTypeViewModel).Result;
+            return Json(count);
+        }
+        public JsonResult DeleteClaimType(int claimId)
+        {
+            var count = ClaimData.DeleteClaimType(claimId).Result;
+            return Json(count);
+        }
+        public JsonResult UpdateClaimType([FromBody] ClaimTypeViewModel claimTypeViewModel)
+        {
+            var count = ClaimData.UpdateClaimType(claimTypeViewModel).Result;
             return Json(count);
         }
     }

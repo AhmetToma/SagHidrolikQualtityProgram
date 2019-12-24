@@ -142,7 +142,7 @@ i {
         color: white;
     }
 
-
+/*claim type*/
 .container-claimtype .form-group {
     margin-top:1rem;
 }
@@ -159,6 +159,11 @@ i {
 .container-claimtype .btn-success{
     margin-top:1.8rem;
 }
+/*Company*/
+
+
+
+
 /* end setUp page*/
 /*start details */
 #detailsMoal {
