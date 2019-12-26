@@ -76,7 +76,7 @@ function GetAllClaimCount() {
             $('#claimtypeTableCount').text(number);
             $('#selectRowCount-claimType').append(`
 <option value="4">4</option>
-<option value="6">6</option>
+<option value="6" selected>6</option>
 <option value="8">8</option>
 <option value="10">10</option>
                     <option value="${number}">All Records (${number})</option>
@@ -121,7 +121,9 @@ $(Buttons.calimType_confirmAdd).click((event) => {
         Swal.fire({
             type: 'error',
             title: 'Oops...',
-            text: 'Tüm Inputlar Doldurmanız Gerekiyor'
+            text: 'Tüm Inputlar Doldurmanız Gerekiyor',
+            timer: 1500
+
         });
     }
     else {
@@ -139,17 +141,20 @@ $(Buttons.calimType_confirmAdd).click((event) => {
                 if (num !== 0) {
                     GetAllClaimAjaxCall();
                     GetAllClaimCount();
-                    Swal.fire(
-                        'Başarılı!',
-                        'yeni claim Başarı ile eklendi',
-                        'success'
-                    );
+                    Swal.fire({
+                        title:'Başarılı!',
+                        text: 'yeni claim Başarı ile eklendi',
+                        type: 'success',
+                        timer: 1500
+                    });
                 }
                 else {
                     Swal.fire({
                         type: 'error',
                         title: 'Oops...',
-                        text: 'Beklenmeyen bir hata oluştu'
+                        text: 'Beklenmeyen bir hata oluştu',
+                        timer: 1500
+
                     });
                 }
             }
@@ -191,11 +196,12 @@ function deleteClaimType(claimId, claimType) {
                     if (num !== 0) {
                         GetAllClaimAjaxCall();
                         GetAllClaimCount();
-                        Swal.fire(
-                            'Başarılı!',
-                            'claim Başarı ile Silendi',
-                            'success'
-                        );
+                        Swal.fire({
+                            title: 'Başarılı!',
+                            text: 'claim Başarı ile Silendi',
+                            type: 'success',
+                            timer: 1500
+                        });
                     }
                     else {
                         Swal.fire({
@@ -254,11 +260,12 @@ $(Buttons.calimType_confirmEdit).click((event) => {
                 if (num !== 0) {
                     GetAllClaimAjaxCall();
                     GetAllClaimCount();
-                    Swal.fire(
-                        'Başarılı!',
-                        'claim Başarı ile düzeltildi',
-                        'success'
-                    );
+                    Swal.fire({
+                        title: 'Başarılı!',
+                        text: 'claim Başarı ile düzeltildi',
+                        type: 'success',
+                        timer: 1500
+                    });
                 }
                 else {
                     Swal.fire({

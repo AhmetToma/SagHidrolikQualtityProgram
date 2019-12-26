@@ -8,6 +8,7 @@ namespace SagHidrolik.Quality.Models.ViewModesl
     {
         public int  pageSize { get; set; }
         public int pageNumber { get; set; }
+        public string companyType { get; set; }
 
     }
 }

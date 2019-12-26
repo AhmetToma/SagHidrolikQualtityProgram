@@ -24,7 +24,7 @@ namespace SagHidrolik.Quality.Models.ViewModesl
         public const string password = "";
         public static string connctionString_SAG_PRODUCTION = $"Server={ServerName};Database=SAG_PRODUCTION;Trusted_Connection=True";
 
-
+        #region Setup
 
         #region Claim
         public static string GetAllClaimCount = " select COUNT(dbo.A_NCType.ClaimTypeID) from dbo.A_NCType;";
@@ -58,11 +58,67 @@ namespace SagHidrolik.Quality.Models.ViewModesl
         #region company
         public static string GetAllCompany(RequestQuery requestQuery)
         {
-            query = "select * from dbo.D_Company order by Id_Cust" +
+            query = $"select * from dbo.D_Company where D_Company.CompanyType like '%{requestQuery.companyType}%' order by Id_Cust" +
                $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
-        #endregion 
 
+        public static string GetAllCompanyCount = "select COUNT(Id_Cust) from dbo.D_Company";
+
+        public static string AddCompnay(CompanyViewModel companyViewModel)
+        {
+            query = $"insert into dbo.D_Company (CompanyName,CompanyType) Values('{companyViewModel.CompanyName}', '{companyViewModel.CompanyType}')";
+            return query;
+        }
+
+        public static string DeleteCompany(int companyId)
+        {
+            query = $"delete from dbo.D_Company where Id_Cust ={companyId};";
+            return query;
+        }
+
+
+        public static string UpdateCompany(CompanyViewModel companyViewModel)
+        {
+            query = $"update D_Company  set CompanyName = '{companyViewModel.CompanyName}', " +
+                $"CompanyType = '{companyViewModel.CompanyType}' where Id_Cust = {companyViewModel.Id_Cust}";
+            return query;
+        }
+        #endregion
+
+
+        #region Departmnet
+
+
+        #endregion
+
+        public static string GetAllDepartments(RequestQuery requestQuery)
+        {
+            query = $"select  E_Department.DEPT_ID,E_Department.Depatrment_1 as Department_tr, " +
+                $" E_Department.Department as Department_en  from E_Department order by DEPT_ID" +
+                $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
+            return query;
+        }
+        public static string GetAllDepartmentCount = "select COUNT (DEPT_ID)from E_Department";
+
+        public static string AddDepartment(Department department)
+        {
+            query = $"insert into E_Department(Department,Depatrment_1) values ('{department.Department_en}','{department.Department_tr}')";
+            return query;
+        }
+        public static string DeleteDepartment(int deptId)
+        {
+            query = $"delete from E_Department where DEPT_ID={deptId}";
+            return query;
+        }
+
+        public static string UpdateDepartment(Department department)
+        {
+            query = $"update E_Department set Department = '{department.Department_en}'," +
+                $" Depatrment_1 = '{department.Department_tr}' where DEPT_ID = {department.DEPT_ID}";
+            return query;
+        }
+
+        #endregion
     }
 }

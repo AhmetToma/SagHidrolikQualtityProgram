@@ -1,13 +1,20 @@
 ﻿<div class="container-claimtype">
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">select table row count : </label>
-                <select class="form-control" id="selectRowCount-company">
-                    <option value="4">4</option>
-                    <option value="6" selected>6</option>
-                    <option value="8">8</option>
-                    <option value="10">10</option>
+                <select class="form-control" id="selectRowCount-company"></select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Select Company Type : </label>
+                <select class="form-control" id="selectCompanyType-company">
+                    <option value="" selected>choose...</option>
+                    <option value="Supplier">Supplier</option>
+                    <option value="Customer">Customer</option>
+                    <option value="Internal">Internal</option>
+                    <option value="External">External</option>
                 </select>
             </div>
         </div>
@@ -51,7 +58,7 @@
             </ul>
         </nav>
     </div>
-    <div class="tableCount">Nc Company toplam : <span id="claimtypeTableCount"></span></div>
+    <div class="tableCount">Nc Company toplam : <span id="compnayTableCount"></span></div>
 </div>
 
 <div class="modal fade" id="company-AddModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -67,13 +74,14 @@
                 <form>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Company Name: </label>
-                        <input type="text" class="form-control" id="inp-company-tr">
+                        <input type="text" class="form-control" id="inp-company-name">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Company type</label>
                         <select class="form-control" id="select-companyType-add">
+                            <option value="" selected>choose Company Type</option>
                             <option value="Supplier">Supplier</option>
-                            <option value="Customer" selected>Customer</option>
+                            <option value="Customer">Customer</option>
                             <option value="Internal">Internal</option>
                             <option value="External">External</option>
                         </select>
@@ -103,7 +111,7 @@
                 <form>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Company Name: </label>
-                        <input type="text" class="form-control" id="inp-company-tr-edit">
+                        <input type="text" class="form-control" id="inp-company-edit">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Company type</label>
