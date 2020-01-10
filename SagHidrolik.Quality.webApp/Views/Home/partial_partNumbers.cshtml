@@ -1,80 +1,124 @@
-﻿<div class="container-setUp-partial">
-    <div  class="input-group mb-3 mt-3"   style="width: 33%;">
-        <div class="input-group-prepend">
-            <span class="input-group-text " style="background-color:#e73c68;color:white" id="basic-addon1">STK</span>
+﻿<div class="container-claimtype">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group" style="margin-top:3rem">
+                <div class="input-group-prepend">
+                    <span class="input-group-text " style="background-color:#e73c68;color:white" id="basic-addon1">STK</span>
+                </div>
+                <input id="inp-partNumber-searchStk" autofocus style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu">
+            </div>
         </div>
-        <input autofocus style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu" aria-label="Username" aria-describedby="basic-addon1">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">select table row count : </label>
+                <select class="form-control" id="selectRowCount-partNumber"></select>
+            </div>
+        </div>
+        <div class="col-md-4 form-group">
+            <button id="btn-partNumber-add" class="btn btn-success"> Add New PartNumber</button>
+        </div>
     </div>
-    <table class="table table-review">
-        <caption>Nc Type toplam: 15</caption>
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">STK</th>
-                <th scope="col">STA</th>
-                <th scope="col">Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>dfvdfvf</td>
-                <td>dfvdfvf</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>dfvdfvf</td>
-                <td>dfvdfvf</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>dfvdfvf</td>
-                <td>dfvdfvf</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>dfvdfvf</td>
-                <td>dfvdfvf</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>dfvdfvf</td>
-                <td>dfvdfvf</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>dfvdfvf</td>
-                <td>dfvdfvf</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>dfvdfvf</td>
-                <td>dfvdfvf</td>
-            </tr>
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation example" class="nav-review">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link">1</a></li>
-            <li class="page-item">
-                <a class="page-link" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+
+    <div class="container-setUp-partial">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">STK</th>
+                    <th scope="col">STA</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="table-partNumber"></tbody>
+        </table>
+        <div class="recordNotFound" id="recordNotFound_partNumber">
+            <h3>Hiç bir kayıt Bulunmamktadır</h3>
+        </div>
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-partNumber-previous" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="number-partNumber-pageNumber" class="page-link">1</a></li>
+                <li class="page-item">
+                    <a id="btn-partNumber-next" class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="tableCount"> Part Numbers toplam : <span id="partNumberTableCount"></span></div>
+</div>
+
+
+
+<div class="modal fade" id="partNumber-AddModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New part Numbers</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STK : </label>
+                        <input type="text" class="form-control" id="inp-partNumber-stk">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STA : </label>
+                        <input type="text" class="form-control" id="inp-partNumber-sta">
+                    </div>  <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Type : </label>
+                        <input type="number" class="form-control" id="inp-partNumber-type">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-partNumber-confirmAdd" type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="partNumber-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit PartNumbers</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STK : </label>
+                        <input type="text" class="form-control" id="inp-partNumber-stk-edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STA : </label>
+                        <input type="text" class="form-control" id="inp-partNumber-sta-edit">
+                    </div>  <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STK : </label>
+                        <input type="number" class="form-control" id="inp-partNumber-type-edit">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-partNumber-confirmEdit" type="button" class="btn btn-primary">Save Editing</button>
+            </div>
+        </div>
+    </div>
 </div>

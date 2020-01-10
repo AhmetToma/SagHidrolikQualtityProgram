@@ -73,7 +73,7 @@ function GetAllClaimCount() {
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.GetAllClaimCount,
         success: (number) => {
-            $('#claimtypeTableCount').text(number);
+            $('#claimTypeTableCount').text(number);
             $('#selectRowCount-claimType').append(`
 <option value="4">4</option>
 <option value="6" selected>6</option>

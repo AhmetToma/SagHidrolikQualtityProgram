@@ -1,72 +1,111 @@
-﻿<div class="container-setUp-partial">
-    <table class="table table-review">
-        <caption>  process sayisi: 15</caption>
-        <thead>
-            <tr>
-                <th scope="col">ID </th>
-                <th scope="col">Process</th>
-                <th scope="col">Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>sdvd</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>sdvd</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>sdvd</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>sdvd</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>sdvd</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>sdvd</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>sdvd</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>sdvd</td>
-                <td>sdvd</td>
-            </tr>
+﻿
+<div class="container-claimtype">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">select table row count : </label>
+                <select class="form-control" id="selectRowCount-Iprocess"></select>
+            </div>
+        </div>
+        <div class="col-md-3 form-group">
+            <button id="btn-Iprocess-add" class="btn btn-success"> Add New Porcess</button>
+        </div>
+    </div>
 
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation example" class="nav-review">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link">1</a></li>
-            <li class="page-item">
-                <a class="page-link" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <div class="container-setUp-partial">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Process ID</th>
+                    <th scope="col">Process Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="table-Iprocess"></tbody>
+        </table>
+        <div class="recordNotFound" id="recordNotFound_Iprocess">
+            <h3>Hiç bir kayıt Bulunmamktadır</h3>
+        </div>
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-Iprocess-previous" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="number-Iprocess-pageNumber" class="page-link">1</a></li>
+                <li class="page-item">
+                    <a id="btn-Iprocess-next" class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="tableCount"> Iprocess toplam : <span id="IprocessTableCount"></span></div>
+</div>
+
+
+
+<div class="modal fade" id="Iprocess-AddModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Process</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Process Name : </label>
+                        <input type="text" class="form-control" id="inp-Iprocess-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Process Description : </label>
+                        <input type="text" class="form-control" id="inp-Iprocess-dec">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-Iprocess-confirmAdd" type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Iprocess-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Process</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Process Name : </label>
+                        <input type="text" class="form-control" id="inp-Iprocess-name-edit">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Process Description :  </label>
+                        <input type="text" class="form-control" id="inp-Iprocess-dec-edit">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-Iprocess-confirmEdit" type="button" class="btn btn-primary">Save Editing</button>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,62 +1,61 @@
 ﻿using SagHidrolik.Quality.Models.ViewModesl;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Text;
 using System.Threading.Tasks;
 using SagHidrolik.Quality.Models.SqlRepository;
 
 using Dapper;
-using System.Data.SqlClient;
-
 namespace SagHidrolik.Quality.DataAccesslayer.SetUp
 {
-    public class CompanyData
+   public  class IprocessData
     {
 
-        public static async Task<IEnumerable<CompanyViewModel>> GetAllCompany(RequestQuery requestQuery)
+        public static async Task<IEnumerable<IprocessViewModel>> GetAllIprocess(RequestQuery requestQuery)
         {
             requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
                 await connection.OpenAsync();
-                var list = await connection.QueryAsync<CompanyViewModel>(SqlQueryRepo.GetAllCompany(requestQuery));
+                var list = await connection.QueryAsync<IprocessViewModel>(SqlQueryRepo.GetAllIprocess(requestQuery));
                 return list;
             }
         }
-        public static async Task<IEnumerable<int>> GetAllCompanyCount()
+        public static async Task<IEnumerable<int>> GetAllIprocessCount()
         {
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
                 await connection.OpenAsync();
-                var count = await connection.QueryAsync<int>(SqlQueryRepo.GetAllCompanyCount);
+                var count = await connection.QueryAsync<int>(SqlQueryRepo.GetAllIprocessCount);
+                return count;
+            }
+        }
+        public static async Task<int> AddIprocess(IprocessViewModel iprocessViewModel)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.AddIprocess(iprocessViewModel));
+                return count;
+            }
+        }
+        public static async Task<int> DeleteIprocess(int IporcessId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.DeleteIprocess(IporcessId));
                 return count;
             }
         }
 
-        public static async Task<int> AddCompnay(CompanyViewModel companyViewModel)
+        public static async Task<int> UpdateIprocess(IprocessViewModel iprocessViewModel)
         {
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
                 await connection.OpenAsync();
-                var count = await connection.ExecuteAsync(SqlQueryRepo.AddCompnay(companyViewModel));
-                return count;
-            }
-        }
-        public static async Task<int> DeleteCompany(int compnayId)
-        {
-            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
-            {
-                await connection.OpenAsync();
-                var count = await connection.ExecuteAsync(SqlQueryRepo.DeleteCompany(compnayId));
-                return count;
-            }
-        }
-
-
-        public static async Task<int> UpdateCompany(CompanyViewModel companyViewModel)
-        {
-            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
-            {
-                await connection.OpenAsync();
-                var count = await connection.ExecuteAsync(SqlQueryRepo.UpdateCompany(companyViewModel));
+                var count = await connection.ExecuteAsync(SqlQueryRepo.UpdateIprocess(iprocessViewModel));
                 return count;
             }
         }

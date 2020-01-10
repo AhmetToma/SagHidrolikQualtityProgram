@@ -103,5 +103,103 @@ namespace SagHidrolik.Quality.webApp.Controllers
         #endregion
 
 
+        #region Operators 
+        public JsonResult GetAllOperators([FromBody] RequestQuery requestQuery)
+        {
+            var list = OperatorData.GetAllOperators(requestQuery).Result;
+            return Json(list);
+        }
+
+        public JsonResult AddOperator([FromBody] OperatorViewModel operatorViewModel)
+        {
+            var count = OperatorData.AddOperator(operatorViewModel).Result;
+            return Json(count);
+        }
+
+
+        public JsonResult GetAllOperatorsCount()
+        {
+            var list = OperatorData.GetAllOperatorsCount().Result;
+            return Json(list);
+        }
+
+        public JsonResult DeleteOperator(int operatorId)
+        {
+            var count = OperatorData.DeleteOperator(operatorId).Result;
+            return Json(count);
+        }
+
+        public JsonResult UpdateOperator([FromBody] OperatorViewModel operatorViewModel)
+        {
+            var count = OperatorData.UpdateOperator(operatorViewModel).Result;
+            return Json(count);
+        }
+        #endregion
+
+
+        #region Iprocess
+
+        public JsonResult GetAllIprocess([FromBody] RequestQuery requestQuery)
+        {
+        var list = IprocessData.GetAllIprocess(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetAllIprocessCount()
+        {
+            var list = IprocessData.GetAllIprocessCount().Result;
+            return Json(list);
+        }
+        public JsonResult AddIprocess([FromBody] IprocessViewModel iprocessViewModel)
+        {
+            var count = IprocessData.AddIprocess(iprocessViewModel).Result;
+            return Json(count);
+        }
+        public JsonResult DeleteIprocess(int IprocessId)
+        {
+            var count = IprocessData.DeleteIprocess(IprocessId).Result;
+            return Json(count);
+        }
+        public JsonResult UpdateIprocess([FromBody] IprocessViewModel iprocessViewModel)
+        {
+            var count = IprocessData.UpdateIprocess(iprocessViewModel).Result;
+            return Json(count);
+        }
+        #endregion
+
+
+
+
+        #region PartNumbers 
+
+        public JsonResult GetAllPartNumbers([FromBody] RequestQuery requestQuery)
+        {
+            var list = PartNumberData.GetAllPartNumbers(requestQuery).Result;
+            return Json(list);
+        }
+
+        public JsonResult GetAllPartNumbersCount()
+        {
+            var list = PartNumberData.GetAllPartNumbersCount().Result;
+            return Json(list);
+        }
+
+        public JsonResult AddPartNumber([FromBody] PartNumbersViewModel partNumbersViewModel)
+        {
+            var count = PartNumberData.AddPartNumber(partNumbersViewModel).Result;
+            return Json(count);
+        }
+        public JsonResult DeletePartNumber(int partNumberId)
+        {
+            var count = PartNumberData.DeletePartNumber(partNumberId).Result;
+            return Json(count);
+        }
+
+
+        public JsonResult UpdatePartNumber([FromBody] PartNumbersViewModel partNumbersViewModel)
+        {
+            var count = PartNumberData.UpdatePartNumber(partNumbersViewModel).Result;
+            return Json(count);
+        }
+        #endregion
     }
 }

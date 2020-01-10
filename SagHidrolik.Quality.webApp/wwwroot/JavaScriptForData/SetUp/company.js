@@ -39,7 +39,6 @@ function GetAllCompanyAjaxCall() {
         success: (list) => {
             companyList = list;
             if (list.length !== 0) {
-                console.log(list);
                 $(`${recordsNotFound.company}`).css('display', 'none');
                 CreateCompanyTable(list, TablesId.company);
             }

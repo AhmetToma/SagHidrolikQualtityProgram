@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
+using SagHidrolik.Quality.Models.SqlRepository;
+
 using Dapper;
 namespace SagHidrolik.Quality.DataAccesslayer.SetUp
 {

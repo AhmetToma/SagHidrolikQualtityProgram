@@ -1,8 +1,9 @@
-﻿using System;
+﻿using SagHidrolik.Quality.Models.ViewModesl;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SagHidrolik.Quality.Models.ViewModesl
+namespace SagHidrolik.Quality.Models.SqlRepository
 {
     public static class SqlQueryRepo
     {
@@ -54,7 +55,6 @@ namespace SagHidrolik.Quality.Models.ViewModesl
         #endregion
 
 
-
         #region company
         public static string GetAllCompany(RequestQuery requestQuery)
         {
@@ -90,7 +90,7 @@ namespace SagHidrolik.Quality.Models.ViewModesl
         #region Departmnet
 
 
-        #endregion
+      
 
         public static string GetAllDepartments(RequestQuery requestQuery)
         {
@@ -118,6 +118,99 @@ namespace SagHidrolik.Quality.Models.ViewModesl
                 $" Depatrment_1 = '{department.Department_tr}' where DEPT_ID = {department.DEPT_ID}";
             return query;
         }
+        #endregion
+
+
+
+        #region Operators 
+
+        public static string GetAllOperators(RequestQuery requestQuery)
+        {
+            query = $"select * from dbo.F_Operator order by  Op_ID" +
+                $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
+            return query;
+        }
+
+        public static string GetAllOperatorsCount = "select COUNT(F_Operator.Op_ID)from F_Operator";
+
+        public static string AddOperator(OperatorViewModel operatorViewModel)
+        {
+            query = $"insert into dbo.F_Operator (OperatorName) Values ('{operatorViewModel.OperatorName}')";
+            return query;
+        }
+
+        public static string DeleteOperator(int operatorId)
+        {
+            query = $"delete from dbo.F_Operator where Op_ID = {operatorId}";
+            return query;
+        }
+
+
+        public static string UpdateOperator(OperatorViewModel operatorViewModel)
+        {
+            query = $"update dbo.F_Operator set OperatorName = '{operatorViewModel.OperatorName}' where  Op_ID = {operatorViewModel.Op_ID}";
+            return query;
+        }
+        #endregion
+
+
+
+        #region Iprocess
+
+
+        public static string GetAllIprocessCount = "select COUNT(PR_ID) from I_Process";
+        public static string GetAllIprocess(RequestQuery requestQuery)
+        {
+            query = "select  * from dbo.I_Process order by PR_ID"+
+               $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
+            return query;
+        }
+
+
+        public static string AddIprocess(IprocessViewModel iprocessViewModel)
+        {
+            query = $" insert  into I_Process (Process,[Desc]) Values ('{iprocessViewModel.Process}','{iprocessViewModel.Desc}')";
+            return query;
+        }
+        public static string DeleteIprocess(int IprocessId)
+        {
+            query = $" delete from I_Process where PR_ID={IprocessId}";
+            return query;
+        }
+        public static string UpdateIprocess(IprocessViewModel iprocessViewModel)
+        {
+            query = $" update dbo.I_Process set Process='{iprocessViewModel.Process}', [Desc]='{iprocessViewModel.Desc}' where PR_ID= {iprocessViewModel.PR_ID}";
+            return query;
+        }
+        #endregion
+
+        #region partNumbers
+        public static string GetAllPartNumbersCount = "select COUNT(ID) from G_PartNumbers";
+        public static string GetAllPartNumbers(RequestQuery requestQuery)
+        {
+            query = $"select * from G_PartNumbers  where  STK like '%{requestQuery.Stk}%' order By ID desc " +
+               $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
+            return query;
+        }
+
+        public static string AddPartNumber(PartNumbersViewModel partNumbersViewModel)
+        {
+            query = $"insert into G_PartNumbers (STK,STA,[Type]) Values ('{partNumbersViewModel.STK}','{partNumbersViewModel.STA}',{partNumbersViewModel.Type})";
+            return query;
+        }
+        public static string DeletePartNumber(int partNumberId)
+        {
+            query = $" delete from G_PartNumbers where ID={partNumberId}";
+            return query;
+        }
+
+        public static string UpdatePartNumber(PartNumbersViewModel p)
+        {
+            query = $"update G_PartNumbers set STK ='{p.STK}', STA='{p.STA}',[Type]= {p.Type} " +
+                $" where ID = {p.ID}";
+            return query;
+        }
+        #endregion
 
         #endregion
     }

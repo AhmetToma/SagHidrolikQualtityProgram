@@ -99,19 +99,19 @@ $('#selectRowCount-department').on('change', () => {
 $(PreviousButtons.department).on('click', (event) => {
     event.preventDefault();
     if (requestQueryForDepartment.pageNumber > 1) requestQueryForDepartment.pageNumber -= 1;
-    $(`${pageNumbers.claimType}`).text(requestQueryForDepartment.pageNumber);
+    $(`${pageNumbers.department}`).text(requestQueryForDepartment.pageNumber);
     GetAllDepartmentAjaxCall();
 });
 $(NextButtons.department).on('click', (event) => {
     event.preventDefault();
     requestQueryForDepartment.pageNumber += 1;
-    $(`${pageNumbers.claimType}`).text(requestQueryForDepartment.pageNumber);
+    $(`${pageNumbers.department}`).text(requestQueryForDepartment.pageNumber);
     GetAllDepartmentAjaxCall();
 });
 //#endregion
 
 
-////#region Add New Calim 
+////#region Add New Department 
 
 
 $(Buttons.department_Add).click((event) => {
@@ -169,7 +169,7 @@ $(Buttons.department_confirmAdd).click((event) => {
 //#endregion
 
 
-// #region delete claim
+// #region delete Department
 function deleteDepartment(deptId, department_tr) {
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -222,7 +222,7 @@ function deleteDepartment(deptId, department_tr) {
 //#endregion
 
 
-//#region Edit Claim
+//#region Edit Department
 
 function editDepartment(deptId) {
     let match = departmentList.filter((Element) => {
