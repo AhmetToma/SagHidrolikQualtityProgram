@@ -100,14 +100,22 @@ $('#selectRowCount-partNumber').on('change', () => {
 
     GetAllPartNumbersAjaxCall();
 });
-//#endregion//#region searchlet timerForPartNumber;
+//#endregion
+
+
+//#region search
+
+let timerForPartNumber;
 let TypingIntervalForPartNumber = 500;
 $(Inputs.partNumber_searchStk).keyup(function () {
     requestQueryForPartNumbers.pageNumber = 1;
     $(pageNumbers.partNumber).text(requestQueryForPartNumbers.pageNumber);
     clearTimeout(timerForPartNumber);
     timerForPartNumber = setTimeout(GetAllPartNumbersAjaxCall, TypingIntervalForPartNumber);
-});//#endregion//#region Next-Previous Hanldler
+});
+//#endregion
+
+//#region Next-Previous Hanldler
 $(PreviousButtons.partNumber).on('click', (event) => {
     event.preventDefault();
     if (requestQueryForPartNumbers.pageNumber > 1) requestQueryForPartNumbers.pageNumber -= 1;
@@ -120,7 +128,9 @@ $(NextButtons.partNumber).on('click', (event) => {
     $(`${pageNumbers.partNumber}`).text(requestQueryForPartNumbers.pageNumber);
     GetAllPartNumbersAjaxCall();
 });
-//#endregion
+//#endregion
+
+
 
 
 //#region Add New partNumber
@@ -240,7 +250,10 @@ function deletePartNumber(ID, STK) {
 
     });
 }
-//#endregion//#region Edit partNumber
+//#endregion
+
+
+//#region Edit partNumber
 
 function editPartNumber(partNumberID) {
     let match = partNumberList.filter((Element) => {
@@ -308,7 +321,9 @@ $(Buttons.partNumber_confirmEdit).click((event) => {
         $(Inputs.partNumber_type_edit).val('');
     }
 });
-//#endregion
+//#endregion
+
+
 
 
 

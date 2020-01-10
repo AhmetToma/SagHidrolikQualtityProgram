@@ -75,16 +75,20 @@ i {
 #btn-NewNC-submit :focus{
     border-color:none;
 }
-#btn-NewNC-submit {
+#btn-newNc-submit {
     background-color: #2a3f54;
     color: white !important;
     border-color: none;
     float: right;
     margin-top: 3%;
 }
-.nav-sm .nav.side-menu li a 
-{
-    font-size:1rem;
+#btn-newNc-reset {
+    color: white !important;
+    border-color: none;
+    margin-top: 3%;
+}
+.nav-sm .nav.side-menu li a {
+    font-size: 1rem;
 }
 
 /*end welcome page*/

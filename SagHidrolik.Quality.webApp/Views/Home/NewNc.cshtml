@@ -3,88 +3,83 @@
         <div class="col-md-6">
             <div>
                 <label class="demo-form-label">NC Type :</label>
-                <select required id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                </select>
+                <select required id="select-newNc-claimType" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
             </div>
             <div>
-                <label class="demo-form-label">NC Id Def :</label>
-                <input type="text" id="fullname" class="form-control" name="fullname" required />
-            </div>
-            <div>
-                <label class="demo-form-label">Activity Type :</label>
+
+                <label  class="demo-form-label">Activity Type :</label>
+
                 <br />
-                <div class="pretty p-icon p-rotate">
-                    <input checked type="radio" name="tt" />
+
+                <div  class="pretty p-icon p-curve p-jelly mt-2 ">
+                    <input value="Corrective" type="radio" name="radio66">
                     <div class="state p-success">
-                        <i class="icon mdi mdi-check"></i>
-                        <label>Corrective.</label>
+                        <i style="margin-top: 5%;"  class="icon mdi mdi-check"></i>
+                        <label style="font-size: 1rem"> Corrective</label>
                     </div>
                 </div>
                 <br />
-                <div class="pretty p-icon p-rotate">
-                    <input type="radio" name="tt" />
+
+                <div class="pretty p-icon p-curve p-jelly mt-2 ">
+                    <input value="Preventative" type="radio" name="radio66">
                     <div class="state p-success">
-                        <i class="icon mdi mdi-check"></i>
-                        <label>Preventative.</label>
+                        <i style="margin-top: 5%;"  class="icon mdi mdi-check"></i>
+                        <label style="font-size: 1rem"> Preventative</label>
                     </div>
                 </div>
+
+
                 <br />
-                <div class="pretty p-icon p-rotate">
-                    <input type="radio" name="tt" />
+
+                <div class="pretty p-icon p-curve p-jelly mt-2 mb-4">
+                    <input value="Repetitive" type="radio" name="radio66">
                     <div class="state p-success">
-                        <i class="icon mdi mdi-check"></i>
-                        <label>Repetitive.</label>
+                        <i style="margin-top: 5%;" class="icon mdi mdi-check"></i>
+                        <label style="font-size: 1rem"> Repetitive</label>
                     </div>
                 </div>
+
+
+
             </div>
 
             <div>
                 <label class="demo-form-label">NC Customer Supplier :</label>
-                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                </select>
+                <select id="select-newNc-cusSup" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
             </div>
 
             <div>
                 <label class="demo-form-label">Departman :</label>
-                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                </select>
+                <select id="select-newNc-dep" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
             </div>
 
 
             <div>
                 <label class="demo-form-label">Process :</label>
-                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                </select>
+                <select id="select-newNc-process" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
             </div>
 
 
-            <div>
+            <div id="partNoDiv">
                 <label class="demo-form-label">Part No :</label>
-                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                </select>
+                <select id="select-newNc-partNo" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
             </div>
         </div>
         <div class="col-md-6">
+
+            <div>
+                <label class="demo-form-label">NC OpenedBy</label>
+                <select id="select-newNc-openBy" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
+            </div>
+            <div>
+                <label class="demo-form-label">NC Resposible : </label>
+
+                <select id="select-newNc-resposible" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
+            </div>
+            <div>
+                <label class="demo-form-label">NC Id Def :</label>
+                <input type="text" id="fullname" class="form-control" name="fullname" required />
+            </div>
             <div>
                 <label class="demo-form-label">Non conformity :</label>
                 <textarea rows="2" class="form-control"></textarea>
@@ -94,31 +89,12 @@
                 <input type="text" id="fullname" class="form-control" name="fullname" required />
             </div>
 
-            <div>
-                <label class="demo-form-label">NC OpenedBy</label>
-                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                </select>
-            </div>
 
             <div>
                 <label class="demo-form-label">NC Open Date</label>
-                <select id="" class="limitedNumbSelect2 form-control firstSelect" multiple="true">
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                    <option value="ahmet">ahmet</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="demo-form-label">NC Resposible : </label>
                 <input type="date" id="fullname" class="form-control" name="fullname" required />
-            </div>
 
+            </div>
             <div>
                 <label class="demo-form-label">NC Target Date : </label>
                 <input type="date" id="fullname" class="form-control" name="fullname" required />
@@ -131,11 +107,12 @@
 
         </div>
     </div>
-   
 
-  
 
-    <input id="btn-NewNC-submit" class="btn btn-dark" type="submit" value="Kaydet" />
+
+
+    <input id="btn-newNc-submit" class="btn btn-dark" type="submit" value="Kaydet" />
+    <input id="btn-newNc-reset" class="btn btn-danger" type="submit" value="Reset" />
 </form>
 
 <script>
