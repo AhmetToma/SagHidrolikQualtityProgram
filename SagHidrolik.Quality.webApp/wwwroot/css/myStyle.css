@@ -82,6 +82,10 @@ i {
     float: right;
     margin-top: 3%;
 }
+#newNc-summary span{
+    color:black;
+    font-weight:bold;
+}
 #btn-newNc-reset {
     color: white !important;
     border-color: none;
@@ -117,10 +121,18 @@ i {
         color: white ;
         cursor: pointer;
     }
-.table-review tbody tr:hover {
+.table-bordered tbody tr:hover {
+    background-color: #2A3F54;
+    color: white;
+    cursor: pointer;
+}
+.redClass {
     background-color: #e73c68;
     color: white;
-    cursor:pointer;
+}
+.greenClass {
+    background-color: #28a745;
+    color: white;
 }
 /* end review page*/
 /* start setUp page*/

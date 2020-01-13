@@ -42,12 +42,9 @@ const HttpUrls = {
     AddPartNumber: BaseUrl + "SetupGetData/AddPartNumber",
     DeletePartNumber: BaseUrl + "SetupGetData/DeletePartNumber?partNumberId=",
     UpdatePartNumber: BaseUrl + "SetupGetData/UpdatePartNumber",
-
-
-
-
-
-
+    AddNewNc: BaseUrl + "NewNcGetData/AddNewNc",
+    GetAllReview: BaseUrl + "ReviewGetData/GetAllReview",
+    GetAllReviewCount: BaseUrl + "ReviewGetData/GetAllReviewCount",
 
    
 };
@@ -75,12 +72,9 @@ const Buttons = {
     partNumber_Add: "#btn-partNumber-add",
     partNumber_confirmAdd: "#btn-partNumber-confirmAdd",
     partNumber_confirmEdit: "#btn-partNumber-confirmEdit",
-
-
-
-
-
-
+    newNc_submit: "#btn-newNc-submit",
+    newNc_confirmAdd:"#btn-newNC-confirmAdd",
+    newNc_reset: "#btn-newNc-reset",
 }
 const Models = {
     claimType_add: "#claimType-AddModel",
@@ -96,7 +90,9 @@ const Models = {
     Iprocess_edit: "#Iprocess-editModel",
     
  partNumber_add: "#partNumber-AddModel",
-    partNumber_edit: "#partNumber-editModel"
+    partNumber_edit: "#partNumber-editModel",
+
+    newNc_summary:"#newNc-summary"
 
 }
 const TablesId = {
@@ -105,7 +101,9 @@ const TablesId = {
     department: "#table-department",
     operator: "#table-operator",
     Iprocess: "#table-Iprocess",
-    partNumber: "#table-partNumber"
+    partNumber: "#table-partNumber",
+    review: "#table-review"
+
 };
 
 const Inputs = {
@@ -134,8 +132,28 @@ const Inputs = {
     partNumber_stk_edit: "#inp-partNumber-stk-edit",
     partNumber_sta_edit: "#inp-partNumber-sta-edit",
     partNumber_type_edit: "#inp-partNumber-type-edit",
-    partNumber_searchStk:"#inp-partNumber-searchStk"
+    partNumber_searchStk:"#inp-partNumber-searchStk",
 
+    newNC_ncType: "#select-newNc-ncType",
+    newNC_cutomerSup: "#select-newNc-cusSup",
+    newNC_dep: "#select-newNc-dep",
+
+    newNC_process: "#select-newNc-process",
+    newNC_partNo: "#select-newNc-partNo",
+
+    newNC_openBy: "#select-newNc-openBy",
+    newNC_resposible: "#select-newNc-resposible",
+    newNC_def: "#inp-newNC-def",
+    newNC_conformity: "#inp-newNC-conformity",
+    newNC_description: "#inp-newNC-description",
+
+    newNC_qty: "#inp-newNC-qty",
+
+
+
+    newNc_openDate: "#inp-newNc-openDate",
+    newNc_targetDate: "#inp-newNc-tergetDate",
+    newNc_closeDate: "#inp-newNc-closeDate",
 
 
 
@@ -147,6 +165,7 @@ const recordsNotFound= {
     operator: "#recordNotFound_operator",
     Iprocess: "#recordNotFound_Iprocess",
     partNumber: "#recordNotFound_partNumber",
+    review:"#recordNotFound_review",
 
 
 
@@ -158,8 +177,7 @@ const PreviousButtons = {
     operator: "#btn-operator-previous",
     Iprocess: "#btn-Iprocess-previous",
     partNumber: "#btn-partNumber-previous",
-
-
+    review: "#btn-review-previous",
 
 };
 const NextButtons = {
@@ -169,6 +187,8 @@ const NextButtons = {
     operator: "#btn-operator-next",
     Iprocess: "#btn-Iprocess-next",
     partNumber: "#btn-partNumber-next",
+    review: "#btn-review-next",
+
 };
 const pageNumbers = {
     claimType: "#number-claimType-pageNumber",
@@ -177,7 +197,7 @@ const pageNumbers = {
     operator: "#number-operator-pageNumber",
     Iprocess: "#number-Iprocess-pageNumber",
     partNumber: "#number-partNumber-pageNumber",
-
+    review: "#number-review-pageNumber",
 
 }
 

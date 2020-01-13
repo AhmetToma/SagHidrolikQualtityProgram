@@ -3,14 +3,11 @@
         <div class="col-md-6">
             <div>
                 <label class="demo-form-label">NC Type :</label>
-                <select required id="select-newNc-claimType" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
+                <select required id="select-newNc-ncType" class="limitedNumbSelect2 form-control firstSelect" multiple="true"></select>
             </div>
             <div>
-
                 <label  class="demo-form-label">Activity Type :</label>
-
                 <br />
-
                 <div  class="pretty p-icon p-curve p-jelly mt-2 ">
                     <input value="Corrective" type="radio" name="radio66">
                     <div class="state p-success">
@@ -78,42 +75,122 @@
             </div>
             <div>
                 <label class="demo-form-label">NC Id Def :</label>
-                <input type="text" id="fullname" class="form-control" name="fullname" required />
+                <input type="text" id="inp-newNC-def" class="form-control" name="fullname" required />
             </div>
             <div>
                 <label class="demo-form-label">Non conformity :</label>
-                <textarea rows="2" class="form-control"></textarea>
+                <textarea rows="2" id="inp-newNC-conformity" class="form-control"></textarea>
+            </div>
+
+            <div>
+                <label class="demo-form-label">Nc Description :</label>
+                <textarea rows="2" id="inp-newNC-description" class="form-control"></textarea>
             </div>
             <div>
                 <label class="demo-form-label">QTY : </label>
-                <input type="text" id="fullname" class="form-control" name="fullname" required />
+                <input min="0" type="number" id="inp-newNC-qty" class="form-control" name="fullname" required />
             </div>
 
 
             <div>
                 <label class="demo-form-label">NC Open Date</label>
-                <input type="date" id="fullname" class="form-control" name="fullname" required />
+                <input type="text" id="inp-newNc-openDate" class="form-control" name="fullname" required />
 
             </div>
             <div>
                 <label class="demo-form-label">NC Target Date : </label>
-                <input type="date" id="fullname" class="form-control" name="fullname" required />
+                <input type="text" id="inp-newNc-tergetDate" class="form-control" name="fullname" required />
             </div>
 
             <div>
                 <label class="demo-form-label">NC Close Date : </label>
-                <input type="date" id="fullname" class="form-control" name="fullname" required />
+                <input type="text" id="inp-newNc-closeDate" class="form-control" name="fullname" required />
             </div>
 
         </div>
     </div>
 
-
-
-
     <input id="btn-newNc-submit" class="btn btn-dark" type="submit" value="Kaydet" />
-    <input id="btn-newNc-reset" class="btn btn-danger" type="submit" value="Reset" />
+    <input  id="btn-newNc-reset" class="btn btn-danger" type="submit" value="Reset" />
 </form>
+
+
+<div class="modal fade" id="newNc-summary" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div style="width:50rem" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="exampleModalLabel">New Nc Summary</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Nc Type: <span id="sp-newNc-ncType"></span></label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Activity Type: <span id="sp-newNc-activityType"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Customer Supplier: <span id="sp-newNC-cusSup"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Department: <span id="sp-newNC-department" ></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Process :<span id="sp-newNC-process"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">partNo :<span id="sp-newNC-partNo"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Open By : <span id="sp-newNC-openBy" ></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Resposible : <span id="sp-newNC-resposible"></span></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Def : <span id="sp-newNC-def"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Conformity : <span id="sp-newNC-confromity"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label"> Description : <span id="sp-newNC-des"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">qty : <span id="sp-newNC-qty"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">open Date : <span id="sp-newNC-openDate"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">target Date : <span id="sp-newNC-targetDate"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Close Date : <span id="sp-newNC-closeDate"></span></label>
+                            </div>
+                        </div>
+
+                    </div>
+                  
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-newNC-confirmAdd" type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 
@@ -125,5 +202,6 @@
             placeholder: "operator Seçiniz"
         })
     });
-    $('')
+
+
 </script>
