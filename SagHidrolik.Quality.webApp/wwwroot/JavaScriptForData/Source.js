@@ -45,6 +45,8 @@ const HttpUrls = {
     AddNewNc: BaseUrl + "NewNcGetData/AddNewNc",
     GetAllReview: BaseUrl + "ReviewGetData/GetAllReview",
     GetAllReviewCount: BaseUrl + "ReviewGetData/GetAllReviewCount",
+    GetReviewDetails: BaseUrl + "ReviewGetData/GetReviewDetails?ncId=",
+
 
    
 };
@@ -146,17 +148,33 @@ const Inputs = {
     newNC_def: "#inp-newNC-def",
     newNC_conformity: "#inp-newNC-conformity",
     newNC_description: "#inp-newNC-description",
-
     newNC_qty: "#inp-newNC-qty",
-
-
-
     newNc_openDate: "#inp-newNc-openDate",
     newNc_targetDate: "#inp-newNc-tergetDate",
     newNc_closeDate: "#inp-newNc-closeDate",
+    review_searchStk: "#inp-review-searchStk",
+
+    reviewDetails_selectNcType: "#select-reviewDetails-ncType",
+    reviewDetails_cusSup: "#select-reviewDetails-cusSup",
+    reviewDetails_department: "#select-reviewDetails-dep",
+    reviewDetails_process: "#select-reviewDetails-process",
+    reviewDetails_partNo: "#select-reviewDetails-partNo",
+    reviewDetails_openBy: "#select-reviewDetails-openBy",
+    reviewDetails_responsible: "#select-reviewDetails-resposbile",
 
 
+    reviewDetails_ncID: '#inp-reviewDetails-ncId',
+    reviewDetails_def: '#inp-reviewDetails-def',
+    reviewDetails_qty: '#inp-reviewDetails-qty',
 
+    reviewDetails_conformity: '#inp-reviewDetails-conformity',
+    reviewDetails_description: '#inp-reviewDetails-description',
+    reviewDetails_analaysis: '#inp-reviewDetails-analaysis',
+
+
+    reviewDetails_openDate: '#inp-reviewDetails-openDate',
+    reviewDetails_targetDate: '#inp-reviewDetails-targetDate',
+    reviewDetails_closeDate: '#inp-reviewDetails-closeDate'
 }
 const recordsNotFound= {
     claimType: "#recordNotFound_claimType",

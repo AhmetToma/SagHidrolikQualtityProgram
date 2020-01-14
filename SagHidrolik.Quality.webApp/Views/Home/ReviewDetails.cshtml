@@ -1,0 +1,335 @@
+﻿
+<div>
+    <div class="Header-detailsNc">
+        <ul>
+            <li id="kay1">Documents Details</li>
+            <li>Documents</li>
+            <li>Immediate Action</li>
+            <li>Permanetn Action</li>
+            <li>Description</li>
+            <li id="d">Date</li>
+            <li>Genel Bilgiler</li>
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+    <form class="">
+        <div class="alert alert-success">
+            <h3>Genel Bilgiler</h3>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Nc ID : </label>
+                <input readonly type="text" id="inp-reviewDetails-ncId" class="form-control  col-md-4" name="" required />
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Nc ID Def : </label>
+                <input type="text" id="inp-reviewDetails-def" class="form-control  col-md-4" name="" required />
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Qty : </label>
+                <input type="text" id="inp-reviewDetails-qty" class="form-control  col-md-4" name="" required />
+            </div>
+        </div>
+        <div>
+            <label class="demo-form-label">Activity Type :</label>
+            <br />
+            <div class="pretty p-icon p-curve p-jelly mt-2 ">
+                <input value="correctiveAction" type="radio" name="reviewRadio">
+                <div class="state p-success">
+                    <i style="margin-top: 5%;" class="icon mdi mdi-check"></i>
+                    <label style="font-size: 1rem"> Corrective</label>
+                </div>
+            </div>
+            <br />
+
+            <div class="pretty p-icon p-curve p-jelly mt-2 ">
+                <input value="preventativeAction" type="radio" name="reviewRadio">
+                <div class="state p-success">
+                    <i style="margin-top: 5%;" class="icon mdi mdi-check"></i>
+                    <label style="font-size: 1rem"> Preventative</label>
+                </div>
+            </div>
+            <br />
+            <div class="pretty p-icon p-curve p-jelly mt-2 mb-4">
+                <input value="repetitive" type="radio" name="reviewRadio">
+                <div class="state p-success">
+                    <i style="margin-top: 5%;" class="icon mdi mdi-check"></i>
+                    <label style="font-size: 1rem"> Repetitive</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">Nc Type: </label>
+                </div>
+                <div class="col-md-6">
+                    <select id="select-reviewDetails-ncType" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                </div>
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">Customer Supplier: </label>
+                </div>
+                <div class="col-md-6">
+                    <select id="select-reviewDetails-cusSup" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                </div>
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">Department: </label>
+                </div>
+                <div class="col-md-6">
+                    <select id="select-reviewDetails-dep" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                </div>
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">Process: </label>
+                </div>
+                <div class="col-md-6">
+                    <select id="select-reviewDetails-process" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                </div>
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">Part No : </label>
+                </div>
+                <div class="col-md-6">
+                    <select id="select-reviewDetails-partNo" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                </div>
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">Open By : </label>
+                </div>
+                <div class="col-md-6">
+                    <select id="select-reviewDetails-openBy" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                </div>
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">NC Resposible : </label>
+                </div>
+                <div class="col-md-6">
+                    <select id="select-reviewDetails-resposbile" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div id="qa" class="alert alert-success">
+            <h3>Date</h3>
+        </div>
+
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Open Date : </label>
+                <input type="text" id="inp-reviewDetails-openDate" class="form-control  col-md-4" name="" required />
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <label style="text-align: center;width: 100%" class="demo-form-label col-md-2"> Target Date : </label>
+                <input type="text" id="inp-reviewDetails-targetDate" class="form-control  col-md-4" name="" required />
+            </div>
+        </div>
+
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Close Date : </label>
+                <input type="text" id="inp-reviewDetails-closeDate" class="form-control  col-md-4" name="" required />
+            </div>
+        </div>
+
+        <div class="alert alert-success">
+            <h3>Descrtipton</h3>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-3">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">Non Conformity : </label>
+                </div>
+                <textarea id="inp-reviewDetails-conformity" rows="4" class="col-md-6"></textarea>
+            </div>
+        </div>
+
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-3">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">NC Descrtiption : </label>
+                </div>
+                <textarea id="inp-reviewDetails-description" rows="4" class="col-md-6"></textarea>
+            </div>
+        </div>
+        <div class="NcDetails-formControl">
+            <div class="row">
+                <div class="col-md-3">
+                    <label style="text-align: center;width: 100%" class="demo-form-label ">RootCauseAnalysis :</label>
+                </div>
+                <textarea id="inp-reviewDetails-analaysis" rows="4" class="col-md-6"></textarea>
+            </div>
+        </div>
+
+        <div class="alert alert-success">
+            <h3>Immediate Action </h3>
+        </div>
+
+        <div class="immediateAction">
+            <button class="btn btn-success">Add Immediate Action</button>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Actin Def</th>
+                        <th scope="col">Resposible</th>
+                        <th scope="col">Target Date</th>
+                        <th scope="col">Close Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action / Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> <input class="x" readonly value="ahmet" /></td>
+                        <td>
+                            <select id="" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                        </td>
+                        <td> <input class="x" readonly value="12/15/2019" /></td>
+                        <td> <input class="x" readonly value="12/15/2019" /></td>
+                        <td><i class="fa  fa-2x fa-check-circle text-success" aria-hidden="true"></i></td>
+                        <td><i class=" fa  fa-2x fa-trash text-danger"> </i> </td>
+                    </tr>
+                    <tr>
+                        <td> <input class="x" readonly value="ahmet" /></td>
+                        <td>
+                            <select id="" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                        </td>
+                        <td> <input class="x" readonly value="12/11/2019" /></td>
+                        <td> <input class="x" readonly value="12/10/2019" /></td>
+                        <td><i class="fa fa-2x fa-ban" style="color:#89444a" aria-hidden="true"></i></td>
+                        <td><i class=" fa fa-2x  fa-trash text-danger"> </i> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-success">
+            <h3>Permanent Action </h3>
+        </div>
+        <div class="immediateAction">
+            <button class="btn btn-success">Add Permanent Action</button>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Actin Def</th>
+                        <th scope="col">Resposible</th>
+                        <th scope="col">Target Date</th>
+                        <th scope="col">Close Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action / Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> <input class="x" readonly value="ahmet" /></td>
+                        <td>
+                            <select id="" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                        </td>
+                        <td> <input class="x" readonly value="fdsfd" /></td>
+                        <td> <input class="x" readonly value="12/15/2019" /></td>
+                        <td><i class="fa  fa-2x fa-check-circle text-success" aria-hidden="true"></i></td>
+                        <td><i class=" fa  fa-2x fa-trash text-danger"> </i> </td>
+                    </tr>
+                    <tr>
+                        <td> <input class="x" readonly value="ahmet" /></td>
+                        <td>
+                            <select id="" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                        </td>
+                        <td> <input class="x" readonly value="12/11/2019" /></td>
+                        <td> <input class="x" readonly value="12/10/2019" /></td>
+                        <td><i class="fa fa-2x fa-ban" style="color:#89444a" aria-hidden="true"></i></td>
+                        <td><i class=" fa fa-2x  fa-trash text-danger"> </i> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="doc">
+            <div class="alert alert-success">
+                <h3>Document</h3>
+            </div>
+            <button class="btn btn-success m-b-10">Add Document</button>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Document Adı</th>
+                        <th scope="col">Document Url</th>
+                        <th scope="col">Open</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Erp Sağ Hidrolik</td>
+                        <td><a href="#">C:\Users\ahmed\Desktop\Erp Sağ Hidrolik.pdf</a></td>
+                        <td><i class="fa fa-2x fa-folder-open text-success" aria-hidden="true"></i></td>
+                        <td><i class="fa fa-2x fa-pencil text-primary" style="color:#89444a" aria-hidden="true"></i></td>
+                        <td><i class="fa fa-2x fa-trash text-danger" aria-hidden="true"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="doc-details" id="xx">
+            <div class="alert alert-success">
+                <h3>Document Details</h3>
+            </div>
+            <button class="btn btn-success m-b-10">Add New one</button>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Document</th>
+                        <th scope="col">Change Date</th>
+                        <th scope="col">New Rev</th>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Action / Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select id="xzx" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                        </td>
+                        <td> <input type="datetime" class="x" readonly value="fdsf" /></td>
+                        <td> <input class="x" readonly value="fdsfd" /></td>
+                        <td> <input class="x" readonly value="12/15/2019" /></td>
+                        <td><i class=" fa  fa-2x fa-trash text-danger"> </i> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </form>
+
+</div>
+

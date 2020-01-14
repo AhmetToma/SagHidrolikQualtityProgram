@@ -21,5 +21,12 @@ namespace SagHidrolik.Quality.webApp.Controllers
             var list = ReviewData.GetAllReviewCount().Result;
             return Json(list);
         }
+
+        public JsonResult GetReviewDetails(int ncId)
+        {
+            var model = ReviewData.GetReviewDetails(ncId).Result;
+            return Json(model);
+        }
+        
     }
 }

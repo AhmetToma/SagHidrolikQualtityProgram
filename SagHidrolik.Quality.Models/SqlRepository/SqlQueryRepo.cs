@@ -238,24 +238,54 @@ namespace SagHidrolik.Quality.Models.SqlRepository
         #region Review 
         public static string GetAllReview(RequestQuery requestQuery)
         {
-            query = "SET DATEFORMAT dmy;SELECT B_NonConformityReport.NC_ID," +
+            query = "SET DATEFORMAT dmy;SELECT B_NonConformityReport.NC_ID,G_PartNumbers.STK," +
                 "B_NonConformityReport.NonConformity," +
                 "B_NonConformityReport.PartNo,B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Type as NcTypeId, " +
-                " dbo.A_NCType.ClaimType as TypeName,B_NonConformityReport.NC_Responsible as OperatorId, " +
-                " F_Operator.OperatorName, B_NonConformityReport.NC_OpenDate, " +
+                " dbo.A_NCType.ClaimType as TypeName,B_NonConformityReport.NC_Responsible as resbonsibleId, " +
+                " F_Operator.OperatorName as resbonsibleName, B_NonConformityReport.NC_OpenDate, " +
                 " B_NonConformityReport.NC_Status,NC_Customer_Supplier as CompanyId,CompanyName,B_NonConformityReport.Department as DepartmentId, " +
-                " E_Department.Department as DepartmentName FROM B_NonConformityReport inner join dbo.A_NCType " +
-                " on B_NonConformityReport.NC_Type = dbo.A_NCType.ClaimTypeID inner join F_Operator on " +
-                " B_NonConformityReport.NC_Responsible = F_Operator.Op_ID inner join dbo.D_Company on B_NonConformityReport.NC_Customer_Supplier = D_Company.Id_Cust " +
-                " inner join E_Department on B_NonConformityReport.Department = E_Department.DEPT_ID " +
-                " ORDER BY B_NonConformityReport.NC_TargetDate DESC"+
+                " E_Department.Department as DepartmentName FROM B_NonConformityReport left join dbo.A_NCType " +
+                " on B_NonConformityReport.NC_Type = dbo.A_NCType.ClaimTypeID left join F_Operator on " +
+                " B_NonConformityReport.NC_Responsible = F_Operator.Op_ID left join dbo.D_Company on B_NonConformityReport.NC_Customer_Supplier = D_Company.Id_Cust " +
+                " left join E_Department on B_NonConformityReport.Department = E_Department.DEPT_ID " +
+                " left join G_PartNumbers on PartNo=G_PartNumbers.ID" +
+                $" where STK like '%{requestQuery.Stk}%'  ORDER BY B_NonConformityReport.NC_TargetDate DESC" +
               $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
 
             return query;
         }
 
 
-        public static string GetAllReviewCount = "select Count(B_NonConformityReport.NC_ID) from B_NonConformityReport";
+        public static string GetAllReviewCount = "select count(*)from(SELECT B_NonConformityReport.NC_ID, B_NonConformityReport.NonConformity, B_NonConformityReport.PartNo," +
+            " B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Type as NcTypeId, dbo.A_NCType.ClaimType " +
+            " as TypeName, B_NonConformityReport.NC_Responsible as OperatorId," +
+            " F_Operator.OperatorName, B_NonConformityReport.NC_OpenDate," +
+            " B_NonConformityReport.NC_Status, NC_Customer_Supplier as CompanyId, CompanyName, B_NonConformityReport.Department as DepartmentId," +
+            " E_Department.Department as DepartmentName FROM B_NonConformityReport left join dbo.A_NCType " +
+            " on B_NonConformityReport.NC_Type = dbo.A_NCType.ClaimTypeID left join F_Operator on " +
+            "B_NonConformityReport.NC_Responsible = F_Operator.Op_ID left join dbo.D_Company on B_NonConformityReport.NC_Customer_Supplier = D_Company.Id_Cust  left join E_Department " +
+            "on B_NonConformityReport.Department = E_Department.DEPT_ID)countNumber";
         #endregion
+
+
+        public static  string GetReviewDetails(int ncId)
+        {
+            query = "SELECT B_NonConformityReport.NC_ID,B_NonConformityReport.Nc_desc2,G_PartNumbers.STK,B_NonConformityReport.NonConformity,B_NonConformityReport.PartNo," +
+                " B_NonConformityReport.Nc_OpenedBy,CorrectiveAction,PreventativeAction,Repetitive,I_Process.Process as processName," +
+                " B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Type as NcTypeId,  dbo.A_NCType.ClaimType as TypeName, " +
+                " B_NonConformityReport.NC_Responsible as responsibleId," +
+                " F_Operator.OperatorName as resbonsibleName, B_NonConformityReport.Process as ProcessId, B_NonConformityReport.Nc_OpenedBy as OpenById, " +
+                " B_NonConformityReport.NC_OpenDate,B_NonConformityReport.NC_Id_Def, B_NonConformityReport.NC_RootCauseAnalysis, " +
+                " B_NonConformityReport.NC_CloseDate,B_NonConformityReport.NonConformty_qty as qty," +
+                " B_NonConformityReport.NC_Status,NC_Customer_Supplier as CompanyId,CompanyName,B_NonConformityReport.Department as DepartmentId," +
+                " E_Department.Department as DepartmentName FROM B_NonConformityReport left join dbo.A_NCType " +
+                " on B_NonConformityReport.NC_Type = dbo.A_NCType.ClaimTypeID left join " +
+                " F_Operator on  B_NonConformityReport.NC_Responsible = F_Operator.Op_ID left join dbo.D_Company on " +
+                " B_NonConformityReport.NC_Customer_Supplier = D_Company.Id_Cust" +
+                " left join E_Department on B_NonConformityReport.Department = E_Department.DEPT_ID" +
+                $" left join G_PartNumbers on PartNo = G_PartNumbers.ID" +
+                $" left join dbo.I_Process on B_NonConformityReport.Process = I_Process.PR_ID where NC_ID = {ncId}";
+            return query;
+        }
     }
 }

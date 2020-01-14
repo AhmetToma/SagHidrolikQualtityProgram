@@ -211,12 +211,29 @@ i {
 }
 .Header-detailsNc ul {
     list-style: none;
-    float: left;
+   float:left;
 }
 .Header-detailsNc ul li{
     float:right;
     margin-left:1rem;
-    font-weight:bold
+    font-weight:bold;
+    color:black;
+       
+        
+}
+.Header-detailsNc ul li:hover {
+    cursor: pointer;
+    color: #e73c68
+}
+
+.NcDetails-formControl textarea{
+    margin-left:1rem;
+}
+textarea{
+    font-size:1.5rem;
+}
+.NcDetails-formControl select {
+    margin-left: 2rem!important ;
 }
 .NcDetails-formControl .select2-container--default .select2-selection--multiple {
     width: 25.6rem !important;

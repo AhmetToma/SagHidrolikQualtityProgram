@@ -10,7 +10,8 @@
 });
 let requestQueryForReview = {
     pageSize: 4,
-    pageNumber:1
+    pageNumber: 1,
+    STK:"",
 }
 let reviewList = [];
 // #region ajaxcall ,create table ,records count  
@@ -25,6 +26,7 @@ function GetAllReviewAjaxCall() {
     }
     $(TablesId.review).empty();
     $(`${pageNumbers.review}`).text(requestQueryForReview.pageNumber);
+    requestQueryForReview.STK= $(Inputs.review_searchStk).val();
     ShowLoader();
     $.ajax({
         type: "POST",
@@ -38,7 +40,7 @@ function GetAllReviewAjaxCall() {
             if (list.length !== 0) {
 
                 $(`${recordsNotFound.review}`).css('display', 'none');
-                CreateReviewTable(list, TablesId.review);
+                CreateReviewTable(list, TablesId.review, true);
             }
             else {
                 disableButton(NextButtons.review);
@@ -48,32 +50,57 @@ function GetAllReviewAjaxCall() {
         }
     });
 }
-function CreateReviewTable(list, tableId) {
+function CreateReviewTable(list, tableId,isFilter) {
     $(tableId).empty();
     let color = "";
-    list.map((element, index) => {
-        let today = new Date();
-        let lastDate = new Date(`${element.nC_TargetDate}`);
-        if (element.nC_Status == 1) color = 'greenClass';
-        else if (lastDate < today) color = 'redClass';
-        else color = '';
-        let partNo;
-        element.partNo ? partNo = element.partNo : partNo = "";
-        $(tableId).append(`
-<tr class="${color}">
+    let stk;
+    if (isFilter) {
+        list.map((element, index) => {
+            let today = new Date();
+            let lastDate = new Date(`${element.nC_TargetDate}`);
+            if (element.nC_Status == 1) color = 'greenClass';
+            else if (lastDate < today) color = 'redClass';
+            else color = '';
+            let stk;
+            let status = "";
+            element.stk ? stk = element.stk : stk = "";
+            element.nC_Status ? status = 'fa fa-2x fa-check-circle' : status ='fa fa-2x fa-ban'
+            $(tableId).append(`
+<tr onclick='openPage(${element.nC_ID})' class="${color}">
   <td>${element.nC_ID}</td>
-    <td>${element.nC_TargetDate.slice(0,-11)}</td>
+    <td>${element.nC_TargetDate.slice(0, -11)}</td>
     <td>${element.typeName} </td>
-    <td>${element.operatorName} </td>
-    <td>${partNo}</td>
+    <td>${element.resbonsibleName} </td>
+    <td>${stk}</td>
      <td>${element.nC_OpenDate.slice(0, -11)}</td>
     <td>${element.nonConformity} </td>
-    <td>${element.nC_Status} </td>
+    <td><i class="${status}"></i></td>
     <td>${element.companyName} </td>
     <td>${element.departmentName} </td>
              </tr>
 `);
-    });
+        });
+    }
+    else {
+        list.map((element, index) => {
+            element.stk ? stk = element.stk : stk = "";
+            element.nC_Status ? status = 'fa fa-2x fa-check-circle' : status = 'fa fa-2x fa-ban'
+            $(tableId).append(`
+<tr onclick='openPage(${element.nC_ID})'  class="${color}">
+  <td>${element.nC_ID}</td>
+    <td>${element.nC_TargetDate.slice(0, -11)}</td>
+    <td>${element.typeName} </td>
+    <td>${element.resbonsibleName} </td>
+    <td>${stk}</td>
+     <td>${element.nC_OpenDate.slice(0, -11)}</td>
+    <td>${element.nonConformity} </td>
+    <td><i class="${status}"></i></td>
+    <td>${element.companyName} </td>
+    <td>${element.departmentName} </td>
+             </tr>
+`);
+        });
+    }
     HideLoader();
 }
 
@@ -105,6 +132,18 @@ $('#selectRowCount-review').on('change', () => {
 //#endregion
 
 
+//#region search
+
+let timerForReview;
+let TypingIntervalForReview = 500;
+$(Inputs.review_searchStk).keyup(function () {
+    requestQueryForReview.pageNumber = 1;
+    $(pageNumbers.review).text(requestQueryForReview.pageNumber);
+    clearTimeout(timerForReview);
+    timerForReview = setTimeout(GetAllReviewAjaxCall, TypingIntervalForReview);
+});
+//#endregion
+
 //#region Next-Previous Hanldler
 $(PreviousButtons.review).on('click', (event) => {
     event.preventDefault();
@@ -124,33 +163,40 @@ $(NextButtons.review).on('click', (event) => {
 //#region radio button Handler
 
 $('input[type=radio][name=colorRadio]').change(function () {
+    ShowLoader();
     let filtredList = [];
     $(this).siblings('.state').find('label').css({ 'font-weight': 'bold', 'color': '#28a745', 'opacity': '1' });
     $('input[type="radio"]:not(:checked)').siblings('.state').find('label').css({ 'font-weight': 'bold', 'color': 'black', 'opacity': '1' });
 
          if ($(this).val() === 'yesil') {
-        ShowLoader();
+      
         filtredList = reviewList.filter((element) => {
 
             if (element.nC_Status == 1) return element;
         })
-        console.log(filtredList);
-        CreateReviewTable(filtredList, TablesId.review);
+
+             CreateReviewTable(filtredList, TablesId.review, false);
     }
     else if ($(this).val() === 'kirmizi') {
-        ShowLoader();
         filtredList = reviewList.filter((element) => {
             let today = new Date();
             let lastDate = new Date(`${element.nC_TargetDate}`);
             if (lastDate < today) return element;
         });
         console.log(filtredList);
-        CreateReviewTable(filtredList, TablesId.review);
+             CreateReviewTable(filtredList, TablesId.review, false);
     }
 
 
-
-    if ($(this).val() === 'all') CreateReviewTable(reviewList, TablesId.review);
+    if ($(this).val() === 'all') CreateReviewTable(reviewList, TablesId.review,true);
 
 });
+
+
 //#endregion
+
+
+function openPage(ncId) {
+    window.open(`/Home/ReviewDetails`, '_self');
+    window.localStorage.setItem('reviewDetails', ncId);
+}

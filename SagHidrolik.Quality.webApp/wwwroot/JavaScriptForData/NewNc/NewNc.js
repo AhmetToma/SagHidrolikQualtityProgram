@@ -5,12 +5,12 @@
     let serverUrl = BaseServerUrl + dataUrl;
     if (window.location.href === serverUrl) {
         ShowLoader();
-        GetAllClaim();
-        GetAllCompany();
-        GetAllDepartment();
-        GetAllProcess();
-        GetAllPartNumbers();
-        GetAllOperator();
+        GetAllClaim('#select-newNc-ncType');
+        GetAllCompany('#select-newNc-cusSup');
+        GetAllDepartment('#select-newNc-dep');
+        GetAllProcess('#select-newNc-process');
+        GetAllPartNumbers('#select-newNc-partNo');
+        GetAllOperator('#select-newNc-openBy','#select-newNc-resposible');
 
         $(Inputs.newNc_openDate).datepicker({
             dateFormat: 'dd-mm-yy'
@@ -21,6 +21,10 @@
         $(Inputs.newNc_closeDate).datepicker({
             dateFormat: 'dd-mm-yy'
         });
+        $(".limitedNumbSelect2").select2({
+            maximumSelectionLength: 1,
+            placeholder: "Seçiniz"
+        })
     }
 });
 let regusetQueryForNewNc = {
@@ -48,8 +52,8 @@ let newNcModel = {
 }
 
 //#region Function ajax call
-function GetAllClaim() {
-    $('#select-newNc-ncType').empty();
+function GetAllClaim(selectID) {
+    $(`${selectID}`).empty();
      $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -57,15 +61,15 @@ function GetAllClaim() {
          data: JSON.stringify(regusetQueryForNewNc),
          success: (list) => {
              list.map((element) => {
-                 $('#select-newNc-ncType').append(`
+                 $(`${selectID}`).append(`
                     <option value="${element.claimTypeID}">${element.claimType_a} --- ${element.claimType}</option>
 `)
              })
         }
     });
 }
-function GetAllCompany() {
-    $('#select-newNc-cusSup').empty();
+function GetAllCompany(selecID) {
+    $(`${selecID}`).empty();
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -73,15 +77,15 @@ function GetAllCompany() {
         data: JSON.stringify(regusetQueryForNewNc),
         success: (list) => {
             list.map((element) => {
-                $('#select-newNc-cusSup').append(`
+                $(`${selecID}`).append(`
                     <option value="${element.id_Cust}">${element.companyName}  ---  ${element.companyType}</option>
 `)
             })
         }
     });
 }
-function GetAllDepartment() {
-    $('#select-newNc-dep').empty();
+function GetAllDepartment(selectID) {
+    $(`${selectID}`).empty();
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -89,15 +93,15 @@ function GetAllDepartment() {
         data: JSON.stringify(regusetQueryForNewNc),
         success: (list) => {
             list.map((element) => {
-                $('#select-newNc-dep').append(`
+                $(`${selectID}`).append(`
                     <option value="${element.depT_ID}">${element.department_tr}  ---  ${element.department_en}</option>
 `)
             })
         }
     });
 }
-function GetAllProcess() {
-    $('#select-newNc-process').empty();
+function GetAllProcess(selectID) {
+    $(`${selectID}`).empty();
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -106,7 +110,7 @@ function GetAllProcess() {
         success: (list) => {
             
             list.map((element) => {
-                $('#select-newNc-process').append(`
+                $(`${selectID}`).append(`
                     <option value="${element.pR_ID}">${element.process}</option>
 `);
             });
@@ -119,11 +123,14 @@ let TypingIntervalForNewNc = 500;
 $(document).on('keyup', '#partNoDiv .select2-search__field', function (e) {
     var searchedStk = e.currentTarget.value;
     clearTimeout(timerForNewNc);
-    timerForNewNc = setTimeout(GetAllPartNumbers, TypingIntervalForNewNc);
+    timerForNewNc = setTimeout(getPartNumberCallBack, TypingIntervalForNewNc);
     regusetQueryForNewNc.Stk = searchedStk;
 });
-function GetAllPartNumbers() {
-    $('#select-newNc-partNo').empty();
+function getPartNumberCallBack() {
+    GetAllPartNumbers('#select-newNc-partNo');
+}
+function GetAllPartNumbers(selectID) {
+    $(`${selectID}`).empty();
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -131,7 +138,7 @@ function GetAllPartNumbers() {
         data: JSON.stringify(regusetQueryForNewNc),
         success: (list) => {
             list.map((element) => {
-                $('#select-newNc-partNo').append(`
+                $(`${selectID}`).append(`
                     <option value="${element.id}">${element.stk}--- ${element.sta}</option>
 `);
             });
@@ -141,9 +148,9 @@ function GetAllPartNumbers() {
 
 }
 
-function GetAllOperator() {
-    $('#select-newNc-openBy').empty();
-    $('#select-newNc-resposible').empty();
+function GetAllOperator(selectID,selectID2) {
+    $(`${selectID}`).empty();
+    $(`${selectID2}`).empty();
 
     $.ajax({
         type: "POST",
@@ -153,10 +160,10 @@ function GetAllOperator() {
         success: (list) => {
           
             list.map((element) => {
-                $('#select-newNc-openBy').append(`
+                $(`${selectID}`).append(`
                     <option value="${element.op_ID}">${element.operatorName}</option>
 `);
-                $('#select-newNc-resposible').append(`
+                $(`${selectID2}`).append(`
                     <option value="${element.op_ID}">${element.operatorName}</option>
 `);
             });
@@ -286,6 +293,8 @@ $('input[type=radio][name=radio66]').change(function () {
     
 });
 //#endregion 
+
+// #region submit and reset
 
 $(Buttons.newNc_submit).click((event) => {
     event.preventDefault();
@@ -483,4 +492,5 @@ function newNcReset() {
     $('input[type=radio][name=radio66]').siblings('.state').find('label').css({ 'font-weight': 'normal', 'color': '#73879C', 'opacity': '1' });
 
 }
+// #endregion
 

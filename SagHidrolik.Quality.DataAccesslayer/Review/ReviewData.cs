@@ -31,5 +31,30 @@ namespace SagHidrolik.Quality.DataAccesslayer.Review
             }
         }
 
+        public static async Task<ReviewViewModel> GetReviewDetails(int ncId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var model = await connection.QueryFirstAsync<ReviewViewModel>(SqlQueryRepo.GetReviewDetails(ncId));
+                if(model!=null)
+                {
+                   var OpenName= GetOpenByName(model.OpenById);
+                    model.OpenByName = OpenName.Result;
+                }
+                return model;
+            }
+        }
+
+        public static async Task<string> GetOpenByName(int openByID)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var name = await connection.QueryFirstAsync<string>(SqlQueryRepo.GetAllReviewCount);
+                return name;
+            }
+        }
+
     }
 }
