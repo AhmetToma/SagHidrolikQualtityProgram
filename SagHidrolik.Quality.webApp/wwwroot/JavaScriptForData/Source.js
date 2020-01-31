@@ -46,6 +46,9 @@ const HttpUrls = {
     GetAllReview: BaseUrl + "ReviewGetData/GetAllReview",
     GetAllReviewCount: BaseUrl + "ReviewGetData/GetAllReviewCount",
     GetReviewDetails: BaseUrl + "ReviewGetData/GetReviewDetails?ncId=",
+    GetImmediateAction: BaseUrl + "ReviewGetData/GetImmediateAction?ncId=",
+    GetDocumnetList: BaseUrl + "ReviewGetData/GetDocumnetList?ncId=",
+    GetDocumentControlList: BaseUrl + "ReviewGetData/GetDocumentControlList?ncId=",
 
 
    
@@ -77,6 +80,11 @@ const Buttons = {
     newNc_submit: "#btn-newNc-submit",
     newNc_confirmAdd:"#btn-newNC-confirmAdd",
     newNc_reset: "#btn-newNc-reset",
+    reviewDetails_addImmediateAction: "#btn-reviewDetails-addImmediateAction",
+    reviewDetails_confrimAddAction: "#btn-reviewDetails-add-confirmAdd",
+    reviewDetails_confrimEditAction: "#btn-reviewDetails-edit-confirmAdd",
+    reviewDetails_addDocument: "#btn-reviewDetails-addDocument",
+
 }
 const Models = {
     claimType_add: "#claimType-AddModel",
@@ -104,7 +112,12 @@ const TablesId = {
     operator: "#table-operator",
     Iprocess: "#table-Iprocess",
     partNumber: "#table-partNumber",
-    review: "#table-review"
+    review: "#table-review",
+    reviewDetails_immdiateAction: "#table-reviewDetails-immediateAction",
+    reviewDetails_document: "#table-reviewDetails-document",
+    reviewDetails_documentControl: "#table-reviewDetails-documentControl"
+
+
 
 };
 
@@ -163,6 +176,7 @@ const Inputs = {
     reviewDetails_responsible: "#select-reviewDetails-resposbile",
 
 
+
     reviewDetails_ncID: '#inp-reviewDetails-ncId',
     reviewDetails_def: '#inp-reviewDetails-def',
     reviewDetails_qty: '#inp-reviewDetails-qty',
@@ -174,7 +188,15 @@ const Inputs = {
 
     reviewDetails_openDate: '#inp-reviewDetails-openDate',
     reviewDetails_targetDate: '#inp-reviewDetails-targetDate',
-    reviewDetails_closeDate: '#inp-reviewDetails-closeDate'
+    reviewDetails_closeDate: '#inp-reviewDetails-closeDate',
+    reviewDetails_immediateAction_operator: '#select-reviewDetails-immediateSelection-operator',
+    reviewDetails_addImmediateAction_resposible: '#inp-reviewDetails-add-responsible',
+
+    reviewDetails_addImmediateAction_targetDate: "#inp-reviewDetails-add-targetDate",
+    reviewDetails_addImmediateAction_closeDate: "#inp-reviewDetails-add-closeDate"
+
+
+
 }
 const recordsNotFound= {
     claimType: "#recordNotFound_claimType",

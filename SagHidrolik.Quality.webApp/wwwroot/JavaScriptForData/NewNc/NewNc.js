@@ -10,7 +10,9 @@
         GetAllDepartment('#select-newNc-dep');
         GetAllProcess('#select-newNc-process');
         GetAllPartNumbers('#select-newNc-partNo');
-        GetAllOperator('#select-newNc-openBy','#select-newNc-resposible');
+        GetAllOperator('#select-newNc-openBy');
+        GetAllOperator('#select-newNc-resposible');
+
 
         $(Inputs.newNc_openDate).datepicker({
             dateFormat: 'dd-mm-yy'
@@ -62,7 +64,7 @@ function GetAllClaim(selectID) {
          success: (list) => {
              list.map((element) => {
                  $(`${selectID}`).append(`
-                    <option value="${element.claimTypeID}">${element.claimType_a} --- ${element.claimType}</option>
+                    <option value="${element.claimTypeID}">${element.claimType_a}---${element.claimType}</option>
 `)
              })
         }
@@ -78,7 +80,7 @@ function GetAllCompany(selecID) {
         success: (list) => {
             list.map((element) => {
                 $(`${selecID}`).append(`
-                    <option value="${element.id_Cust}">${element.companyName}  ---  ${element.companyType}</option>
+                    <option value="${element.id_Cust}">${element.companyName}---${element.companyType}</option>
 `)
             })
         }
@@ -148,9 +150,8 @@ function GetAllPartNumbers(selectID) {
 
 }
 
-function GetAllOperator(selectID,selectID2) {
+function GetAllOperator(selectID) {
     $(`${selectID}`).empty();
-    $(`${selectID2}`).empty();
 
     $.ajax({
         type: "POST",
@@ -158,14 +159,11 @@ function GetAllOperator(selectID,selectID2) {
         url: HttpUrls.GetAllOperators,
         data: JSON.stringify(regusetQueryForNewNc),
         success: (list) => {
-          
             list.map((element) => {
                 $(`${selectID}`).append(`
                     <option value="${element.op_ID}">${element.operatorName}</option>
 `);
-                $(`${selectID2}`).append(`
-                    <option value="${element.op_ID}">${element.operatorName}</option>
-`);
+               
             });
         }
     });

@@ -51,10 +51,45 @@ namespace SagHidrolik.Quality.DataAccesslayer.Review
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
                 await connection.OpenAsync();
-                var name = await connection.QueryFirstAsync<string>(SqlQueryRepo.GetAllReviewCount);
+                var name = await connection.QueryFirstAsync<string>(SqlQueryRepo.GetOpenByName(openByID));
+        
                 return name;
             }
         }
 
+
+        public static async Task<IEnumerable<ActionListViewModel>> GetImmediateAction(int ncId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<ActionListViewModel>(SqlQueryRepo.GetImmediateAction(ncId));
+                foreach (var item in list)
+                {
+                    item.ResposibleName = GetOpenByName(item.ResponsibleId).Result;
+                }
+                return list;
+            }
+        }
+        public static async Task<IEnumerable<DocumnetViewModel>> GetDocumnetList(int ncId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var name = await connection.QueryAsync<DocumnetViewModel>(SqlQueryRepo.GetDocumnetList(ncId));
+
+                return name;
+            }
+        }
+
+        public static async Task<IEnumerable<DocumentControlViewModel>> GetDocumentControlList(int ncId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var name = await  connection.QueryAsync<DocumentControlViewModel>(SqlQueryRepo.GetDocumentControlList(ncId));
+                return name;
+            }
+        }
     }
 }

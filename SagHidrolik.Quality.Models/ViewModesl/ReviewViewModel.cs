@@ -12,6 +12,8 @@ namespace SagHidrolik.Quality.Models.ViewModesl
         public  int NcTypeId { get; set; }
         public int PartNo { get; set; }
         public string TypeName { get; set; }
+        public string TypeNameTr { get; set; }
+
         public string NonConformity { get; set; }
         public string NC_OpenDate { get; set; }
         public string Nc_desc2 { get; set; }
@@ -38,6 +40,7 @@ namespace SagHidrolik.Quality.Models.ViewModesl
 
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public string CompanyType { get; set; }
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
 

@@ -90,7 +90,7 @@ namespace SagHidrolik.Quality.Models.SqlRepository
         #region Departmnet
 
 
-      
+
 
         public static string GetAllDepartments(RequestQuery requestQuery)
         {
@@ -161,7 +161,7 @@ namespace SagHidrolik.Quality.Models.SqlRepository
         public static string GetAllIprocessCount = "select COUNT(PR_ID) from I_Process";
         public static string GetAllIprocess(RequestQuery requestQuery)
         {
-            query = "select  * from dbo.I_Process order by PR_ID"+
+            query = "select  * from dbo.I_Process order by PR_ID" +
                $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
@@ -219,7 +219,7 @@ namespace SagHidrolik.Quality.Models.SqlRepository
 
         public static string AddNewNc(NewNcViewModel nc)
         {
-            int corrective = 0,preventative=0,repetive=0;
+            int corrective = 0, preventative = 0, repetive = 0;
             if (nc.activityType == 1) corrective = 1;
             if (nc.activityType == 2) preventative = 2;
             if (nc.activityType == 3) repetive = 3;
@@ -265,19 +265,19 @@ namespace SagHidrolik.Quality.Models.SqlRepository
             " on B_NonConformityReport.NC_Type = dbo.A_NCType.ClaimTypeID left join F_Operator on " +
             "B_NonConformityReport.NC_Responsible = F_Operator.Op_ID left join dbo.D_Company on B_NonConformityReport.NC_Customer_Supplier = D_Company.Id_Cust  left join E_Department " +
             "on B_NonConformityReport.Department = E_Department.DEPT_ID)countNumber";
-        #endregion
 
 
-        public static  string GetReviewDetails(int ncId)
+
+        public static string GetReviewDetails(int ncId)
         {
             query = "SELECT B_NonConformityReport.NC_ID,B_NonConformityReport.Nc_desc2,G_PartNumbers.STK,B_NonConformityReport.NonConformity,B_NonConformityReport.PartNo," +
                 " B_NonConformityReport.Nc_OpenedBy,CorrectiveAction,PreventativeAction,Repetitive,I_Process.Process as processName," +
-                " B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Type as NcTypeId,  dbo.A_NCType.ClaimType as TypeName, " +
+                " B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Type as NcTypeId,  dbo.A_NCType.ClaimType as TypeName,A_NCType.ClaimType_a as TypeNameTr, " +
                 " B_NonConformityReport.NC_Responsible as responsibleId," +
                 " F_Operator.OperatorName as resbonsibleName, B_NonConformityReport.Process as ProcessId, B_NonConformityReport.Nc_OpenedBy as OpenById, " +
                 " B_NonConformityReport.NC_OpenDate,B_NonConformityReport.NC_Id_Def, B_NonConformityReport.NC_RootCauseAnalysis, " +
                 " B_NonConformityReport.NC_CloseDate,B_NonConformityReport.NonConformty_qty as qty," +
-                " B_NonConformityReport.NC_Status,NC_Customer_Supplier as CompanyId,CompanyName,B_NonConformityReport.Department as DepartmentId," +
+                " B_NonConformityReport.NC_Status,NC_Customer_Supplier as CompanyId,CompanyName,CompanyType,B_NonConformityReport.Department as DepartmentId," +
                 " E_Department.Department as DepartmentName FROM B_NonConformityReport left join dbo.A_NCType " +
                 " on B_NonConformityReport.NC_Type = dbo.A_NCType.ClaimTypeID left join " +
                 " F_Operator on  B_NonConformityReport.NC_Responsible = F_Operator.Op_ID left join dbo.D_Company on " +
@@ -287,5 +287,33 @@ namespace SagHidrolik.Quality.Models.SqlRepository
                 $" left join dbo.I_Process on B_NonConformityReport.Process = I_Process.PR_ID where NC_ID = {ncId}";
             return query;
         }
+
+        public static string GetOpenByName(int openByID)
+        {
+            query = $"select F_Operator.OperatorName from F_Operator where F_Operator.Op_ID={openByID}";
+            return query;
+        }
+        public static string GetImmediateAction(int ncId)
+        {
+            query = $"select ACTN_ID,NC_ID,Action_Type,Actin_Def,Responsible as ResponsibleId,TargetDate,CloseDate,[Status] from  dbo.C_ActionList where" +
+                $" NC_ID = {ncId}";
+            return query;
+        }
+
+
+        public static string GetDocumnetList(int ncId)
+        {
+            query = $"select Document_ID,NC_ID,Document as DocumentLink from H_Documents where NC_ID ={ncId}";
+            return query;
+        }
+
+        public static string GetDocumentControlList(int ncId)
+        {
+            query = $"select ID, NC_ID,Document as DocumentType,ChangeDate,NewRev,Notes  from J_DocumentControl  where NC_ID = {ncId}";
+            return query;
+        }
+
+
+        #endregion 
     }
 }

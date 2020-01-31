@@ -194,9 +194,7 @@ i {
     font-weight:bold;
     font-size:0.8rem;
 }
-.modal-lg, .modal-xl {
-    max-width: 100% !important;
-}
+
 .Header-detailsNc div:nth-child(1) {
     background: rgba(38, 185, 154, 0.88);
     color: wheat;
@@ -270,6 +268,7 @@ textarea{
         background-color: #e73c68;
         color: white;
     }
+
 .immediateAction input {
     height: 2rem;
     border: 1.5px solid #2A3F54;
@@ -277,17 +276,33 @@ textarea{
     color: black;
     font-weight: 500;
 }
-.immediateAction .select2-container--default .select2-selection--multiple {
-    width: 10rem !important;
-    height: 2.7rem;
-}
-    .immediateAction .select2-container--default .select2-selection--multiple :focus {
-        border-radius: 1rem !important;
-    }
+
+
 .doc-details .select2-container--default .select2-selection--multiple {
     width: 10rem !important;
 }
-
+.immediateAction .select2-container--default .select2-selection--multiple {
+    width:13rem !important;
+}
 /*end details*/
 
 
+.immediateAction .limitedNumbSelect2, .modal .limitedNumbSelect2 {
+    width: 13rem !important;
+    height: 10rem !important;
+    max-height: none !important;
+    background-color: white;
+    color: black !important;
+}
+
+.modal .select2-container--default .select2-selection--multiple {
+    width: 13rem !important;
+}
+.inpAction{
+    width:7rem;
+}
+
+.modal label {
+    color: black;
+    font-weight: bold;
+}
