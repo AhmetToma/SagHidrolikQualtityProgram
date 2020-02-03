@@ -43,6 +43,7 @@ namespace SagHidrolik.Quality.Models.ViewModesl
         public string CompanyType { get; set; }
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
+        public string DepatrmentTr { get; set; }
 
     }
 }

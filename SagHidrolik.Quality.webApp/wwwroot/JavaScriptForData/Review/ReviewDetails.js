@@ -675,6 +675,7 @@ $('#btn-reviewDetails-edit-confirmAddControlType').click((event) => {
 // #region Saving to database
 
 $('#btn-reviewDetails-savingToDataBase').click((event) => {
+    $('#genel').empty();
     event.preventDefault();
     let farkarry = new Array();
     let m = {
@@ -700,17 +701,17 @@ $('#btn-reviewDetails-savingToDataBase').click((event) => {
         updatedGeneBilgiler.preventativeAction = 1;
     }
     //responsible
-    let selectedNcType = $(Inputs.reviewDetails_selectNcType);
-    let select_val = selectedNcType.val();
-    let selectedNcTypeName;
+    let selectedId = $(Inputs.reviewDetails_selectNcType);
+    selectedId = selectedId.val();
+    let selectedName;
     let data = $(Inputs.reviewDetails_selectNcType).select2('data');
     if (data.length !== 0) {
      
-        selectedNcTypeName = data[0].text;
-        selectedNcTypeName = selectedNcTypeName.split('---');
-        updatedGeneBilgiler.ncTypeId = parseInt(select_val[0]);
-        updatedGeneBilgiler.typeNameTr = selectedNcTypeName[0];
-        updatedGeneBilgiler.typeName = selectedNcTypeName[1];
+        selectedName = data[0].text;
+        selectedName = selectedName.split('---');
+        updatedGeneBilgiler.ncTypeId = parseInt(selectedId[0]);
+        updatedGeneBilgiler.typeNameTr = selectedName[0];
+        updatedGeneBilgiler.typeName = selectedName[1];
     }
     else {
         updatedGeneBilgiler.typeNameTr = "";
@@ -720,29 +721,107 @@ $('#btn-reviewDetails-savingToDataBase').click((event) => {
     }
 
     //customer supplier
-
-
-    let selectedCompany = $(Inputs.reviewDetails_cusSup);
-     selectedCompany = selectedCompany.val();
-    let selectedCompanyName;
-    let data2 = $(Inputs.reviewDetails_cusSup).select2('data');
-    if (data2.length !== 0) {
-        selectedCompanyName = data2[0].text;
-        selectedCompanyName = selectedCompanyName.split('---');
-        updatedGeneBilgiler.companyId = parseInt(selectedCompany[0]);
-        updatedGeneBilgiler.companyName = selectedCompanyName[0];
-        updatedGeneBilgiler.companyType = selectedCompanyName[1];
-        console.log(updatedGeneBilgiler.companyName, updatedGeneBilgiler.companyType);
+    selectedId = $(Inputs.reviewDetails_cusSup);
+    selectedId = selectedId.val();
+     data = $(Inputs.reviewDetails_cusSup).select2('data');
+    if (data.length !== 0) {
+         selectedName = data[0].text;
+        selectedName = selectedName.split('---');
+        updatedGeneBilgiler.companyId = parseInt(selectedId[0]);
+        updatedGeneBilgiler.companyName = selectedName[0];
+        updatedGeneBilgiler.companyType = selectedName[1];
     }
+
     else {
         updatedGeneBilgiler.companyId = 0;
         updatedGeneBilgiler.companyName = "";
-        updatedGeneBilgiler.companyType = 0;
+        updatedGeneBilgiler.companyType = "";
+    }
+
+    // Department
+    selectedId = $(Inputs.reviewDetails_department);
+    selectedId = selectedId.val();
+    data = $(Inputs.reviewDetails_department).select2('data');
+    if (data.length !== 0) {
+        selectedName = data[0].text;
+        selectedName = selectedName.split(' --- ');
+        updatedGeneBilgiler.departmentId = parseInt(selectedId[0]);
+        updatedGeneBilgiler.departmentName = selectedName[0];
+        updatedGeneBilgiler.depatrmentTr = selectedName[1];
+
+    }
+
+    else {
+        updatedGeneBilgiler.departmentId = 0;
+        updatedGeneBilgiler.departmentName = "";
+        updatedGeneBilgiler.depatrmentTr = "";
     }
 
 
 
+    // process
+    selectedId = $(Inputs.reviewDetails_process);
+    selectedId = selectedId.val();
+    data = $(Inputs.reviewDetails_process).select2('data');
+    if (data.length !== 0) {
+        selectedName = data[0].text;
+        updatedGeneBilgiler.processId = parseInt(selectedId[0]);
+        updatedGeneBilgiler.processName = selectedName;
+    }
 
+    else {
+        updatedGeneBilgiler.processId = 0;
+        updatedGeneBilgiler.processName = "";
+    }
+
+
+    // PartNo
+    selectedId = $(Inputs.reviewDetails_partNo);
+    selectedId = selectedId.val();
+    data = $(Inputs.reviewDetails_partNo).select2('data');
+    if (data.length !== 0) {
+        selectedName = data[0].text;
+        updatedGeneBilgiler.partNo = parseInt(selectedId[0]);
+        updatedGeneBilgiler.stk = selectedName;
+    }
+
+    else {
+        updatedGeneBilgiler.partNo = 0;
+        updatedGeneBilgiler.stk = "";
+    }
+
+
+
+    // Open By
+    selectedId = $(Inputs.reviewDetails_openBy);
+    selectedId = selectedId.val();
+    data = $(Inputs.reviewDetails_openBy).select2('data');
+    if (data.length !== 0) {
+        selectedName = data[0].text;
+        updatedGeneBilgiler.openById = parseInt(selectedId[0]);
+        updatedGeneBilgiler.openByName = selectedName;
+    }
+
+    else {
+        updatedGeneBilgiler.openById = 0;
+        updatedGeneBilgiler.openByName = "";
+    }
+
+
+    // Resposible  
+    selectedId = $(Inputs.reviewDetails_responsible);
+    selectedId = selectedId.val();
+    data = $(Inputs.reviewDetails_responsible).select2('data');
+    if (data.length !== 0) {
+        selectedName = data[0].text;
+        updatedGeneBilgiler.responsibleId = parseInt(selectedId[0]);
+        updatedGeneBilgiler.resbonsibleName = selectedName;
+    }
+
+    else {
+        updatedGeneBilgiler.responsibleId = 0;
+        updatedGeneBilgiler.resbonsibleName = "";
+    }
     // date 
 
     updatedGeneBilgiler.nC_CloseDate = $(Inputs.reviewDetails_closeDate).val()
@@ -751,23 +830,83 @@ $('#btn-reviewDetails-savingToDataBase').click((event) => {
 
 
 
-    Object.keys(updatedGeneBilgiler).map((key) => {
-
-        if (updatedGeneBilgiler[key] !== genelBilgiler[key]) {
-            m.k = key;
-            m.v = updatedGeneBilgiler[key];
-            farkarry.push(m);
-            m = {};
-        }
-    })
-
-   console.log(farkarry);
 
 
 
+    if (updatedGeneBilgiler.nC_Id_Def !== genelBilgiler.nC_Id_Def) {
 
+        $('#genel').append(createSummaryOutput('Nc Id Def ', genelBilgiler.nC_Id_Def, updatedGeneBilgiler.nC_Id_Def));
+    }
 
+     if (updatedGeneBilgiler.qty !== genelBilgiler.qty) {
+        $('#genel').append(createSummaryOutput('Qty', genelBilgiler.qty, updatedGeneBilgiler.qty));
+
+    }
+
+     if (updatedGeneBilgiler.correctiveAction !== genelBilgiler.correctiveAction) {
+        $('#genel').append(createSummaryOutput('Activity Type', 'Corrective', activityType));
+
+     }
+     else if (updatedGeneBilgiler.repetitive !== genelBilgiler.repetitive) {
+        $('#genel').append(createSummaryOutput('Activity Type', 'Repetitive', activityType))
+     }
+     else if (updatedGeneBilgiler.preventativeAction !== genelBilgiler.preventativeAction) {
+        $('#genel').append(createSummaryOutput('Activity Type', 'preventative', activityType));
+    }
+
+     if (updatedGeneBilgiler.ncTypeId !== genelBilgiler.ncTypeId) {
+        $('#genel').append(createSummaryOutput('Nc Type', `${genelBilgiler.typeNameTr}---${genelBilgiler.typeName}`, `${updatedGeneBilgiler.typeNameTr}---${updatedGeneBilgiler.typeName}`));
+    }
+
+     if (updatedGeneBilgiler.companyId !== genelBilgiler.companyId) {
+        $('#genel').append(createSummaryOutput('Customer Supplier', `${genelBilgiler.companyName}---${genelBilgiler.companyType}`, `${updatedGeneBilgiler.companyName}---${updatedGeneBilgiler.companyType}`));
+    }
+
+    if (updatedGeneBilgiler.departmentId !== genelBilgiler.departmentId) {
+        $('#genel').append(createSummaryOutput('Department', `${genelBilgiler.departmentName}---${genelBilgiler.depatrmentTr}`, `${updatedGeneBilgiler.departmentName}---${updatedGeneBilgiler.depatrmentTr}`));
+    }
+
+    if (updatedGeneBilgiler.processId !== genelBilgiler.processId) {
+        $('#genel').append(createSummaryOutput('Process', `${genelBilgiler.processName}`, `${updatedGeneBilgiler.processName}`));
+    }
+
+    if (updatedGeneBilgiler.partNo !== genelBilgiler.partNo) {
+        $('#genel').append(createSummaryOutput('Part No', `${genelBilgiler.stk}`, `${updatedGeneBilgiler.stk}`));
+    }
+
+    if (updatedGeneBilgiler.openById !== genelBilgiler.openById) {
+        $('#genel').append(createSummaryOutput('Open By', `${genelBilgiler.openByName}`, `${updatedGeneBilgiler.openByName}`));
+    }
+    if (updatedGeneBilgiler.responsibleId !== genelBilgiler.responsibleId) {
+        $('#genel').append(createSummaryOutput('Responsible', `${genelBilgiler.resbonsibleName}`, `${updatedGeneBilgiler.resbonsibleName}`));
+    }
+
+        $('#reviewDetails-summaryModel').modal('show');
+
+    //Object.keys(updatedGeneBilgiler).map((key) => {
+
+    //    if (updatedGeneBilgiler[key] !== genelBilgiler[key]) {
+
+    //        m.k = key;
+    //        m.v = updatedGeneBilgiler[key];
+    //        farkarry.push(m);
+    //        m = {};
+    //    }
+    //})
+
+    //console.log(updatedGeneBilgiler);
 });
 
 
+
+function createSummaryOutput(title, oldValue, newValue)
+{
+    let output = ` <div>
+                            <label class="demo-form-label h3">${title} : </label>
+                            <p class="text-dark h5 lead">${oldValue}    &nbsp;&nbsp; <i class="fa   fa-arrow-right text-danger"></i> &nbsp;<i class="fa   fa-arrow-right text-danger"></i> &nbsp;&nbsp; ${newValue}</p>
+                        </div>
+                        <hr />
+`
+    return output;
+}
 //#endregion

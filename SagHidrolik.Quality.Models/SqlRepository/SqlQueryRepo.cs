@@ -278,7 +278,7 @@ namespace SagHidrolik.Quality.Models.SqlRepository
                 " B_NonConformityReport.NC_OpenDate,B_NonConformityReport.NC_Id_Def, B_NonConformityReport.NC_RootCauseAnalysis, " +
                 " B_NonConformityReport.NC_CloseDate,B_NonConformityReport.NonConformty_qty as qty," +
                 " B_NonConformityReport.NC_Status,NC_Customer_Supplier as CompanyId,CompanyName,CompanyType,B_NonConformityReport.Department as DepartmentId," +
-                " E_Department.Department as DepartmentName FROM B_NonConformityReport left join dbo.A_NCType " +
+                " E_Department.Department as DepartmentName ,E_Department.Depatrment_1 as DepatrmentTr FROM B_NonConformityReport left join dbo.A_NCType " +
                 " on B_NonConformityReport.NC_Type = dbo.A_NCType.ClaimTypeID left join " +
                 " F_Operator on  B_NonConformityReport.NC_Responsible = F_Operator.Op_ID left join dbo.D_Company on " +
                 " B_NonConformityReport.NC_Customer_Supplier = D_Company.Id_Cust" +

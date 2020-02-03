@@ -122,7 +122,7 @@ function GetAllProcess(selectID) {
 
 let timerForNewNc;
 let TypingIntervalForNewNc = 500;
-$(document).on('keyup', '#partNoDiv .select2-search__field', function (e) {
+$(document).on('keyup', '.partNoDiv .select2-search__field', function (e) {
     var searchedStk = e.currentTarget.value;
     clearTimeout(timerForNewNc);
     timerForNewNc = setTimeout(getPartNumberCallBack, TypingIntervalForNewNc);
@@ -130,8 +130,11 @@ $(document).on('keyup', '#partNoDiv .select2-search__field', function (e) {
 });
 function getPartNumberCallBack() {
     GetAllPartNumbers('#select-newNc-partNo');
+    GetAllPartNumbers(`${Inputs.reviewDetails_partNo}`);
+
 }
 function GetAllPartNumbers(selectID) {
+    ShowLoader();
     $(`${selectID}`).empty();
     $.ajax({
         type: "POST",
