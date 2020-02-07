@@ -121,7 +121,7 @@ i {
         color: white ;
         cursor: pointer;
     }
-.table-bordered tbody tr:hover {
+.container-review .table-bordered tbody tr:hover {
     background-color: #2A3F54;
     color: white;
     cursor: pointer;

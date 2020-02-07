@@ -1,6 +1,4 @@
 ﻿$(function () {
-
-
     let dataUrl = "Home/Review";
     let serverUrl = BaseServerUrl + dataUrl;
     if (window.location.href === serverUrl) {

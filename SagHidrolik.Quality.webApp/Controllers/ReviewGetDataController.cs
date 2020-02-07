@@ -60,5 +60,60 @@ namespace SagHidrolik.Quality.webApp.Controllers
             var model = ReviewData.GetDocumentControlList(ncId).Result;
             return Json(model);
         }
+
+        public JsonResult SaveReviewDetalis([FromBody]ReviewViewModel reviewViewModel)
+        {
+            var model = ReviewData.SaveReviewDetalis(reviewViewModel);
+            return Json("");
+        }
+
+
+        public JsonResult DeleteDocument([FromQuery]int docId)
+        {
+            var model = ReviewData.DeleteDocument(docId).Result;
+            return Json(model);
+        }
+
+        public JsonResult AddDocument([FromBody]DocumnetViewModel documentModel)
+        {
+            var model = ReviewData.AddDocument(documentModel).Result;
+            return Json(model);
+        }
+
+        public JsonResult DeleteAction([FromQuery] int  actionId)
+        {
+            var model = ReviewData.DeleteAction(actionId).Result;
+            return Json(model);
+        }
+
+        public JsonResult AddAction([FromBody]ActionListViewModel actionListViewModel )
+        {
+            var model = ReviewData.AddAction(actionListViewModel).Result;
+            return Json(model);
+        }
+        public JsonResult UpdateAction([FromBody]ActionListViewModel actionListViewModel)
+        {
+            var model = ReviewData.UpdateAction(actionListViewModel).Result;
+            return Json(model);
+        }
+
+        public JsonResult AddDocumentControl([FromBody]DocumentControlViewModel dc)
+        {
+            var model = ReviewData.AddDocumentControl(dc).Result;
+            return Json(model);
+        }
+
+        public JsonResult DeleteDocumentControl(int docConId)
+        {
+            var model = ReviewData.DeleteDocumentControl(docConId).Result;
+            return Json(model);
+        }
+
+        public JsonResult UpdateDocumentControl([FromBody] DocumentControlViewModel dc)
+        {
+            var model = ReviewData.UpdateDocumentControl(dc).Result;
+            return Json(model);
+        }
+
     }
 }

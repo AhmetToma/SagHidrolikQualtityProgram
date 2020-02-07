@@ -295,7 +295,7 @@ namespace SagHidrolik.Quality.Models.SqlRepository
         }
         public static string GetImmediateAction(int ncId)
         {
-            query = $"select ACTN_ID,NC_ID,Action_Type,Actin_Def,Responsible as ResponsibleId,TargetDate,CloseDate,[Status] from  dbo.C_ActionList where" +
+            query = $"SET DATEFORMAT dmy;select ACTN_ID,NC_ID,Action_Type,Actin_Def,Responsible as ResponsibleId,TargetDate,CloseDate,[Status] from  dbo.C_ActionList where" +
                 $" NC_ID = {ncId}";
             return query;
         }
@@ -312,8 +312,98 @@ namespace SagHidrolik.Quality.Models.SqlRepository
             query = $"select ID, NC_ID,Document as DocumentType,ChangeDate,NewRev,Notes  from J_DocumentControl  where NC_ID = {ncId}";
             return query;
         }
+        public static string SaveReviewDetalis(ReviewViewModel rev)
+        {
+            query = $"update B_NonConformityReport  set NC_Type={rev.NcTypeId},  NC_Id_Def='{rev.NC_Id_Def}',CorrectiveAction={rev.CorrectiveAction},PreventativeAction={rev.PreventativeAction}," +
+                $" Repetitive={rev.Repetitive},NC_Customer_Supplier = {rev.CompanyId},Department = {rev.DepartmentId},Process = {rev.ProcessId},PartNo = {rev.PartNo}," +
+                $" NonConformity = '{rev.NonConformity}',NonConformty_qty = {rev.qty}, " +
+                $" Nc_OpenedBy = {rev.OpenById},NC_OpenDate = '{rev.NC_OpenDate}',NC_TargetDate = '{rev.NC_TargetDate}',NC_Responsible = {rev.responsibleId},NC_CloseDate = {rev.NC_CloseDate}," +
+                $" Nc_desc2='{rev.Nc_desc2}',NC_Status = 0 ,NC_RootCauseAnalysis = '{rev.NC_RootCauseAnalysis}',ActionImme = 1,ActionPer = 2 " +
+                $" where NC_ID = ${rev.NC_ID}; ";
+            return query;
+        }
 
 
-        #endregion 
+        public static string AddDocuemnt(DocumnetViewModel doc)
+        {
+            query = $"insert into H_Documents (NC_ID,Document) Values({doc.NC_ID}, '{doc.DocumentLink}')";
+            return query;
+        }
+
+        public static string AddDocument(DocumnetViewModel doc)
+        {
+            query = $"insert into H_Documents (NC_ID,Document) Values({doc.NC_ID}, '{doc.DocumentLink}')";
+            return query;
+        }
+
+        public static string DeleteDocument(int docId)
+        {
+            query = $"delete from H_Documents where  Document_ID={docId}";
+            return query;
+        }
+        public static string AddAction(ActionListViewModel ac)
+        {
+            query = $"SET DATEFORMAT dmy;insert into C_ActionList (NC_ID,Action_Type,Actin_Def,Responsible,TargetDate,CloseDate,[Status]) " +
+                $" values({ac.NC_ID}, {ac.Action_Type}, '{ac.Actin_Def}', {ac.ResponsibleId}, '{ac.TargetDate}'," +
+                $" '{ac.CloseDate}', '{ac.Status}')";
+            return query;
+        }
+
+        public static string DeleteAction(int actionId)
+        {
+            query = $"delete from C_ActionList where ACTN_ID ={actionId}";
+            return query;
+        }
+
+        public static string UpdateAction(ActionListViewModel ac)
+        {
+            query = $"SET DATEFORMAT dmy;update C_ActionList set " +
+                $"NC_ID ={ac.NC_ID},Action_Type ={ac.Action_Type},Actin_Def ='{ac.Actin_Def}'" +
+                $",Responsible ={ac.ResponsibleId},TargetDate ='{ac.TargetDate}',CloseDate ='{ac.CloseDate}'" +
+                $",[Status]='{ac.Status}' where ACTN_ID = {ac.ACTN_ID}";
+            return query;
+        }
+
+
+        public static string AddDocumentControl(DocumentControlViewModel dc)
+        {
+            query = $"insert into J_DocumentControl (NC_ID,Document,ChangeDate,NewRev,Notes)" +
+                $"values({dc.NC_ID},'{dc.DocumentType}','{dc.ChangeDate}','{dc.NewRev}','{dc.Notes}')";
+            return query;
+        }
+
+        public static string DeleteDocumentControl(int dcId)
+        {
+            query = $"delete  from J_DocumentControl where ID={dcId}";
+            return query;
+        }
+
+        public static string UpdateDocumentControl(DocumentControlViewModel doc)
+        {
+            query = $"update J_DocumentControl set NC_ID={doc.NC_ID},Document='{doc.DocumentType}'" +
+                $",ChangeDate='{doc.ChangeDate}',NewRev='{doc.NewRev}',Notes='{doc.Notes}' where ID={doc.ID}";
+            return query;
+        }
+
+
+        #endregion
+
+        #region OpenAction
+
+
+        public static string  GetAllOpenAction(RequestQuery requestQuery)
+        {
+            query = $"SELECT C_ActionList.ACTN_ID,C_ActionList.NC_ID, C_ActionList.Action_Type, C_ActionList.Actin_Def, C_ActionList.Responsible, C_ActionList.TargetDate, C_ActionList.CloseDate, C_ActionList.Status, B_NonConformityReport.NC_Type, B_NonConformityReport.NC_Id_Def," +
+                $"B_NonConformityReport.NC_Customer_Supplier as CompanyId," +
+                $" F_Operator.OperatorName,D_Company.CompanyName,E_Department.Department as DepartmentName," +
+                $" B_NonConformityReport.Department, B_NonConformityReport.Process, B_NonConformityReport.PartNo, B_NonConformityReport.Nc_OpenedBy, B_NonConformityReport.NC_OpenDate, B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Responsible, B_NonConformityReport.NC_Status FROM C_ActionList INNER JOIN B_NonConformityReport ON C_ActionList.NC_ID = B_NonConformityReport.NC_ID" +
+                $" left join F_Operator on C_ActionList.Responsible = Op_ID" +
+                $" left Join D_Company on D_Company.Id_Cust = NC_Customer_Supplier" +
+                $" left Join E_Department on E_Department.DEPT_ID = NC_Customer_Supplier" +
+                $" WHERE C_ActionList.Status = 0 OR C_ActionList.Status Is Null and PartNo like '%{requestQuery.Stk}%' or PartNo Is Null" +
+                $" order By ACTN_ID OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
+            return query;
+        }
+        #endregion
     }
 }

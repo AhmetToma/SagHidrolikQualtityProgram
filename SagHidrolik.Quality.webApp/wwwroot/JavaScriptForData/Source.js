@@ -50,8 +50,21 @@ const HttpUrls = {
     GetDocumnetList: BaseUrl + "ReviewGetData/GetDocumnetList?ncId=",
     GetDocumentControlList: BaseUrl + "ReviewGetData/GetDocumentControlList?ncId=",
 
+    SaveReviewDetalis: BaseUrl + "ReviewGetData/SaveReviewDetalis",
 
-   
+    DeleteDocument: BaseUrl + "ReviewGetData/DeleteDocument?docId=",
+    AddDocument: BaseUrl + "ReviewGetData/AddDocument",
+
+    DeleteAction: BaseUrl + "ReviewGetData/DeleteAction?actionId=",
+    AddAction: BaseUrl + "ReviewGetData/AddAction",
+    UpdateAction: BaseUrl + "ReviewGetData/UpdateAction",
+
+    AddDocumentControl: BaseUrl + "ReviewGetData/AddDocumentControl",
+    DeleteDocumentControl: BaseUrl + "ReviewGetData/DeleteDocumentControl?docConId=",
+    UpdateDocumentControl: BaseUrl + "ReviewGetData/UpdateDocumentControl",
+
+
+
 };
 
 const Buttons = {

@@ -91,5 +91,101 @@ namespace SagHidrolik.Quality.DataAccesslayer.Review
                 return name;
             }
         }
+
+
+
+        public static async Task SaveReviewDetalis(ReviewViewModel reviewViewModel)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                  await connection.ExecuteAsync(SqlQueryRepo.SaveReviewDetalis(reviewViewModel));
+               
+            }
+        }
+        public static async Task<int> DeleteDocument(int docId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.DeleteDocument(docId));
+                return count;
+            }
+        }
+
+        public static async Task<int> AddDocument(DocumnetViewModel DocumnetViewModel)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.AddDocument(DocumnetViewModel));
+                return count;
+            }
+        }
+
+        public static async Task<int> DeleteAction(int actionId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.DeleteAction(actionId));
+                return count;
+            }
+        }
+
+        public static async Task<int> AddAction(ActionListViewModel ac)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.AddAction(ac));
+                return count;
+            }
+        }
+
+        public static async Task<int> UpdateAction(ActionListViewModel ac)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.UpdateAction(ac));
+                return count;
+            }
+        }
+
+
+        public static async Task<int> AddDocumentControl(DocumentControlViewModel dc)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.AddDocumentControl(dc));
+                return count;
+            }
+        }
+
+
+        public static async Task<int> DeleteDocumentControl(int  docCoId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.DeleteDocumentControl(docCoId));
+                return count;
+            }
+        }
+
+
+
+        public static async Task<int> UpdateDocumentControl(DocumentControlViewModel doc)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.ExecuteAsync(SqlQueryRepo.UpdateDocumentControl(doc));
+                return count;
+            }
+        }
+
     }
 }

@@ -16,7 +16,7 @@
         GetAllOperator(`${Inputs.reviewDetails_openBy}`);
         GetAllOperator(`${Inputs.reviewDetails_responsible}`);
         GetAllOperator('#inp-reviewDetails-edit-responsible');
-        GetReviewDetails();
+
         GetAllActionAjaxCall();
         GetDocumnetListAjaxCall();
         GetDocumentControlAjaxCall();
@@ -47,15 +47,14 @@
         $("#inp-reviewDetails-edit-changeDate").datepicker({
             dateFormat: 'dd/mm/yy'
         });
-
+        GetReviewDetails();
         // $('#reviewDetails-summaryModel').modal('show');
     }
 });
 let genelBilgiler = {};
 let updatedGeneBilgiler = {};
 
-let actionCounter = 100000;
-let actionList = [];
+
 let actionModel = {};
 
 //window.addEventListener("beforeunload", function (e) {
@@ -83,6 +82,10 @@ function GetReviewDetails() {
             genelBilgiler.nC_CloseDate = genelBilgiler.nC_CloseDate.slice(0, -12) 
             genelBilgiler.nC_TargetDate = genelBilgiler.nC_TargetDate.slice(0, -12) 
             genelBilgiler.nC_OpenDate = genelBilgiler.nC_OpenDate.slice(0, -12); 
+
+            genelBilgiler.nC_RootCauseAnalysis ? genelBilgiler.nC_RootCauseAnalysis = genelBilgiler.nC_RootCauseAnalysis : genelBilgiler.nC_RootCauseAnalysis = "";
+            genelBilgiler.nonConformity ? genelBilgiler.nonConformity = genelBilgiler.nonConformity : genelBilgiler.nonConformity = "";
+            genelBilgiler.nc_desc2 ? genelBilgiler.nc_desc2 = genelBilgiler.nc_desc2 : genelBilgiler.nc_desc2 = "";
 
 
             updatedGeneBilgiler = { ...genelBilgiler };
@@ -119,6 +122,9 @@ function GetReviewDetails() {
                 $(Inputs.reviewDetails_targetDate).val(model.nC_TargetDate.slice(0, -12));
 
             }
+
+       
+
             $(Inputs.reviewDetails_conformity).val(model.nonConformity);
             $(Inputs.reviewDetails_analaysis).val(model.nC_RootCauseAnalysis);
             $(Inputs.reviewDetails_description).val(model.nc_desc2);
@@ -150,12 +156,15 @@ function GetAllActionAjaxCall() {
         url: HttpUrls.GetImmediateAction + ncId,
         success: (list) => {
             $(TablesId.reviewDetails_immdiateAction).empty();
+  
             actionList = list;
             createActionList(list);
+            console.log(list);
         }
     });
 }
 function createActionList(list) {
+  
     $(TablesId.reviewDetails_immdiateAction).empty();
     let closeDate = "", targetDate = "", status = "", actionType = "";
     list.map((element, index) => {
@@ -180,7 +189,14 @@ function createActionList(list) {
     })
 }
 // delete action
+let actionList = [];
+let deletedActionList = [];
+let AddedActionList = [];
+let EditActionList = [];
 function deleteImmediateAction(id) {
+    
+    console.log(actionList);
+    console.log(id);
     let actinoId = `#actinoId${id}`;
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -199,12 +215,19 @@ function deleteImmediateAction(id) {
         reverseButtons: true
     }).then((result) => {
         if (result.value) {
-            $(actinoId).parent().remove();
-            Swal.fire({
-                type: 'success',
-                title: "başarıyle action silindi",
-                timer: 1500
+            $.ajax({
+                type: "POST",
+                url: HttpUrls.DeleteAction+id,
+                success: (num) => {
+                    GetAllActionAjaxCall();
+                    Swal.fire({
+                        type: 'success',
+                        title: "başarıyle action silindi",
+                        timer: 1500
+                    });
+                }
             });
+        
         }
     });
 }
@@ -222,11 +245,12 @@ $(Buttons.reviewDetails_addImmediateAction).click((event) => {
     GetAllOperator(`${Inputs.reviewDetails_addImmediateAction_resposible}`);
 });
 $(Buttons.reviewDetails_confrimAddAction).click((event) => {
+    let ncId = window.localStorage.getItem('reviewDetails');
     event.preventDefault();
     let actionType = $('#select-reviewDetails-add-actionType').val();
     let actionDef = $('#inp-reviewDetails-add-actionDef').val();
-    let targetDate = `${$('#inp-reviewDetails-add-targetDate').val()} 00:00:00 00`;
-    let closeDate = `${$('#inp-reviewDetails-add-closeDate').val()} 00:00:00 00`;
+    let targetDate = $('#inp-reviewDetails-add-targetDate').val();
+    let closeDate = $('#inp-reviewDetails-add-closeDate').val();
     let status;
     $('#inp-reviewDetails-add-status').is(':checked') ? status = true : status = false;
     let seletedResponsibleId = $('#inp-reviewDetails-add-responsible');
@@ -256,25 +280,45 @@ $(Buttons.reviewDetails_confrimAddAction).click((event) => {
     }
 
     else {
-        actionCounter++;
+
         let addedActionObject = {
             action_Type: parseInt(actionType),
-            responsibleId: select_val,
+            responsibleId: parseInt(select_val[0]),
             resposibleName: selectedResponsibleName,
             targetDate: targetDate,
             closeDate: closeDate,
             status: status,
             actin_Def: actionDef,
-            actN_ID: actionCounter
+            nC_ID: ncId
         };
-        actionList.push(addedActionObject);
-        createActionList(actionList);
-        Swal.fire({
-            type: 'success',
-            title: "başarıyle action eklendi",
-            timer: 1500
+        $.ajax({
+            type: "POST",
+            url: HttpUrls.AddAction,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(addedActionObject),
+            success: (num) => {
+                Swal.fire({
+                    type: 'success',
+                    title: "başarıyle action eklendi",
+                    timer: 1500
+                });
+                GetAllActionAjaxCall();
+                $('#actionList-Add').modal('hide');
+            },
+            error: () => {
+                Swal.fire({
+                    type: 'error',
+                    title: "beklenmeyen bir hata oluştu",
+                    timer: 1500
+                });
+                $('#actionList-Add').modal('hide');
+
+            }
         });
-        $('#actionList-Add').modal('hide');
+   
+ 
+     
+       
     }
 });
 
@@ -303,10 +347,11 @@ function editAction(ActionId) {
 
 $(Buttons.reviewDetails_confrimEditAction).click((event) => {
     event.preventDefault();
+    let ncId = window.localStorage.getItem('reviewDetails');
     let actionType = $('#select-reviewDetails-edit-actionType').val();
     let actionDef = $('#inp-reviewDetails-edit-actionDef').val();
-    let targetDate = `${$('#inp-reviewDetails-edit-targetDate').val()} 00:00:00 00`;
-    let closeDate = `${$('#inp-reviewDetails-edit-closeDate').val()} 00:00:00 00`;
+    let targetDate = $('#inp-reviewDetails-edit-targetDate').val();
+    let closeDate = $('#inp-reviewDetails-edit-closeDate').val();
     let status;
     $('#inp-reviewDetails-edit-status').is(':checked') ? status = true : status = false;
     let seletedResponsibleId = $('#inp-reviewDetails-edit-responsible');
@@ -336,23 +381,50 @@ $(Buttons.reviewDetails_confrimEditAction).click((event) => {
     }
 
     else {
-
-
-        actionList = actionList.filter((ele) => {
-            return ele !== actionModel;
-        })
-
         let updatedModel = {
             action_Type: parseInt(actionType),
-            responsibleId: select_val,
+            responsibleId: parseInt(select_val[0]),
             resposibleName: selectedResponsibleName,
             targetDate: targetDate,
             closeDate: closeDate,
             status: status,
             actin_Def: actionDef,
-            actN_ID: actionCounter
+            nC_ID: ncId,
+            actN_ID: actionModel.actN_ID
         };
+
+        $.ajax({
+            type: "POST",
+            url: HttpUrls.UpdateAction,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(updatedModel),
+            success: (num) => {
+                Swal.fire({
+                    type: 'success',
+                    title: "başarıyle action düzeltildi",
+                    timer: 1500
+                });
+                $('#actionList-edit').modal('hide');
+                GetAllActionAjaxCall();
+
+            },
+            error: () => {
+                Swal.fire({
+                    type: 'error',
+                    title: "beklenmeyen bir hata oluştu",
+                    timer: 1500
+                });
+                $('#actionList-edit').modal('hide');
+
+            }
+        });
+
+
+
+     
+ 
         actionList.push(updatedModel);
+        EditActionList.push(updatedModel);
         createActionList(actionList);
         Swal.fire({
             type: 'success',
@@ -371,6 +443,8 @@ $(Buttons.reviewDetails_confrimEditAction).click((event) => {
 //#region Document List
 let documentList = [];
 let documentModel = {};
+let DeleletedDocumentList = [];
+let AddedDocumentList = [];
 
 function GetDocumnetListAjaxCall() {
     let ncId = window.localStorage.getItem('reviewDetails');
@@ -390,6 +464,7 @@ function GetDocumnetListAjaxCall() {
 
 
 function CreateDocumentTable(element) {
+    console.log(element);
     $(TablesId.reviewDetails_document).append(`
 <tr>
 <td>   <a  style="color:black; font-weight:bold" target="_blank"  href="${BaseUrl}ReviewGetData/openDocument?documentLink=${element.documentLink}">${element.documentLink}</a></td>
@@ -405,6 +480,7 @@ function CreateDocumentTable(element) {
 `)
 }
 
+// deleted document
 function deleteDocument(documentId) {
     let doc = `#documentId${documentId}`
     const swalWithBootstrapButtons = Swal.mixin({
@@ -424,12 +500,22 @@ function deleteDocument(documentId) {
         reverseButtons: true
     }).then((result) => {
         if (result.value) {
-            $(doc).parent().remove();
-            Swal.fire({
-                type: 'success',
-                title: "başarıyle document silindi",
-                timer: 1500
-            });
+
+
+            $.ajax({
+                type:"POST",
+                url: HttpUrls.DeleteDocument + documentId,
+                success: (num) => {
+                    console.log(num);
+                    GetDocumnetListAjaxCall();
+                    Swal.fire({
+                        type: 'success',
+                        title: "başarıyle document silindi",
+                        timer: 1500
+                    });
+                }
+            })
+           
         }
     });
 }
@@ -447,18 +533,27 @@ $(Buttons.reviewDetails_addDocument).click((event) => {
 $('#document-input').change(function () {
     let ncId = window.localStorage.getItem('reviewDetails');
     let documentPath = $(this).val();
-    actionCounter++;
-    let documentModel = {
-        document_ID: actionCounter,
-        nC_ID: ncId,
-        documentLink: documentPath
+    if (documentPath !== '') {
+
+        let documentModel = {
+            nC_ID: ncId,
+            documentLink: documentPath,
+        }
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: HttpUrls.AddDocument,
+            data: JSON.stringify(documentModel),
+            success: () => {
+                Swal.fire({
+                    type: 'success',
+                    title: "başarıyle action eklendi",
+                    timer: 1500
+                });
+                GetDocumnetListAjaxCall();
+            }
+        });
     }
-    CreateDocumentTable(documentModel);
-    Swal.fire({
-        type: 'success',
-        title: "başarıyle action eklendi",
-        timer: 1500
-    });
 })
 //#endregion
 
@@ -466,7 +561,11 @@ $('#document-input').change(function () {
 
 // #region Document Control 
 let documentControlList = [];
+let AddedDocumentControlList = [];
+let DeletedDocumentControlList = [];
+let EditDocumentControlList = [];
 let documentControlModel = {};
+let conDocCounter = 100000;
 function GetDocumentControlAjaxCall() {
     let ncId = window.localStorage.getItem('reviewDetails');
 
@@ -478,7 +577,7 @@ function GetDocumentControlAjaxCall() {
         success: (list) => {
             documentControlList = list;
             if (list.length !== 0) {
-
+         
                 list.map((element) => {
                     CreateDocumentControlTable(element);
                 });
@@ -498,7 +597,6 @@ function GetDocumentControlAjaxCall() {
 
 
 function CreateDocumentControlTable(element) {
-
     Object.keys(element).map((e) => {
         element[e] ? element[e] = element[e] : element[e] = '';
     });
@@ -539,11 +637,25 @@ function deleteDocumentControl(documentControlId) {
         reverseButtons: true
     }).then((result) => {
         if (result.value) {
-            $(docConId).parent().remove();
-            Swal.fire({
-                type: 'success',
-                title: "başarıyle document control silindi",
-                timer: 1500
+            $.ajax({
+                type: "Get",
+                url: HttpUrls.DeleteDocumentControl + documentControlId,
+                contentType: "application/json;charset=utf-8",
+                success: (num) => {
+                    Swal.fire({
+                        type: 'success',
+                        title: "başarıyle Document Control Silindi",
+                        timer: 1500
+                    });
+                    GetDocumentControlAjaxCall();
+                },
+                error: () => {
+                    Swal.fire({
+                        type: 'error',
+                        title: "beklenmeyen bir hata oluştu",
+                        timer: 1500
+                    });
+                }
             });
         }
     });
@@ -561,7 +673,7 @@ $('#btn-reviewDetails-add-confirmAddControlType').click((e) => {
     e.preventDefault();
     let ncId = window.localStorage.getItem('reviewDetails');
     let documentControlType = $('#select-reviewDetails-add-documentControlType').val();
-    let changeDate = ` ${$('#inp-reviewDetails-add-changeDate').val()} 00:00:00 00`;
+    let changeDate = ` ${$('#inp-reviewDetails-add-changeDate').val()}`;
     let newRev = $('#inp-reviewDetails-add-newRev').val();
     let notes = $('#inp-reviewDetails-add-notes').val();
     if (documentControlType === '') {
@@ -580,33 +692,47 @@ $('#btn-reviewDetails-add-confirmAddControlType').click((e) => {
     }
 
     else {
-        actionCounter++;
+        
         let addedDocumentControlObject = {
-            id: actionCounter,
             nC_ID: ncId,
             documentType: documentControlType,
             changeDate: changeDate,
             newRev: newRev,
             notes: notes,
         };
-        documentControlList.push(addedDocumentControlObject);
-        CreateDocumentControlTable(addedDocumentControlObject);
-        Swal.fire({
-            type: 'success',
-            title: "başarıyle Document Control eklendi",
-            timer: 1500
+        $.ajax({
+            type: "POST",
+            url: HttpUrls.AddDocumentControl,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(addedDocumentControlObject),
+            success: (num) => {
+                Swal.fire({
+                    type: 'success',
+                    title: "başarıyle document control eklendi",
+                    timer: 1500
+                });
+                GetDocumentControlAjaxCall();
+                $('#documentControl-Add').modal('hide');
+            },
+            error: () => {
+                Swal.fire({
+                    type: 'error',
+                    title: "beklenmeyen bir hata oluştu",
+                    timer: 1500
+                });
+                $('#documentControl-Add').modal('hide');
+
+            }
         });
-        $('#documentControl-Add').modal('hide');
     }
 })
 
 
-
+// edit document control
 function editDocumentControl(documentControlId) {
     let selectedModel = documentControlList.filter((ele) => {
         return documentControlId === ele.id
     });
-
     if (selectedModel.length !== 0) {
         selectedModel = selectedModel[0];
         documentControlModel = selectedModel;
@@ -620,17 +746,16 @@ function editDocumentControl(documentControlId) {
 
 $('#btn-reviewDetails-edit-confirmAddControlType').click((event) => {
     event.preventDefault();
-
     let ncId = window.localStorage.getItem('reviewDetails');
     let documentControlType = $('#select-reviewDetails-edit-documentControlType').val();
-    let changeDate = ` ${$('#inp-reviewDetails-add-changeDate').val()} 00:00:00 00`;
+    let changeDate = $('#inp-reviewDetails-edit-changeDate').val();
     let newRev = $('#inp-reviewDetails-edit-newRev').val();
     let notes = $('#inp-reviewDetails-edit-notes').val();
     if (documentControlType === '') {
         Swal.fire({
             type: 'error',
             title: 'Document type !',
-            text: " Action Type Seçmeniz gerekiyor"
+            text: " documnet Type Seçmeniz gerekiyor"
         });
     }
     else if (changeDate === '') {
@@ -647,24 +772,39 @@ $('#btn-reviewDetails-edit-confirmAddControlType').click((event) => {
         });
 
         let updatedDocumentControlObject = {
-            id: actionCounter,
+            id: documentControlModel.id,
             nC_ID: ncId,
             documentType: documentControlType,
             changeDate: changeDate,
             newRev: newRev,
-            notes: notes,
+            notes: notes
         };
-        documentControlList.push(updatedDocumentControlObject);
-        $(`#updatedDocument${documentControlModel.id}`).parent().remove();
-        CreateDocumentControlTable(updatedDocumentControlObject);
-        Swal.fire({
-            type: 'success',
-            title: "başarıyle Document Control eklendi",
-            timer: 1500
+        $.ajax({
+            type: "POST",
+            url: HttpUrls.UpdateDocumentControl,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(updatedDocumentControlObject),
+            success: (num) => {
+                Swal.fire({
+                    type: 'success',
+                    title: "başarıyle Document control düzeltildi",
+                    timer: 1500
+                });
+                GetDocumentControlAjaxCall();
+                $('#documentControl-edit').modal('hide');
+
+            },
+            error: () => {
+                Swal.fire({
+                    type: 'error',
+                    title: "beklenmeyen bir hata oluştu",
+                    timer: 1500
+                });
+                $('#documentControl-edit').modal('hide');
+            }
         });
         $('#documentControl-edit').modal('hide');
     }
-
 })
 //#endregion
 
@@ -676,12 +816,21 @@ $('#btn-reviewDetails-edit-confirmAddControlType').click((event) => {
 
 $('#btn-reviewDetails-savingToDataBase').click((event) => {
     $('#genel').empty();
+    $('#date').empty();
+    $('#Description').empty();
+    $('#Action').empty();
+   // $('#Document').empty();
+    $('#DocumentControl').empty();
+
+
     event.preventDefault();
     let farkarry = new Array();
     let m = {
         k: null,
         v: null
     };
+
+        // #region genel bilgiler
     updatedGeneBilgiler.nC_Id_Def = $(Inputs.reviewDetails_def).val();
     updatedGeneBilgiler.qty = parseInt($(Inputs.reviewDetails_qty).val());
     let activityType = $("[name=reviewRadio]:checked").val();
@@ -822,11 +971,9 @@ $('#btn-reviewDetails-savingToDataBase').click((event) => {
         updatedGeneBilgiler.responsibleId = 0;
         updatedGeneBilgiler.resbonsibleName = "";
     }
-    // date 
 
-    updatedGeneBilgiler.nC_CloseDate = $(Inputs.reviewDetails_closeDate).val()
-    updatedGeneBilgiler.nC_OpenDate = $(Inputs.reviewDetails_openDate).val()
-    updatedGeneBilgiler.nC_TargetDate = $(Inputs.reviewDetails_targetDate).val()
+
+
 
 
 
@@ -835,78 +982,295 @@ $('#btn-reviewDetails-savingToDataBase').click((event) => {
 
     if (updatedGeneBilgiler.nC_Id_Def !== genelBilgiler.nC_Id_Def) {
 
-        $('#genel').append(createSummaryOutput('Nc Id Def ', genelBilgiler.nC_Id_Def, updatedGeneBilgiler.nC_Id_Def));
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Nc Id Def ', genelBilgiler.nC_Id_Def, updatedGeneBilgiler.nC_Id_Def));
     }
 
-     if (updatedGeneBilgiler.qty !== genelBilgiler.qty) {
-        $('#genel').append(createSummaryOutput('Qty', genelBilgiler.qty, updatedGeneBilgiler.qty));
+    if (updatedGeneBilgiler.qty !== genelBilgiler.qty) {
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Qty', genelBilgiler.qty, updatedGeneBilgiler.qty));
 
     }
 
-     if (updatedGeneBilgiler.correctiveAction !== genelBilgiler.correctiveAction) {
-        $('#genel').append(createSummaryOutput('Activity Type', 'Corrective', activityType));
+    if (updatedGeneBilgiler.correctiveAction !== genelBilgiler.correctiveAction) {
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Activity Type', 'Corrective', activityType));
 
-     }
-     else if (updatedGeneBilgiler.repetitive !== genelBilgiler.repetitive) {
-        $('#genel').append(createSummaryOutput('Activity Type', 'Repetitive', activityType))
-     }
-     else if (updatedGeneBilgiler.preventativeAction !== genelBilgiler.preventativeAction) {
-        $('#genel').append(createSummaryOutput('Activity Type', 'preventative', activityType));
+    }
+    else if (updatedGeneBilgiler.repetitive !== genelBilgiler.repetitive) {
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Activity Type', 'Repetitive', activityType))
+    }
+    else if (updatedGeneBilgiler.preventativeAction !== genelBilgiler.preventativeAction) {
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Activity Type', 'preventative', activityType));
     }
 
-     if (updatedGeneBilgiler.ncTypeId !== genelBilgiler.ncTypeId) {
-        $('#genel').append(createSummaryOutput('Nc Type', `${genelBilgiler.typeNameTr}---${genelBilgiler.typeName}`, `${updatedGeneBilgiler.typeNameTr}---${updatedGeneBilgiler.typeName}`));
+    if (updatedGeneBilgiler.ncTypeId !== genelBilgiler.ncTypeId) {
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Nc Type', `${genelBilgiler.typeNameTr}---${genelBilgiler.typeName}`, `${updatedGeneBilgiler.typeNameTr}---${updatedGeneBilgiler.typeName}`));
     }
 
-     if (updatedGeneBilgiler.companyId !== genelBilgiler.companyId) {
-        $('#genel').append(createSummaryOutput('Customer Supplier', `${genelBilgiler.companyName}---${genelBilgiler.companyType}`, `${updatedGeneBilgiler.companyName}---${updatedGeneBilgiler.companyType}`));
+    if (updatedGeneBilgiler.companyId !== genelBilgiler.companyId) {
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Customer Supplier', `${genelBilgiler.companyName}---${genelBilgiler.companyType}`, `${updatedGeneBilgiler.companyName}---${updatedGeneBilgiler.companyType}`));
     }
 
     if (updatedGeneBilgiler.departmentId !== genelBilgiler.departmentId) {
-        $('#genel').append(createSummaryOutput('Department', `${genelBilgiler.departmentName}---${genelBilgiler.depatrmentTr}`, `${updatedGeneBilgiler.departmentName}---${updatedGeneBilgiler.depatrmentTr}`));
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Department', `${genelBilgiler.departmentName}---${genelBilgiler.depatrmentTr}`, `${updatedGeneBilgiler.departmentName}---${updatedGeneBilgiler.depatrmentTr}`));
     }
 
     if (updatedGeneBilgiler.processId !== genelBilgiler.processId) {
-        $('#genel').append(createSummaryOutput('Process', `${genelBilgiler.processName}`, `${updatedGeneBilgiler.processName}`));
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Process', `${genelBilgiler.processName}`, `${updatedGeneBilgiler.processName}`));
     }
 
     if (updatedGeneBilgiler.partNo !== genelBilgiler.partNo) {
-        $('#genel').append(createSummaryOutput('Part No', `${genelBilgiler.stk}`, `${updatedGeneBilgiler.stk}`));
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Part No', `${genelBilgiler.stk}`, `${updatedGeneBilgiler.stk}`));
     }
 
     if (updatedGeneBilgiler.openById !== genelBilgiler.openById) {
-        $('#genel').append(createSummaryOutput('Open By', `${genelBilgiler.openByName}`, `${updatedGeneBilgiler.openByName}`));
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Open By', `${genelBilgiler.openByName}`, `${updatedGeneBilgiler.openByName}`));
     }
     if (updatedGeneBilgiler.responsibleId !== genelBilgiler.responsibleId) {
-        $('#genel').append(createSummaryOutput('Responsible', `${genelBilgiler.resbonsibleName}`, `${updatedGeneBilgiler.resbonsibleName}`));
+        $('#genel').append(createSummaryOutputForGenelBilgiler('Responsible', `${genelBilgiler.resbonsibleName}`, `${updatedGeneBilgiler.resbonsibleName}`));
     }
 
-        $('#reviewDetails-summaryModel').modal('show');
+    //#endregion
 
-    //Object.keys(updatedGeneBilgiler).map((key) => {
 
-    //    if (updatedGeneBilgiler[key] !== genelBilgiler[key]) {
+    // #region date 
 
-    //        m.k = key;
-    //        m.v = updatedGeneBilgiler[key];
-    //        farkarry.push(m);
-    //        m = {};
-    //    }
-    //})
+    updatedGeneBilgiler.nC_CloseDate = $(Inputs.reviewDetails_closeDate).val()
+    updatedGeneBilgiler.nC_OpenDate = $(Inputs.reviewDetails_openDate).val()
+    updatedGeneBilgiler.nC_TargetDate = $(Inputs.reviewDetails_targetDate).val()
 
-    //console.log(updatedGeneBilgiler);
+    if (updatedGeneBilgiler.nC_OpenDate !== genelBilgiler.nC_OpenDate) {
+        $('#date').append(createSummaryOutputForGenelBilgiler('Open Date', `${genelBilgiler.nC_OpenDate}`, `${updatedGeneBilgiler.nC_OpenDate}`));
+
+    }
+    if (updatedGeneBilgiler.nC_TargetDate !== genelBilgiler.nC_TargetDate) {
+        $('#date').append(createSummaryOutputForGenelBilgiler('target Date', `${genelBilgiler.nC_TargetDate}`, `${updatedGeneBilgiler.nC_TargetDate}`));
+    }
+    if (updatedGeneBilgiler.nC_CloseDate !== genelBilgiler.nC_CloseDate) {
+        $('#date').append(createSummaryOutputForGenelBilgiler('Close Date', `${genelBilgiler.nC_CloseDate}`, `${updatedGeneBilgiler.nC_CloseDate}`));
+    }
+    //#endregion
+
+
+    // #region Description 
+
+    updatedGeneBilgiler.nonConformity = $(Inputs.reviewDetails_conformity).val()
+    updatedGeneBilgiler.nc_desc2 = $(Inputs.reviewDetails_description).val()
+    updatedGeneBilgiler.nC_RootCauseAnalysis = $(Inputs.reviewDetails_analaysis).val();
+
+
+    if (updatedGeneBilgiler.nonConformity !== genelBilgiler.nonConformity) {
+        $('#Description').append(createSummaryOutputForGenelBilgiler('non Conformity', `${genelBilgiler.nonConformity}`, `${updatedGeneBilgiler.nonConformity}`));
+    }
+    if (updatedGeneBilgiler.nc_desc2 !== genelBilgiler.nc_desc2) {
+        $('#Description').append(createSummaryOutputForGenelBilgiler('Nc Description', `${genelBilgiler.nc_desc2}`, `${updatedGeneBilgiler.nc_desc2}`));
+    }
+    if (updatedGeneBilgiler.nC_RootCauseAnalysis !== genelBilgiler.nC_RootCauseAnalysis) {
+        $('#Description').append(createSummaryOutputForGenelBilgiler('Root Cause Analysis', `${genelBilgiler.nC_RootCauseAnalysis}`, `${updatedGeneBilgiler.nC_RootCauseAnalysis}`));
+    }
+
+
+    //#endregion
+
+
+
+
+
+    // #region Action
+
+    if (deletedActionList.length > 0) {
+        CreateSummaryOutputForAction('Deleted Actions','table-reviewDetails-summary-deletedAction');
+        deletedActionList.map((el) => {
+            ActionTableSummary(el,'#table-reviewDetails-summary-deletedAction');
+        });
+    }
+    if (AddedActionList.length > 0) {
+        CreateSummaryOutputForAction('Added Actions', 'table-reviewDetails-summary-AddedAction');
+        AddedActionList.map((el) => {
+            ActionTableSummary(el, '#table-reviewDetails-summary-AddedAction');
+        });
+    }
+    if (EditActionList.length > 0) {
+        CreateSummaryOutputForAction('Updated Actions', 'table-reviewDetails-summary-UpdatedAction');
+        EditActionList.map((el) => {
+            ActionTableSummary(el, '#table-reviewDetails-summary-UpdatedAction');
+        });
+    }
+    // #endregion 
+
+
+
+    //#region Document
+
+
+    //#endregion
+
+    if (AddedDocumentList.length > 0) {
+        $('#Document').append(`<div><h3 id='h3_addedDocument'> Added Document</h3></div>`);
+
+      
+        AddedDocumentList.map((el) => {
+            $('#h3_addedDocument').append(`
+                            <p class="text-dark">${el.documentLink}</p>
+`)
+        });
+    }
+
+    if (DeleletedDocumentList.length > 0) {
+        $('#Document').append(`<div><h3 id='h3_deletedDocument'> Deleted Document</h3></div>`);
+
+
+        DeleletedDocumentList.map((el) => {
+            $('#h3_deletedDocument').append(`
+                            <p class="text-dark">${el.documentLink}</p>
+`)
+        });
+    }
+    // #region Document Control
+    if (DeletedDocumentControlList.length > 0) {
+        CreateSummaryOutputForDocumentControl('Deleted', 'table-reviewDetails-summary-deletedDocumentControl');
+        DeletedDocumentControlList.map((el) => {
+            DocuemtnControlTableSummary(el, '#table-reviewDetails-summary-deletedDocumentControl');
+        });
+    }
+
+    if (AddedDocumentControlList.length > 0) {
+        CreateSummaryOutputForDocumentControl('Added', 'table-reviewDetails-summary-addedDocumentControl');
+        AddedDocumentControlList.map((el) => {
+            DocuemtnControlTableSummary(el, '#table-reviewDetails-summary-addedDocumentControl');
+        });
+    }
+
+    if (EditDocumentControlList.length > 0) {
+        CreateSummaryOutputForDocumentControl('Updated', 'table-reviewDetails-summary-editDocumentControl');
+        EditDocumentControlList.map((el) => {
+            DocuemtnControlTableSummary(el, '#table-reviewDetails-summary-editDocumentControl');
+        });
+    }
+
+    // #endregion 
+    $('#reviewDetails-summaryModel').modal('show');
 });
 
 
 
-function createSummaryOutput(title, oldValue, newValue)
+function createSummaryOutputForGenelBilgiler(title, oldValue, newValue)
 {
     let output = ` <div>
                             <label class="demo-form-label h3">${title} : </label>
                             <p class="text-dark h5 lead">${oldValue}    &nbsp;&nbsp; <i class="fa   fa-arrow-right text-danger"></i> &nbsp;<i class="fa   fa-arrow-right text-danger"></i> &nbsp;&nbsp; ${newValue}</p>
                         </div>
                         <hr />
-`
+`;
     return output;
 }
+
+function CreateSummaryOutputForAction(title,tableId)
+{
+    $('#Action').append(`
+  <div>
+                            <h3>${title}</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Action Type</th>
+                                        <th scope="col">Resposible</th>
+                                        <th scope="col">Action Def</th>
+                                        <th scope="col">Target Date</th>
+                                        <th scope="col">CloseDate</th>
+                                        <th scope="col">Status</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="${tableId}">
+                                </tbody>
+                            </table>
+                        </div>
+`);
+    console.log(tableId);
+    $(`#${tableId}`).empty();
+}
+
+function ActionTableSummary(element,tableId) {
+    let closeDate = "", targetDate = "", status = "", actionType = "";
+        element.closeDate ? closeDate = element.closeDate : closeDate = '';
+        element.targetDate ? targetDate = element.targetDate : targetDate = '';
+        element.status ? status = 'fa  fa-2x fa-check-circle text-success' : status = 'fa fa-2x fa-ban';
+        element.action_Type === 1 ? actionType = "Immediate Action" : actionType = "Permanent Action";
+
+    $(tableId).append(`
+          <tr >
+
+                        <td>${actionType}</td>
+                        <td>${element.resposibleName} </td>
+                        <td>${element.actin_Def}</td>
+                        <td> ${targetDate.slice(0, -11)}</td>
+                        <td>${closeDate.slice(0, -11)}</td>
+                        <td><i class="${status}" aria-hidden="true"></i></td>
+                        
+                    </tr>
+`);
+} 
+
+
+
+
+
+function CreateSummaryOutputForDocumentControl(title, tableId) {
+    $('#DocumentControl').append(`
+  <div>
+                            <h3>${title}</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Document</th>
+                                        <th scope="col">Change Date</th>
+                                        <th scope="col">New Rev</th>
+                                        <th scope="col">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="${tableId}">
+                                </tbody>
+                            </table>
+                        </div>
+`);
+    $(`#${tableId}`).empty();
+}
+function DocuemtnControlTableSummary(element, tableId) {
+    Object.keys(element).map((e) => {
+        element[e] ? element[e] = element[e] : element[e] = '';
+    });
+    $(tableId).append(`
+<tr>
+
+<td>${element.documentType}</td>
+<td>${element.changeDate.slice(0, -11)}</td>
+<td>${element.newRev}</td>
+<td>${element.notes}</td>
+</tr>
+`
+    );
+} 
+$('#reviewDetails-summaryModel-confrimSave').click((e) => {
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: HttpUrls.SaveReviewDetalis,
+        data: JSON.stringify(updatedGeneBilgiler),
+        success: () => {
+        }
+    });
+    let d = AddedDocumentList.concat(DeleletedDocumentList);
+    $.ajax({
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        url: HttpUrls.SaveDocuments,
+        data: JSON.stringify(d),
+        success: () => {
+        
+           
+        }
+    });
+
+ 
+})
 //#endregion
