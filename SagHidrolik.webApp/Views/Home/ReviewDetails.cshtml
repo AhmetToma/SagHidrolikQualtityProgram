@@ -1,0 +1,539 @@
+﻿    <div>
+        <div class="Header-detailsNc">
+            <ul>
+                <li id="dcoControl">Documents Controls</li>
+                <li id="doc">Documents</li>
+                <li id="act">Actions</li>
+                <li id="des">Description</li>
+                <li id="da">Date</li>
+                <li id="gen">Genel Bilgiler</li>
+            </ul>
+
+            <button id="btn-reviewDetails-savingToDataBase" style="margin-left:30%;" class="btn btn-danger">Kaydet</button>
+        </div>
+        <div class="clearfix"></div>
+        <form class="">
+            <div class="alert alert-success">
+                <h3 id="scroll-GenelBilgiler">Genel Bilgiler</h3>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Nc ID : </label>
+                    <input readonly type="text" id="inp-reviewDetails-ncId" class="form-control  col-md-4" name="" required />
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Nc ID Def : </label>
+                    <input type="text" id="inp-reviewDetails-def" class="form-control  col-md-4" name="" required />
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Qty : </label>
+                    <input type="number" id="inp-reviewDetails-qty" class="form-control  col-md-4" name="" required />
+                </div>
+            </div>
+            <div>
+                <label class="demo-form-label">Activity Type :</label>
+                <br />
+                <div class="pretty p-icon p-curve p-jelly mt-2 ">
+                    <input value="correctiveAction" type="radio" name="reviewRadio">
+                    <div class="state p-success">
+                        <i style="margin-top: 5%;" class="icon mdi mdi-check"></i>
+                        <label style="font-size: 1rem"> Corrective</label>
+                    </div>
+                </div>
+                <br />
+
+                <div class="pretty p-icon p-curve p-jelly mt-2 ">
+                    <input value="preventativeAction" type="radio" name="reviewRadio">
+                    <div class="state p-success">
+                        <i style="margin-top: 5%;" class="icon mdi mdi-check"></i>
+                        <label style="font-size: 1rem"> Preventative</label>
+                    </div>
+                </div>
+                <br />
+                <div class="pretty p-icon p-curve p-jelly mt-2 mb-4">
+                    <input value="repetitive" type="radio" name="reviewRadio">
+                    <div class="state p-success">
+                        <i style="margin-top: 5%;" class="icon mdi mdi-check"></i>
+                        <label style="font-size: 1rem"> Repetitive</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">Nc Type: </label>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="select-reviewDetails-ncType" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">Customer Supplier: </label>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="select-reviewDetails-cusSup" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">Department: </label>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="select-reviewDetails-dep" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">Process: </label>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="select-reviewDetails-process" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">Part No : </label>
+                    </div>
+                    <div class="col-md-6 partNoDiv">
+                        <select id="select-reviewDetails-partNo" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">Open By : </label>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="select-reviewDetails-openBy" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">NC Resposible : </label>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="select-reviewDetails-resposbile" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div id="qa" class="alert alert-success">
+                <h3 id="scroll-Date">Date</h3>
+            </div>
+
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Open Date : </label>
+                    <input type="text" id="inp-reviewDetails-openDate" class="form-control  col-md-4" name="" required />
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <label style="text-align: center;width: 100%" class="demo-form-label col-md-2"> Target Date : </label>
+                    <input type="text" id="inp-reviewDetails-targetDate" class="form-control  col-md-4" name="" required />
+                </div>
+            </div>
+
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <label style="text-align: center;width: 100%" class="demo-form-label col-md-2">Close Date : </label>
+                    <input type="text" id="inp-reviewDetails-closeDate" class="form-control  col-md-4" name="" required />
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <h3 id="scroll-Descrip">Descrtipton</h3>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">Non Conformity : </label>
+                    </div>
+                    <textarea id="inp-reviewDetails-conformity" rows="4" class="col-md-6"></textarea>
+                </div>
+            </div>
+
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">NC Descrtiption : </label>
+                    </div>
+                    <textarea id="inp-reviewDetails-description" rows="4" class="col-md-6"></textarea>
+                </div>
+            </div>
+            <div class="NcDetails-formControl">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label style="text-align: center;width: 100%" class="demo-form-label ">RootCauseAnalysis :</label>
+                    </div>
+                    <textarea id="inp-reviewDetails-analaysis" rows="4" class="col-md-6"></textarea>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <h3 id="scroll-action" >Immediate And Permanent Action </h3>
+            </div>
+            <div class="immediateAction">
+                <button id="btn-reviewDetails-addImmediateAction" class="btn btn-success">Add Action</button>
+                <table class="table">
+                    <thead>
+
+                        <tr>
+                            <th scope="col">Action Type</th>
+                            <th scope="col">Resposible</th>
+                            <th scope="col">Actin Def</th>
+                            <th scope="col">Target Date</th>
+                            <th scope="col">Close Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody id="table-reviewDetails-immediateAction"></tbody>
+                </table>
+            </div>
+
+      
+
+            <div class="doc">
+                <div class="alert alert-success">
+                    <h3 id="scroll-Document">Document</h3>
+                </div>
+                <button style="margin-bottom:20px" id="btn-reviewDetails-addDocument" class="btn btn-success">Add Document</button>
+                <input id="document-input" type="file" name="name" style="display: none;" />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Document Url</th>
+                            <th scope="col">Open</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-reviewDetails-document"></tbody>
+                </table>
+            </div>
+
+            <div class="doc-details" id="xx">
+                <div class="alert alert-success">
+                    <h3 id="scroll-DocumnetControl" >Document Control</h3>
+                </div>
+                <button id="btn-reviewDetails-addDocumentType" style="margin-bottom:20px" class="btn btn-success m-b-10">Add Dcument Control</button>
+                <table  class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Document</th>
+                            <th scope="col">Change Date</th>
+                            <th scope="col">New Rev</th>
+                            <th scope="col">Notes</th>
+                            <th scope="col">Delete</th>
+                            <th scope="col">Edit</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="table-reviewDetails-documentControl"></tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+
+
+<!--Document  -->
+<div class="modal fade" id="actionList-Add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Action</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Action Type</label><br />
+                        <select id='select-reviewDetails-add-actionType' style='width: 200px; font-weight:bold' class="custom-select" id="inputGroupSelect01">
+                            <option selected>Choose...</option>
+                            <option value='1'>immediate Action</option>
+                            <option value='2'>Permanent Action</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Action Def : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-add-actionDef">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Resposible : </label><br />
+                        <select id="inp-reviewDetails-add-responsible" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Target Date : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-add-targetDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Close Date : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-add-closeDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Status : </label><br />
+                        <input type="checkbox" id="inp-reviewDetails-add-status">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-reviewDetails-add-confirmAdd" type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="actionList-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Action</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Action Type</label><br />
+                        <select id='select-reviewDetails-edit-actionType' style='width: 200px; font-weight:bold' class="custom-select" id="inputGroupSelect01">
+                            <option selected>Choose...</option>
+                            <option value='1'>immediate Action</option>
+                            <option value='2'>Permanent Action</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Action Def : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-edit-actionDef">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Resposible : </label><br />
+                        <select id="inp-reviewDetails-edit-responsible" class="limitedNumbSelect2 form-control col-md-6" multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Target Date : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-edit-targetDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Close Date : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-edit-closeDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Status : </label><br />
+                        <input type="checkbox" id="inp-reviewDetails-edit-status">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-reviewDetails-edit-confirmAdd" type="button" class="btn btn-primary">Save Editing</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Document Control-->
+
+
+<div class="modal fade" id="documentControl-Add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Document Control</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-add-documentControl">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Document Type</label><br />
+                        <select id='select-reviewDetails-add-documentControlType' style='width: 200px; font-weight:bold' class="custom-select">
+                            <option selected>Choose...</option>
+                            <option value='Procedure'>Procedure</option>
+                            <option value='Instruction'>Instruction</option>
+                            <option value='process'>process</option>
+                            <option value='Form'>Form</option>
+                            <option value='Organization Chart'>Organization Chart</option>
+                            <option value='Performance Target'>Performance Target</option>
+                            <option value='FMEA'>FMEA</option>
+                            <option value='FMEA'>Control Plan</option>
+                            <option value='Other'>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Change Date </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-add-changeDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">New Rev : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-add-newRev">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Notes : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-add-notes">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-reviewDetails-add-confirmAddControlType" type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="documentControl-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Document Control</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-add-documentControl">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Document Type</label><br />
+                        <select id='select-reviewDetails-edit-documentControlType' style='width: 200px; font-weight:bold' class="custom-select">
+                            <option selected>Choose...</option>
+                            <option value='Procedure'>Procedure</option>
+                            <option value='Instruction'>Instruction</option>
+                            <option value='process'>process</option>
+                            <option value='Form'>Form</option>
+                            <option value='Organization Chart'>Organization Chart</option>
+                            <option value='Performance Target'>Performance Target</option>
+                            <option value='FMEA'>FMEA</option>
+                            <option value='FMEA'>Control Plan</option>
+                            <option value='Other'>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Change Date </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-edit-changeDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">New Rev : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-edit-newRev">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Notes : </label>
+                        <input type="text" class="form-control" id="inp-reviewDetails-edit-notes">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-reviewDetails-edit-confirmAddControlType" type="button" class="btn btn-primary">Save Editing</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Summary-->
+
+
+
+<div class="modal fade bd-example-modal-lg" id="reviewDetails-summaryModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Summary before Saving</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#genel" role="tab" aria-controls="genel" aria-selected="true">GenelBilgiler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#date" role="tab" aria-controls="profile" aria-selected="false">Date</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#Description" role="tab" aria-controls="contact" aria-selected="false">Description</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#Action" role="tab" aria-controls="contact" aria-selected="false">Action</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#Document" role="tab" aria-controls="contact" aria-selected="false">Document</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#DocumentControl" role="tab" aria-controls="contact" aria-selected="false">Document Control</a>
+
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active " id="genel" role="tabpanel" aria-labelledby="home-tab">
+                    </div>
+                    <div class="tab-pane fade" id="date" role="tabpanel" aria-labelledby="profile-tab">ef</div>
+                    <div class="tab-pane fade" id="Description" role="tabpanel" aria-labelledby="contact-tab">ef</div>
+                    <div class="tab-pane fade" id="Action" role="tabpanel" aria-labelledby="contact-tab">
+                       
+                    </div>
+
+
+              
+
+                    <div class="tab-pane fade" id="Document" role="tabpanel" aria-labelledby="contact-tab">
+
+                    </div>
+                    <div class="tab-pane fade" id="DocumentControl" role="tabpanel" aria-labelledby="contact-tab">
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="reviewDetails-summaryModel-confrimSave" type="button" class="btn btn-primary">confirm Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

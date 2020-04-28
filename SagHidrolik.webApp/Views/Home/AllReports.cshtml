@@ -1,0 +1,92 @@
+﻿<div class="container-setUp">
+
+    <div class="alert alert-danger alert-welcomePage" role="alert">
+        All Reports
+    </div>
+
+    <div class="reports-nav">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#a" role="tab" aria-controls="home" aria-selected="true">Prodcution</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#f" role="tab" aria-controls="contact" aria-selected="false">production Detail</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Defect-tab" data-toggle="tab" href="#b" role="tab" aria-controls="profile" aria-selected="false">Defect</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="defectDetails-tab" data-toggle="tab" href="#c" role="tab" aria-controls="contact" aria-selected="false">Defect Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="Rework-tab" data-toggle="tab" href="#d" role="tab" aria-controls="contact" aria-selected="false">Rework</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="reworkDetails-tab" data-toggle="tab" href="#g" role="tab" aria-controls="contact" aria-selected="false">Rework Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#h" role="tab" aria-controls="contact" aria-selected="false">Supplier Perf</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#j" role="tab" aria-controls="contact" aria-selected="false">Customer Perf</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#k" role="tab" aria-controls="contact" aria-selected="false">Process Plan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#l" role="tab" aria-controls="contact" aria-selected="false">Monthly production</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#m" role="tab" aria-controls="contact" aria-selected="false">Sell Date</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#n" role="tab" aria-controls="contact" aria-selected="false">polivalans</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="a" role="tabpanel" aria-labelledby="home-tab">
+                <partial name="ReportsPartials/ProductionReports" />
+            </div>
+            <div class="tab-pane fade" id="b" role="tabpanel" aria-labelledby="profile-tab">
+                <partial name="ReportsPartials/DefectReport" />
+            </div>
+            <div class="tab-pane fade" id="c" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="ReportsPartials/defectDetailsReport" />
+            </div>
+            <div class="tab-pane fade" id="d" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="ReportsPartials/ReworkReport" />
+            </div>
+
+
+            <div class="tab-pane fade" id="g" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="ReportsPartials/ReworkDetailsReport" />
+            </div>
+
+
+            <div class="tab-pane fade" id="e" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_partNumbers" />*@
+            </div>
+            <div class="tab-pane fade" id="f" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_process" />*@
+            </div>
+            <div class="tab-pane fade" id="f" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_process" />*@
+            </div>
+            <div class="tab-pane fade" id="h" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_process" />*@
+            </div>    <div class="tab-pane fade" id="j" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_process" />*@
+            </div>    <div class="tab-pane fade" id="k" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_process" />*@
+            </div>    <div class="tab-pane fade" id="l" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_process" />*@
+            </div>    <div class="tab-pane fade" id="m" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_process" />*@
+            </div>
+            <div class="tab-pane fade" id="n" role="tabpanel" aria-labelledby="contact-tab">
+                @*    <partial name="partial_process" />*@
+            </div>
+        </div>
+
+    </div>
+</div>

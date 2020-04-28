@@ -1,0 +1,49 @@
+﻿<div class="container-setUp">
+
+    <div class="alert alert-danger alert-welcomePage" role="alert">
+        SetUp
+    </div>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#NcType" role="tab" aria-controls="home" aria-selected="true">Nc Type</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#company" role="tab" aria-controls="profile" aria-selected="false">Company</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#department" role="tab" aria-controls="contact" aria-selected="false">Department</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#operator" role="tab" aria-controls="contact" aria-selected="false">Operator</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#partNumbers" role="tab" aria-controls="contact" aria-selected="false">Part Numbers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#process" role="tab" aria-controls="contact" aria-selected="false">Process</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="NcType" role="tabpanel" aria-labelledby="home-tab">
+                <partial name="partial_NcType" />
+            </div>
+            <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="profile-tab">
+                <partial name="partial_company" />
+            </div>
+            <div class="tab-pane fade" id="department" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="partial_Department" />
+            </div>
+
+            <div class="tab-pane fade" id="operator" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="partial_operator" />
+            </div>
+            <div class="tab-pane fade" id="partNumbers" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="partial_partNumbers" />
+            </div>
+            <div class="tab-pane fade" id="process" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="partial_process" />
+            </div>
+        </div>
+
+</div>

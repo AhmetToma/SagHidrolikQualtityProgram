@@ -1,0 +1,101 @@
+﻿
+<div class="container-claimtype">
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="input-group" style="margin-top:2.8rem">
+                <div class="input-group-prepend">
+                    <span class="input-group-text " style="background-color:#071f0c;color:white" id="basic-addon1">STK</span>
+                </div>
+                <input id="inp-defectDetailsReport-searchStk" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">row count : </label>
+                <select class="form-control" id="selectRowCount-defectDetailsReport">
+                    <option value="6">6</option>
+                    <option value="10">10</option>
+                    <option value="100">100</option>
+                    <option value="500">500</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Year : </label>
+                <select class="form-control" id="select-defectDetailsReport-year">
+                    <option value="">...</option>
+                    @for (int i = 2017; i <= DateTime.Now.Year; i++)
+                    {
+                        <option value="@i ">@i</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Month :</label>
+                <select class="form-control" id="select-defectDetailsReport-month">
+                    <option value="" selected>...</option>
+                    <option value="1">Ocak</option>
+                    <option value="2">şubat</option>
+                    <option value="3">mart</option>
+                    <option value="4">nisan</option>
+                    <option value="6">mayıs</option>
+                    <option value="6">haziran</option>
+                    <option value="7">temmus</option>
+                    <option value="8">Ağustos</option>
+                    <option value="9">Eylül</option>
+                    <option value="10">Ekim</option>
+                    <option value="11">Kasım</option>
+                    <option value="12">Aralık</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group"  style="margin-top:2.8rem">
+                <button id="btn-defectDetailsReport-resetSearch" class="btn btn-primary">Reset Search</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-setUp-partial">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">STK</th>
+                    <th scope="col">Finish Time</th>
+                    <th scope="col">Ok Qty</th>
+                    <th scope="col">Adet</th>
+                    <th scope="col">Reject Name</th>
+                    <th scope="col">Proses Adi</th>
+                </tr>
+            </thead>
+            <tbody id="table-defectDetailsReport">
+            </tbody>
+        </table>
+        <div class="recordNotFound" id="recordNotFound_defectDetailsReport">
+            <h3>Hiç bir kayıt Bulunmamktadır</h3>
+        </div>
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-defectDetailsReport-previous" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="number-defectDetailsReport-pageNumber" class="page-link">1</a></li>
+                <li class="page-item">
+                    <a id="btn-defectDetailsReport-next" class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="tableCount"> Defect Details Report : <span id="defectDetailsReportTableCount"></span></div>
+</div>
