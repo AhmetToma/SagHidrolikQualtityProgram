@@ -13,5 +13,7 @@ namespace SagHidrolik.Models.ViewModesl
         public string month { get; set; }
         public string year { get; set; }
         public string pid { get; set; }
+        public string lotNo { get; set; }
+        public string Group { get; set; }
     }
 }

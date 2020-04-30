@@ -544,6 +544,7 @@ namespace SagHidrolik.Models.SqlRepository
 
         #region Reports 
 
+
         #region Production
         public static string GetProcutionReportWithFilter(RequestQuery r, string startAt, string endAt)
 
@@ -571,7 +572,40 @@ namespace SagHidrolik.Models.SqlRepository
             return query;
         }
         #endregion
+        #region ProductionDetails
+        public static string GetProcutionDetailsReport(RequestQuery r, string startAt, string endAt, string v) => $@" SET DATEFORMAT dmy;SELECT CAST (Finish_time as date) AS FinishTime, Process_Planning.ProsesAdi,
+ Sum(ProcessFlowDetail.Ok_Qty) AS Total,Local_ProductionOrders.PartNo_ID,
+  dbo.Operator.Operator_Name as OperatorName, CAST (Start_time as datetime) AS startTime
+  , CAST (Start_time as datetime) AS finishTimeWithHour, ProcessFlowDetail.Machine
+FROM ProcessFlowDetail 
+ INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID 
+ INNER JOIN Process_Planning ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo
+  INNER JOIN dbo.Local_ProductionOrders on
+    ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID
+	 INNER JOIN dbo.Operator ON ProcessFlowDetail.Operator = dbo.Operator.Operator_ID
+	 where ProcessFlowDetail.Ok_Qty is not  null and PartNo_ID in ({v}) and Finish_time between '{startAt}' and '{endAt}'
+GROUP BY CAST(Finish_time as date),PartNo_ID, Process_Planning.ProsesAdi, dbo.Operator.Operator_Name, ProcessFlowDetail.Start_time,
+ ProcessFlowDetail.Finish_time, ProcessFlowDetail.Machine, ProcessFlowDetail.Finish_time
+ORDER BY Finish_time  desc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY
 
+";
+
+        public static string GetProcutionDetailsReportCount() => @" 
+select COUNT(*) from( SELECT CAST (Finish_time as date) AS FinishTime, Process_Planning.ProsesAdi,
+ Sum(ProcessFlowDetail.Ok_Qty) AS Total,Local_ProductionOrders.PartNo_ID,
+  dbo.Operator.Operator_Name as OperatorName, CAST (Start_time as datetime) AS startTime
+, ProcessFlowDetail.Machine
+FROM ProcessFlowDetail 
+ INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID 
+ INNER JOIN Process_Planning ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo
+  INNER JOIN dbo.Local_ProductionOrders on
+    ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID
+	 INNER JOIN dbo.Operator ON ProcessFlowDetail.Operator = dbo.Operator.Operator_ID
+	 where ProcessFlowDetail.Ok_Qty is not  null 
+GROUP BY CAST(Finish_time as date),PartNo_ID, Process_Planning.ProsesAdi, dbo.Operator.Operator_Name,
+ ProcessFlowDetail.Start_time, ProcessFlowDetail.Finish_time, ProcessFlowDetail.Machine, ProcessFlowDetail.Finish_time) countNumber
+";
+        #endregion
 
         #region Defect 
         public static string GeDefectReportWithtFilter(RequestQuery r, string startAt, string endAt)
@@ -607,7 +641,6 @@ namespace SagHidrolik.Models.SqlRepository
             return query;
         }
         #endregion
-
         #region DefectDetails
         public static string GetDefectDetailsWithoutFilter(RequestQuery r, string v)
         {
@@ -649,7 +682,6 @@ namespace SagHidrolik.Models.SqlRepository
         }
         #endregion
 
-
         #region Rework 
         public static string GetReworkReport(RequestQuery r, string startAt, string endAt)
         {
@@ -675,7 +707,7 @@ WITH Sales AS
 	 P order by finishTime 
 ";
         #endregion
-
+        #region ReWork Details
 
         public static string GetReworkDetailsReport(RequestQuery r ,string startAt ,string endAt,string v) => $@"SET DATEFORMAT dmy;SELECT  Local_ProductionOrders.PartNo_ID, 
  CAST(ProcessFlowDetail.Finish_time as date) as FinishTime,  ProcessFlowDetail.Rework_Name,ProcessFlowDetail.Rework_qty as ReworkQty,Process_Planning.ProsesAdi,
@@ -697,6 +729,98 @@ inner join Process_Planning on ProcessFlow.ProcessNo_ID= Process_Planning.Proces
 inner join dbo.Reject_def on dbo.Reject_def.Reject_ID=ProcessFlowDetail.Rework_Name
 WHERE ProcessFlowDetail.Rework_qty>0) countnumber
 ";
+        #endregion
+
+
+        #region LostQty
+        public static string GetLostQtyReport (RequestQuery r) => $@"SELECT Local_ProductionOrders.PartNo_ID,Local_ProductionOrders.LotNo, Process_Planning.ProsesAdi,
+[Process_qty]-[Ok_Qty]-[Process_reject]-[Process_Rework] AS Miktar
+ FROM ProcessFlow INNER JOIN 
+ dbo.Local_ProductionOrders ON ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID
+ inner join Process_Planning on ProcessFlow.ProcessNo_ID= Process_Planning.ProcessNo
+   WHERE ((([Process_qty]-[Ok_Qty]-[Process_reject]-[Process_Rework])>0) AND
+    ((dbo.Local_ProductionOrders.Status)=3)) and LotNo like '%{r.lotNo}%'
+	ORDER BY LotNo  desc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
+
+        public static string GetLostQtyReportCount() => @"select count(*) from(SELECT Local_ProductionOrders.PartNo_ID,Local_ProductionOrders.LotNo, Process_Planning.ProsesAdi,
+[Process_qty]-[Ok_Qty]-[Process_reject]-[Process_Rework] AS Miktar
+ FROM ProcessFlow INNER JOIN 
+ dbo.Local_ProductionOrders ON ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID
+ inner join Process_Planning on ProcessFlow.ProcessNo_ID= Process_Planning.ProcessNo
+   WHERE ((([Process_qty]-[Ok_Qty]-[Process_reject]-[Process_Rework])>0) AND
+    ((dbo.Local_ProductionOrders.Status)=3)))countNumber";
+        #endregion
+
+        #region SupplierPref 
+        public static string GetSupplierPerfReport(RequestQuery r,string startAt,string endAt) => $@"SET DATEFORMAT dmy;SELECT dbo.CARIGEN.STA, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty,
+CAST(dbo.SIPARIS_ALT.TESTARIHI as date)SiparisAltiTestTarihi,CAST(dbo.STOK_ALT.TARIH as date)StokAltTarihi, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice,
+dbo.SIPARIS_ALT.TURAC, dbo.SIPARIS_ALT.TUR
+FROM((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON (dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND(dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) 
+LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID) 
+LEFT JOIN dbo.CARIGEN ON dbo.SIPAR.CARIREF = dbo.CARIGEN.REF
+where SIPARIS_ALT.STK like '%{r.Stk}%' and STOK_ALT.TARIH between '{startAt}' and '{endAt}'
+GROUP BY dbo.CARIGEN.STA, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR,
+dbo.SIPARIS_ALT.TESTARIHI, dbo.STOK_ALT.TARIH, dbo.SIPARIS_ALT.TURAC, dbo.SIPARIS_ALT.TUR
+HAVING (((dbo.SIPARIS_ALT.TESTARIHI)<GETDATE()) AND((dbo.SIPARIS_ALT.TUR)= 91))
+ORDER BY dbo.CARIGEN.STA, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.TESTARIHI
+OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY
+
+";
+
+        public static string GetSupplierPerfReportCount() => @"select Count(*) from (SELECT dbo.CARIGEN.STA, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty,
+CAST(dbo.SIPARIS_ALT.TESTARIHI as date)SiparisAltiTestTarihi,CAST(dbo.STOK_ALT.TARIH as date)StokAltTarihi, Sum( dbo.STOK_ALT.MIKTAR) AS TotalInvoice, 
+ dbo.SIPARIS_ALT.TURAC, dbo.SIPARIS_ALT.TUR
+FROM (( dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON ( dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND ( dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) 
+LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID) 
+LEFT JOIN dbo.CARIGEN ON dbo.SIPAR.CARIREF = dbo.CARIGEN.REF
+GROUP BY dbo.CARIGEN.STA, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR, 
+dbo.SIPARIS_ALT.TESTARIHI, dbo.STOK_ALT.TARIH, dbo.SIPARIS_ALT.TURAC, dbo.SIPARIS_ALT.TUR
+HAVING ((( dbo.SIPARIS_ALT.TESTARIHI)<GETDATE()) AND (( dbo.SIPARIS_ALT.TUR)=91)))countNumber
+
+";
+
+        #endregion
+
+        #region Customer Perf
+
+        public static string GetCustomerperfReport(RequestQuery r, string startAt, string endAt) => $@"SET DATEFORMAT dmy;SELECT  dbo.SIPAR.CARIADI,  dbo.SIPAR.EVRAKNO AS SIPEVRAKNO,  dbo.SIPARIS_ALT.STK, 
+ dbo.SIPARIS_ALT.MIKTAR AS OrderQty,  CAST(dbo.SIPARIS_ALT.TESTARIHI as date) SiparisAltiTestTarihi,
+   cast(dbo.STOK_ALT.TARIH as date) StokAltiTarihi, Sum( dbo.STOK_ALT.MIKTAR) AS TotalInvoice,  dbo.SIPARIS_ALT.TURAC, 
+    dbo.SIPARIS_ALT.TUR
+FROM ( dbo.SIPARIS_ALT LEFT JOIN  dbo.STOK_ALT ON ( dbo.SIPARIS_ALT.STOKP_ID =  dbo.STOK_ALT.STOKP_ID) 
+AND ( dbo.SIPARIS_ALT.P_ID =  dbo.STOK_ALT.SIP_PID)) LEFT JOIN  dbo.SIPAR ON  dbo.SIPARIS_ALT.P_ID =  dbo.SIPAR.P_ID
+where SIPARIS_ALT.STK like '%{r.Stk}%' and  STOK_ALT.TARIH between '{startAt}' and '{endAt}'
+GROUP BY  dbo.SIPAR.CARIADI,  dbo.SIPAR.EVRAKNO,  dbo.SIPARIS_ALT.STK,  dbo.SIPARIS_ALT.MIKTAR,
+  dbo.SIPARIS_ALT.TESTARIHI,  dbo.STOK_ALT.TARIH,  dbo.SIPARIS_ALT.TURAC,  dbo.SIPARIS_ALT.TUR
+HAVING ((( dbo.SIPARIS_ALT.TESTARIHI)<GetDate()) AND (( dbo.SIPARIS_ALT.TUR)=90))
+ORDER BY  dbo.SIPAR.CARIADI,  dbo.SIPAR.EVRAKNO,  dbo.SIPARIS_ALT.TESTARIHI 
+ OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
+
+        public static string GetCustomerperfReportCount() => @"select Count(*) from(SELECT  dbo.SIPAR.CARIADI,  dbo.SIPAR.EVRAKNO AS SIPEVRAKNO,  dbo.SIPARIS_ALT.STK, 
+ dbo.SIPARIS_ALT.MIKTAR AS OrderQty,  CAST(dbo.SIPARIS_ALT.TESTARIHI as date) SiparisAltiTestTarihi,
+   cast(dbo.STOK_ALT.TARIH as date) StokAltiTarihi, Sum( dbo.STOK_ALT.MIKTAR) AS TotalInvoice,  dbo.SIPARIS_ALT.TURAC, 
+    dbo.SIPARIS_ALT.TUR
+FROM ( dbo.SIPARIS_ALT LEFT JOIN  dbo.STOK_ALT ON ( dbo.SIPARIS_ALT.STOKP_ID =  dbo.STOK_ALT.STOKP_ID) 
+AND ( dbo.SIPARIS_ALT.P_ID =  dbo.STOK_ALT.SIP_PID)) LEFT JOIN  dbo.SIPAR ON  dbo.SIPARIS_ALT.P_ID =  dbo.SIPAR.P_ID
+GROUP BY  dbo.SIPAR.CARIADI,  dbo.SIPAR.EVRAKNO,  dbo.SIPARIS_ALT.STK,  dbo.SIPARIS_ALT.MIKTAR,
+  dbo.SIPARIS_ALT.TESTARIHI,  dbo.STOK_ALT.TARIH,  dbo.SIPARIS_ALT.TURAC,  dbo.SIPARIS_ALT.TUR
+HAVING ((( dbo.SIPARIS_ALT.TESTARIHI)<GetDate()) AND (( dbo.SIPARIS_ALT.TUR)=90)) )countNumber
+";
+        #endregion
+
+
+        #region ProcessPlan
+        public static string GetProcessPlanReport(RequestQuery r,string startAt,string endAt) =>$@" SET DATEFORMAT dmy; select    ID,ProcessDate,[Group],ProsesAdi,PartNo,WOLot,RemainProcessqty,
+ WONewDate,Balance
+ from  dbo.ProcessPlanFollowTable where RemainProcessqty >0 and [Group] like
+  '%{r.Group}%' and PartNo like '%{r.Stk}%'  and ProcessDate between '{startAt}' and '{endAt}'
+  ORDER BY ID  asc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
+        public static string GetProcessPlanReportCount() => @"select COUNT(*) from( select    ID,ProcessDate,[Group],ProsesAdi,PartNo,WOLot,RemainProcessqty,
+ WONewDate,Balance
+ from  dbo.ProcessPlanFollowTable where RemainProcessqty >0)countNumber";
+        #endregion
+
+
         #endregion
     }
 }

@@ -68,6 +68,88 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
         #endregion
 
 
+        #region Production Details Report
+        public static async Task<IEnumerable<ProcutionDetailsViewModel>> GetProcutionDetailsReport(RequestQuery requestQuery)
+        {
+            var stkList = StokReadingData.GetStokkenByStkList(requestQuery).Result;
+            requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
+            IEnumerable<ProcutionDetailsViewModel> list = new List<ProcutionDetailsViewModel>();
+            List<ProcutionDetailsViewModel> newList = new List<ProcutionDetailsViewModel>();
+            if (stkList.Count() <= 0) return newList;
+            else
+            {
+                string values = "";
+                string query = "";
+                string startAt = "";
+                string endAt = "";
+                foreach (var item in stkList)
+                {
+                    values = values + "'" + item.P_ID + "'" + ",";
+                }
+                values = values.Substring(0, values.Length - 1);
+
+                if (requestQuery.year == "" && requestQuery.month == "")
+                {
+                    startAt = "01-01-2016";
+                    endAt = DateTime.Now.ToString("dd-MM-yyyy");
+                    query = SqlQueryRepo.GetProcutionDetailsReport(requestQuery, startAt, endAt, values);
+                }
+                else if (requestQuery.month == "")
+                {
+                    var startTime = new DateTime(int.Parse(requestQuery.year), 1, 1);
+                    var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                    startAt = $"1-1-{requestQuery.year}";
+                    endAt = $"{lastDay}-12-{requestQuery.year}";
+                    query = SqlQueryRepo.GetProcutionDetailsReport(requestQuery, startAt, endAt, values);
+
+                }
+                else if (requestQuery.year == "")
+                {
+
+                    var startTime = new DateTime(DateTime.Now.Year, int.Parse(requestQuery.month), 1);
+                    var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                    startAt = $"1-{requestQuery.month}-{DateTime.Now.Year}";
+                    endAt = $"{lastDay}-{requestQuery.month}-{DateTime.Now.Year}";
+                    query = SqlQueryRepo.GetProcutionDetailsReport(requestQuery, startAt, endAt, values);
+                }
+                else
+                {
+                    var startTime = new DateTime(int.Parse(requestQuery.year), int.Parse(requestQuery.month), 1);
+                    var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                    startAt = $"1-{requestQuery.month}-{requestQuery.year}";
+                    endAt = $"{lastDay}-{requestQuery.month}-{requestQuery.year}";
+                    query = SqlQueryRepo.GetProcutionDetailsReport(requestQuery, startAt, endAt, values);
+                }
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+                {
+                    await connection.OpenAsync();
+                    list = await connection.QueryAsync<ProcutionDetailsViewModel>(query);
+                }
+                foreach (var item in list)
+                {
+                    var dboStokgen = stkList.Where(x => x.P_ID == item.PartNo_ID).SingleOrDefault();
+                    if (dboStokgen != null)
+                    
+
+                        item.Stk = dboStokgen.Stk;
+                        item.FinishTimeAsString=item.FinishTime.ToString("dd-MM-yyyy");
+                    newList.Add(item);
+                    }
+                }
+            return newList;
+        }
+        public static async Task<int> GetProcutionDetailsReportCount()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.QueryFirstAsync<int>(SqlQueryRepo.GetProcutionDetailsReportCount());
+                return count;
+            }
+        }
+        #endregion
+
+
         #region Defect
         public static async Task<IEnumerable<dynamic>> GeDefectReport(RequestQuery requestQuery)
         {
@@ -124,7 +206,6 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
             }
         }
         #endregion
-
 
         #region Defect Details
         public static async Task<IEnumerable<DefectDetailsViewModel>> GetDefectDetails(RequestQuery requestQuery)
@@ -205,6 +286,7 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
             }
         }
         #endregion
+
 
         #region ReworK Report
         public static async Task<IEnumerable<dynamic>> GetReworkReport(RequestQuery requestQuery)
@@ -344,6 +426,225 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
             }
         }
         #endregion
+
+
+        #region LostQtY
+        public static async Task<IEnumerable<LostQtyViewModel>> GetLostQtyReport(RequestQuery requestQuery)
+        {
+            var stkList = StokReadingData.GetStokkenByStkList(requestQuery).Result;
+            requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
+            IEnumerable<LostQtyViewModel> list = new List<LostQtyViewModel>();
+            List<LostQtyViewModel> newList = new List<LostQtyViewModel>();
+            if (stkList.Count() <= 0) return newList;
+            else
+            {
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+                {
+                    await connection.OpenAsync();
+                    list = await connection.QueryAsync<LostQtyViewModel>(SqlQueryRepo.GetLostQtyReport(requestQuery));
+
+                }
+                foreach (var item in list)
+                {
+                    var dboStokgen = stkList.Where(x => x.P_ID == item.PartNo_ID).SingleOrDefault();
+                    if (dboStokgen != null)
+                    {
+                        item.Stk = dboStokgen.Stk;
+                        newList.Add(item);
+                    }
+                }
+                return newList;
+            }
+        }
+        public static async Task<int> GetLostQtyReportCount()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.QueryFirstAsync<int>(SqlQueryRepo.GetLostQtyReportCount());
+                return count;
+            }
+        }
+        #endregion
+
+
+
+        #region Supplier Pref 
+        public static async Task<IEnumerable<SupplierPrefReportViewModel>> GetSupplierPerfReport(RequestQuery requestQuery)
+        {
+            requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
+                string query = "";
+                string startAt = "";
+                string endAt = "";
+                if (requestQuery.year == "" && requestQuery.month == "")
+                {
+                    startAt = "01-01-2016";
+                    endAt = DateTime.Now.ToString("dd-MM-yyyy");
+                    query = SqlQueryRepo.GetSupplierPerfReport(requestQuery, startAt, endAt);
+                }
+                else if (requestQuery.month == "")
+                {
+                    var startTime = new DateTime(int.Parse(requestQuery.year), 1, 1);
+                    var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                    startAt = $"1-1-{requestQuery.year}";
+                    endAt = $"{lastDay}-12-{requestQuery.year}";
+                    query = SqlQueryRepo.GetSupplierPerfReport(requestQuery, startAt, endAt);
+
+                }
+                else if (requestQuery.year == "")
+                {
+
+                    var startTime = new DateTime(DateTime.Now.Year, int.Parse(requestQuery.month), 1);
+                    var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                    startAt = $"1-{requestQuery.month}-{DateTime.Now.Year}";
+                    endAt = $"{lastDay}-{requestQuery.month}-{DateTime.Now.Year}";
+                    query = SqlQueryRepo.GetSupplierPerfReport(requestQuery, startAt, endAt);
+                }
+                else
+                {
+                    var startTime = new DateTime(int.Parse(requestQuery.year), int.Parse(requestQuery.month), 1);
+                    var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                    startAt = $"1-{requestQuery.month}-{requestQuery.year}";
+                    endAt = $"{lastDay}-{requestQuery.month}-{requestQuery.year}";
+                    query = SqlQueryRepo.GetSupplierPerfReport(requestQuery, startAt, endAt);
+                }
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                {
+                    await connection.OpenAsync();
+                   var  list = await connection.QueryAsync<SupplierPrefReportViewModel>(query);
+                return list;
+                }
+           
+        }
+        public static async Task<int> GetSupplierPerfReportCount()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var count = await connection.QueryFirstAsync<int>(SqlQueryRepo.GetSupplierPerfReportCount());
+                return count;
+            }
+        }
+        #endregion
+
+
+        #region Customer Pref 
+        public static async Task<IEnumerable<CustomerPerfViewModel>> GetCustomerperfReport(RequestQuery requestQuery)
+        {
+            requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
+            string query = "";
+            string startAt = "";
+            string endAt = "";
+            if (requestQuery.year == "" && requestQuery.month == "")
+            {
+                startAt = "01-01-2016";
+                endAt = DateTime.Now.ToString("dd-MM-yyyy");
+                query = SqlQueryRepo.GetCustomerperfReport(requestQuery, startAt, endAt);
+            }
+            else if (requestQuery.month == "")
+            {
+                var startTime = new DateTime(int.Parse(requestQuery.year), 1, 1);
+                var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                startAt = $"1-1-{requestQuery.year}";
+                endAt = $"{lastDay}-12-{requestQuery.year}";
+                query = SqlQueryRepo.GetCustomerperfReport(requestQuery, startAt, endAt);
+
+            }
+            else if (requestQuery.year == "")
+            {
+
+                var startTime = new DateTime(DateTime.Now.Year, int.Parse(requestQuery.month), 1);
+                var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                startAt = $"1-{requestQuery.month}-{DateTime.Now.Year}";
+                endAt = $"{lastDay}-{requestQuery.month}-{DateTime.Now.Year}";
+                query = SqlQueryRepo.GetCustomerperfReport(requestQuery, startAt, endAt);
+            }
+            else
+            {
+                var startTime = new DateTime(int.Parse(requestQuery.year), int.Parse(requestQuery.month), 1);
+                var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                startAt = $"1-{requestQuery.month}-{requestQuery.year}";
+                endAt = $"{lastDay}-{requestQuery.month}-{requestQuery.year}";
+                query = SqlQueryRepo.GetCustomerperfReport(requestQuery, startAt, endAt);
+            }
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<CustomerPerfViewModel>(query);
+                return list;
+            }
+
+        }
+        public static async Task<int> GetCustomerperfReportCount()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var count = await connection.QueryFirstAsync<int>(SqlQueryRepo.GetCustomerperfReportCount());
+                return count;
+            }
+        }
+        #endregion
+
+
+        #region ProcessPlanReport  
+        public static async Task<IEnumerable<ProcessPlanReportViewModel>> GetProcessPlanReport(RequestQuery requestQuery)
+        {
+            requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
+            string query = "";
+            string startAt = "";
+            string endAt = "";
+            if (requestQuery.year == "" && requestQuery.month == "")
+            {
+                startAt = "01-01-2016";
+                endAt = DateTime.Now.ToString("dd-MM-yyyy");
+                query = SqlQueryRepo.GetProcessPlanReport(requestQuery, startAt, endAt);
+            }
+            else if (requestQuery.month == "")
+            {
+                var startTime = new DateTime(int.Parse(requestQuery.year), 1, 1);
+                var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                startAt = $"1-1-{requestQuery.year}";
+                endAt = $"{lastDay}-12-{requestQuery.year}";
+                query = SqlQueryRepo.GetProcessPlanReport(requestQuery, startAt, endAt);
+
+            }
+            else if (requestQuery.year == "")
+            {
+
+                var startTime = new DateTime(DateTime.Now.Year, int.Parse(requestQuery.month), 1);
+                var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                startAt = $"1-{requestQuery.month}-{DateTime.Now.Year}";
+                endAt = $"{lastDay}-{requestQuery.month}-{DateTime.Now.Year}";
+                query = SqlQueryRepo.GetProcessPlanReport(requestQuery, startAt, endAt);
+            }
+            else
+            {
+                var startTime = new DateTime(int.Parse(requestQuery.year), int.Parse(requestQuery.month), 1);
+                var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                startAt = $"1-{requestQuery.month}-{requestQuery.year}";
+                endAt = $"{lastDay}-{requestQuery.month}-{requestQuery.year}";
+                query = SqlQueryRepo.GetProcessPlanReport(requestQuery, startAt, endAt);
+            }
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<ProcessPlanReportViewModel>(query);
+                return list;
+            }
+
+        }
+        public static async Task<int> GetProcessPlanReportCount()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var count = await connection.QueryFirstAsync<int>(SqlQueryRepo.GetProcessPlanReportCount());
+                return count;
+            }
+        }
+        #endregion
+
 
     }
 }

@@ -155,6 +155,7 @@ $('#btn-defectDetailsReport-resetSearch').click(() => {
     $('#select-defectDetailsReport-year').val('');
     $('#select-defectDetailsReport-month').val('');
     $('#selectRowCount-defectDetailsReport').val("6");
+    $(Inputs.defectDetailsReport_searchStk).val('');
     GetDefectDetailsReportAjaxCall();
 })
 //#endregion

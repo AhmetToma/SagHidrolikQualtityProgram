@@ -8,7 +8,7 @@ let requestQueryForReworkDetailsReport = {
     pageNumber: 1,
     year: "",
     month: "",
-    Stk:"",
+    Stk: "",
 };
 
 // #region ajaxcall ,create table ,records count  
@@ -32,9 +32,8 @@ function GetReworkDetailsReportAjaxCall() {
         data: JSON.stringify(requestQueryForReworkDetailsReport),
         success: (list) => {
             if (list.length !== 0) {
-                console.log('det',list);
                 $(`${recordsNotFound.reworkDetailsReport}`).css('display', 'none');
-            CreatereworkDetailsReportTable(list, TablesId.reworkDetailsReport);
+                CreatereworkDetailsReportTable(list, TablesId.reworkDetailsReport);
             }
             else {
                 $(TablesId.reworkDetailsReport).empty();
@@ -50,13 +49,12 @@ function GetReworkDetailsReportAjaxCall() {
 }
 function CreatereworkDetailsReportTable(list, tableId) {
     $(tableId).empty();
-    console.log(list);
     list.map((element, index) => {
-            $(tableId).append(`
+        $(tableId).append(`
 <tr >
   <td>${element.stk}</td>
   <td>${element.finishTimeAsString}</td>
-  <td>${element.rejectName ? element.rejectName :""}</td>
+  <td>${element.rejectName ? element.rejectName : ""}</td>
   <td>${element.prosesAdi}</td>
   <td>${element.reworkQty}</td>
              </tr>
@@ -135,8 +133,8 @@ $(NextButtons.reworkDetailsReport).on('click', (event) => {
 // #region search
 $(Inputs.reworkDetailsReport_searchStk).keyup(function () {
     clearTimeout(timer);
-        requestQueryForReworkDetailsReport.pageNumber = 1;
-        $(`${pageNumbers.reworkDetailsReport}`).text(requestQueryForReworkDetailsReport.pageNumber);
+    requestQueryForReworkDetailsReport.pageNumber = 1;
+    $(`${pageNumbers.reworkDetailsReport}`).text(requestQueryForReworkDetailsReport.pageNumber);
     timer = setTimeout(GetReworkDetailsReportAjaxCall, typingInterval);
 });
 //user is "finished typing," do something
@@ -152,15 +150,7 @@ $('#btn-reworkDetailsReport-resetSearch').click(() => {
     $('#select-reworkDetailsReport-year').val('');
     $('#select-reworkDetailsReport-month').val('');
     $('#selectRowCount-reworkDetailsReport').val("6");
+    $(Inputs.reworkDetailsReport_searchStk).val('');
     GetReworkDetailsReportAjaxCall();
 })
 //#endregion
-
-
-
-
-
-
-
-
-

@@ -23,6 +23,18 @@ namespace SagHidrolik.webApp.Controllers
             return Json(listCount);
         }
         #endregion
+        #region production Details Report
+        public JsonResult GetProcutionDetailsReport([FromBody]RequestQuery requestQuery)
+        {
+            var list = ReportsData.GetProcutionDetailsReport(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetProcutionDetailsReportCount()
+        {
+            int count = ReportsData.GetProcutionDetailsReportCount().Result;
+            return Json(count);
+        }
+        #endregion
 
 
         #region  Defect
@@ -38,7 +50,6 @@ namespace SagHidrolik.webApp.Controllers
             return Json(listCount);
         }
         #endregion
-
         #region  Defect Details
         public JsonResult GetDefectDetails([FromBody]RequestQuery requestQuery)
         {
@@ -65,7 +76,6 @@ namespace SagHidrolik.webApp.Controllers
             return Json(listCount);
         }
         #endregion
-
         #region  Rework Details Report
         public JsonResult GetReworkDetailsReport([FromBody]RequestQuery requestQuery)
         {
@@ -78,5 +88,59 @@ namespace SagHidrolik.webApp.Controllers
             return Json(count);
         }
         #endregion
+
+        #region  LostQty Report
+        public JsonResult GetLostQtyReport([FromBody]RequestQuery requestQuery)
+        {
+            var list = ReportsData.GetLostQtyReport(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetLostQtyReportCount()
+        {
+            int count = ReportsData.GetLostQtyReportCount().Result;
+            return Json(count);
+        }
+        #endregion
+
+        #region  Supplier Perf
+        public JsonResult GetSupplierPerfReport([FromBody]RequestQuery requestQuery)
+        {
+            var list = ReportsData.GetSupplierPerfReport(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetSupplierPerfReportCount()
+        {
+            int count = ReportsData.GetSupplierPerfReportCount().Result;
+            return Json(count);
+        }
+        #endregion
+
+        #region  Customer Perf
+        public JsonResult GetCustomerperfReport([FromBody]RequestQuery requestQuery)
+        {
+            var list = ReportsData.GetCustomerperfReport(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetCustomerperfReportCount()
+        {
+            int count = ReportsData.GetCustomerperfReportCount().Result;
+            return Json(count);
+        }
+        #endregion
+
+
+        #region  Process Plan
+        public JsonResult GetProcessPlanReport([FromBody]RequestQuery requestQuery)
+        {
+            var list = ReportsData.GetProcessPlanReport(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetProcessPlanReportCount()
+        {
+            int count = ReportsData.GetProcessPlanReportCount().Result;
+            return Json(count);
+        }
+        #endregion
+
     }
 }

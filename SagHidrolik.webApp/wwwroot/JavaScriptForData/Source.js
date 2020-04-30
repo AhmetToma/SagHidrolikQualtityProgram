@@ -10,7 +10,7 @@ const HttpUrls = {
     AddClaimType: BaseUrl + "SetupGetData/AddClaimType",
     DeleteClaimType: BaseUrl + "SetupGetData/DeleteClaimType?claimId=",
     UpdateClaimType: BaseUrl + "SetupGetData/UpdateClaimType",
-    
+
     GetAllCompany: BaseUrl + "SetupGetData/GetAllCompany",
     GetAllCompanyCount: BaseUrl + "SetupGetData/GetAllCompanyCount",
     AddCompnay: BaseUrl + "SetupGetData/AddCompnay",
@@ -80,6 +80,18 @@ const HttpUrls = {
     GetReworkDetailsReport: BaseUrl + "ReportsGetData/GetReworkDetailsReport",
     GetReworkDetailsReportCount: BaseUrl + "ReportsGetData/GetReworkDetailsReportCount",
 
+    GetProcutionDetailsReport: BaseUrl + "ReportsGetData/GetProcutionDetailsReport",
+    GetProcutionDetailsReportCount: BaseUrl + "ReportsGetData/GetProcutionDetailsReportCount",
+
+    GetLostQtyReport: BaseUrl + "ReportsGetData/GetLostQtyReport",
+    GetLostQtyReportCount: BaseUrl + "ReportsGetData/GetLostQtyReportCount",
+
+    GetSupplierPerfReport: BaseUrl + "ReportsGetData/GetSupplierPerfReport",
+    GetSupplierPerfReportCount: BaseUrl + "ReportsGetData/GetSupplierPerfReportCount",
+
+    GetCustomerperfReport: BaseUrl + "ReportsGetData/GetCustomerperfReport",
+    GetCustomerperfReportCount: BaseUrl + "ReportsGetData/GetCustomerperfReportCount",
+
     GetStokAll: BaseUrl + "StokGetData/GetStokAll",
     GetStokAllCount: BaseUrl + "StokGetData/GetStokAllCount",
 
@@ -112,7 +124,7 @@ const Buttons = {
     partNumber_confirmAdd: "#btn-partNumber-confirmAdd",
     partNumber_confirmEdit: "#btn-partNumber-confirmEdit",
     newNc_submit: "#btn-newNc-submit",
-    newNc_confirmAdd:"#btn-newNC-confirmAdd",
+    newNc_confirmAdd: "#btn-newNC-confirmAdd",
     newNc_reset: "#btn-newNc-reset",
     reviewDetails_addImmediateAction: "#btn-reviewDetails-addImmediateAction",
     reviewDetails_confrimAddAction: "#btn-reviewDetails-add-confirmAdd",
@@ -130,13 +142,13 @@ const Models = {
     operator_add: "#operator-AddModel",
     operator_edit: "#operator-editModel",
 
-  Iprocess_add: "#Iprocess-AddModel",
+    Iprocess_add: "#Iprocess-AddModel",
     Iprocess_edit: "#Iprocess-editModel",
-    
- partNumber_add: "#partNumber-AddModel",
+
+    partNumber_add: "#partNumber-AddModel",
     partNumber_edit: "#partNumber-editModel",
 
-    newNc_summary:"#newNc-summary"
+    newNc_summary: "#newNc-summary"
 
 }
 const TablesId = {
@@ -156,6 +168,10 @@ const TablesId = {
     defectDetailsReport: "#table-defectDetailsReport",
     reworkReport: "#table-reworkReport",
     reworkDetailsReport: "#table-reworkDetailsReport",
+    productionDetailsReport: "#table-productionDetailsReport",
+    lostQtyReport: "#table-lostQtyReport",
+    supplierPerfReport: "#table-supplierPerfReport",
+    customerPerfReport: "#table-customerPerfReport",
     stokAll: "#table-stokAll"
 
 };
@@ -186,7 +202,7 @@ const Inputs = {
     partNumber_stk_edit: "#inp-partNumber-stk-edit",
     partNumber_sta_edit: "#inp-partNumber-sta-edit",
     partNumber_type_edit: "#inp-partNumber-type-edit",
-    partNumber_searchStk:"#inp-partNumber-searchStk",
+    partNumber_searchStk: "#inp-partNumber-searchStk",
 
     newNC_ncType: "#select-newNc-ncType",
     newNC_cutomerSup: "#select-newNc-cusSup",
@@ -235,12 +251,18 @@ const Inputs = {
     reviewDetails_addImmediateAction_closeDate: "#inp-reviewDetails-add-closeDate",
     openAction_searchStk: "#inp-openAction-searchStk",
     stokAll_searchStk: "#inp-stokAll-searchStk",
-   defectDetailsReport_searchStk: "#inp-defectDetailsReport-searchStk",
-   reworkDetailsReport_searchStk: "#inp-reworkDetailsReport-searchStk"
+    defectDetailsReport_searchStk: "#inp-defectDetailsReport-searchStk",
+    reworkDetailsReport_searchStk: "#inp-reworkDetailsReport-searchStk",
+    productionDetailsReport_searchStk: "#inp-productionDetailsReport-searchStk",
+    lostQtyReport_searchStk: "#inp-lostQtyReport-searchStk",
+    lostQtyReport_searchLotNo: "#inp-lostQtyReport-searchLotNo",
+    supplierPerfReport_searchStk: "#inp-supplierPerfReport-searchStk",
+    customerPerfReport_searchStk: "#inp-customerPerfReport-searchStk",
+
 
 
 }
-const recordsNotFound= {
+const recordsNotFound = {
     claimType: "#recordNotFound_claimType",
     company: "#recordNotFound_company",
     department: "#recordNotFound_department",
@@ -254,7 +276,11 @@ const recordsNotFound= {
     defectDetailsReport: "#recordNotFound_defectDetailsReport",
     reworkReport: "#recordNotFound_reworkReport",
     reworkDetailsReport: "#recordNotFound_reworkDetailsReport",
-    stokAll:"#recordNotFound_stokAll"
+    productionDetailsReport: "#recordNotFound_productionDetailsReport",
+    lostQtyReport: "#recordNotFound_lostQtyReport",
+    supplierPerfReport: "#recordNotFound_supplierPerfReport",
+    customerPerfReport: "#recordNotFound_customerPerfReport",
+    stokAll: "#recordNotFound_stokAll"
 
 
 
@@ -275,6 +301,10 @@ const PreviousButtons = {
     defectDetailsReport: "#btn-defectDetailsReport-previous",
     reworkReport: "#btn-reworkReport-previous",
     reworkDetailsReport: "#btn-reworkDetailsReport-previous",
+    productionDetailsReport: "#btn-productionDetailsReport-previous",
+    lostQtyReport: "#btn-lostQtyReport-previous",
+    supplierPerfReport: "#btn-supplierPerfReport-previous",
+    customerPerfReport: "#btn-customerPerfReport-previous",
     stokAll: "#btn-stokAll-previous",
 
 
@@ -293,6 +323,10 @@ const NextButtons = {
     defectReport: "#btn-defectReport-next",
     defectDetailsReport: "#btn-defectDetailsReport-next",
     reworkDetailsReport: "#btn-reworkDetailsReport-next",
+    productionDetailsReport: "#btn-productionDetailsReport-next",
+    lostQtyReport: "#btn-lostQtyReport-next",
+    supplierPerfReport: "#btn-supplierPerfReport-next",
+    customerPerfReport: "#btn-customerPerfReport-next",
     reworkReport: "#btn-reworkReport-next",
 
 };
@@ -309,6 +343,10 @@ const pageNumbers = {
     defectReport: "#number-defectReport-pageNumber",
     defectDetailsReport: "#number-defectDetailsReport-pageNumber",
     reworkDetailsReport: "#number-reworkDetailsReport-pageNumber",
+    productionDetailsReport: "#number-productionDetailsReport-pageNumber",
+    lostQtyReport: "#number-lostQtyReport-pageNumber",
+    supplierPerfReport: "#number-supplierPerfReport-pageNumber",
+    customerPerfReport: "#number-customerPerfReport-pageNumber",
     reworkReport: "#number-reworkReport-pageNumber",
 }
 
@@ -319,7 +357,7 @@ function ShowLoader() {
 
 function HideLoader() {
     $('.loader-Container').fadeOut('slow');
-  //  $('.loader-Container').css('display', 'none');
+    //  $('.loader-Container').css('display', 'none');
 
 }
 
@@ -328,7 +366,7 @@ function disableButton(id) {
     $(id).css({ 'pointer-events': 'none', 'background-color': 'grey', 'cursor': 'no-drop' });
     $(id).parent().css('cursor', 'no-drop');
 }
-    
+
 function ActiveButton(id) {
     $(id).css({ 'pointer-events': 'auto', 'background-color': '#2A3F54', 'cursor': 'pointer' });
     $(id).parent().css('cursor', 'pointer');
