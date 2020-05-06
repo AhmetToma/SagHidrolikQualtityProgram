@@ -1,0 +1,107 @@
+﻿<div class="container-Stok" >
+    <div class="alert alert-danger alert-welcomePage" role="alert">
+        Stok
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text text-white" style="background-color:#e73c68" id="basic-addon1">STK</span>
+                </div>
+                <input id="inp-stokSearch" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu">
+            </div>
+            <div class="urunImage">
+                <img onclick="openModal()" src="" />
+                <a style="opacity:0" id="tifImage" class="btn btn-primary">Image-Tif</a>
+            </div>
+        </div>
+
+        <div class="col-md-8 tabelForStk">
+            <table class="table table-bordered ">
+                <thead class="tabh">
+                    <tr>
+                        <th id="x">STK</th>
+                        <th>STA</th>
+                        <th>Adres</th>
+                    </tr>
+                </thead>
+                <tbody id="table-stok-stokgenSearch">
+                    <tr></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ul id="toscrolo" style="opacity:0" class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#a" role="tab" aria-controls="home" aria-selected="true">Stok</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#b" role="tab" aria-controls="profile" aria-selected="false">Reçete</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#c" role="tab" aria-controls="contact" aria-selected="false">Üretim</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="a" role="tabpanel" aria-labelledby="home-tab">
+            <partial name="StokPartials/Partial_StokDetailes" />
+        </div>
+        <div class="tab-pane fade" id="b" role="tabpanel" aria-labelledby="profile-tab">
+            <partial name="StokPartials/Partial_Recete" />
+        </div>
+        <div class="tab-pane fade" id="c" role="tabpanel" aria-labelledby="contact-tab">
+            <partial name="StokPartials/Partial_Uretim" />
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div style="background-color: black;" id="myModal" class="modal">
+        <span class="close cursor" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <div class="column">
+                <img id="openModelImage" class="demo" src="" alt="Nature">
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function openModal() {
+        document.getElementById("myModal").style.display = "block";
+        $('.urunImage img').css('width', '100%')
+        $('.urunImage img').css('height', '100%')
+    }
+    $('#myModal').click(() => {
+        closeModal();
+    })
+    // Close the Modal
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+</script>
+
+
+
+
+

@@ -15,5 +15,9 @@ namespace SagHidrolik.Models.ViewModesl
         public string pid { get; set; }
         public string lotNo { get; set; }
         public string Group { get; set; }
+        public string Machine_no { get; set; }
+        public string processAdi { get; set; }
+        public string uretimPlaniType { get; set; }
+        public string machineNo { get; set; }
     }
 }

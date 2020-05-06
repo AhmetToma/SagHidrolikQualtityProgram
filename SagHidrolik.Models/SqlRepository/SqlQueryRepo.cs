@@ -148,6 +148,248 @@ namespace SagHidrolik.Models.SqlRepository
 
         #endregion
 
+        #region Uretim
+
+        public static string GetAktiveMachine = "SELECT  [dbo].[10_MakinaListesiNew].Machine_Id, " +
+            "[dbo].[10_MakinaListesiNew].Machine_no,[dbo].[10_MakinaListesiNew].Machine_Name," +
+            "[dbo].[10_MakinaListesiNew].Aktif2 FROM  [dbo].[10_MakinaListesiNew]" +
+            " WHERE((( [dbo].[10_MakinaListesiNew].Aktif2)= 1))ORDER BY  [dbo].[10_MakinaListesiNew].Machine_no";
+        public static string GetMachineNameByMachineNo(string Machine_Id)
+        {
+            query = $"SELECT  [dbo].[10_MakinaListesiNew].Machine_Id, [dbo].[10_MakinaListesiNew].Machine_no," +
+                $" [dbo].[10_MakinaListesiNew].Machine_Name," +
+                $" [dbo].[10_MakinaListesiNew].MODEL FROM  [dbo].[10_MakinaListesiNew] " +
+                $"where  [dbo].[10_MakinaListesiNew].Machine_Id='{Machine_Id}'";
+            return query;
+        }
+
+        public static string GetFire(int Reject_ID)
+        {
+            if (Reject_ID == 0)
+                return query = "SELECT Reject_def.Reject_ID,Reject_def.Reject_Code,Reject_def.REject_Name" +
+                  " FROM Reject_def";
+            return query = "SELECT Reject_def.Reject_ID,Reject_def.Reject_Code,Reject_def.REject_Name" +
+               $" FROM Reject_def where Reject_ID  like '%{Reject_ID}%'";
+
+        }
+
+
+        public static string GetProceesFlow(RequestQuery requestQuery)
+        {
+            query = "SELECT dbo.Process_Planning.ProsesAdi,ProcessNo,dbo.Local_ProductionOrders.PartNo_ID, ProcessFlow.Flow_ID, ProcessFlow.ProductOrder_ID, ProcessFlow.ProcessNo_ID, " +
+                " [Process_qty] -[Ok_Qty] -[Process_reject] -[Process_Rework] AS Miktar, ProcessFlow.Require_Date, dbo.Local_ProductionOrders.Status, " +
+                " dbo.Local_ProductionOrders.LotNo FROM   ProcessFlow INNER JOIN dbo.Local_ProductionOrders ON ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID" +
+                " left join dbo.Process_Planning on Process_Planning.ProcessNo = ProcessFlow.ProcessNo_ID WHERE((([Process_qty] -[Ok_Qty] -[Process_reject] -[Process_Rework]) > 0) AND((dbo.Local_ProductionOrders.Status) = 2))" +
+                $" and LotNo like '%{requestQuery.lotNo}%' " +
+                " order By  dbo.Local_ProductionOrders.LotNo asc ;";
+            return query;
+        }
+        public static string StartIsEmriAndWriteToFlowDetails(ProcessFlowDetailsViewModel proFlowVM)
+        {
+            query = $"insert into dbo.ProcessFlowDetail(Flow_ID,Operator,Machine,Start_time) values ({proFlowVM.Flow_ID},{proFlowVM.Operator},{proFlowVM.processno_id},'{proFlowVM.Start_time}')";
+            return query;
+        }
+        public static string GetOperatorPolivalance(OperatorPolivalanceViewModel operatorPolivalanceViewModel)
+        {
+            query = $"SELECT OperatorPolivalance.OperatorNo, OperatorPolivalance.ProcessNo FROM OperatorPolivalance WHERE OperatorPolivalance.OperatorNo = '{operatorPolivalanceViewModel.operator_ID}'" +
+                $" AND OperatorPolivalance.ProcessNo = '{operatorPolivalanceViewModel.processno_id}'";
+            return query;
+        }
+        public static string CheckFlowIdByFinishTimeInFlowDetails(string flow_ID)
+        {
+            query = " SELECT ProcessFlowDetail.Flow_ID, ProcessFlowDetail.Operator,ProcessFlowDetail.Machine,ProcessFlowDetail.Start_time FROM ProcessFlowDetail" +
+             $" WHERE ProcessFlowDetail.Flow_ID = {flow_ID}  AND ProcessFlowDetail.Finish_time Is Null;";
+            return query;
+        }
+        public static string GetProcessFlowClose(RequestQuery requestQuery)
+        {
+            query = "SELECT ProcessFlowDetail.ID,ProcessFlowDetail.Flow_ID, [dbo].[10_MakinaListesiNew].Machine_no, ProcessFlowDetail.Operator, " +
+                " dbo.Operator.Operator_Name, ProcessFlowDetail.Machine," +
+                " dbo.Local_ProductionOrders.PartNo_ID," +
+                " ProcessFlowDetail.Start_time,ProcessFlowDetail.Finish_time,dbo.Local_ProductionOrders.LotNo, ProcessFlow.ProcessNo_ID, ProcessFlow.Process_qty, " +
+                " ProcessFlow.Ok_Qty, ProcessFlow.Process_reject, Process_Planning.ProsesAdi," +
+                " ProcessFlow.Process_Rework FROM ProcessFlowDetail INNER JOIN ProcessFlow " +
+                " ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID INNER JOIN dbo.Local_ProductionOrders " +
+                " ON ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID " +
+                " inner Join Process_Planning on Process_Planning.ProcessNo = ProcessFlow.ProcessNo_ID " +
+                " inner join dbo.Operator on dbo.Operator.Operator_ID = ProcessFlowDetail.Operator " +
+                " inner Join  [dbo].[10_MakinaListesiNew] on  [dbo].[10_MakinaListesiNew].Machine_Id = ProcessFlowDetail.Machine " +
+                " WHERE(((ProcessFlowDetail.Finish_time)Is Null) AND((dbo.Local_ProductionOrders.Status) = 2))" +
+                $" And dbo.Local_ProductionOrders.LotNo like '%{requestQuery.lotNo}%'" +
+                $" order By dbo.Local_ProductionOrders.LotNo asc OFFSET { requestQuery.pageNumber} ROWS FETCH NEXT { requestQuery.pageSize}ROWS ONLY;";
+            return query;
+        }
+        public static string uretimBitir1_processflow(UretimBitirViewModel ubvm)
+        {
+            int f1 = ubvm.fire1.inpValue ?? 0;
+            int f2 = ubvm.fire2.inpValue ?? 0;
+            int toplamFire = f1 + f2;
+            query = $"UPDATE ProcessFlow SET ProcessFlow.Ok_Qty = ProcessFlow.Ok_Qty +{ ubvm.Miktar}," +
+                $" ProcessFlow.Process_reject = ProcessFlow.Process_reject + {toplamFire} ," +
+                $" ProcessFlow.Process_Rework = ProcessFlow.Process_Rework + {ubvm.tamir.inpValue} " +
+                $" WHERE ProcessFlow.Flow_ID ='{ ubvm.flow_Id}'";
+
+            return query;
+        }
+        public static string uretimBitir2_processflowDetails(UretimBitirViewModel ubvm)
+        {
+            int f1 = ubvm.fire1.inpValue ?? 0;
+            int f2 = ubvm.fire2.inpValue ?? 0;
+            string finishTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            int toplamFire = f1 + f2;
+            query = $"SET DATEFORMAT dmy;UPDATE ProcessFlowDetail SET ProcessFlowDetail.Finish_time = '{finishTime}', ProcessFlowDetail.Np_time ={ ubvm.durus.dk},  " +
+                $" ProcessFlowDetail.Np_Def = '{ubvm.durus.note}',ProcessFlowDetail.Defect1_qty = { ubvm.fire1.inpValue}," +
+                $" ProcessFlowDetail.Defect1_Name = { ubvm.fire1.id},ProcessFlowDetail.Defect2_qty = { ubvm.fire2.inpValue}, ProcessFlowDetail.Defect2_Name = { ubvm.fire2.id} ,ProcessFlowDetail.Rework_qty = { ubvm.tamir.inpValue}," +
+                $" ProcessFlowDetail.Rework_Name = {ubvm.tamir.id}, " +
+                $"  ProcessFlowDetail.Ok_Qty = {ubvm.Miktar} WHERE ProcessFlowDetail.ID ={ubvm.FlowDetailsId}";
+            return query;
+        }
+        public static string uretimBitir3_processFlow(string flowId)
+        {
+            query = $" SELECT  * FROM ProcessFlow WHERE ProcessFlow.Flow_ID='{flowId}'";
+            return query;
+
+        }
+        public static string uretimBitir4_ProcessPlanFollowTable(int Miktar, int lotNo, string ProcessNo_ID)
+        {
+            query = $"UPDATE ProcessPlanFollowTable SET ProcessPlanFollowTable.RemainProcessqty =ProcessPlanFollowTable.RemainProcessqty-{Miktar} WHERE ProcessPlanFollowTable.WOLot = {lotNo}" +
+                $"  AND ProcessPlanFollowTable.ProcessNo_ID = {ProcessNo_ID}";
+            return query;
+        }
+        // if nextproceess=0
+        public static string uretimBitir5_ProductionOrdersQty1(int Miktar, string WoNo)
+        {
+            query = " UPDATE dbo.Local_ProductionOrders SET dbo.Local_ProductionOrders.Completed_Qty = isnull(dbo.Local_ProductionOrders.Completed_Qty,0)+" +
+                $"{Miktar} WHERE dbo.Local_ProductionOrders.ProductOrderID ='{WoNo}'";
+            return query;
+        }
+
+        public static string uretimBitir6_ProductionOrdersQty2(int? fire1, int? fire2, int? tamir, string WoNo)
+        {
+            query = $"UPDATE dbo.Local_ProductionOrders SET dbo.Local_ProductionOrders.Completed_Qty = isnull(dbo.Local_ProductionOrders.Completed_Qty,0)+{fire1} +{fire2}" +
+                $"+{ tamir} WHERE dbo.Local_ProductionOrders.ProductOrderID ='{WoNo}'";
+            return query;
+        }
+        public static string uretimBitir7ProcessFlowWithNextProcess(int Miktar, string WoNo, string NextProcess)
+        {
+            query = $"UPDATE ProcessFlow SET ProcessFlow.Process_qty = isNull(ProcessFlow.Process_qty,0)+ {Miktar} WHERE ProcessFlow.ProductOrder_ID= {WoNo}" +
+                $" AND ProcessFlow.ProcessNo_ID = { NextProcess}";
+            return query;
+        }
+        public static string uretimBitir6_ProductionOrdersStatus()
+        {
+            var now = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+            query = $"UPDATE dbo.Local_ProductionOrders SET dbo.Local_ProductionOrders.Status = 3, dbo.Local_ProductionOrders.CloseDate ='{now}' where " +
+                $"dbo.Local_ProductionOrders.Status = 2 AND IIf((dbo.Local_ProductionOrders.Completed_Qty / dbo.Local_ProductionOrders.Qty) > 0.95, 1, 0) = 1";
+            return query;
+        }
+
+        public static string GetAktiveOperators = "SELECT dbo.Operator.Operator_ID, dbo.Operator.Operator_Name, dbo.Operator.Aktif FROM dbo.Operator WHERE(((Operator.Aktif)= 1)) " +
+                        "ORDER BY dbo.Operator.Operator_Name";
+        public static string GetProductOrderByStokgenId(RequestQuery requetQuery)
+        {
+            query = $"select * from dbo.Local_ProductionOrders where dbo.Local_ProductionOrders.PartNo_ID={requetQuery.pid}" +
+ "order By dbo.Local_ProductionOrders.LotNo desc";
+
+            return query;
+        }
+
+
+
+        public static string GetAllUretimPlani(RequestQuery requestQuery)
+        {
+            query = "SELECT ProcessPlanFollowTable.ID, ProcessPlanFollowTable.ProcessDate, " +
+                   " dbo.ProcessPlanFollowTable.[Group], ProcessPlanFollowTable.ProsesAdi, ProcessPlanFollowTable.PartNo, ProcessPlanFollowTable.WOLot, ProcessPlanFollowTable.RemainProcessqty, ProcessPlanFollowTable.WONewDate, ProcessPlanFollowTable.Balance, ProcessPlanFollowTable.Order_no, ProcessPlanFollowTable.ProcessNo_ID, ProcessPlanFollowTable.Qty, ProcessPlanFollowTable.Process_qty, ProcessPlanFollowTable.Ok_Qty, ProcessPlanFollowTable.Process_reject, ProcessPlanFollowTable.Process_Rework, ProcessPlanFollowTable.Complete " +
+                   " FROM ProcessPlanFollowTable " +
+                   " WHERE(((ProcessPlanFollowTable.RemainProcessqty) > 0)) " +
+                   $" and ProcessPlanFollowTable.PartNo like '%{requestQuery.Stk}%'" +
+                   $" and ProcessPlanFollowTable.[Group] like '%{requestQuery.uretimPlaniType}%'" +
+                   $" order by ProcessDate asc OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY";
+            return query;
+        }
+
+
+        public static string GetAllGunlukHatBazindUretimList(RequestQuery requestQuery)
+        {
+            query = $"select ProcessFlowDetail.Finish_time AS FinishTime,Process_Planning.ProsesAdi,dbo.Local_ProductionOrders.PartNo_ID," +
+$" Sum(ProcessFlowDetail.Ok_Qty) AS Total, Operator.Operator_Name,ProcessFlowDetail.Start_time,dbo.[10_MakinaListesiNew].Machine_no " +
+$" FROM (((ProcessFlowDetail INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID) INNER JOIN Process_Planning " +
+$" ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo)" +
+$" inner join dbo.[10_MakinaListesiNew] on dbo.[10_MakinaListesiNew].Machine_Id = ProcessFlowDetail.Machine inner join Local_ProductionOrders " +
+$" ON ProcessFlow.ProductOrder_ID = Local_ProductionOrders.ProductOrderID) " +
+$" INNER JOIN Operator ON ProcessFlowDetail.Operator = Operator.Operator_ID " +
+$" where Process_Planning.ProsesAdi like'%{requestQuery.processAdi}%' and dbo.[10_MakinaListesiNew].Machine_no like '%{requestQuery.machineNo}%' " +
+$" GROUP BY ProcessFlowDetail.Finish_time, Process_Planning.ProsesAdi,Operator.Operator_Name, ProcessFlowDetail.Start_time, " +
+$" ProcessFlowDetail.Finish_time,ProcessFlowDetail.Machine,ProcessFlowDetail.Finish_time, Local_ProductionOrders.PartNo_ID " +
+$" ,dbo.[10_MakinaListesiNew].Machine_no ORDER BY Finish_time DESC" +
+$" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
+            return query;
+        }
+
+        #endregion
+
+        #region tamir is emri 
+        public static string GetTamirIsEmriAdimlari = "SELECT Process_Planning.ProcessNo, Process_Planning.ProsesAdi,Process_Planning.ProcessName FROM Process_Planning;";
+
+
+        public static string InsertTamirIsEmri_productionOrders_getLotNo(tamirIsEmriModel tamirIsEmriModel)
+        {
+            int miktar = int.Parse(tamirIsEmriModel.tamirMiktari);
+            query = "SET DATEFORMAT dmy;insert into dbo.Local_ProductionOrders(PartNo_ID,Qty,IssueDate,Remark,[Status],Printed) " +
+                $" values('{tamirIsEmriModel.p_id}', {miktar}, '{tamirIsEmriModel.tarih}', 'TAMİR Lot:${tamirIsEmriModel.lotNo}', 2, 0); " +
+                " SELECT CAST(SCOPE_IDENTITY() as int)";
+            return query;
+        }
+        public static string InsertTamirIsEmri_productionOrders_setLotNo(int lotNo)
+        {
+            query = $" update dbo.Local_ProductionOrders set LotNo={lotNo} where ProductOrderID={lotNo}";
+            return query;
+        }
+        public static string InsertTamirIsEmri_processFlowTamir6(int newLotNo, tamirIsEmriModel tamirIsEmriModel, int lastProcess)
+        {
+            query = $"SET DATEFORMAT dmy;insert into ProcessFlow(ProductOrder_ID,ProcessNo_ID," +
+                $"Process_qty,ProcessNo_next,Require_Date,Ok_Qty,Process_reject,Process_Rework,Order_no)" +
+                $" values({newLotNo}, {tamirIsEmriModel.tamir6.ProcessNo}, 0, {lastProcess}, {tamirIsEmriModel.tarih},0, 0, 0, 6);";
+            return query;
+        }
+        public static string InsertTamirIsEmri_processFlowTamir5(int newLotNo, tamirIsEmriModel tamirIsEmriModel, int lastProcess)
+        {
+            query = $"SET DATEFORMAT dmy;insert into ProcessFlow(ProductOrder_ID,ProcessNo_ID," +
+                $"Process_qty,ProcessNo_next,Require_Date,Ok_Qty,Process_reject,Process_Rework,Order_no)" +
+                $" values({newLotNo}, {tamirIsEmriModel.tamir5.ProcessNo}, 0, {lastProcess}, {tamirIsEmriModel.tarih},0, 0, 0, 5);";
+            return query;
+        }
+        public static string InsertTamirIsEmri_processFlowTamir4(int newLotNo, tamirIsEmriModel tamirIsEmriModel, int lastProcess)
+        {
+            query = $"SET DATEFORMAT dmy;insert into ProcessFlow(ProductOrder_ID,ProcessNo_ID," +
+                $"Process_qty,ProcessNo_next,Require_Date,Ok_Qty,Process_reject,Process_Rework,Order_no)" +
+                $" values({newLotNo}, {tamirIsEmriModel.tamir4.ProcessNo}, 0, {lastProcess}, {tamirIsEmriModel.tarih},0, 0, 0, 4);";
+            return query;
+        }
+        public static string InsertTamirIsEmri_processFlowTamir3(int newLotNo, tamirIsEmriModel tamirIsEmriModel, int lastProcess)
+        {
+            query = $"SET DATEFORMAT dmy;insert into ProcessFlow(ProductOrder_ID,ProcessNo_ID," +
+                $"Process_qty,ProcessNo_next,Require_Date,Ok_Qty,Process_reject,Process_Rework,Order_no)" +
+                $" values({newLotNo}, {tamirIsEmriModel.tamir3.ProcessNo}, 0, {lastProcess}, {tamirIsEmriModel.tarih},0, 0, 0, 3);";
+            return query;
+        }
+        public static string InsertTamirIsEmri_processFlowTamir2(int newLotNo, tamirIsEmriModel tamirIsEmriModel, int lastProcess)
+        {
+            query = $"SET DATEFORMAT dmy;insert into ProcessFlow(ProductOrder_ID,ProcessNo_ID," +
+                $"Process_qty,ProcessNo_next,Require_Date,Ok_Qty,Process_reject,Process_Rework,Order_no)" +
+                $" values({newLotNo}, {tamirIsEmriModel.tamir2.ProcessNo}, 0, {lastProcess}, {tamirIsEmriModel.tarih},0, 0, 0, 2);";
+            return query;
+        }
+        public static string InsertTamirIsEmri_processFlowTamir1(int newLotNo, tamirIsEmriModel tamirIsEmriModel, int lastProcess)
+        {
+            query = $"SET DATEFORMAT dmy;insert into ProcessFlow(ProductOrder_ID,ProcessNo_ID," +
+                $"Process_qty,ProcessNo_next,Require_Date,Ok_Qty,Process_reject,Process_Rework,Order_no)" +
+                $" values({newLotNo}, {tamirIsEmriModel.tamir1.ProcessNo}, 0, {lastProcess}, {tamirIsEmriModel.tarih},0, 0, 0, 1);";
+            return query;
+        }
+
+        #endregion
+
         #region Quality
         #region Setup
 
@@ -818,9 +1060,58 @@ HAVING ((( dbo.SIPARIS_ALT.TESTARIHI)<GetDate()) AND (( dbo.SIPARIS_ALT.TUR)=90)
         public static string GetProcessPlanReportCount() => @"select COUNT(*) from( select    ID,ProcessDate,[Group],ProsesAdi,PartNo,WOLot,RemainProcessqty,
  WONewDate,Balance
  from  dbo.ProcessPlanFollowTable where RemainProcessqty >0)countNumber";
+   
+
+        public static string DeleteProcessplan(int id)=>$@"delete from ProcessPlanFollowTable where ID ={id}";
+        #endregion
+        #region Monthly production
+        public static string GetMonthlyProduction(RequestQuery r, string startAt, string endAt) => $@"SET DATEFORMAT dmy;SELECT  CAST(MONTH(Finish_time) AS VARCHAR(2)) + '/' + CAST(YEAR(Finish_time) AS VARCHAR(4)) as FinsihTime,
+ Sum(ProcessFlowDetail.Ok_Qty) AS Total, 
+  ProcessFlowDetail.Machine as MachineId,dbo.[10_MakinaListesiNew].Machine_no,MODEL as Model
+FROM (((ProcessFlow INNER JOIN Process_Planning ON 
+ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo) INNER JOIN ProcessFlowDetail 
+ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID)) 
+INNER JOIN dbo.Operator ON ProcessFlowDetail.Operator = dbo.Operator.Operator_ID
+inner join  dbo.[10_MakinaListesiNew] on ProcessFlowDetail.Machine = [10_MakinaListesiNew].Machine_Id
+where ProcessFlowDetail.Ok_Qty is not null and Machine_no  like '%{r.Machine_no}%'
+and Finish_time between '{startAt}' and '{endAt}'
+Group BY CAST(MONTH(Finish_time) AS VARCHAR(2)) + '/' + CAST(YEAR(Finish_time) AS VARCHAR(4)), 
+ProcessFlowDetail.Machine,Machine_no,MODEL
+ORDER BY Machine_no  OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY 
+";
+        public static string GetMonthlyProductionCount() => @"select COUNT(*) from( SELECT  CAST(MONTH(Finish_time) AS VARCHAR(2)) + '/' + CAST(YEAR(Finish_time) AS VARCHAR(4)) as FinsihTime,
+ Sum(ProcessFlowDetail.Ok_Qty) AS Total, 
+  ProcessFlowDetail.Machine as MachineId,dbo.[10_MakinaListesiNew].Machine_no,MODEL as Model
+FROM (((ProcessFlow INNER JOIN Process_Planning ON 
+ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo) INNER JOIN ProcessFlowDetail 
+ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID)) 
+INNER JOIN dbo.Operator ON ProcessFlowDetail.Operator = dbo.Operator.Operator_ID
+inner join  dbo.[10_MakinaListesiNew] on ProcessFlowDetail.Machine = [10_MakinaListesiNew].Machine_Id
+where ProcessFlowDetail.Ok_Qty is not null 
+Group BY CAST(MONTH(Finish_time) AS VARCHAR(2)) + '/' + CAST(YEAR(Finish_time) AS VARCHAR(4)), 
+ProcessFlowDetail.Machine,Machine_no,MODEL)countNumber
+";
         #endregion
 
+        #region SellDate
 
+        public static string GetSellDateReport(RequestQuery r ,string startAt ,string endAt) => $@"SET DATEFORMAT dmy;SELECT  dbo.STOKGEN.STK,MAX( CAST(STOK_ALT.TARIH AS DATE)) as tarih,STOKGEN.TUR,
+  Sum(dbo.STOK_ALT.[GRMIK]-dbo.STOK_ALT.[CKMIK]) AS TotalStock
+FROM dbo.STOK_ALT RIGHT JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID
+WHERE (((STOKGEN.TUR)=3 Or (STOKGEN.TUR)=4)) and dbo.STOKGEN.STK like'%{r.Stk}%'
+and  STOK_ALT.TARIH between '{startAt}' and '{endAt}'
+
+GROUP BY CAST(STOK_ALT.TARIH AS DATE),  STOKGEN.STK, STOKGEN.TUR,[CKMIK],[GRMIK]
+order by 2";
+
+        public static string GetSellDateReportCount() => @"SELECT  dbo.STOKGEN.STK,MAX( CAST(STOK_ALT.TARIH AS DATE)) as tarih,STOKGEN.TUR,
+  Sum(dbo.STOK_ALT.[GRMIK]-dbo.STOK_ALT.[CKMIK]) AS TotalStock
+FROM dbo.STOK_ALT RIGHT JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID
+WHERE (((STOKGEN.TUR)=3 Or (STOKGEN.TUR)=4)) 
+
+GROUP BY CAST(STOK_ALT.TARIH AS DATE),  STOKGEN.STK, STOKGEN.TUR,[CKMIK],[GRMIK]
+order by 2";
+        #endregion
         #endregion
     }
 }

@@ -5,6 +5,82 @@ const date = new Date();
 const today = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
 
 const HttpUrls = {
+    getStokByStk: BaseUrl + "StokGetData/GetStokByStk",
+    GetStokkenByStkListOnlypageSize: BaseUrl + "StokGetData/GetStokkenByStkListOnlypageSize",
+    GetProductOrdersByStokgenId: BaseUrl + "StokGetData/GetProductOrdersByStokgenId",
+    GetAllStokAlt: BaseUrl + "StokGetData/GetAllStokAlt",
+    GetGalvanize: BaseUrl + "StokGetData/GetGalvanize",
+    GetStokRecetesi: BaseUrl + "StokGetData/GetStokRecetesi",
+    GetBomProcessInStok: BaseUrl + "StokGetData/GetBomProcessInStok",
+    GetProcessFlowInStok: BaseUrl + "StokGetData/GetProcessFlowInStok",
+    GetproductImage: BaseUrl + "StokGetData/GetproductImage?stk=",
+    GetProcessFLowInUretim: BaseUrl + "UretimData/GetProcessFLowInUretim",
+    GetAktiveOperators: BaseUrl + "UretimData/GetAktiveOperators",
+    GetAktiveMachine: BaseUrl + "UretimData/GetAktiveMachine",
+    GetMachineNameByMachineNo: BaseUrl + "UretimData/GetMachineNameByMachineNo",
+    SearchInUretim: BaseUrl + "UretimData/SearchInUretim",
+    GetOperatorPolivalance: BaseUrl + "UretimData/GetOperatorPolivalance",
+    CheckFlowIdByFinishTimeInFlowDetails: BaseUrl + "UretimData/CheckFlowIdByFinishTimeInFlowDetails",
+    StartIsEmriAndWriteToFlowDetails: BaseUrl + "UretimData/StartIsEmriAndWriteToFlowDetails",
+    GetProcessFlowClose: BaseUrl + "UretimData/GetProcessFlowClose",
+    GetFire: BaseUrl + "UretimData/GetFire?Reject_ID=",
+    UretimBitirConfirm: BaseUrl + "UretimData/UretimBitirConfirm",
+    GetproductFile: BaseUrl + "StokGetData/GetproductFile?Pid=",
+    GetaltStokToplam: BaseUrl + "StokGetData/GetaltStokToplam?stk=",
+    BakimAriza_GetAllMachines: BaseUrl + "BakimArizaCon/GetAllMachine",
+    BakimAriza_insertIntoBakimKayit: BaseUrl + "BakimArizaCon/insertIntoBakimKayit",
+    BakimAriza_gecmisTalepler: BaseUrl + "BakimArizaCon/gecmisTalepler",
+    uretimPlani_GetAllUretimPlani: BaseUrl + "UretimData/GetAllUretimPlani",
+    tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "TamirIsEmriData/GetTamirIsEmriAdimlari",
+    tamirIsEmri_InsertTamirIsEmri: BaseUrl + "TamirIsEmriData/InsertTamirIsEmri",
+    GetSevkiyetKutuEtiketiList: BaseUrl + "Etiketler/GetSevkiyetKutuEtiketiList",
+    getAllProcessInGunlukHatBazindUretim: BaseUrl + "UretimData/getAllProcessInGunlukHatBazindUretim",
+    GetAllGunlukHatBazindUretimList: BaseUrl + "UretimData/GetAllGunlukHatBazindUretimList",
+    GetAllStokEtiketi: BaseUrl + "Etiketler/GetAllStokEtiketi",
+    GetGirisKabulEtiketiList: BaseUrl + "Etiketler/GetGirisKabulEtiketiList",
+    GetBomProccessInAddOrUpdateProcess: BaseUrl + "AddOrUpdateProcess/GetAllBomProcessInAddOrUpdateProcess",
+    GetBomProcessTemp: BaseUrl + "AddOrUpdateProcess/GetBomProcessTemp",
+    CopyToBomProcessTemp: BaseUrl + "AddOrUpdateProcess/CopyToBomProcessTemp?pId=",
+    DeleteFromBomProcessTemp: BaseUrl + "AddOrUpdateProcess/DeleteFromBomProcessTemp?pId=",
+    addUpdateProceecSave: BaseUrl + "AddOrUpdateProcess/addUpdateProceecSave",
+    GetStokAll: BaseUrl + "StokGetData/GetStokAll",
+    GetStokAllCount: BaseUrl + "StokGetData/GetStokAllCount",
+    GetAllProductionOrders: BaseUrl + "WOGetData/GetAllProductionOrders",
+    GetprocutionOrdersCount: BaseUrl + "WOGetData/GetprocutionOrdersCount",
+    DeleteWo: BaseUrl + "WOGetData/DeleteWo",
+    AddNewWorkOrder: BaseUrl + "WOGetData/AddNewWorkOrder",
+    GetAllProductionOrdersPrintOut: BaseUrl + "WOGetData/GetAllProductionOrdersPrintOut",
+    AddToProductionOrdersPrintOut: BaseUrl + "WOGetData/AddToProductionOrdersPrintOut",
+    DeleteFromPrintOut: BaseUrl + "WOGetData/DeleteFromPrintOut?productId=",
+    DeleteAllPrintOut: BaseUrl + "WOGetData/DeleteAllPrintOut",
+    GetProcessFlowInProcessDetails: BaseUrl + "ProcessDetailsGetData/GetProcessFlowInProcessDetails",
+    GetProcessFlowDetailsInProcessDetails: BaseUrl + "ProcessDetailsGetData/GetProcessFlowDetailsInProcessDetails",
+    GetAllFindInBom: BaseUrl + "FindInBomGetData/GetAllFindInBom",
+    GetAllFindInBomCount: BaseUrl + "FindInBomGetData/GetAllFindInBomCount",
+    GetTeslimatDurumu: BaseUrl + "TTFTeslimatGetData/GetTeslimatDurumu",
+    GetTeslimatDurumuCount: BaseUrl + "TTFTeslimatGetData/GetTeslimatDurumuCount",
+    GetAllProductionStatus: BaseUrl + "ProdutionStartGetData/GetAllProductionStatus",
+    DeleteproductionStatus: BaseUrl + "ProdutionStartGetData/DeleteproductionStatus?sheetId=",
+    AddToProductionStatus: BaseUrl + "ProdutionStartGetData/AddToProductionStatus",
+    TransferToSystem: BaseUrl + "ProdutionStartGetData/TransferToSystem?productId=",
+    GetProductionSummaryReport: BaseUrl + "ReportsGetData/GetProductionSummaryReport",
+    GetProductionSummaryCount: BaseUrl + "ReportsGetData/GetProcutionSummaryCount",
+    GetProductionOrdersTransfer: BaseUrl + "ProductionOrderTranferGetData/GetProductionOrdersTransfer",
+    GetprocutionOrdersTranferCount: BaseUrl + "ProductionOrderTranferGetData/GetprocutionOrdersTranferCount",
+    DeleteFromTranferWo: BaseUrl + "ProductionOrderTranferGetData/DeleteFromTranferWo?partNo=",
+    DeleteAllTranferWo: BaseUrl + "ProductionOrderTranferGetData/DeleteAllTranferWo",
+    TrnasferToSystem: BaseUrl + "ProductionOrderTranferGetData/TrnasferToSystem",
+    GetOrderDetails: BaseUrl + "OrderManagementGetData/GetOrderDetails",
+    GetInProgress: BaseUrl + "OrderManagementGetData/GetInProgress",
+    GetComponentOrders: BaseUrl + "OrderManagementGetData/GetComponentOrders",
+    GetCustomerOrders: BaseUrl + "OrderManagementGetData/GetCustomerOrders",
+    GetShippmentReport: BaseUrl + "TTFTeslimatGetData/GetShippmentReport",
+
+
+
+
+
+
     GetAllClaim: BaseUrl + "SetupGetData/GetAllClaim",
     GetAllClaimCount: BaseUrl + "SetupGetData/GetAllClaimCount",
     AddClaimType: BaseUrl + "SetupGetData/AddClaimType",
@@ -92,8 +168,18 @@ const HttpUrls = {
     GetCustomerperfReport: BaseUrl + "ReportsGetData/GetCustomerperfReport",
     GetCustomerperfReportCount: BaseUrl + "ReportsGetData/GetCustomerperfReportCount",
 
-    GetStokAll: BaseUrl + "StokGetData/GetStokAll",
-    GetStokAllCount: BaseUrl + "StokGetData/GetStokAllCount",
+    GetProcessPlanReport: BaseUrl + "ReportsGetData/GetProcessPlanReport",
+    GetProcessPlanReportCount: BaseUrl + "ReportsGetData/GetProcessPlanReportCount",
+    DeleteProcessplan: BaseUrl + "ReportsGetData/DeleteProcessplan?id=",
+
+    GetMonthlyProduction: BaseUrl + "ReportsGetData/GetMonthlyProduction",
+    GetMonthlyProductionCount: BaseUrl + "ReportsGetData/GetMonthlyProductionCount",
+
+    GetSellDateReport: BaseUrl + "ReportsGetData/GetSellDateReport",
+    GetSellDateReportCount: BaseUrl + "ReportsGetData/GetSellDateReportCount",
+
+
+
 
 
 
@@ -152,6 +238,56 @@ const Models = {
 
 }
 const TablesId = {
+
+    Stok_searchStkInStokgen: "#table-stok-stokgenSearch",
+    UrunEtiketi_searchStkInStokgen: "#table-urunEtiketi-searchStk",
+    productionOrdersInUrunEtketi: "#table-urunEtiketi-productioOrders",
+    productionOrdersInStok: "#table-stok-productionOrders",
+    printModal: ".printModel",
+    UrunEtiketTable: "#table-urunEtiket-etiketEkle",
+    BakimAriza_AllMachines: "#table-BakimAriza-allMachines",
+    BakimAriza_gecmisTalepler: "#table-bakimAriza-gecmisTalepler",
+    UretimPlani_allUretimPlani: "#table-uretimPlani",
+    tamirIsEmri_searchStk: "#table-tamirIsEmri-searchStk",
+    tmairIsEmri_productionOrders: "#table-tamirIsEmri-productioOrders",
+    sekiyetKutuEtiketi_sevKabul: "#table-sevkiyatKutuEtiketi-sevKabul",
+    gunlukHatBazindaUretim: "#table-GunlukHatUretim",
+    sekiyetKutuEtiketi_result: "#table-sevkiyatKutuEtiketi-result",
+    stokEtiketi_stokEtiketiList: "#table-stokEtiketi-stokEtiketiList",
+    stokEtiket_tableResult: "#table-stokEtiketi-result",
+    girisKabulEtiketi_girisKabulEtiketiList: "#table-girisKabulEtiketi-girisKabulEtiketiList",
+    girisKabulEtiketi_tableResult: "#table-girisKabulEtiketi-result",
+    addOrUpdateProcess_stkTable: "#table-addOrUpdateProcess-stokgenSearch",
+    addOrUpdateProcess_bomProcessCurrent: "#table-addOrUpdateProcess-bomProcessCurrent",
+    addOrUpdateProcess_bomProcessNew: "#table-addOrUpdateProcess-bomProcessNew",
+    stokAll: "#table-stokAll",
+    allWo: "#table-allWo",
+    ProductionOrdersPrintout: "#table-productionOrderPrintOut",
+    processDetails_searchStk: "#table-processDetails-searchStk",
+    processDetails_ProductionOrders: "#table-processDetails-productioOrders",
+    processDetails_processFlow: "#table-processDetails-processFlow",
+    processDetails_processFlowDetails: "#table-processDetails-processFlowDetails",
+    findInBom: "#table-findInBom",
+    teslimatDurumu: "#table-teslimatDurumu",
+    prodcutionStart: "#table-prodcutionStart",
+    productionStatus: "#table-productionStatus",
+    productionSummary: "#table-productionSummary",
+    tranferWo: "#table-tranferWo",
+    orderDetails_stok: "#table-orderDetails-stok",
+    orderDetails: "#table-orderDetails",
+    componentOrders: "#table-componentOrders",
+    customerOrders: "#table-customerOrders",
+    shippmentReport: "#table-shippmentReport",
+
+
+
+
+
+
+
+
+
+
     claimType: "#table-claimType",
     company: "#table-company",
     department: "#table-department",
@@ -172,11 +308,21 @@ const TablesId = {
     lostQtyReport: "#table-lostQtyReport",
     supplierPerfReport: "#table-supplierPerfReport",
     customerPerfReport: "#table-customerPerfReport",
-    stokAll: "#table-stokAll"
+    processPlanReport: "#table-processPlanReport",
+    monthlyProdcutionReport: "#table-monthlyProdcutionReport",
+    sellDateReport: "#table-sellDateReport",
 
 };
 
 const Inputs = {
+    gunlukHatBazindaUretim_searchMachineNo:"#inp-gunlukHatBazindUretim-searchMakine",
+
+
+
+
+
+
+
     claimType_tr: "#inp-claimType-tr",
     calimType_en: "#inp-claimType-en",
     claimType_tr_edt: "#inp-claimType-tr-edit",
@@ -257,12 +403,40 @@ const Inputs = {
     lostQtyReport_searchStk: "#inp-lostQtyReport-searchStk",
     lostQtyReport_searchLotNo: "#inp-lostQtyReport-searchLotNo",
     supplierPerfReport_searchStk: "#inp-supplierPerfReport-searchStk",
+    processPlanReport_searchStk: "#inp-processPlanReport-searchStk",
     customerPerfReport_searchStk: "#inp-customerPerfReport-searchStk",
+    monthlyProdcutionReport_searchMachinNo: "#inp-monthlyProdcutionReport-searchMachinNo",
+    sellDateReport_searchStk: "#inp-sellDateReport-searchStk",
 
 
 
 }
 const recordsNotFound = {
+    productionOrders: "#recordNotFoundDiv_productionOrders",
+    altStok: "#recordNotFoundDiv_altStok",
+    galvanize: "#recordNotFoundDiv_Galvanize",
+    Dosyalar: "#recordNotFoundDiv_dosyalar",
+    bomProcess: "#recordNotFoundDiv_bomProcess",
+    stokRecetesi: "#recordNotFoundDiv_stokRecetesi",
+    uretimInStok: "#recordNotFoundDiv_uretim",
+    BakimAriaz_AllMachines: "#recordNotFoundDiv_bakimAriza_AllMachines",
+    sekiyetKuttEtiketi: "#recordNotFoundDiv_sevkiyatKutuEtiketi",
+    uretimBasla: "#recordNotFoundDiv_uretimBasla",
+    uretimBitir: "#recordNotFoundDiv_uretimBitir",
+    gunlukHatBazindaUretim: "#recordNotFoundDiv_gunlukHatBazindUretim",
+    stokEtiketi: "#recordNotFoundDiv_stokEtiketi",
+    girisKabulEtiketi: "#recordNotFoundDiv_girisKabulEtiketi",
+    allWo: "#recordNotFoundDiv_allWo",
+    ProductionOrdersPrintout: "#recordNotFoundDiv_ProductionOrdersPrintout",
+    processDetails_procutionOrders: "#recordNotFoundDiv_processDetails_productionOrders",
+    processDetails_processFlow: "#recordNotFoundDiv_processDetails_processFlow",
+    processDetails_processFlowDetails: "#recordNotFoundDiv_processDetails_processFlowDetails",
+    ProductionStart: "#recordNotFoundDiv_prodcutionStart",
+    productionStatus: "#recordNotFoundDiv_productionStatus",
+    orderDetails: "#recordNotFoundDiv_orderDetails",
+
+
+
     claimType: "#recordNotFound_claimType",
     company: "#recordNotFound_company",
     department: "#recordNotFound_department",
@@ -280,6 +454,9 @@ const recordsNotFound = {
     lostQtyReport: "#recordNotFound_lostQtyReport",
     supplierPerfReport: "#recordNotFound_supplierPerfReport",
     customerPerfReport: "#recordNotFound_customerPerfReport",
+    processPlanReport: "#recordNotFound_processPlanReport",
+    monthlyProdcutionReport: "#recordNotFound_monthlyProdcutionReport",
+    sellDateReport: "#recordNotFound_sellDateReport",
     stokAll: "#recordNotFound_stokAll"
 
 
@@ -305,6 +482,9 @@ const PreviousButtons = {
     lostQtyReport: "#btn-lostQtyReport-previous",
     supplierPerfReport: "#btn-supplierPerfReport-previous",
     customerPerfReport: "#btn-customerPerfReport-previous",
+    processPlanReport: "#btn-processPlanReport-previous",
+    monthlyProdcutionReport: "#btn-monthlyProdcutionReport-previous",
+    sellDateReport: "#btn-sellDateReport-previous",
     stokAll: "#btn-stokAll-previous",
 
 
@@ -327,10 +507,26 @@ const NextButtons = {
     lostQtyReport: "#btn-lostQtyReport-next",
     supplierPerfReport: "#btn-supplierPerfReport-next",
     customerPerfReport: "#btn-customerPerfReport-next",
+    processPlanReport: "#btn-processPlanReport-next",
+    monthlyProdcutionReport: "#btn-monthlyProdcutionReport-next",
+    sellDateReport: "#btn-sellDateReport-next",
     reworkReport: "#btn-reworkReport-next",
 
 };
 const pageNumbers = {
+    stok_prodcutionOrders:"#number-productionOrders-pageNumber",
+    stok_stokAlt: "#number-stoklAlt-pageNumber",
+    stok_galvanize: "#number-galvanize-pageNumber",
+    stok_stokRecetesi: "#number-stokRecetesi-pageNumber",
+    stok_bomProcess: "#number-bomProcess-pageNumber",
+    stok_uretimInStok: "#number-uretimInStok-pageNumber",
+    sekiyetKutuEtiketi_sekKabul: "#number-sevkiyatKutuEtiketi-pageNumber",
+    gunlukHatBazindaUretim: "#num-gunlukHatBazindUretim-pageNumber",
+    stokEtiketi: "#number-stokEtiketi-pageNumber",
+    girisKabulEtiketi: "#number-girisKabulEtiketi-pageNumber",
+    teslimatDurumu: "#num-teslimatDurumu-pageNumber",
+
+
     claimType: "#number-claimType-pageNumber",
     company: "#number-company-pageNumber",
     department: "#number-department-pageNumber",
@@ -347,6 +543,9 @@ const pageNumbers = {
     lostQtyReport: "#number-lostQtyReport-pageNumber",
     supplierPerfReport: "#number-supplierPerfReport-pageNumber",
     customerPerfReport: "#number-customerPerfReport-pageNumber",
+    processPlanReport: "#number-processPlanReport-pageNumber",
+    monthlyProdcutionReport: "#number-monthlyProdcutionReport-pageNumber",
+    sellDateReport: "#number-sellDateReport-pageNumber",
     reworkReport: "#number-reworkReport-pageNumber",
 }
 
@@ -370,4 +569,17 @@ function disableButton(id) {
 function ActiveButton(id) {
     $(id).css({ 'pointer-events': 'auto', 'background-color': '#2A3F54', 'cursor': 'pointer' });
     $(id).parent().css('cursor', 'pointer');
+}
+
+function HideRecodNotFound(divId) {
+    $(`${divId}`).css('opacity', '0');
+    $(`${divId}`).css('display', 'block');
+    $(`${divId} h3`).text("");
+}
+
+
+function ShowRecodNotFound(divId) {
+    $(`${divId}`).css('opacity', '1');
+    $(`${divId}`).css('display', 'block');
+    $(`${divId} h3`).text("Bu stk'a ait  hiçbir kayıt bulunmamaktadır");
 }

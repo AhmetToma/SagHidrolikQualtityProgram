@@ -1,5 +1,78 @@
 ﻿/* welcome page*/
+/*start stok*/
+.tabelForStk {
+    height: 12rem;
+    overflow: auto;
+    margin-bottom: 25px;
+}
+    .tabelForStk table tbody tr:hover {
+        background-color: #e73c68;
+        color:white;
+        cursor:pointer;
+    }
 
+
+.recordNotFoundDiv h3 {
+    text-align: center;
+}
+
+
+.container-Stok .nav-tabs li {
+    width: 33%;
+}
+
+    .container-Stok .nav-tabs li a {
+        border-radius: 4rem;
+        text-align: center;
+    }
+
+        .container-Stok .nav-tabs li a:hover {
+            color: white;
+            background-color: #2A3F54;
+            cursor: pointer;
+        }
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: white;
+    background-color: #2A3F54;
+}
+
+.container-Stok-partial table thead {
+    background-color: #2A3F54;
+    color: white;
+}
+
+
+.listOfAllStokLinks {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 18%;
+    margin-right: 20%;
+}
+
+    .listOfAllStokLinks li {
+        display: inline-block;
+        border: 1px solid #D4CCCC;
+        color: #A7A7A7;
+        padding: 10px;
+        cursor: pointer;
+        margin-left: 20px;
+        margin-top: 12px;
+        border-radius: 5px;
+    }
+
+        .listOfAllStokLinks li.active {
+            background-color: #007BFF;
+            border: 1px solid #007BFF;
+            color: white;
+            font-weight: 500;
+        }
+
+
+.prodcutOrders, .altStok, .galvanize, .dosya, .stokRecetesi, .bomProcess {
+    display: none;
+}
+/*end Stok*/
 i {
     cursor: pointer;
 }

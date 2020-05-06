@@ -96,9 +96,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\JavaScriptForData\Uretim\gunlukHatBazindaUretim.js" />
+    <None Include="wwwroot\JavaScriptForData\Uretim\UretimBasla.js" />
+    <None Include="wwwroot\JavaScriptForData\Uretim\UretimBitir.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper.FluentMap" Version="1.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>

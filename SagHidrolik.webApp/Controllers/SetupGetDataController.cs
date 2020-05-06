@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SagHidrolik.DataAccesslayer.Quality.SetUp;
 using SagHidrolik.Models.ViewModesl;
 
@@ -11,6 +7,7 @@ namespace SagHidrolik.webApp.Controllers
     public class SetupGetDataController : Controller
     {
         #region claim
+
         public JsonResult GetAllClaim([FromBody] RequestQuery requestQuery)
         {
             var list = ClaimData.GetAllClaim(requestQuery).Result;

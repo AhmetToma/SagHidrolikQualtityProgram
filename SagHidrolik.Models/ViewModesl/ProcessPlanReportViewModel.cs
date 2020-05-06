@@ -9,6 +9,7 @@ namespace SagHidrolik.Models.ViewModesl
         public int ID { get; set; }
         public string Group { get; set; }
         public string ProsesAdi { get; set; }
+        public string ProcessDate { get; set; }
         public string PartNo { get; set; }
         public int WOLot { get; set; }
         public int RemainProcessqty { get; set; }

@@ -1,7 +1,7 @@
 ﻿$('#Defect-tab').click((e) => {
     e.preventDefault
     GetDefectReporttAjaxCall();
-    GeDefectReportCount();
+    GetDefectReportCount();
 })
 let requestQueryForDefectReport = {
     pageSize: 6,
@@ -92,7 +92,7 @@ function CreateDefectReportTable(list, tableId) {
     });
     HideLoader();
 }
-function GeDefectReportCount() {
+function GetDefectReportCount() {
     $('#selectRowCount-defectReport').empty();
     $.ajax({
         type: "GET",

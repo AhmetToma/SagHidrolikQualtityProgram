@@ -14,6 +14,8 @@ namespace SagHidrolik.DataAccesslayer.Stok
 
         #region DboStokgen
 
+
+
         public static async Task<IEnumerable<DboStokgen>> GetStokkenByStkList(RequestQuery requestQuery)
         {
 
@@ -241,3 +243,29 @@ namespace SagHidrolik.DataAccesslayer.Stok
 
     }
 }
+
+
+//public static async Task<IEnumerable<TESTVIEWMODel>> getTest()
+//{
+
+//    string q = @"SELECT  dbo.STOKGEN.STK,MAX( CAST(STOK_ALT.TARIH AS DATE)) as tarih,
+//  Sum(dbo.STOK_ALT.[GRMIK]-dbo.STOK_ALT.[CKMIK]) AS TotalStock
+//FROM dbo.STOK_ALT RIGHT JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID
+//WHERE (((STOKGEN.TUR)=3 Or (STOKGEN.TUR)=4)) and dbo.STOKGEN.STK='12638621'
+
+//GROUP BY CAST(STOK_ALT.TARIH AS DATE),  STOKGEN.STK, STOKGEN.TUR,[CKMIK],[GRMIK]
+//order by 2
+
+//";
+//    using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+//    {
+
+//        await connection.OpenAsync();
+//        var list = await connection.QueryAsync<TESTVIEWMODel>(q);
+//        list = list.GroupBy(x => x.STK).Select(g => new TESTVIEWMODel { tarih = g.Last().tarih, TotalStock = g.Sum(s => s.TotalStock), STK = g.First().STK }).ToList();
+//        return list;
+//    }
+
+//}
+
+

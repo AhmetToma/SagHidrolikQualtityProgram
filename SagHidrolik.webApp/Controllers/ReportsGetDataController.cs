@@ -140,6 +140,40 @@ namespace SagHidrolik.webApp.Controllers
             int count = ReportsData.GetProcessPlanReportCount().Result;
             return Json(count);
         }
+
+        public JsonResult DeleteProcessplan([FromQuery]int id )
+        {
+            int count = ReportsData.DeleteProcessplan(id).Result;
+            return Json(count);
+        }
+        #endregion
+
+        #region  Monthly Production
+        public JsonResult GetMonthlyProduction([FromBody]RequestQuery requestQuery)
+        {
+            var list = ReportsData.GetMonthlyProduction(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetMonthlyProductionCount()
+        {
+            int count = ReportsData.GetMonthlyProductionCount().Result;
+            return Json(count);
+        }
+        #endregion
+
+        #region  Sell Date
+        public JsonResult GetSellDateReport([FromBody]RequestQuery requestQuery)
+        {
+            var list = ReportsData.GetSellDateReport(requestQuery).Result;
+            return Json(list);
+        }
+
+        public JsonResult GetSellDateReportCount()
+        {
+            int count = ReportsData.GetSellDateReportCount().Result;
+            return Json(count);
+        }
+
         #endregion
 
     }

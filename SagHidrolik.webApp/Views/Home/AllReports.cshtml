@@ -36,13 +36,13 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#l" role="tab" aria-controls="contact" aria-selected="false">Monthly production</a>
+                <a class="nav-link" id="processPlan-tab" data-toggle="tab" href="#l" role="tab" aria-controls="contact" aria-selected="false">Process Plan</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#m" role="tab" aria-controls="contact" aria-selected="false">Sell Date</a>
+                <a class="nav-link" id="MonthlyProdution-tab" data-toggle="tab" href="#m" role="tab" aria-controls="contact" aria-selected="false">Monthly Production</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#n" role="tab" aria-controls="contact" aria-selected="false">polivalans</a>
+                <a class="nav-link" id="SellDate-tab" data-toggle="tab" href="#n" role="tab" aria-controls="contact" aria-selected="false">Sell Date</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -74,6 +74,15 @@
 
             <div class="tab-pane fade" id="j" role="tabpanel" aria-labelledby="contact-tab">
                 <partial name="ReportsPartials/CustomerPerfReport" />
+            </div>
+            <div class="tab-pane fade" id="l" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="ReportsPartials/ProcessPlanReport" />
+            </div>
+            <div class="tab-pane fade" id="m" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="ReportsPartials/MonthlyProductionReport" />
+            </div>  
+            <div class="tab-pane fade" id="n" role="tabpanel" aria-labelledby="contact-tab">
+                <partial name="ReportsPartials/SellDateReport" />
             </div>
         </div>
 

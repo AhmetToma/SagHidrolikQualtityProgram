@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Quality Program</title>
+    <title>Sag Hidrolik</title>
     <!-- Bootstrap -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -50,7 +50,7 @@
                             <img src="~/images/sag-hidrolik-logo.png" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                            <h2>Kalite Programı</h2>
+                            <h2>Sag Hidrolik System</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -62,15 +62,22 @@
                         <div class="menu_section">
                             <h3></h3>
                             <ul class="nav side-menu">
+
                                 <li>
-                                    <a><i class="fa fa-home"></i> Stok işlemleri<span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
+                                    <a><i class="fa fa-cubes"></i> Stok işlemleri<span class="fa fa-chevron-down"></span></a>
+                                    <ul style="display:none!important" class="nav child_menu">
                                         <li><a href="/Home/StokPage">Stok</a></li>
                                         <li><a href="/Home/StokAll">Stok All</a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a><i class="fa fa-home"></i> Quality <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-industry"></i>Üretim<span class="fa fa-chevron-down"></span></a>
+                                    <ul style="display:none!important" class="nav child_menu">
+                                        <li><a href="/Home/GunlukHatBazindUretim">Günlük Hat bazında üretim</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-hourglass-half"></i> Quality <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="/Home/NewNc">New NC</a></li>
                                         <li><a href="/Home/Review">Review/Update NC</a></li>
@@ -79,7 +86,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a><i class="fas fa-scroll"></i> Reports <span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-clipboard"></i> Reports <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="/Home/AllReports">All Reports</a></li>
                                     </ul>
@@ -165,6 +172,17 @@
 
 
     <script src="~/JavaScriptForData/Source.js"></script>
+
+    <script src="~/JavaScriptForData/Stok/stokPage.js"></script>
+    <script src="~/JavaScriptForData/Stok/ProductionOrders.js"></script>
+    <script src="~/JavaScriptForData/Stok/stokDetailsSecond.js"></script>
+    <script src="~/JavaScriptForData/Stok/galvanize.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/Stok/stokRecetesi.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/Stok/bomProcess.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/Stok/ProcessFlowInStok.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/Uretim/gunlukHatBazindaUretim.js" type="text/javascript"></script>
+
+
     <script src="~/JavaScriptForData/Quality/SetUp/claimType.js"></script>
     <script src="~/JavaScriptForData/Quality/SetUp/company.js"></script>
     <script src="~/JavaScriptForData/Quality/SetUp/department.js"></script>
@@ -186,6 +204,9 @@
     <script src="~/JavaScriptForData/Reports/LostQtyReport.js"></script>
     <script src="~/JavaScriptForData/Reports/SupplierPerfReport.js"></script>
     <script src="~/JavaScriptForData/Reports/CustomerPerfReport.js"></script>
+    <script src="~/JavaScriptForData/Reports/ProcessplanReport.js"></script>
+    <script src="~/JavaScriptForData/Reports/MonthlyProductionReport.js"></script>
+    <script src="~/JavaScriptForData/Reports/SellDateReport.js"></script>
 
 </body>
 </html>

@@ -2,9 +2,17 @@
 <div class="container-claimtype">
     <div class="row">
         <div class="col-md-3">
+            <div class="input-group" style="margin-top:2.8rem">
+                <div class="input-group-prepend">
+                    <span class="input-group-text " style="background-color:#071f0c;color:white" id="basic-addon1">Machine No</span>
+                </div>
+                <input id="inp-monthlyProdcutionReport-searchMachinNo" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu">
+            </div>
+        </div>
+        <div class="col-md-2">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">row count : </label>
-                <select class="form-control" id="selectRowCount-productionReport">
+                <select class="form-control" id="selectRowCount-monthlyProdcutionReport">
                     <option value="6">6</option>
                     <option value="10">10</option>
                     <option value="100">100</option>
@@ -12,10 +20,10 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Year : </label>
-                <select class="form-control" id="select-productionReport-year">
+                <select class="form-control" id="select-monthlyProdcutionReport-year">
                     <option value="">...</option>
                     @for (int i = 2017; i <= DateTime.Now.Year; i++)
                     {
@@ -27,7 +35,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Month :</label>
-                <select class="form-control" id="select-productionReport-month">
+                <select class="form-control" id="select-monthlyProdcutionReport-month">
                     <option value="" selected>...</option>
                     <option value="1">Ocak</option>
                     <option value="2">şubat</option>
@@ -45,52 +53,41 @@
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="form-group">
-                <button id="btn-productionReport-resetSearch" class="btn btn-primary">Reset Search</button>
+        <div class="col-md-2">
+            <div class="form-group"  style="margin-top:2.8rem">
+                <button id="btn-monthlyProdcutionReport-resetSearch" class="btn btn-primary">Reset Search</button>
             </div>
         </div>
     </div>
 
     <div class="container-setUp-partial">
-        <table class="table table-bordered tableFontMaxmize">
+        <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Date</th>
+                    <th scope="col">Machine Id</th>
+                    <th scope="col">Machine No</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Finish Time</th>
                     <th scope="col">Total</th>
-                    <th scope="col">Kesim</th>
-                    <th scope="col">Büküm</th>
-                    <th scope="col">Havşa</th>
-                    <th scope="col">Kaynak</th>
-                    <th scope="col">KesDel</th>
-                    <th scope="col">Hazırlık</th>
-                    <th scope="col">Hortum</th>
-                    <th scope="col">Paketleme</th>
-                    <th scope="col">paketleme Diğer</th>
-                    <th scope="col">Test</th>
-                    <th scope="col">Mercedes</th>
-                    <th scope="col">ÜçŞekil</th>
-                    <th scope="col">Kaplama</th>
-                    <th scope="col">proto</th>
                 </tr>
             </thead>
-            <tbody id="table-productionReport">
+            <tbody id="table-monthlyProdcutionReport">
             </tbody>
         </table>
-        <div class="recordNotFound" id="recordNotFound_productionReport">
+        <div class="recordNotFound" id="recordNotFound_monthlyProdcutionReport">
             <h3>Hiç bir kayıt Bulunmamktadır</h3>
         </div>
         <nav aria-label="Page navigation example" class="nav-review">
             <ul class="pagination">
                 <li class="page-item">
-                    <a id="btn-productionReport-previous" class="page-link" aria-label="Previous">
+                    <a id="btn-monthlyProdcutionReport-previous" class="page-link" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <li class="page-item"><a id="number-productionReport-pageNumber" class="page-link">1</a></li>
+                <li class="page-item"><a id="number-monthlyProdcutionReport-pageNumber" class="page-link">1</a></li>
                 <li class="page-item">
-                    <a id="btn-productionReport-next" class="page-link" aria-label="Next">
+                    <a id="btn-monthlyProdcutionReport-next" class="page-link" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -98,5 +95,5 @@
             </ul>
         </nav>
     </div>
-    <div class="tableCount"> production Report : <span id="productionReportTableCount"></span></div>
+    <div class="tableCount"> Monthly Prodution Report : <span id="monthlyProdcutionReportTableCount"></span></div>
 </div>

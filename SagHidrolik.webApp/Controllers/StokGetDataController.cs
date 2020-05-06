@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using SagHidrolik.DataAccesslayer.Stok;
 using SagHidrolik.Models.ViewModesl;
 using SagHidrolik.webApp.Functions;
+using Dapper;
+using SagHidrolik.Models.SqlRepository;
 
 namespace SagHidrolik.webApp.Controllers
 {
@@ -113,7 +116,10 @@ namespace SagHidrolik.webApp.Controllers
         public JsonResult GetStokAllCount()
         {
             var count = StokReadingData.GetStokAllCount().Result;
+
             return Json(count);
         }
+
+       
     }
 }
