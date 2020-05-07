@@ -216,7 +216,7 @@ const Buttons = {
     reviewDetails_confrimAddAction: "#btn-reviewDetails-add-confirmAdd",
     reviewDetails_confrimEditAction: "#btn-reviewDetails-edit-confirmAdd",
     reviewDetails_addDocument: "#btn-reviewDetails-addDocument",
-
+    bakimAriza_submit: "#btn-bakimAriza-submit",
 }
 const Models = {
     claimType_add: "#claimType-AddModel",
@@ -316,8 +316,10 @@ const TablesId = {
 
 const Inputs = {
     gunlukHatBazindaUretim_searchMachineNo:"#inp-gunlukHatBazindUretim-searchMakine",
-
-
+    uretimplani_searchByStk: "#inp-uretimPlani-searchStk",
+    bakimAriza_tarih: "#inp-bakimAriza-tarih",
+    bakimAriza_searchMachineNo: "#inp-bakimArzia-searchInAllMachines",
+    bakimAriza_selectedMachineNo: '#inp-bakimAriza-selectedMachineNo',
 
 
 
@@ -466,6 +468,7 @@ const recordsNotFound = {
 }
 const PreviousButtons = {
     claimType: "#btn-claimType-previous",
+    uretimPlani_allUretimPlani: "#btn-uretimPalni-previous",
     company: "#btn-company-previous",
     department: "#btn-department-previous",
     operator: "#btn-operator-previous",
@@ -486,7 +489,8 @@ const PreviousButtons = {
     monthlyProdcutionReport: "#btn-monthlyProdcutionReport-previous",
     sellDateReport: "#btn-sellDateReport-previous",
     stokAll: "#btn-stokAll-previous",
-
+    bakimAriza_AllMachines: "#btn-bakimAriza-previous",
+    bakimAriza_gecmisTalepler: "#btn-bakimArizaGecmisTalepler-previous",
 
 };
 const NextButtons = {
@@ -511,6 +515,9 @@ const NextButtons = {
     monthlyProdcutionReport: "#btn-monthlyProdcutionReport-next",
     sellDateReport: "#btn-sellDateReport-next",
     reworkReport: "#btn-reworkReport-next",
+    uretimPlani_allUretimPlani: "#btn-uretimPalni-next",
+    bakimAriza_AllMachines: "#btn-bakimAriza-next",
+    bakimAriza_gecmisTalepler: "#btn-bakimArizaGecmisTalepler-next",
 
 };
 const pageNumbers = {

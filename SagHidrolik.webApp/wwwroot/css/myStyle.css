@@ -1,15 +1,36 @@
 ﻿/* welcome page*/
 /*start stok*/
+
+.defaultBackground {
+    background-color: #2A3F54;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+}
+
 .tabelForStk {
     height: 12rem;
     overflow: auto;
     margin-bottom: 25px;
 }
+
     .tabelForStk table tbody tr:hover {
         background-color: #e73c68;
-        color:white;
-        cursor:pointer;
+        color: white;
+        cursor: pointer;
     }
+
+.tableHoverRed tbody tr:hover {
+    background-color: #e73c68;
+    color: white;
+    cursor: pointer;
+}
+
+.tableHoverDefault tbody tr:hover {
+    background-color: #2A3F54;
+    color: white;
+    cursor: pointer;
+}
 
 
 .recordNotFoundDiv h3 {
@@ -73,25 +94,194 @@
     display: none;
 }
 /*end Stok*/
+
+
+/*start uretim basla*/
+.card {
+    border: solid black 1px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    box-shadow: 0px 6px 17px 6px #2A3F54;
+}
+
+.konrolcss {
+    margin-left: 26%;
+    margin-top: 10px;
+}
+
+.card input:disabled {
+    border-radius: 10px;
+    border: solid black 1px;
+    color: white;
+    font-weight: bold;
+    background-color: #2A3F54;
+    padding: 5px;
+}
+
+.card .limitedNumbChosen, .limitedNumbSelect2 {
+    width: 400px;
+}
+
+.card .btnSubmit {
+    margin-left: 77%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: bold;
+    background-color: #2A3F54;
+}
+
+/*end uretim basla*/
+
+
+
+
+
+/*start uretim Bitir*/
+.inptUretimBitirDisabled {
+    background-color: #2A3F54 !important;
+    color: white;
+    border-radius: 10px;
+    border: solid black 1px;
+}
+
+.uretimBitirbtnSubmit {
+    margin-left: 77%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+}
+
+
+.uretimbitirCircle {
+    background: #B52E31;
+    width: 33px;
+    color: white;
+    font-weight: bold;
+    height: 33px;
+    border-radius: 50%;
+    text-align: center;
+    padding-top: 9px;
+    /*left: 92.5%;
+    top: 24.3%;
+    position:fixed;*/
+    cursor: pointer;
+}
+
+    .uretimbitirCircle:hover {
+        background-color: black;
+        color: white;
+    }
+
+.hr-uretimBitir {
+    height: 3px;
+    width: 106%;
+    background-color: black;
+    margin-left: -15px;
+}
+
+.inp-uretimBitir {
+    border-radius: 14px;
+    border: 2px solid #B52E31;
+    width: 100%;
+    color: black;
+    font-size: 14px;
+    padding: 5px;
+    font-weight: bold;
+    margin: 5px;
+}
+
+
+.cardBitir {
+    box-shadow: 0px 6px 17px 6px black;
+}
+/*end uretim Bitir*/
+
+
+
+
+
+
+/* start Bakim Ariza*/
+.bakimAriz-listOfAllStokLinks {
+    margin-left: 30%;
+}
+
+    .bakimAriz-listOfAllStokLinks li {
+        display: inline-block;
+        border: 1px solid #D4CCCC;
+        color: #A7A7A7;
+        padding: 10px;
+        cursor: pointer;
+        margin-left: 20px;
+        margin-top: 12px;
+        border-radius: 5px;
+    }
+
+        .bakimAriz-listOfAllStokLinks li.active {
+            background-color: #264656;
+            border: 1px solid #007BFF;
+            color: white;
+            font-weight: 500;
+        }
+
+.bakimArizaSearchDiv {
+    margin-top: 16px;
+    margin-left: -15px;
+    display: inline-table !important;
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.bakimArizaCard {
+    box-shadow: 10px 10px 10px #264656;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: #264656;
+    color: white;
+    opacity: 0;
+}
+
+.gecmisBakimArizaContnet {
+    display: none;
+}
+
+#btn-bakimAriza-submit {
+    background-color: white;
+    color: #264656;
+    font-weight: bold;
+    float: right;
+    margin-top: 20px;
+    border-radius: 12px;
+}
+/* end Bakim Ariza*/
 i {
     cursor: pointer;
 }
-.right_col{
-    overflow:auto;
+
+.right_col {
+    overflow: auto;
 }
+
 .alert-welcomePage {
     background-color: #e73c68;
     color: white;
     text-align: center;
     font-size: 1rem;
 }
+
 .welcomepage-conainer {
     margin-top: 6%;
     margin-left: 5%;
 }
+
 .first-sec {
-    width:100%;
+    width: 100%;
 }
+
 .welcomepage-conainer a {
     color: white !important;
     background-color: #2A3F54;
@@ -99,22 +289,26 @@ i {
     text-align: center;
     padding-top: 6%;
 }
+
     .welcomepage-conainer a:hover {
         background-color: #e73c68;
         color: white;
         cursor: pointer;
-    } 
-.first-sec {
-    margin-bottom:3rem;
+    }
 
+.first-sec {
+    margin-bottom: 3rem;
 }
-.first-sec a:nth-child(1),.second-sec a:nth-child(1){
-    width:45%;
-}
-.first-sec a:nth-child(2), .second-sec a:nth-child(2) {
-    width: 45%;
-    margin-left:3rem;
-}
+
+    .first-sec a:nth-child(1), .second-sec a:nth-child(1) {
+        width: 45%;
+    }
+
+    .first-sec a:nth-child(2), .second-sec a:nth-child(2) {
+        width: 45%;
+        margin-left: 3rem;
+    }
+
 .demo-form-label {
     color: black;
     font-weight: bold;
@@ -122,32 +316,40 @@ i {
     margin-top: 0.5rem;
     border-bottom: 1.5px solid red;
 }
-.demo-form input{
-    color:black !important;
+
+.demo-form input {
+    color: black !important;
 }
+
 .select2-results__option[aria-selected] {
     color: #2A3F54;
-    font-weight:bold;
-    font-size:0.8rem;
+    font-weight: bold;
+    font-size: 0.8rem;
 }
+
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #2A3F54;
-    color:white;
-    font-size:1rem;
+    color: white;
+    font-size: 1rem;
 }
+
 .select2-container {
     margin-bottom: 0.5rem;
 }
-.p-rotate{
-    margin-bottom:1rem;
+
+.p-rotate {
+    margin-bottom: 1rem;
 }
+
 .mdi-check:after label {
     font-weight: bold !important;
-    color:black !important;
+    color: black !important;
 }
-#btn-NewNC-submit :focus{
-    border-color:none;
+
+#btn-NewNC-submit :focus {
+    border-color: none;
 }
+
 #btn-newNc-submit {
     background-color: #2a3f54;
     color: white !important;
@@ -155,15 +357,18 @@ i {
     float: right;
     margin-top: 3%;
 }
-#newNc-summary span{
-    color:black;
-    font-weight:bold;
+
+#newNc-summary span {
+    color: black;
+    font-weight: bold;
 }
+
 #btn-newNc-reset {
     color: white !important;
     border-color: none;
     margin-top: 3%;
 }
+
 .nav-sm .nav.side-menu li a {
     font-size: 1rem;
 }
@@ -171,38 +376,46 @@ i {
 /*end welcome page*/
 /* start review page*/
 .recordNotFound {
-    text-align:center;
-    color:black;
-    display:none;
+    text-align: center;
+    color: black;
+    display: none;
 }
+
 .tableCount {
     color: #10070a;
     font-weight: bold;
 }
+
 .nav-review {
     margin-left: 42% !important;
 }
-.nav-review li{
-    margin-left:0.5rem;
-}
-.nav-review li a {
-    background-color: #2A3F54;
-    color: white !important;
-}
-    .nav-review li a:hover {
-        background-color: #e73c68;
-        color: white ;
-        cursor: pointer;
+
+    .nav-review li {
+        margin-left: 0.5rem;
     }
+
+        .nav-review li a {
+            background-color: #2A3F54;
+            color: white !important;
+        }
+
+            .nav-review li a:hover {
+                background-color: #e73c68;
+                color: white;
+                cursor: pointer;
+            }
+
 .container-review .table-bordered tbody tr:hover {
     background-color: #2A3F54;
     color: white;
     cursor: pointer;
 }
+
 .redClass {
     background-color: #e73c68;
     color: white;
 }
+
 .greenClass {
     background-color: #28a745;
     color: white;
@@ -211,21 +424,24 @@ i {
 /* start setUp page*/
 .container-setUp .nav-tabs li {
     width: 16%;
-
 }
-.container-setUp .nav-tabs li a {
+
+    .container-setUp .nav-tabs li a {
         border-radius: 4rem;
         text-align: center;
+    }
+
+        .container-setUp .nav-tabs li a:hover {
+            color: white;
+            background-color: #2A3F54;
+            cursor: pointer;
+        }
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: white;
+    background-color: #2A3F54;
 }
-    .container-setUp .nav-tabs li a:hover {
-        color: white;
-        background-color: #2A3F54;
-        cursor:pointer;
-    }
-    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-        color: white;
-        background-color: #2A3F54;
-    }
+
 .container-setUp-partial table thead {
     background-color: #2A3F54;
     color: white;
@@ -233,20 +449,23 @@ i {
 
 /*claim type*/
 .container-claimtype .form-group {
-    margin-top:1rem;
+    margin-top: 1rem;
 }
-.container-claimtype .form-group label{
-    color:black;
-    font-weight:500;
-    font-size:1rem;
-}
-.container-claimtype .form-group select {
-    width: 50%;
-    color:black;
-    font-weight:bold;
-}
-.container-claimtype .btn-success{
-    margin-top:1.8rem;
+
+    .container-claimtype .form-group label {
+        color: black;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    .container-claimtype .form-group select {
+        width: 50%;
+        color: black;
+        font-weight: bold;
+    }
+
+.container-claimtype .btn-success {
+    margin-top: 1.8rem;
 }
 /*Company*/
 
@@ -257,15 +476,17 @@ i {
 /*start details */
 #detailsMoal {
     margin: 0;
-    top:-2rem;
+    top: -2rem;
 }
+
 .modal-content {
     padding: 0.5rem;
 }
-#claimType-AddModel label{
-    color:black;
-    font-weight:bold;
-    font-size:0.8rem;
+
+#claimType-AddModel label {
+    color: black;
+    font-weight: bold;
+    font-size: 0.8rem;
 }
 
 .Header-detailsNc div:nth-child(1) {
@@ -276,68 +497,76 @@ i {
     width: 3rem;
     text-align: center
 }
-.Header-detailsNc span{
- position:relative;
- top:1rem;
-}
-.Header-detailsNc ul {
-    list-style: none;
-   float:left;
-}
-.Header-detailsNc ul li{
-    float:right;
-    margin-left:1rem;
-    font-weight:bold;
-    color:black;
-       
-        
-}
-.Header-detailsNc ul li:hover {
-    cursor: pointer;
-    color: #e73c68
+
+.Header-detailsNc span {
+    position: relative;
+    top: 1rem;
 }
 
-.NcDetails-formControl textarea{
-    margin-left:1rem;
+.Header-detailsNc ul {
+    list-style: none;
+    float: left;
 }
-textarea{
-    font-size:1.5rem;
+
+    .Header-detailsNc ul li {
+        float: right;
+        margin-left: 1rem;
+        font-weight: bold;
+        color: black;
+    }
+
+        .Header-detailsNc ul li:hover {
+            cursor: pointer;
+            color: #e73c68
+        }
+
+.NcDetails-formControl textarea {
+    margin-left: 1rem;
 }
+
+textarea {
+    font-size: 1.5rem;
+}
+
 .NcDetails-formControl select {
-    margin-left: 2rem!important ;
+    margin-left: 2rem !important;
 }
+
 .NcDetails-formControl .select2-container--default .select2-selection--multiple {
     width: 25.6rem !important;
 }
+
 .container-NcDetails .select2-container--default .select2-selection--multiple {
     width: 25.6rem !important;
 }
-.NcDetails-formControl {
-    margin-bottom:1rem;
 
+.NcDetails-formControl {
+    margin-bottom: 1rem;
 }
-.NcDetails-formControl label
-{
-    margin-left:0.5rem;
-    margin-right:0.5rem;
-}
-  .NcDetails-formControl  input{
-        margin-left:0.5rem !important;
+
+    .NcDetails-formControl label {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+
+    .NcDetails-formControl input {
+        margin-left: 0.5rem !important;
     }
 
 .modal {
-       z-index:100;
-
+    z-index: 100;
 }
+
 .modal-backdrop {
-    z-index:50;
+    z-index: 50;
 }
 
 .immediateAction button:nth-child(1) {
     margin-top: 0.5rem;
     margin-bottom: 1rem;
 }
-    .immediateAction button:nth-child(1):hover ,.immediateAction button:nth-child(1):focus {
+
+    .immediateAction button:nth-child(1):hover, .immediateAction button:nth-child(1):focus {
         background-color: #e73c68;
         color: white;
     }
@@ -354,8 +583,9 @@ textarea{
 .doc-details .select2-container--default .select2-selection--multiple {
     width: 10rem !important;
 }
+
 .immediateAction .select2-container--default .select2-selection--multiple {
-    width:13rem !important;
+    width: 13rem !important;
 }
 /*end details*/
 
@@ -371,8 +601,9 @@ textarea{
 .modal .select2-container--default .select2-selection--multiple {
     width: 13rem !important;
 }
-.inpAction{
-    width:7rem;
+
+.inpAction {
+    width: 7rem;
 }
 
 .modal label {
@@ -382,12 +613,12 @@ textarea{
 
 
 /* Start Reports*/
-.reports-nav .nav{ 
-    flex-wrap:unset
+.reports-nav .nav {
+    flex-wrap: unset
 }
 /*End Reports*/
 
-.tableFontMaxmize{
-font-weight:bold !important;
-font-size:1rem!important;
+.tableFontMaxmize {
+    font-weight: bold !important;
+    font-size: 1rem !important;
 }

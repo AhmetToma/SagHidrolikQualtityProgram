@@ -64,7 +64,23 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult UretimBasla()
+        {
+            return View();
+        }
+        public IActionResult UretimBitir()
+        {
+            return View();
+        }
 
+        public IActionResult UretimPlani()
+        {
+            return View();
+        }
+        public IActionResult BakimAriza()
+        {
+            return View();
+        }
 
 
     }

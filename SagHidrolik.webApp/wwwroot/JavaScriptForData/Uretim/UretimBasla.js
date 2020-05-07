@@ -8,7 +8,7 @@
     }
 });
 let  requestQueryForUretimBasla = {
-    pageSize: 20,
+    pageSize: 10,
     pageNumber: 1,
     stk: "",
     Pid: "",
@@ -28,8 +28,7 @@ var uretimBaslaObject = {
 };
 // #region search
 
-var typingTimer;
-var doneTypingInterval = 500;
+ 
 let urunNo = $("#inp-uretimBasla-searchUrunNo");
 let lotNo = $("#inp-uretimBasla-searchlotNo");
 urunNo.keyup(function () {
@@ -49,7 +48,6 @@ urunNo.keyup(function () {
         GetProcessFlow();
     }
 });
-
 
 lotNo.keyup(function () {
     requestQueryForUretimBasla.pageNumber = 1;
@@ -111,14 +109,14 @@ function GetProcessFlow(pageNumber) {
         data: JSON.stringify(requestQueryForUretimBasla),
         success: (list) => {
             if (list.length > 0) {
-                $(`${NotFoundRecordsId.uretimBasla}`).css('display', 'none');
+                $(`${recordsNotFound.uretimBasla}`).css('display', 'none');
                 $('#table-uretimInUretim').empty();
                 CreateUretimTableInUretim(list);
                 console.log(list);
             }
             else {
-                $(`${NotFoundRecordsId.uretimBasla} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
-                $(`${NotFoundRecordsId.uretimBasla}`).css('display', 'block');
+                $(`${recordsNotFound.uretimBasla} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
+                $(`${recordsNotFound.uretimBasla}`).css('display', 'block');
                 $('#table-uretimInUretim').empty();
                 $('#uretimBasla-pageNumner').text(requestQueryForUretimBasla.pageNumber);
                 HideLoader();
@@ -155,28 +153,31 @@ function SendStkAndLot(stk, lot, process) {
     $('#uretimBasla-baslasin-process').val(process);
 }
 function GetAktiveOperators() {
+    ShowLoader();
     $.ajax({
         type: "GET",
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.GetAktiveOperators,
         success: (list) => {
             $('#uretimBasla-activeOpertors').empty();
-            console.log(HttpUrls.GetAktiveOperators);
+            console.log('oper',list);
             list.map((element) => {
                 $("#uretimBasla-activeOpertors").append("<option value='" + element.operator_ID + "'>" + element.operator_Name + "</option>");
                 $('#uretimBasla-activeOpertors').trigger('change');
             });
+            HideLoader();
         }
     });
 }
 function GetAktiveMachine() {
+    ShowLoader();
     $.ajax({
         type: "GET",
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.GetAktiveMachine,
         success: (list) => {
             $('#uretimBasla-activeMachine').empty();
-        
+            HideLoader();
             list.map((element) => {
                 $("#uretimBasla-activeMachine").append("<option value='" + element.machine_Id + "'>" + element.machine_no + "</option>");
                 $('#uretimBasla-activeMachine').trigger('change');
@@ -203,7 +204,7 @@ $('#table-uretimInUretim').on('click', 'tr', function () {
     uretimBaslaObject.lotNo = lot;
     uretimBaslaObject.stk = stk;
     uretimBaslaObject.process = process;
-    uretimBaslaObject.processno_id = processno_id;
+    uretimBaslaObject.processno_id = processno_id.toString();
 });
 
 
@@ -282,6 +283,7 @@ $('#btn-uretimBasl-submit').click((event) => {
     }
     if (checkUretimObject.length === Object.keys(uretimBaslaObject).length) {
 
+        console.log(uretimBaslaObject);
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=utf-8",
@@ -332,7 +334,7 @@ function CreateIsEmri(uretilsinMi) {
                         Operator: uretimBaslaObject.operator_ID,
                         processno_id: uretimBaslaObject.machine_Id
                     };
-
+                    console.log(ProcessFlowDetailsViewModel);
                     Swal.fire({
                         title: 'is emri özeti',
                         text: `stk : ${uretimBaslaObject.stk} -- 

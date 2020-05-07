@@ -186,7 +186,7 @@ namespace SagHidrolik.Models.SqlRepository
         }
         public static string StartIsEmriAndWriteToFlowDetails(ProcessFlowDetailsViewModel proFlowVM)
         {
-            query = $"insert into dbo.ProcessFlowDetail(Flow_ID,Operator,Machine,Start_time) values ({proFlowVM.Flow_ID},{proFlowVM.Operator},{proFlowVM.processno_id},'{proFlowVM.Start_time}')";
+            query = $" SET DATEFORMAT dmy;insert into dbo.ProcessFlowDetail(Flow_ID,Operator,Machine,Start_time) values ({proFlowVM.Flow_ID},{proFlowVM.Operator},{proFlowVM.processno_id},GETDATE())";
             return query;
         }
         public static string GetOperatorPolivalance(OperatorPolivalanceViewModel operatorPolivalanceViewModel)
@@ -303,7 +303,7 @@ namespace SagHidrolik.Models.SqlRepository
                    " FROM ProcessPlanFollowTable " +
                    " WHERE(((ProcessPlanFollowTable.RemainProcessqty) > 0)) " +
                    $" and ProcessPlanFollowTable.PartNo like '%{requestQuery.Stk}%'" +
-                   $" and ProcessPlanFollowTable.[Group] like '%{requestQuery.uretimPlaniType}%'" +
+                   $" and ProcessPlanFollowTable.[Group] like N'%{requestQuery.uretimPlaniType}%'" +
                    $" order by ProcessDate asc OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY";
             return query;
         }
@@ -318,7 +318,7 @@ $" ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo)" +
 $" inner join dbo.[10_MakinaListesiNew] on dbo.[10_MakinaListesiNew].Machine_Id = ProcessFlowDetail.Machine inner join Local_ProductionOrders " +
 $" ON ProcessFlow.ProductOrder_ID = Local_ProductionOrders.ProductOrderID) " +
 $" INNER JOIN Operator ON ProcessFlowDetail.Operator = Operator.Operator_ID " +
-$" where Process_Planning.ProsesAdi like'%{requestQuery.processAdi}%' and dbo.[10_MakinaListesiNew].Machine_no like '%{requestQuery.machineNo}%' " +
+$" where Process_Planning.ProsesAdi like N'%{requestQuery.processAdi}%' and dbo.[10_MakinaListesiNew].Machine_no like '%{requestQuery.machineNo}%' " +
 $" GROUP BY ProcessFlowDetail.Finish_time, Process_Planning.ProsesAdi,Operator.Operator_Name, ProcessFlowDetail.Start_time, " +
 $" ProcessFlowDetail.Finish_time,ProcessFlowDetail.Machine,ProcessFlowDetail.Finish_time, Local_ProductionOrders.PartNo_ID " +
 $" ,dbo.[10_MakinaListesiNew].Machine_no ORDER BY Finish_time DESC" +
@@ -385,6 +385,37 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
             query = $"SET DATEFORMAT dmy;insert into ProcessFlow(ProductOrder_ID,ProcessNo_ID," +
                 $"Process_qty,ProcessNo_next,Require_Date,Ok_Qty,Process_reject,Process_Rework,Order_no)" +
                 $" values({newLotNo}, {tamirIsEmriModel.tamir1.ProcessNo}, 0, {lastProcess}, {tamirIsEmriModel.tarih},0, 0, 0, 1);";
+            return query;
+        }
+
+        #endregion
+
+        #region Bakim Ariza
+        public static string GetAllMachine(RequestQuery requestQuery)
+        {
+            query = "SELECT [dbo].[10_MakinaListesiNew].Machine_Id, [dbo].[10_MakinaListesiNew].Machine_no,[dbo].[10_MakinaListesiNew].Machine_Name , [dbo].[10_MakinaListesiNew].MODEL," +
+             $" [dbo].[10_MakinaListesiNew].Bölüm  as Bolum FROM[dbo].[10_MakinaListesiNew] where [dbo].[10_MakinaListesiNew].Machine_no like '%{requestQuery.machineNo}%'" +
+             "ORDER BY [dbo].[10_MakinaListesiNew].Machine_no" +
+             $" OFFSET  {requestQuery.pageNumber} rows fetch next {requestQuery.pageSize} rows only; ";
+            return query;
+        }
+
+
+        public static string insertIntoBakimKayit(BakimArizaModel bakimArizaModel)
+        {
+            //DBCC USEROPTIONS;
+            //SET DATEFORMAT dmy;
+            query = "SET DATEFORMAT dmy;insert into Tbl_BakımKayit (Makina_ID,PlanlananTarih,BakımTipi,BakımıTalepEden,BaslamaSaat,Planlananİslem,Tamamlanma)" +
+               $" values({bakimArizaModel.machineId}, '{bakimArizaModel.tarih}', 2, {bakimArizaModel.operatorId}, GETDATE(),'{bakimArizaModel.tanim}',0)";
+            return query;
+        }
+        public static string GetAllGecmisTalepler(RequestQuery requestQuery)
+        {
+            query = "SELECT Tbl_BakımKayit.Makina_ID,dbo.Operator.Operator_Name,Tbl_BakımKayit.Tamamlanma, Tbl_BakımKayit.Planlananİslem,dbo.[10_MakinaListesiNew].Machine_Name, Tbl_BakımKayit.BakımTipi as BakimTipi, Tbl_BakımKayit.BaslamaSaat, Tbl_BakımKayit.BitisSaat, Tbl_BakımKayit.BakımıTalepEden as BakimiTalepEden  , Tbl_BakımKayit.Bakim_ID, Tbl_BakımKayit.PlanlananTarih " +
+                "FROM Tbl_BakımKayit inner join dbo.Operator on dbo.Operator.Operator_ID=Tbl_BakımKayit.BakımıTalepEden" +
+                " inner join dbo.[10_MakinaListesiNew] on  dbo.[10_MakinaListesiNew].Machine_Id=Tbl_BakımKayit.Makina_ID" +
+                " WHERE(((Tbl_BakımKayit.Tamamlanma) = 0) AND((Tbl_BakımKayit.BakımTipi) = 2)) " +
+                $"order by  Tbl_BakımKayit.Makina_ID desc OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize}  ROWS ONLY; ";
             return query;
         }
 

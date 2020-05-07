@@ -43,14 +43,14 @@ namespace SagHidrolik.DataAccesslayer.Uretim
             }
         }
     
-        public static async Task<IEnumerable<OperatorViewModel>> GetAktiveOperators()
+        public static async Task<IEnumerable<AktifOperatorViewModel>> GetAktiveOperators()
         {
             //requestQuery.pageNumber = 5;
             //requestQuery.pageSize = 5;
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
                 await connection.OpenAsync();
-                var list = await connection.QueryAsync<OperatorViewModel>(SqlQueryRepo.GetAktiveOperators);
+                var list = await connection.QueryAsync<AktifOperatorViewModel>(SqlQueryRepo.GetAktiveOperators);
                 return list;
             }
         }
@@ -121,7 +121,7 @@ namespace SagHidrolik.DataAccesslayer.Uretim
                     await connection.OpenAsync();
                     var x = DateTime.Now.GetDateTimeFormats().ToString();
 
-                    processFlowDetailsViewModel.Start_time = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+                    processFlowDetailsViewModel.Start_time = DateTime.Now.ToString();
                     var list = await connection.QueryAsync<ProcessFlowDetailsViewModel>(SqlQueryRepo.StartIsEmriAndWriteToFlowDetails(processFlowDetailsViewModel));
                     return (processFlowDetailsViewModel);
                 }

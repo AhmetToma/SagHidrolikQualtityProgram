@@ -1,0 +1,79 @@
+﻿<div class="container-uretimPlani">
+    <div class="alert defaultBackground" role="alert">
+        Üretim Planı
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="Content-uretimPalni">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group bakimArizaSearchDiv">
+                    <span class="input-group-addon" id="basic-addon2">Stk</span>
+                    <input autofocus id="inp-uretimPlani-searchStk" type="text" class="form-control" placeholder="ürün kodu giriniz" aria-describedby="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select class="custom-select uretimPlani-select" id="select-uretimPlani-selectUretimPlaniType">
+                    <option value="" selected>Seç...</option>
+                    <option value="01_Kesim">01_Kesim</option>
+                    <option value="02_Büküm">02_Büküm</option>
+                    <option value="03_Havşa">03_Havşa</option>
+                    <option value="04_Kaynak">04_Kaynak</option>
+                    <option value="041_KesDel">041_KesDel</option>
+                    <option value="042_Hazirlik">042_Hazirlik</option>
+                    <option value="06_Paketleme">06_Paketleme</option>
+                    <option value="06_PaketlemeDiğer">06_PaketlemeDiğer</option>
+                    <option value="06_test">06_test</option>
+                    <option value="07_Mercedes">07_Mercedes</option>
+                    <option value="09_Kaplama">09_Kaplama</option>
+                    <option value="08_UçŞekil">08_UçŞekil</option>
+                    <option value="99_Proto">99_Proto</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button id="btn-uretimPlani-reset" class="btn btn-danger">Reset</button>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Group</th>
+                        <th scope="col">prosess Adı</th>
+                        <th scope="col">part No</th>
+                        <th scope="col">Wo lot</th>
+                        <th scope="col">remain process qty</th>
+                        <th scope="col">Wo New Date</th>
+                        <th scope="col">Balance</th>
+                    </tr>
+                </thead>
+                <tbody id="table-uretimPlani"></tbody>
+            </table>
+            <div id="recordNotFoundDiv_bakimAriza_AllMachines" class="recordNotFoundDiv">
+                <h3></h3>
+            </div>
+            <div class="clearFix">
+            </div>
+            <nav aria-label="Page navigation example" class="nav-review">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a id="btn-uretimPalni-previous" class="page-link" href="" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a id="num-uretimPalni-pageNumber" class="page-link" href="">1</a></li>
+                    <li class="page-item">
+                        <a id="btn-uretimPalni-next" class="page-link" href="" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

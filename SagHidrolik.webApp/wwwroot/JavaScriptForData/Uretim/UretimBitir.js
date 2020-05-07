@@ -69,8 +69,6 @@ $('#next-table-ProcessFlowClose').on('click', (event) => {
 
 // #region search
 
-var typingTimer;
-var doneTypingInterval = 500;
 let urunNoUretimBitir = $("#inp-uretimBitir-searchUrunNo");
 let lotNoUretimBitir = $("#inp-uretimBitir-searchlotNo");
 urunNoUretimBitir.keyup(function () {
@@ -189,15 +187,15 @@ function GetProcessFlowClose() {
         data: JSON.stringify(requestQueryForUretimBitir),
         success: (list) => {
             if (list.length !== 0) {
-                $(`${NotFoundRecordsId.uretimBitir}`).css('display', 'none');
+                $(`${recordsNotFound.uretimBitir}`).css('display', 'none');
                 $('#uretimBitirTable').empty();
                 CreateProcessFlowCloseTable(list);
             }
             else {
                 HideLoader();
                 $('#uretimBitirTable').empty();
-                $(`${NotFoundRecordsId.uretimBitir} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
-                $(`${NotFoundRecordsId.uretimBitir}`).css('display', 'block');
+                $(`${recordsNotFound.uretimBitir} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
+                $(`${recordsNotFound.uretimBitir}`).css('display', 'block');
             }
          
         }

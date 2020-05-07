@@ -96,9 +96,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\JavaScriptForData\BakimAriza\BakimAriza.js" />
+    <None Include="wwwroot\JavaScriptForData\BakimAriza\gecmisTalepler.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\gunlukHatBazindaUretim.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\UretimBasla.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\UretimBitir.js" />
+    <None Include="wwwroot\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\webfonts\fa-solid-900.woff2" />
   </ItemGroup>
 
   <ItemGroup>

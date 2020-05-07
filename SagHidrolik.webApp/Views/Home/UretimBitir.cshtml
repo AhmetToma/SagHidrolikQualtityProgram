@@ -1,0 +1,298 @@
+﻿
+    <div class="con">
+
+        <div class="alert defaultBackground" role="alert">
+            Üretim Bitirme
+
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-5 ">
+                            <div class="input-group ">
+                                <input autofocus type="number" id="inp-uretimBitir-searchUrunNo" class="form-control inclas" placeholder="Ürün No" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-md-5 ">
+                            <div class="input-group">
+                                <input type="number" id="inp-uretimBitir-searchlotNo" class="form-control inclas" placeholder="Lot No" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <button id="btn-uretimBitirReset" class="btn btn-danger">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Table-uretimBasla tableUretimBitir">
+                        <table class="table table-bordered tableHoverDefault">
+                            <thead class="uretimBaslatThead ">
+                                <tr>
+                                    <th scope="col">Ürün</th>
+                                    <th scope="col">Lot No</th>
+                                    <th scope="col">Process</th>
+                                    <th scope="col">Operator</th>
+                                    <th scope="col"> Makine</th>
+                                    <th scope="col"> Kalan Miktar</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="uretimBitirTable"></tbody>
+                        </table>
+                        <div id="recordNotFoundDiv_uretimBitir" class="recordNotFoundDiv">
+                            <h3></h3>
+                        </div>
+
+                    </div>
+                    <div class="uretimBaslaPagination">
+                        <nav aria-label="Page navigation example" class="nav-review">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a id="previous-table-ProcessFlowClose" class="page-link" href="" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a id="urtimBitir-PageSize" class="page-link" href="">1</a></li>
+                                <li class="page-item">
+                                    <a id="next-table-ProcessFlowClose" class="page-link" href="" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div style="opacity:1;" class="col-md-6 cardBitir">
+
+                    <form id="uretimBitirForm">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label>Ürün Kodu</label>
+                                    <input disabled type="text" id="inp-uretimBitir-stk" class="inptUretimBitirDisabled form-control" aria-describedby="emailHelp">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Ürün Lot</label>
+                                    <input id="inp-uretimBitir-lot" disabled type="text" class="inptUretimBitirDisabled form-control" aria-describedby="emailHelp">
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="form-group processCss">
+                            <label >Process</label>
+                            <input  style="margin-left:17px" disabled type="email" class="inptUretimBitirDisabled"  aria-describedby="emailHelp">
+                        </div>*@
+                        <div style="margin-left: 12px;margin-top:15px;" class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>Makine</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input  style="width:100%;" id="inp-uretimBitir-machineId" disabled class="inptUretimBitirDisabled form-control" aria-describedby="emailHelp">
+                                </div>
+                                <div class="col-md-5">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>Operator</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input style="width:100%;margin-left:10px;" id="uretimBitir-operatorName" disabled class="inptUretimBitirDisabled form-control" aria-describedby="emailHelp">
+                                </div>
+                                <div class="col-md-5">
+                                    <select style="width:100%;" id="uretimBitir-activeOpertors" class="limitedNumbSelect2" multiple="true">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr class="hr-uretimBitir" />
+                        <div style="display:inline" class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>Miktar</label>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="number" id="inp-uretimBitir-miktar" class="inp-uretimBitir form-control" value="" aria-describedby="emailHelp">
+
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="">
+                                        <h5 style="color:black;font-weight:bold; display:block">
+                                            <span id="mkNumber"></span>
+                                            <i id="mkSuccess" style="font-size:20px;display:none;" class="fa fa-check-circle text-success"></i>
+                                            <i id="mkDanger" style="font-size:20px;display:none" class="fa fa-times-circle text-danger"></i>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="uretimbitirCircle">
+                                        <p id="uretimBitir-miktar"></p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div style="display:inline" class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Fire1</label>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" min="0" id="inp-uretimBitir-fire1" class="inp-uretimBitir" value="" aria-describedby="emailHelp">
+
+                                </div>
+                                <div class="col-md-7">
+                                    <select style="width:100%;" id="uretimBitir-fir1-all" class="limitedNumbSelect2" multiple="true">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div style="display:inline" class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Fire2</label>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <input min="0" type="number" id="inp-uretimBitir-fire2" class="inp-uretimBitir" value="" aria-describedby="emailHelp">
+
+                                </div>
+                                <div class="col-md-7">
+                                    <select style="width:100%;" id="uretimBitir-fir2-all" class="limitedNumbSelect2" multiple="true">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div style="display:inline" class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Tamir</label>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <input min="0" type="number" id="inp-uretimBitir-tamir" class="inp-uretimBitir" value="" aria-describedby="emailHelp">
+
+                                </div>
+                                <div class="col-md-7">
+                                    <select style="width:100%;" id="uretimBitir-tamir" class="limitedNumbSelect2" multiple="true">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div style="display:inline" class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Duruş(dk)</label>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <input min="0" id="uretimBitir-durus-dk" type="number" class="inp-uretimBitir" value="" aria-describedby="emailHelp">
+
+                                </div>
+                                <div class="col-md-7">
+                                    <input  min="0" id="uretimBitir-durus-note" type="text" class="inp-uretimBitir" value="" aria-describedby="emailHelp">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <button id="btn-uretimBitir-submit" style="text-align:center" type="submit" class="btn btn-success uretimBitirbtnSubmit">Üretim Bitir</button>
+
+                    </form>
+                </div>
+
+
+            </div>
+
+
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+<!-- modal-->
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div style="background-color:#7d2325; color:white" class="modal-header">
+                <h4 class="modal-title" id="gridSystemModalLabel">Miktar az!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h3>Toplam üretilen miktar az. Devam edilsin mi?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Iptal</button>
+                <button id="uretimBitir-confirmSubmiting" type="button" class="btn btn-success">Devam</button>
+            </div>
+        </div>
+    </div>
+    <!-- modal-->
+</div>
+<script>
+
+
+    $(document).ready(function () {
+
+        $(".limitedNumbSelect2").select2({
+            maximumSelectionLength: 1,
+            placeholder: "operator Seçiniz"
+        })
+        $("#uretimBitir-fir1-all").select2({
+            maximumSelectionLength: 1,
+            placeholder: "Fire1 Seçiniz"
+        })
+        $("#uretimBitir-fir2-all").select2({
+            maximumSelectionLength: 1,
+            placeholder: "Fire2 Seçiniz"
+        })
+        $("#uretimBitir-tamir").select2({
+            maximumSelectionLength: 1,
+            placeholder: "tamir Seçiniz"
+        })
+    });
+
+</script>
+
+
+
+
