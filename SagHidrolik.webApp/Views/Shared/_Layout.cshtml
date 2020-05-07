@@ -185,7 +185,20 @@
             </div>
         </div>
     </div>
+    <script>
+            $(function () {
+        $.ajax({
+            type: "get",
+            contentType: "application/json;charset=utf-8",
+            url: `${BaseUrl}StokGetData/GetCurrentYear`,
+            success: (year) => {
+                $('.currentDatabase').text(` Current Database :${year}`)
+                HideLoader();
+            }
+        });
 
+    })
+    </script>
     <script src="~/js/bootstrap.bundle.min.js"></script>
     @*<script src="~/js/fastclick.js"></script>
         <script src="~/js/nprogress.js"></script>
