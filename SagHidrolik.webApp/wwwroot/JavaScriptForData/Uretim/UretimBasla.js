@@ -80,14 +80,14 @@ function SearchInUretim() {
 
 //  start paginantion
 
-$('#previous-table-ProcessFlow').on('click', (event) => {
+$('#btn-uretimBasla-pervious').on('click', (event) => {
     event.preventDefault();
     if (requestQueryForUretimBasla.pageNumber > 1) requestQueryForUretimBasla.pageNumber -= 1;
     $('#uretimBasla-pageNumner').text(requestQueryForUretimBasla.pageNumber);
     GetProcessFlow();
 
 });
-$('#next-table-ProcessFlow').on('click', (event) => {
+$('#btn-uretimBasla-next').on('click', (event) => {
     event.preventDefault();
     requestQueryForUretimBasla.pageNumber += 1;
     $('#uretimBasla-pageNumner').text(requestQueryForUretimBasla.pageNumber);
