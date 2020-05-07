@@ -84,7 +84,6 @@ $(Inputs.uretimplani_searchByStk).keyup(function () {
     else if ($(Inputs.uretimplani_searchByStk).val() === '') {
         requestQueryForUretimPlani.pageNumber = 1;
         requestQueryForUretimPlani.Stk = '';
-        alert('bos');
         $('#num-uretimPalni-pageNumber').text(requestQueryForUretimPlani.pageNumber);
         GetAllUretimPlaniAjaxCall();
     }

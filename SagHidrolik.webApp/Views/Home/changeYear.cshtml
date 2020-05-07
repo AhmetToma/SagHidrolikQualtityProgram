@@ -1,0 +1,73 @@
+﻿
+<div class="alert defaultBackground" role="alert">
+    change Year
+</div>
+<h3>Current Database : <span id="span-currentYear"></span></h3>
+<div class="col-md-2">
+    <div class="form-group">
+        <select style="width:100%" class="form-control" id="select-selectDatabaseYear">
+            <option value="">...</option>
+            @for (int i = 2017; i <= DateTime.Now.Year; i++)
+            {
+                <option value="@i ">@i</option>
+            }
+        </select>
+    </div>
+</div>
+<script>
+    $(function () {
+        let dataUrl = "Home/changeYear";
+        let one = BaseUrl + dataUrl;
+        let two = BaseServerUrl + dataUrl;
+        if (window.location.href === one || window.location.href === two) {
+            ShowLoader();
+            $.ajax({
+                type: "get",
+                contentType: "application/json;charset=utf-8",
+                url: `${BaseUrl}StokGetData/GetCurrentYear`,
+                success: (year) => {
+                    $('#span-currentYear').text(`${year}`)
+                    HideLoader();
+                }
+            });
+        }
+    })
+    $(function () {
+        $.ajax({
+            type: "get",
+            contentType: "application/json;charset=utf-8",
+            url: `${BaseUrl}StokGetData/GetCurrentYear`,
+            success: (year) => {
+                $('.currentDatabase').text(` Current Database :${year}`)
+                HideLoader();
+            }
+        });
+
+    })
+    $('#select-selectDatabaseYear').on('change', () => {
+        let selectedYear = $("#select-selectDatabaseYear option:selected").val();
+
+
+        changeYear(selectedYear);
+    });
+    function changeYear(slectedYear) {
+        $.ajax({
+            type: "Post",
+            contentType: "application/json;charset=utf-8",
+            url: `${BaseUrl}StokGetData/ChangeYear?year=` + slectedYear,
+            success: (year) => {
+
+                $('#span-currentYear').text(`${year}`)
+                $('.currentDatabase').text(` Current Database :${year}`)
+
+                Swal.fire(
+                    'sene değiştirildi',
+                    `kayıtlar ${year} göre sırlanmaktadır `,
+                    'success'
+                );
+            }
+        })
+    }
+</script>
+
+

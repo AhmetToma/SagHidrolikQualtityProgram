@@ -77,7 +77,7 @@ $(window).scroll(function () {
 
 
 function GetReviewDetails() {
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt( window.localStorage.getItem('reviewDetails'));
 
     $("select").val(null).trigger("change");
     $.ajax({
@@ -85,7 +85,6 @@ function GetReviewDetails() {
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.GetReviewDetails + ncId,
         success: (model) => {
-            console.log(model);
             genelBilgiler = { ...model };
 
             if (genelBilgiler.nC_CloseDate !== null) genelBilgiler.nC_CloseDate = genelBilgiler.nC_CloseDate.slice(0, -12) 
@@ -106,7 +105,7 @@ function GetReviewDetails() {
 
 
 function setReviewDetails() {
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
 
     if (genelBilgiler !== null) {
         $(`${Inputs.reviewDetails_partNo} option[value='${genelBilgiler.partNo}']`).remove();
@@ -166,7 +165,7 @@ $('input[type=radio][name=reviewRadio]').change(function () {
 
 // #region Action read,delete,add and edit
 function GetAllActionAjaxCall() {
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
     $.ajax({
         type: "GET",
         contentType: "application/json;charset=utf-8",
@@ -176,7 +175,6 @@ function GetAllActionAjaxCall() {
   
             actionList = list;
             createActionList(list);
-            console.log(list);
         }
     });
 }
@@ -200,8 +198,8 @@ function createActionList(list) {
                         <td> ${targetDate.slice(0, -11)}</td>
                         <td>${closeDate.slice(0, -11)}</td>
                         <td><i class="${status}" aria-hidden="true"></i></td>
-                        <td id='actinoId${element.actN_ID}' onclick="editAction(${element.actN_ID})"><i class="fa fa-2x fa-pencil text-primary"> </i> </td>
-                        <td id='actinoId${element.actN_ID}' onclick="deleteImmediateAction(${element.actN_ID})"><i class="fa  fa-2x fa-trash text-danger"> </i> </td>
+                        <td id='actinoId${element.actN_ID}' onclick="editAction(${element.actN_ID})"><i class="fas fa-edit fa-2x  text-primary"> </i> </td>
+                        <td id='actinoId${element.actN_ID}' onclick="deleteImmediateAction(${element.actN_ID})"><i class="fas   fa-2x fa-trash text-danger"> </i> </td>
                     </tr>
 `);
     })
@@ -213,8 +211,6 @@ let AddedActionList = [];
 let EditActionList = [];
 function deleteImmediateAction(id) {
     
-    console.log(actionList);
-    console.log(id);
     let actinoId = `#actinoId${id}`;
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -263,7 +259,7 @@ $(Buttons.reviewDetails_addImmediateAction).click((event) => {
     GetAllOperator(`${Inputs.reviewDetails_addImmediateAction_resposible}`);
 });
 $(Buttons.reviewDetails_confrimAddAction).click((event) => {
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
     event.preventDefault();
     let actionType = $('#select-reviewDetails-add-actionType').val();
     let actionDef = $('#inp-reviewDetails-add-actionDef').val();
@@ -365,7 +361,7 @@ function editAction(ActionId) {
 
 $(Buttons.reviewDetails_confrimEditAction).click((event) => {
     event.preventDefault();
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
     let actionType = $('#select-reviewDetails-edit-actionType').val();
     let actionDef = $('#inp-reviewDetails-edit-actionDef').val();
     let targetDate = $('#inp-reviewDetails-edit-targetDate').val();
@@ -410,7 +406,6 @@ $(Buttons.reviewDetails_confrimEditAction).click((event) => {
             nC_ID: ncId,
             actN_ID: actionModel.actN_ID
         };
-
         $.ajax({
             type: "POST",
             url: HttpUrls.UpdateAction,
@@ -465,7 +460,7 @@ let DeleletedDocumentList = [];
 let AddedDocumentList = [];
 
 function GetDocumnetListAjaxCall() {
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
     $(TablesId.reviewDetails_document).empty();
     $.ajax({
         type: "GET",
@@ -482,17 +477,16 @@ function GetDocumnetListAjaxCall() {
 
 
 function CreateDocumentTable(element) {
-    console.log(element);
     $(TablesId.reviewDetails_document).append(`
 <tr>
 <td>   <a  style="color:black; font-weight:bold" target="_blank"  href="${BaseUrl}ReviewGetData/openDocument?documentLink=${element.documentLink}">${element.documentLink}</a></td>
 <td>
  <a href="${BaseUrl}ReviewGetData/openDocument?documentLink=${element.documentLink}" target="_blank"  >
 
-<i class="fa  fa-2x fa-folder-open text-success"></i>
+<i class="fas  fa-2x fa-folder-open text-success"></i>
 </a> 
 </td>
-<td id="documentId${element.document_ID}" onclick="deleteDocument(${element.document_ID})" ><i class="fa  fa-2x fa-trash text-danger"> </i></td>
+<td id="documentId${element.document_ID}" onclick="deleteDocument(${element.document_ID})" ><i class="fas  fa-2x fa-trash text-danger"> </i></td>
 <tr>
 </tr>
 `)
@@ -524,7 +518,6 @@ function deleteDocument(documentId) {
                 type:"POST",
                 url: HttpUrls.DeleteDocument + documentId,
                 success: (num) => {
-                    console.log(num);
                     GetDocumnetListAjaxCall();
                     Swal.fire({
                         type: 'success',
@@ -549,7 +542,7 @@ $(Buttons.reviewDetails_addDocument).click((event) => {
     $('#document-input').trigger('click');
 });
 $('#document-input').change(function () {
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
     let documentPath = $(this).val();
     if (documentPath !== '') {
 
@@ -585,7 +578,7 @@ let EditDocumentControlList = [];
 let documentControlModel = {};
 let conDocCounter = 100000;
 function GetDocumentControlAjaxCall() {
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt( window.localStorage.getItem('reviewDetails'));
 
     $(TablesId.reviewDetails_documentControl).empty();
     $.ajax({
@@ -625,9 +618,9 @@ function CreateDocumentControlTable(element) {
 <td>${element.changeDate.slice(0, -11)}</td>
 <td>${element.newRev}</td>
 <td>${element.notes}</td>
-<td id="documentControlId${element.id}" onclick="deleteDocumentControl(${element.id})" ><i class="fa  fa-2x fa-trash text-danger"> </i></td>
+<td id="documentControlId${element.id}" onclick="deleteDocumentControl(${element.id})" ><i class="fas  fa-2x fa-trash text-danger"> </i></td>
 
-      <td  id="updatedDocument${element.id}" onclick="editDocumentControl(${element.id})"><i class="fa fa-2x fa-pencil text-primary"> </i> </td>
+      <td  id="updatedDocument${element.id}" onclick="editDocumentControl(${element.id})"><i class=" fa-2x fas fa-edit text-primary"> </i> </td>
 </tr>
 
 
@@ -689,7 +682,7 @@ $('#btn-reviewDetails-addDocumentType').click((e) => {
 
 $('#btn-reviewDetails-add-confirmAddControlType').click((e) => {
     e.preventDefault();
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
     let documentControlType = $('#select-reviewDetails-add-documentControlType').val();
     let changeDate = ` ${$('#inp-reviewDetails-add-changeDate').val()}`;
     let newRev = $('#inp-reviewDetails-add-newRev').val();
@@ -718,6 +711,7 @@ $('#btn-reviewDetails-add-confirmAddControlType').click((e) => {
             newRev: newRev,
             notes: notes,
         };
+        console.log(addedDocumentControlObject);
         $.ajax({
             type: "POST",
             url: HttpUrls.AddDocumentControl,
@@ -764,7 +758,7 @@ function editDocumentControl(documentControlId) {
 
 $('#btn-reviewDetails-edit-confirmAddControlType').click((event) => {
     event.preventDefault();
-    let ncId = window.localStorage.getItem('reviewDetails');
+    let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
     let documentControlType = $('#select-reviewDetails-edit-documentControlType').val();
     let changeDate = $('#inp-reviewDetails-edit-changeDate').val();
     let newRev = $('#inp-reviewDetails-edit-newRev').val();
@@ -1203,7 +1197,6 @@ function CreateSummaryOutputForAction(title,tableId)
                             </table>
                         </div>
 `);
-    console.log(tableId);
     $(`#${tableId}`).empty();
 }
 

@@ -1,12 +1,57 @@
 ﻿/* welcome page*/
-/*start stok*/
+
+.currentDatabase {
+    float: left !important;
+    font-weight: bold;
+    color: black;
+}
+
+.alert {
+    position: sticky;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    width: 50%;
+    margin-left: 26%;
+    border-radius: 10px 120px;
+    box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
 
 .defaultBackground {
-    background-color: #2A3F54;
+    /*#2A3F54 default*/
+    background-color: #b13e5b;
     color: white;
     text-align: center;
     font-size: 1rem;
 }
+
+
+
+/*start stok*/
+
+.urunImage {
+    width: 80%;
+    height: 80%;
+    margin-bottom: 9px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+    .urunImage img {
+        max-width: 200px;
+        max-height: 200px;
+        border: 2px solid #e73c68;
+        padding: 5px;
+    }
+
+        .urunImage img:hover {
+            color: #999;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
 
 .tabelForStk {
     height: 12rem;

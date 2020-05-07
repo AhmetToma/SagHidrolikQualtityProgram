@@ -13,6 +13,11 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult changeYear()
+        {
+            return View();
+        }
+
         public IActionResult NewNc()
         {
             return View();

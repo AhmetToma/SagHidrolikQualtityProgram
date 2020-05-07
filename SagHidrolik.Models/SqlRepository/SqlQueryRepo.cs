@@ -764,7 +764,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
 
         public static string AddDocumentControl(DocumentControlViewModel dc)
         {
-            query = $"insert into J_DocumentControl (NC_ID,Document,ChangeDate,NewRev,Notes)" +
+            query = $" SET DATEFORMAT dmy;insert into J_DocumentControl (NC_ID,Document,ChangeDate,NewRev,Notes)" +
                 $"values({dc.NC_ID},'{dc.DocumentType}','{dc.ChangeDate}','{dc.NewRev}','{dc.Notes}')";
             return query;
         }
