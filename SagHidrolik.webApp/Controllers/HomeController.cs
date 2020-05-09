@@ -86,7 +86,13 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
-
-
+        public IActionResult BoxType()
+        {
+            return View();
+        }
+        public IActionResult Machine()
+        {
+            return View();
+        }
     }
 }

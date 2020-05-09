@@ -86,11 +86,10 @@ namespace SagHidrolik.Models.SqlRepository
         {
             query = " select Qty,Quality ,Process_Planning.ProsesAdi from dbo.BOM_Process inner join Process_Planning on dbo.BOM_Process.SubPartNo = Process_Planning.ProcessNo " +
                 $" where BOM_Process.PartNo_ID = '{requestQuery.pid}' " +
-                $" order By Process_Planning.ProsesAdi OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
+                $" order By BOM_Process.OrderNo OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
 
         }
-
         public static string GetProcessFlowInStok(RequestQuery requestQuery)
         {
             query = "SELECT dbo.Process_Planning.ProsesAdi, ProcessFlow.Flow_ID, ProcessFlow.ProductOrder_ID, ProcessFlow.ProcessNo_ID,dbo.Local_ProductionOrders.PartNo_ID," +
@@ -100,14 +99,13 @@ namespace SagHidrolik.Models.SqlRepository
               " inner join dbo.Process_Planning on " +
               " Process_Planning.ProcessNo= ProcessFlow.ProcessNo_ID  WHERE ((([Process_qty]-[Ok_Qty]-[Process_reject]-[Process_Rework])>0) AND((Local_ProductionOrders.Status)= 2)) " +
               $" and dbo.Local_ProductionOrders.PartNo_ID='{requestQuery.pid}'" +
-              $" order by ProsesAdi OFFSET { requestQuery.pageNumber}ROWS FETCH NEXT { requestQuery.pageSize}ROWS ONLY;";
+              $" order by ProsesAdi OFFSET { requestQuery.pageNumber}ROWS FETCH NEXT { requestQuery.pageSize} ROWS ONLY;";
             return query;
         }
-
         public static string GetStokRecetesi(RequestQuery request)
         {
             query = $"SELECT * FROM TSTOKRECETESI WHERE STOKP_ID ='{request.pid}'" +
-                $" order by STK OFFSET  {request.pageNumber} rows fetch next {request.pageSize} rows only; ";
+                $" order by TSTOKRECETESI.REF OFFSET  {request.pageNumber} rows fetch next {request.pageSize} rows only; ";
             return query;
         }
 
@@ -982,7 +980,7 @@ WITH Sales AS
         #endregion
         #region ReWork Details
 
-        public static string GetReworkDetailsReport(RequestQuery r ,string startAt ,string endAt,string v) => $@"SET DATEFORMAT dmy;SELECT  Local_ProductionOrders.PartNo_ID, 
+        public static string GetReworkDetailsReport(RequestQuery r, string startAt, string endAt, string v) => $@"SET DATEFORMAT dmy;SELECT  Local_ProductionOrders.PartNo_ID, 
  CAST(ProcessFlowDetail.Finish_time as date) as FinishTime,  ProcessFlowDetail.Rework_Name,ProcessFlowDetail.Rework_qty as ReworkQty,Process_Planning.ProsesAdi,
   ProcessFlow.ProcessNo_ID,Reject_def.REject_Name as RejectName
 FROM ProcessFlowDetail INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID
@@ -1006,7 +1004,7 @@ WHERE ProcessFlowDetail.Rework_qty>0) countnumber
 
 
         #region LostQty
-        public static string GetLostQtyReport (RequestQuery r) => $@"SELECT Local_ProductionOrders.PartNo_ID,Local_ProductionOrders.LotNo, Process_Planning.ProsesAdi,
+        public static string GetLostQtyReport(RequestQuery r) => $@"SELECT Local_ProductionOrders.PartNo_ID,Local_ProductionOrders.LotNo, Process_Planning.ProsesAdi,
 [Process_qty]-[Ok_Qty]-[Process_reject]-[Process_Rework] AS Miktar
  FROM ProcessFlow INNER JOIN 
  dbo.Local_ProductionOrders ON ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID
@@ -1025,7 +1023,7 @@ WHERE ProcessFlowDetail.Rework_qty>0) countnumber
         #endregion
 
         #region SupplierPref 
-        public static string GetSupplierPerfReport(RequestQuery r,string startAt,string endAt) => $@"SET DATEFORMAT dmy;SELECT dbo.CARIGEN.STA, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty,
+        public static string GetSupplierPerfReport(RequestQuery r, string startAt, string endAt) => $@"SET DATEFORMAT dmy;SELECT dbo.CARIGEN.STA, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty,
 CAST(dbo.SIPARIS_ALT.TESTARIHI as date)SiparisAltiTestTarihi,CAST(dbo.STOK_ALT.TARIH as date)StokAltTarihi, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice,
 dbo.SIPARIS_ALT.TURAC, dbo.SIPARIS_ALT.TUR
 FROM((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON (dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND(dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) 
@@ -1083,7 +1081,7 @@ HAVING ((( dbo.SIPARIS_ALT.TESTARIHI)<GetDate()) AND (( dbo.SIPARIS_ALT.TUR)=90)
 
 
         #region ProcessPlan
-        public static string GetProcessPlanReport(RequestQuery r,string startAt,string endAt) =>$@" SET DATEFORMAT dmy; select    ID,ProcessDate,[Group],ProsesAdi,PartNo,WOLot,RemainProcessqty,
+        public static string GetProcessPlanReport(RequestQuery r, string startAt, string endAt) => $@" SET DATEFORMAT dmy; select    ID,ProcessDate,[Group],ProsesAdi,PartNo,WOLot,RemainProcessqty,
  WONewDate,Balance
  from  dbo.ProcessPlanFollowTable where RemainProcessqty >0 and [Group] like
   '%{r.Group}%' and PartNo like '%{r.Stk}%'  and ProcessDate between '{startAt}' and '{endAt}'
@@ -1091,9 +1089,9 @@ HAVING ((( dbo.SIPARIS_ALT.TESTARIHI)<GetDate()) AND (( dbo.SIPARIS_ALT.TUR)=90)
         public static string GetProcessPlanReportCount() => @"select COUNT(*) from( select    ID,ProcessDate,[Group],ProsesAdi,PartNo,WOLot,RemainProcessqty,
  WONewDate,Balance
  from  dbo.ProcessPlanFollowTable where RemainProcessqty >0)countNumber";
-   
 
-        public static string DeleteProcessplan(int id)=>$@"delete from ProcessPlanFollowTable where ID ={id}";
+
+        public static string DeleteProcessplan(int id) => $@"delete from ProcessPlanFollowTable where ID ={id}";
         #endregion
         #region Monthly production
         public static string GetMonthlyProduction(RequestQuery r, string startAt, string endAt) => $@"SET DATEFORMAT dmy;SELECT  CAST(MONTH(Finish_time) AS VARCHAR(2)) + '/' + CAST(YEAR(Finish_time) AS VARCHAR(4)) as FinsihTime,
@@ -1126,7 +1124,7 @@ ProcessFlowDetail.Machine,Machine_no,MODEL)countNumber
 
         #region SellDate
 
-        public static string GetSellDateReport(RequestQuery r ,string startAt ,string endAt) => $@"SET DATEFORMAT dmy;SELECT  dbo.STOKGEN.STK,MAX( CAST(STOK_ALT.TARIH AS DATE)) as tarih,STOKGEN.TUR,
+        public static string GetSellDateReport(RequestQuery r, string startAt, string endAt) => $@"SET DATEFORMAT dmy;SELECT  dbo.STOKGEN.STK,MAX( CAST(STOK_ALT.TARIH AS DATE)) as tarih,STOKGEN.TUR,
   Sum(dbo.STOK_ALT.[GRMIK]-dbo.STOK_ALT.[CKMIK]) AS TotalStock
 FROM dbo.STOK_ALT RIGHT JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID
 WHERE (((STOKGEN.TUR)=3 Or (STOKGEN.TUR)=4)) and dbo.STOKGEN.STK like'%{r.Stk}%'
@@ -1144,5 +1142,24 @@ GROUP BY CAST(STOK_ALT.TARIH AS DATE),  STOKGEN.STK, STOKGEN.TUR,[CKMIK],[GRMIK]
 order by 2";
         #endregion
         #endregion
+
+        #region Box Type
+
+
+        public static string GetBoxType(RequestQuery r) => $@"select  STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN
+where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
+        public static string GetBoxTypeCount() => @"select count(*) from(select  STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN)countNumber";
+        #endregion
+
+
+        #region
+
+        public static string GetMachineSettings(RequestQuery r) => $@"Select  Machine_Id ,Machine_no,Machine_Name,MODEL as model,[Bölüm] as Bolum, Producer,Yıl as Yil from [10_MakinaListesiNew]
+where Machine_no like N'%{r.machineNo}%' and  Machine_Name like N'%{r.machineName}%'
+order by(1) OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
+        #endregion
+
+        public static string GetMachineSettingsCount() => @"select count(1) from(Select  Machine_Id ,Machine_no,Machine_Name,MODEL as model,[Bölüm] as Bolum, Producer,Yıl as 
+Yil from [10_MakinaListesiNew] )countNumber";
     }
 }

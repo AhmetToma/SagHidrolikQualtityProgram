@@ -162,7 +162,7 @@ $(NextButtons.defectReport).on('click', (event) => {
 //#endregion
 
 
-//#region 
+//#region  reset
 $('#btn-defectReport-resetSearch').click(() => {
     requestQueryForDefectReport.pageNumber = 1;
     requestQueryForDefectReport.pageSize = 6;

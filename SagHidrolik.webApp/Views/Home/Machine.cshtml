@@ -1,0 +1,73 @@
+﻿
+    <div class="container-review">
+        <div class="alert defaultBackground" role="alert">
+            Box Type
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="input-group" style="margin-top:1.7rem">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text " style="background-color:#071f0c;color:white" id="basic-addon1">Machine No</span>
+                        </div>
+                        <input id="inp-machineSettings-machineNo" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="Machine No">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" style="margin-top:1.7rem">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text " style="background-color:#071f0c;color:white" id="basic-addon1">Machine Name</span>
+                        </div>
+                        <input id="inp-machineSettings-machineName" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="Machine Name">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" style="color:black">select table row count : </label>
+                        <select style="color:black" class="form-control" id="select-machineSettings-selectRowCount"></select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group" style="margin-top:1.7rem">
+                        <button id="btn-machineSettings-resetSearch" class="btn btn-danger">Reset Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered tableFontMaxmize">
+            <caption> Machine toplam: <span style="color:black;font-weight:bold" id="span-machineSettings-rowCount"></span></caption>
+            <thead>
+                <tr>
+                    <th scope="col">Machine Id</th>
+                    <th scope="col">Machine No</th>
+                    <th scope="col">Machine Name</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Bolum</th>
+                    <th scope="col">Producer</th>
+                    <th scope="col">Yıl</th>
+                </tr>
+            </thead>
+            <tbody id="table-machineSettings"></tbody>
+        </table>
+        <div class="recordNotFound" id="recordNotFound_machineSettings">
+            <h3>Hiç bir kayıt Bulunmamktadır</h3>
+        </div>
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-machineSettings-previous" class="page-link" href="" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="num-machineSettings-pageNumber" class="page-link" href="">1</a></li>
+                <li class="page-item">
+                    <a id="btn-machineSettings-next" class="page-link" href="" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>

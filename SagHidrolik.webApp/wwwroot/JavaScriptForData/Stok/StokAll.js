@@ -35,7 +35,6 @@ function GetStokAllAjaxCall() {
         success: (list) => {
             //  calimTypeList = list;
             console.log(list);
-            reviewList = list;
             if (list.length !== 0) {
                 $(`${recordsNotFound.stokAll}`).css('display', 'none');
                 CreateStokAllTable(list, TablesId.stokAll, true);

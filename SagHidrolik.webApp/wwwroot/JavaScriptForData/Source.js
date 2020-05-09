@@ -179,6 +179,12 @@ const HttpUrls = {
     GetSellDateReportCount: BaseUrl + "ReportsGetData/GetSellDateReportCount",
 
 
+    GetBoxType: BaseUrl + "SettingData/GetBoxType",
+    GetBoxTypeCount: BaseUrl + "SettingData/GetBoxTypeCount",
+
+    GetMachineSettings: BaseUrl + "SettingData/GetMachineSettings",
+    GetMachineSettingsCount: BaseUrl + "SettingData/GetMachineSettingsCount",
+
 
 
 
@@ -278,6 +284,8 @@ const TablesId = {
     componentOrders: "#table-componentOrders",
     customerOrders: "#table-customerOrders",
     shippmentReport: "#table-shippmentReport",
+    boxType: "#table-boxType",
+    machineSettings: "#table-machineSettings",
 
 
 
@@ -320,6 +328,9 @@ const Inputs = {
     bakimAriza_tarih: "#inp-bakimAriza-tarih",
     bakimAriza_searchMachineNo: "#inp-bakimArzia-searchInAllMachines",
     bakimAriza_selectedMachineNo: '#inp-bakimAriza-selectedMachineNo',
+    boxType_searchStk: '#inp-boxType-searchStk',
+    machineSettings_machineNo: '#inp-machineSettings-machineNo',
+    machineSettings_machineName: '#inp-machineSettings-machineName',
 
 
 
@@ -459,7 +470,9 @@ const recordsNotFound = {
     processPlanReport: "#recordNotFound_processPlanReport",
     monthlyProdcutionReport: "#recordNotFound_monthlyProdcutionReport",
     sellDateReport: "#recordNotFound_sellDateReport",
-    stokAll: "#recordNotFound_stokAll"
+    stokAll: "#recordNotFound_stokAll",
+    boxType: "#recordNotFound_boxType",
+    machineSettings: "#recordNotFound_machineSettings",
 
 
 
@@ -489,6 +502,8 @@ const PreviousButtons = {
     monthlyProdcutionReport: "#btn-monthlyProdcutionReport-previous",
     sellDateReport: "#btn-sellDateReport-previous",
     stokAll: "#btn-stokAll-previous",
+    boxType: "#btn-boxType-previous",
+    machineSettings: "#btn-machineSettings-previous",
     bakimAriza_AllMachines: "#btn-bakimAriza-previous",
     bakimAriza_gecmisTalepler: "#btn-bakimArizaGecmisTalepler-previous",
 
@@ -517,6 +532,8 @@ const NextButtons = {
     reworkReport: "#btn-reworkReport-next",
     uretimPlani_allUretimPlani: "#btn-uretimPalni-next",
     bakimAriza_AllMachines: "#btn-bakimAriza-next",
+    boxType: "#btn-boxType-next",
+    machineSettings: "#btn-machineSettings-next",
     bakimAriza_gecmisTalepler: "#btn-bakimArizaGecmisTalepler-next",
 
 };
@@ -532,6 +549,9 @@ const pageNumbers = {
     stokEtiketi: "#number-stokEtiketi-pageNumber",
     girisKabulEtiketi: "#number-girisKabulEtiketi-pageNumber",
     teslimatDurumu: "#num-teslimatDurumu-pageNumber",
+    boxType: "#num-boxType-pageNumber",
+    machineSettings: "#num-machineSettings-pageNumber",
+    stokAll: "#num-stokAll-pageNumber",
 
 
     claimType: "#number-claimType-pageNumber",
