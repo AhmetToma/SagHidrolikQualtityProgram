@@ -17,6 +17,8 @@ namespace SagHidrolik.Models.SqlRepository
        public const string password = "zrvsql";
 
        public  static string connctionString_SAG_PRODUCTION = $"Server={ServerName};Database=SAG_PRODUCTION;User Id='{userId}';Password='{password}';";
+       public static string connctionString_SAG_HIDROLIK_ByYear() =>
+        $"Server={ServerName};Database=SAG_HIDROLIK_{WorkingWithYears.currentYear}T;User Id='{userId}';Password='{password}';";
 
       */
         public static string query;
