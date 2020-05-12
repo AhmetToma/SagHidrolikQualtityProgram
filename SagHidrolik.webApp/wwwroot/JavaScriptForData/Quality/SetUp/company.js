@@ -58,7 +58,7 @@ function CreateCompanyTable(list, tableId) {
   <td>${element.id_Cust}</td>
     <td>${element.companyName}</td>
     <td>${element.companyType} </td>
-    <td><i onclick="editCompany(${element.id_Cust})" class="fa fa-2x fa-pencil text-primary"  aria-hidden="true"></td>
+    <td><i onclick="editCompany(${element.id_Cust})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
  <td><i onclick="deleteCompany(${element.id_Cust},'${element.companyName}')" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);

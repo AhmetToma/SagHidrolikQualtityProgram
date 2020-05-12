@@ -31,8 +31,8 @@ const HttpUrls = {
     BakimAriza_insertIntoBakimKayit: BaseUrl + "BakimArizaCon/insertIntoBakimKayit",
     BakimAriza_gecmisTalepler: BaseUrl + "BakimArizaCon/gecmisTalepler",
     uretimPlani_GetAllUretimPlani: BaseUrl + "UretimData/GetAllUretimPlani",
-    tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "TamirIsEmriData/GetTamirIsEmriAdimlari",
-    tamirIsEmri_InsertTamirIsEmri: BaseUrl + "TamirIsEmriData/InsertTamirIsEmri",
+    tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "UretimData/GetTamirIsEmriAdimlari",
+    tamirIsEmri_InsertTamirIsEmri: BaseUrl + "UretimData/InsertTamirIsEmri",
     GetSevkiyetKutuEtiketiList: BaseUrl + "Etiketler/GetSevkiyetKutuEtiketiList",
     getAllProcessInGunlukHatBazindUretim: BaseUrl + "UretimData/getAllProcessInGunlukHatBazindUretim",
     GetAllGunlukHatBazindUretimList: BaseUrl + "UretimData/GetAllGunlukHatBazindUretimList",
@@ -63,8 +63,8 @@ const HttpUrls = {
     DeleteproductionStatus: BaseUrl + "ProdutionStartGetData/DeleteproductionStatus?sheetId=",
     AddToProductionStatus: BaseUrl + "ProdutionStartGetData/AddToProductionStatus",
     TransferToSystem: BaseUrl + "ProdutionStartGetData/TransferToSystem?productId=",
-    GetProductionSummaryReport: BaseUrl + "ReportsGetData/GetProductionSummaryReport",
-    GetProductionSummaryCount: BaseUrl + "ReportsGetData/GetProcutionSummaryCount",
+    GetProductionSummaryReport: BaseUrl + "UretimData/GetProductionSummaryReport",
+    GetProductionSummaryCount: BaseUrl + "UretimData/GetProcutionSummaryCount",
     GetProductionOrdersTransfer: BaseUrl + "ProductionOrderTranferGetData/GetProductionOrdersTransfer",
     GetprocutionOrdersTranferCount: BaseUrl + "ProductionOrderTranferGetData/GetprocutionOrdersTranferCount",
     DeleteFromTranferWo: BaseUrl + "ProductionOrderTranferGetData/DeleteFromTranferWo?partNo=",
@@ -185,6 +185,12 @@ const HttpUrls = {
     GetMachineSettings: BaseUrl + "SettingData/GetMachineSettings",
     GetMachineSettingsCount: BaseUrl + "SettingData/GetMachineSettingsCount",
 
+    GetProcessNew: BaseUrl + "SettingData/GetProcessNew",
+    GetProcessNewCount: BaseUrl + "SettingData/GetProcessNewCount",
+    AddsettingsProcessNew: BaseUrl + "SettingData/AddsettingsProcessNew",
+    EditSettingsProcessNew: BaseUrl + "SettingData/EditSettingsProcessNew",
+    DeleteSettingsProcessNew: BaseUrl + "SettingData/DeleteSettingsProcessNew?processId=",
+
 
 
 
@@ -285,7 +291,9 @@ const TablesId = {
     customerOrders: "#table-customerOrders",
     shippmentReport: "#table-shippmentReport",
     boxType: "#table-boxType",
+    settingsProcessNew: "#table-settingsProcessNew",
     machineSettings: "#table-machineSettings",
+
 
 
 
@@ -331,9 +339,16 @@ const Inputs = {
     boxType_searchStk: '#inp-boxType-searchStk',
     machineSettings_machineNo: '#inp-machineSettings-machineNo',
     machineSettings_machineName: '#inp-machineSettings-machineName',
+    settingsProcessNew_processAdi: '#inp-settingsProcessNew-searchprocessAdi',
+    ProductionSummary_searchStk: "#inp-productionSummary-searchStk",
 
 
-
+    tamirIsEmri_searchByStk: "#inp-tamirIsEmri-inputSearch",
+    tmairIsEmri_stk: ".tamirIsEmri-first-stk",
+    tmairIsEmri_LotNo: ".tamirIsEmri-first-lotNo",
+    tmairIsEmri_tamirMiktar: ".tamirIsEmri-first-tamirMiktari",
+    tmairIsEmri_tarih: ".tamirIsEmri-first-tarih",
+    tamirIsEmri_newLotNo: "#inp-tamirIsemri-newLotNo",
 
 
     claimType_tr: "#inp-claimType-tr",
@@ -447,6 +462,7 @@ const recordsNotFound = {
     ProductionStart: "#recordNotFoundDiv_prodcutionStart",
     productionStatus: "#recordNotFoundDiv_productionStatus",
     orderDetails: "#recordNotFoundDiv_orderDetails",
+    settingsProcessNew: "#recordNotFound_settingsProcessNew",
 
 
 
@@ -496,6 +512,7 @@ const PreviousButtons = {
     reworkDetailsReport: "#btn-reworkDetailsReport-previous",
     productionDetailsReport: "#btn-productionDetailsReport-previous",
     lostQtyReport: "#btn-lostQtyReport-previous",
+    productionSummary: "#btn-productionSummary-previous",
     supplierPerfReport: "#btn-supplierPerfReport-previous",
     customerPerfReport: "#btn-customerPerfReport-previous",
     processPlanReport: "#btn-processPlanReport-previous",
@@ -503,9 +520,11 @@ const PreviousButtons = {
     sellDateReport: "#btn-sellDateReport-previous",
     stokAll: "#btn-stokAll-previous",
     boxType: "#btn-boxType-previous",
+    settingsProcessNew: "#btn-settingsProcessNew-previous",
     machineSettings: "#btn-machineSettings-previous",
     bakimAriza_AllMachines: "#btn-bakimAriza-previous",
     bakimAriza_gecmisTalepler: "#btn-bakimArizaGecmisTalepler-previous",
+    tamirIsEmri_productionOrders: "#btn-tamirIsEmri-previous",
 
 };
 const NextButtons = {
@@ -535,6 +554,9 @@ const NextButtons = {
     boxType: "#btn-boxType-next",
     machineSettings: "#btn-machineSettings-next",
     bakimAriza_gecmisTalepler: "#btn-bakimArizaGecmisTalepler-next",
+    settingsProcessNew: "#btn-settingsProcessNew-next",
+    productionSummary: "#btn-productionSummary-next",
+    tamirIsEmri_productionOrders: "#btn-tamirIsEmri-next",
 
 };
 const pageNumbers = {
@@ -550,6 +572,7 @@ const pageNumbers = {
     girisKabulEtiketi: "#number-girisKabulEtiketi-pageNumber",
     teslimatDurumu: "#num-teslimatDurumu-pageNumber",
     boxType: "#num-boxType-pageNumber",
+    settingsProcessNew: "#number-settingsProcessNew-pageNumber",
     machineSettings: "#num-machineSettings-pageNumber",
     stokAll: "#num-stokAll-pageNumber",
 
@@ -574,6 +597,7 @@ const pageNumbers = {
     monthlyProdcutionReport: "#number-monthlyProdcutionReport-pageNumber",
     sellDateReport: "#number-sellDateReport-pageNumber",
     reworkReport: "#number-reworkReport-pageNumber",
+    productionSummary: "#number-reworkReport-pageNumber",
 }
 
 function ShowLoader() {

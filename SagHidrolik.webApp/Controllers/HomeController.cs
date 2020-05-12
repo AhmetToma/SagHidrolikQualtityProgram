@@ -94,5 +94,19 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult SettignsProcessNew()
+        {
+            return View();
+        }
+
+        public IActionResult ProductionSummary()
+        {
+            return View();
+        }
+
+        public IActionResult TamirIsEmri()
+        {
+            return View();
+        }
     }
 }

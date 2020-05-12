@@ -5,7 +5,7 @@ namespace SagHidrolik.Models.ViewModesl
 {
     public partial class ProcessNew
     {
-        public int ProcessId { get; set; }
+        public int? ProcessId { get; set; }
         public int? ProcessNo { get; set; }
         public string ProsesAdi { get; set; }
         public string ProcessName { get; set; }

@@ -1,0 +1,179 @@
+﻿/*start Header */
+
+@media print {
+    /*@page {
+        size:  landscape !important;
+    }*/
+    .isEmriCiktiMode {
+        -ms-overflow-style: none;
+        overflow: hidden !important;
+        padding:0;
+        margin:0;
+    }
+}
+.isEmriCiktiModel{
+    opacity:0;
+}
+.my_firstRow {
+    width: 100%;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+    border: 1px solid black;
+    height: 172px;;
+    display: block;
+}
+
+    .my_firstRow .one, .my_firstRow .two,
+    .my_firstRow .three {
+        width: 33%;
+        float: left;
+    }
+
+    .my_firstRow .one {
+        height: 100%;
+        border-right: 1px solid;
+    }
+
+        .my_firstRow .one img {
+            width: 95%;
+            height: 37px;
+            margin-top: 2px;
+            margin-left: 3px;
+        }
+
+        .my_firstRow .one p {
+            border-bottom: 1px solid black;
+            width: 118px;
+            margin-left: 2px;
+            position: relative;
+            left: 8px;
+            top: -5px;
+        }
+
+    .my_firstRow h5 {
+        position: relative;
+        left: 16%;
+        font-size: 35px;
+        top: 12%
+    }
+
+    .my_firstRow .two {
+        border-right: 1px solid;
+        height: 170px;
+    }
+
+        .my_firstRow .two .rew {
+            font-size: 23px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid;
+        }
+
+        .my_firstRow .two .p1, .my_firstRow .two .p2 {
+        }
+
+        .my_firstRow .two .p3 {
+            position: relative;
+            left: 34%;
+            top: -127px;
+            font-weight: bold;
+            height: 85px;
+            width: 118px;
+        }
+
+        .my_firstRow .two .p1_p2 .p1 {
+            margin-left: 2px;
+        }
+
+        .my_firstRow .two .p1_p2 {
+            border-right: 1px solid black;
+            height: 139px;
+            width: 49px;
+            position: relative;
+            top: -11px;
+        }
+
+            .my_firstRow .two .p1_p2 .p2 {
+                position: relative;
+                top: 31px;
+                text-align: center;
+                border-top: 1px solid;
+            }
+.my_firstRow .two .p1_p2 .p2 p{
+
+    margin-top:60%;
+}
+/* three*/
+.my_firstRow .three .lot {
+    width: 250px;
+    height: 50px;
+}
+     .my_firstRow .three .lot
+     {
+         margin-bottom:25px;
+     }
+    .my_firstRow .three .lot p:nth-child(1), .my_firstRow .three .tarih p:nth-child(1) {
+        font-weight: bold;
+        margin-left: 3px;
+    }
+
+        .my_firstRow .three .lot p:nth-child(2), .my_firstRow .three .tarih p:nth-child(2) {
+            margin-left: 40px;
+            font-size: 14px;
+            margin-bottom: 42px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+
+
+    .my_firstRow .three .adet {
+        position: relative;
+        top: -178px;
+        left: 58%;
+        height: 170px;
+        border-left: 1px solid;
+    }
+
+        .my_firstRow .three .adet p:nth-child(1) {
+            font-weight: bold;
+            margin-left: 40px;
+        }
+
+        .my_firstRow .three .adet p:nth-child(2) {
+            margin-left: 60px;
+            font-size: 38px;
+        }
+.clear {
+    clear:both;
+}
+/*end Header */
+/*start  body*/
+.second-body h3 {
+    text-align:center;
+}
+.second-body table {
+    width: 98%;
+    margin-left:15px;
+ 
+}
+.second-body table thead {
+    font-weight:bold;
+    text-align:center;
+}
+    .second-body table tbody {
+        text-align: center;
+    }
+    .second-body table thead td {
+        border: 1px solid black !important;
+        border-collapse: collapse !important;
+        height:36px;
+        line-height:50px;
+    }
+    .second-body table tbody td {
+        border: 1px solid black !important;
+        border-collapse: collapse !important;
+        height: 36px;
+        line-height: 50px;
+    }
+/*end  body*/

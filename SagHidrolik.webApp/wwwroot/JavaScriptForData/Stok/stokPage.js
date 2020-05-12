@@ -43,6 +43,7 @@ function searchStok() {
         data: JSON.stringify(localStorage.getItem('searchedStk')),
         url: HttpUrls.getStokByStk,
         success: (list) => {
+            console.log(list);
             creatStokgenTable(list, localStorage.getItem('stkTableId'));
         }
     });

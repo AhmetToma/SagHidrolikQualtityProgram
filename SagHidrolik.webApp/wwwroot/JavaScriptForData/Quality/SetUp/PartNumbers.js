@@ -66,7 +66,7 @@ function CreatePartNumbersTable(list, tableId) {
   <td>${element.stk}</td>
     <td>${element.sta}</td>
     <td>${element.type} </td>
-    <td><i onclick="editPartNumber(${element.id})" class="fa fa-2x fa-pencil text-primary"  aria-hidden="true"></td>
+    <td><i onclick="editPartNumber(${element.id})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
  <td><i onclick="deletePartNumber(${element.id},'${element.stk}')" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);
@@ -157,7 +157,7 @@ $(Buttons.partNumber_confirmAdd).click((event) => {
 
         partNumberModel.stk = $(Inputs.partNumber_stk).val();
         partNumberModel.sta = $(Inputs.partNumber_sta).val();
-        partNumberModel.type = $(Inputs.partNumber_type).val();
+        partNumberModel.type = parseInt($(Inputs.partNumber_type).val());
 
         $.ajax({
             type: "POST",
@@ -286,7 +286,7 @@ $(Buttons.partNumber_confirmEdit).click((event) => {
     else {
         partNumberModel.stk = $(Inputs.partNumber_stk_edit).val();
         partNumberModel.sta = $(Inputs.partNumber_sta_edit).val();
-        partNumberModel.type = $(Inputs.partNumber_type_edit).val();
+        partNumberModel.type = parseInt($(Inputs.partNumber_type_edit).val());
 
 
         $.ajax({

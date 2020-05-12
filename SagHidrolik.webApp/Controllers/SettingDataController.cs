@@ -32,5 +32,38 @@ namespace SagHidrolik.webApp.Controllers
         }
 
         #endregion
+
+
+
+        #region Process 
+
+        public JsonResult GetProcessNew([FromBody]RequestQuery requestQuery)
+        {
+            var list = ProcessNewGetData.GetProcessNew(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetProcessNewCount()
+        {
+            int count = ProcessNewGetData.GetProcessNewCount().Result;
+            return Json(count);
+        }
+
+        public JsonResult AddsettingsProcessNew([FromBody] settingsProcessNewViewModel s)
+        {
+            int count = ProcessNewGetData.AddsettingsProcessNew(s).Result;
+            return Json(count);
+        }
+
+        public JsonResult DeleteSettingsProcessNew([FromQuery]int processId)
+        {
+            int count = ProcessNewGetData.DeleteSettingsProcessNew(processId).Result;
+            return Json(count);
+        }
+        public JsonResult EditSettingsProcessNew([FromBody] settingsProcessNewViewModel s)
+        {
+            int count = ProcessNewGetData.EditSettingsProcessNew(s).Result;
+            return Json(count);
+        }
+        #endregion
     }
 }

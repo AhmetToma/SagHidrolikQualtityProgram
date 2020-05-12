@@ -20,6 +20,8 @@
 
 .defaultBackground {
     /*#2A3F54 default*/
+    /*#b13e5b default*/
+    /*#099679 default*/
     background-color: #b13e5b;
     color: white;
     text-align: center;
@@ -303,6 +305,142 @@
     border-radius: 12px;
 }
 /* end Bakim Ariza*/
+
+
+/* start tamir is emri*/
+
+.urunEtiketitableContent {
+    height: 282px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+
+
+
+.tamirIsEmri-first {
+    border: 2px solid #099679;
+    padding-top: 4px;
+    height: 400px;
+    border-radius: 20px;
+    box-shadow: 7px 5px 5px #099679;
+    width: 30%;
+}
+
+.tamirPart {
+    border: 2px solid #099679;
+    width: 30%;
+    padding-top: 4px;
+    height: 400px;
+    border-radius: 20px;
+    box-shadow: 7px 5px 5px #099679;
+    margin-left: 20px;
+}
+
+.tamirEmriHazirlaPart {
+    border: 2px solid #099679;
+    padding-top: 4px;
+    height: 400px;
+    border-radius: 20px;
+    box-shadow: 7px 5px 5px #099679;
+    margin-left: 10px;
+    margin-left: 20px;
+}
+
+.tamirPart .select2 {
+    width: 200px !important;
+    margin-bottom: 5px;
+}
+
+.tamirIsEmri-first input {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 185px;
+    border: solid black 1px;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.tamirIsEmri-first-stk {
+    margin-left: 10px;
+}
+
+.tamirIsEmri-first-lotNo {
+    margin-left: 43px;
+}
+
+.tamirIsEmriCard label {
+    border-bottom: 2px solid #099679;
+}
+
+.tamirPart input {
+    margin-top: 10px;
+    width: 220px;
+    border: solid black 1px;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.tamirEmriHazirlaPart input {
+    width: 200px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.btn-isEmriHazirla {
+    background-color: #0e0d0e !important;
+    color: white;
+    height: 94px;
+    margin-top: 66px;
+    text-align: center;
+}
+
+    .btn-isEmriHazirla:hover, .btn-isEmriHazirla:focus {
+        background-color: #0e0d0e !important;
+        color: white;
+    }
+
+.btn-isEmriCikti:hover, .btn-isEmriCikti:focus {
+    background-color: #a54747;
+    color: white
+}
+
+.btn-isEmriCikti {
+    background-color: #a54747;
+    color: white;
+    height: 94px;
+    margin-top: 66px;
+    text-align: center;
+}
+
+.tamirIsEmriCard input:disabled {
+    background-color: #099679;
+    color: white;
+}
+
+.tamirIsEmriCard .col-md-4 p:first-child, .tamirIsEmriCard .col-md-2 p:first-child,
+.tamirIsEmriCard .col-md-1 p:first-child {
+    margin-top: 5px;
+    color: red;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #099679;
+    color: white;
+    margin-left: 50%;
+}
+
+.tamirIsEmriCard .btn-danger {
+    position: relative;
+    left: 96%;
+    bottom: 15px;
+}
+/* end tamir is emri*/
 i {
     cursor: pointer;
 }

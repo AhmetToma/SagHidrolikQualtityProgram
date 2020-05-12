@@ -107,5 +107,35 @@ namespace SagHidrolik.webApp.Controllers
         }
 
         #endregion
+
+
+        #region Production Summary
+        public JsonResult GetProductionSummaryReport([FromBody]RequestQuery requestQuery)
+        {
+            var list = ProductionSummaryGetData.GetProductionSummaryReport(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetProcutionSummaryCount()
+        {
+            var list = ProductionSummaryGetData.GetProcutionSummaryCount().Result;
+            int listCount = list.Count();
+            return Json(listCount);
+        }
+        #endregion
+
+        #region Rework/tamirIsEmri
+
+        public JsonResult GetTamirIsEmriAdimlari()
+        {
+            var list = TamirIsEmriGetData.GetTamirIsEmriAdimlari().Result;
+            return Json(list);
+        }
+        public JsonResult InsertTamirIsEmri([FromBody] tamirIsEmriModel tamirIsEmriModel)
+        {
+            var LotNo = TamirIsEmriGetData.InsertTamirIsEmri(tamirIsEmriModel).Result;
+            return Json(LotNo);
+        }
+        #endregion
+
     }
 }

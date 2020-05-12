@@ -59,7 +59,7 @@ function CreateDepartmentTable(list, tableId) {
   <td>${element.depT_ID}</td>
     <td>${element.department_en}</td>
     <td>${element.department_tr} </td>
-    <td><i onclick="editDepartment(${element.depT_ID})" class="fa fa-2x fa-pencil text-primary"  aria-hidden="true"></td>
+    <td><i onclick="editDepartment(${element.depT_ID})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
  <td><i onclick="deleteDepartment(${element.depT_ID},'${element.department_tr}')" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);

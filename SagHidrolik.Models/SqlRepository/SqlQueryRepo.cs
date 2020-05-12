@@ -324,6 +324,38 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
             return query;
         }
 
+        #region Production Summary
+        public static string GetProductionSummaryReport(RequestQuery r, string m)
+        {
+            query = $"WITH Sales AS ( SELECT S.PartNo_ID, z.[Group],SUM((I.Process_qty - I.Ok_Qty - I.Process_reject - I.Process_Rework)) as toplam " +
+                $" FROM dbo.Local_ProductionOrders S INNER JOIN dbo.ProcessFlow I  ON S.ProductOrderID = I.ProductOrder_ID" +
+                $" INNER JOIN dbo.Process_Planning z ON I.ProcessNo_ID = z.ProcessNo" +
+                $" WHERE([Process_qty] -[Ok_Qty] -[Process_reject] -[Process_Rework])> 0 AND S.[Status]=2 and S.PartNo_ID in ({m}) " +
+                $" Group by PartNo_ID,I.Process_qty,I.Ok_Qty,I.Process_reject,I.Process_Rework,z.[Group])  SELECT* FROM   Sales" +
+                $" PIVOT(SUM(toplam) FOR  [Group] IN ([01_Kesim],[02_Büküm],[03_Havşa],[04_Kaynak],[041_KesDel],[042_Hazirlik],[05_Hortum],[06_Paketleme],[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil]" +
+                $"   )) P order by PartNo_ID OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
+            return query;
+        }
+
+        public static string GetProcutionSummaryCount()
+        {
+            query = $"WITH Sales AS ( SELECT S.PartNo_ID, z.[Group],SUM((I.Process_qty - I.Ok_Qty - I.Process_reject - I.Process_Rework)) as toplam " +
+                $" FROM dbo.Local_ProductionOrders S INNER JOIN dbo.ProcessFlow I  ON S.ProductOrderID = I.ProductOrder_ID" +
+                $" INNER JOIN dbo.Process_Planning z ON I.ProcessNo_ID = z.ProcessNo" +
+                $" WHERE([Process_qty] -[Ok_Qty] -[Process_reject] -[Process_Rework])> 0 AND S.[Status]=2" +
+                $" Group by PartNo_ID,I.Process_qty,I.Ok_Qty,I.Process_reject,I.Process_Rework,z.[Group])  SELECT* FROM   Sales" +
+                $" PIVOT(SUM(toplam) FOR  [Group] IN ([01_Kesim],[02_Büküm],[03_Havşa],[04_Kaynak],[041_KesDel],[042_Hazirlik],[05_Hortum],[06_Paketleme],[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil]" +
+                $"   )) P ";
+            return query;
+        }
+
+
+
+        #endregion
+
+
+
+
         #endregion
 
         #region tamir is emri 
@@ -1151,15 +1183,41 @@ where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH
         public static string GetBoxTypeCount() => @"select count(*) from(select  STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN)countNumber";
         #endregion
 
-
-        #region
+        #region settings
+        #region machine 
 
         public static string GetMachineSettings(RequestQuery r) => $@"Select  Machine_Id ,Machine_no,Machine_Name,MODEL as model,[Bölüm] as Bolum, Producer,Yıl as Yil from [10_MakinaListesiNew]
 where Machine_no like N'%{r.machineNo}%' and  Machine_Name like N'%{r.machineName}%'
 order by(1) OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
-        #endregion
+
 
         public static string GetMachineSettingsCount() => @"select count(1) from(Select  Machine_Id ,Machine_no,Machine_Name,MODEL as model,[Bölüm] as Bolum, Producer,Yıl as 
 Yil from [10_MakinaListesiNew] )countNumber";
+        #endregion
+
+        #region process New
+
+        public static string GetProcessNew(RequestQuery r) => $@"select  ProcessID,ProcessNo,ProsesAdi,ProcessName,ProsessDay,Manhour,[Group]   from dbo.Process_Planning 
+where ProsesAdi like N'%{r.processAdi}%' and [Group] like N'%{r.Group}%'
+order by (1) asc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
+
+        public static string GetProcessNewCount() => @"select count(*) from( select
+ ProcessNo,ProsesAdi,ProcessName,ProsessDay,Manhour,[Group]   from dbo.Process_Planning)countNumber";
+
+
+        public static string AddsettingsProcessNew(settingsProcessNewViewModel s) =>$@"insert into Process_Planning (ProcessNo,ProsesAdi,ProcessName,ProsessDay,Manhour,[Group])
+
+values({s.processNo},'{s.processAdi}','{s.processName}',{s.processDay},{s.manHour},'{s.group}')";
+
+        public static string DeleteSettingsProcessNew(int processId)=>$"delete from Process_Planning where ProcessID={processId}";
+
+        public static string EditSettingsProcessNew(settingsProcessNewViewModel s) => $@"
+update Process_Planning set 
+ProcessNo={s.processNo} ,ProsesAdi='{s.processAdi}',ProcessName='{s.processName}',ProsessDay={s.processDay},Manhour={s.manHour},[Group]='{s.group}'
+where ProcessID={s.ProcessID}
+";
+        #endregion
+
+        #endregion
     }
 }

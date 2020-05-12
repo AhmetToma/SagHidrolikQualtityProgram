@@ -57,7 +57,7 @@ function CreateOperatorsTable(list, tableId) {
 <tr >
   <td>${element.op_ID}</td>
     <td>${element.operatorName}</td>
-    <td><i onclick="editOperator(${element.op_ID})" class="fa fa-2x fa-pencil text-primary"  aria-hidden="true"></td>
+    <td><i onclick="editOperator(${element.op_ID})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
  <td><i onclick="deleteOperator(${element.op_ID},'${element.operatorName}')" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);

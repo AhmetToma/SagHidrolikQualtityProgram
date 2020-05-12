@@ -58,7 +58,7 @@ function CreateClaimTypeTable(list, tableId) {
   <td>${element.claimTypeID}</td>
     <td>${element.claimType_a}</td>
     <td>${element.claimType} </td>
-    <td><i onclick="editClaimType(${element.claimTypeID})" class="fa fa-2x fa-pencil text-primary"  aria-hidden="true"></td>
+    <td><i onclick="editClaimType(${element.claimTypeID})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
  <td><i onclick="deleteClaimType(${element.claimTypeID},'${element.claimType}')" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);

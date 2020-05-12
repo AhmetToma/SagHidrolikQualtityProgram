@@ -101,6 +101,8 @@
     <None Include="wwwroot\JavaScriptForData\Uretim\gunlukHatBazindaUretim.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\UretimBasla.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\UretimBitir.js" />
+    <None Include="wwwroot\JavaScriptForData\Uretim\TamirIsEmri\tamirIsEmriCiktisi.js" />
+    <None Include="wwwroot\JavaScriptForData\Uretim\TamirIsEmri\tamriIsEmri.js" />
     <None Include="wwwroot\webfonts\fa-brands-400.svg" />
     <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
     <None Include="wwwroot\webfonts\fa-regular-400.svg" />

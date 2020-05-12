@@ -1,0 +1,211 @@
+﻿@*style="background-color:#099679;color:white;"*@
+<div style="height:1330px" class="container-tamirIsEmri">
+    <div class="alert defaultBackground "  role="alert">
+        <h4>
+            Tamir İş Emri
+        </h4>
+    </div>
+    <div class="tables-stokgen-productionOrders">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group urunEtiketiSearchDiv">
+                            <span class="input-group-text " style="background-color:#2A3F54;color:white" id="basic-addon1">STK</span>
+                            <input autofocus id="inp-tamirIsEmri-inputSearch" type="search" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default urunEtiketitableContent">
+                    <table class="table table-bordered tableHoverDefault">
+                        <thead>
+                            <tr>
+                                <th>STK</th>
+                                <th>STA</th>
+                                <th>Adres</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-tamirIsEmri-searchStk" class="istamirIsEmriTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="opacity:0" class="col-md-7 tamirIsEmriProdcutionOrders tableHoverDefault">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">PartNo_ID</th>
+                            <th scope="col">Lot No</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Compl</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">issueDate</th>
+                            <th scope="col">RequireDate</th>
+                            <th scope="col">RevisedDate</th>
+                            <th scope="col">Remark</th>
+                            <th scope="col">CloseDate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-tamirIsEmri-productioOrders" class="istamirIsEmriTbody"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_productionOrders" class="recordNotFoundDiv">
+                    <h3></h3>
+                </div>
+                <div class="clearFix">
+                </div>
+
+
+
+                <nav aria-label="Page navigation example" class="nav-review">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a id="btn-tamirIsEmri-previous" class="page-link" href="" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a id="number-tamirIsEmri-pageNumber" class="page-link" href="">1</a></li>
+                        <li class="page-item">
+                            <a id="btn-tamirIsEmri-next" class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+
+    <div style="opacity:0" class="tamirIsEmriCard">
+        <button id="btn-tamirIsEmri-reset" class="btn btn-danger">reset</button>
+        <div class="row" style="flex-wrap:nowrap">
+            <div class="col-md-3 col-lg-3 tamirIsEmri-first">
+                <p>1</p>
+                <div>
+                    <label>Ürün Kodu</label>
+                    <input disabled type="text" class="tamirIsEmri-first-stk" id="" value="">
+                </div>
+                <div>
+                    <label>LotNo</label>
+                    <input disabled type="text" class="tamirIsEmri-first-lotNo" id="" value="">
+                </div>
+                <div>
+                    <label>Tamir Miktarı</label>
+                    <input min="0" style="width: 64%;" type="number" class="tamirIsEmri-first-tamirMiktari" id="" placeholder="Tamir Mikatrı">
+                </div>
+                <div>
+                    <label>Tarih</label>
+                    <input style="margin-left: 50px;" type="text" class="tamirIsEmri-first-tarih" id="" value="">
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 tamirPart">
+                <p>2</p>
+
+                <div class="tamir-1">
+                    <label>Tamir 1</label>
+                    <select id="select-tamirIsEmri-tamir1" class="limitedNumbSelect2" multiple="false"></select>
+                </div>
+                <div class="tamir-2">
+                    <label>Tamir 2</label>
+                    <select id="select-tamirIsEmri-tamir2" class="limitedNumbSelect2" multiple="false"></select>
+                </div>
+                <div class="tamir-3">
+                    <label>Tamir 3</label>
+                    <select id="select-tamirIsEmri-tamir3" class="limitedNumbSelect2" multiple="false"></select>
+                </div>
+                <div class="tamir-4">
+                    <label>Tamir 4</label>
+                    <select id="select-tamirIsEmri-tamir4" class="limitedNumbSelect2" multiple="false"></select>
+                </div>
+                <div class="tamir-5">
+                    <label>Tamir 5</label>
+                    <input id="tamir5Val" disabled list="" data-processNo="28" value="Basınç Testi">
+                </div>
+                <div class="tamir-6">
+                    <label>Tamir 6</label>
+                    <input id="tamir6Val" disabled list="" data-processNo="55" name="" value="Paketleme">
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3  tamirEmriHazirlaPart">
+                <p>3</p>
+                <label>Tamir LotNo</label>
+                <input style="display: table;" disabled type="text" id="inp-tamirIsemri-newLotNo" value="">
+                <button id="btn-tamirIsEmri-isEmriHazirla" class="btn btn-isEmriHazirla">Tamir  iş emri Hazırla</button>
+                <button id="btn-tamirIsEmri-cikiti" class="btn btn-isEmriCikti ">Tamir iş emri çıktısı </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="isEmriCiktiModel">
+
+</div>
+
+
+@*<div class="tamirIsEmriCiktis">
+        <div class="first-header">
+            <div class="my_firstRow">
+                <div class="one">
+                    <img src="~/images/tamirLogo.png" />
+                    <p>Parça No/PartNo:</p>
+                    <h5>0.2515.2545.25</h5>
+                </div>
+                <div class="two">
+                    <p class="rew">Tamir/Rework</p>
+                    <div class="p1_p2">
+                        <div class="p1">Rev:</div>
+                        <div class="p2"><p>0</p></div>
+                    </div>
+                    <p class="p3">1245298</p>
+                </div>
+                <div class="three">
+                    <div class="lot">
+                        <p>Lot/Batch No:<span>21562</span></p>
+
+                    </div>
+                    <div class="tarih">
+                        <p>Tarih/Date: <span>16/11/2019</span> </p>
+                    </div>
+                    <div class="adet">
+                        <p>Adet/Qty:</p>
+                        <p>15</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear">
+
+        </div>
+        <div class="second-body">
+            <h3>Tamir LotNo: <span>105151</span></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Proses Adı</td>
+                        <td>Process Name</td>
+                        <td>tarih</td>
+                        <td>Miktar</td>
+                        <td>Red</td>
+                        <td>Operator</td>
+                    </tr>
+                </thead>'
+                <tbody>
+                    @for (int i = 0; i < 4; i++)
+                    {
+                    <tr>
+                        <td>wdqasd</td>
+                        <td>wdqasd</td>
+                        <td>wdqasd</td>
+                        <td>wdqasd</td>
+                        <td>wdqasd</td>
+                        <td>wdqasd</td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>*@

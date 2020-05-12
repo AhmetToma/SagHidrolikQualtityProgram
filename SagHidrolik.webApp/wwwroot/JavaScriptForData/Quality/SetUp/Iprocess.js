@@ -63,7 +63,7 @@ function CreateIprocessTable(list, tableId) {
   <td>${element.pR_ID}</td>
     <td>${element.process}</td>
     <td>${desc}</td>
-    <td><i onclick="editIprocess(${element.pR_ID})" class="fa fa-2x fa-pencil text-primary"  aria-hidden="true"></td>
+    <td><i onclick="editIprocess(${element.pR_ID})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
  <td><i onclick="deleteIprocess(${element.pR_ID},'${element.process}')" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);
