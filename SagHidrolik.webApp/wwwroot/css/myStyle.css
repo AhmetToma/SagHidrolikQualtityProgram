@@ -441,6 +441,24 @@
     bottom: 15px;
 }
 /* end tamir is emri*/
+
+
+
+/*start orders Managment*/
+
+
+.alertProcessInOrderDetails {
+    padding: 1px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: white;
+    width: 48%;
+    background-color: #099679 ;
+    text-align: center;
+    border-radius: 10px 120px;
+}
+/*end orders Managment*/
 i {
     cursor: pointer;
 }

@@ -1,0 +1,30 @@
+﻿
+
+
+<div class="container-setUp">
+    <div class="alert defaultBackground" role="alert">
+        Orders Management
+    </div>
+    <ul style="margin-top:2rem;" class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" style="width:30%">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#ts" role="tab" aria-controls="home" aria-selected="true">Order Details</a>
+        </li>
+        <li class="nav-item" style="width:30%">
+            <a class="nav-link" id="tab-componentOrders" data-toggle="tab" href="#ty" role="tab" aria-controls="profile" aria-selected="false">Component Orders</a>
+        </li>
+        <li class="nav-item" style="width:30%">
+            <a class="nav-link" id="tab-customerOrders" data-toggle="tab" href="#tz" role="tab" aria-controls="contact" aria-selected="false">Customer Orders</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="ts" role="tabpanel" aria-labelledby="home-tab">
+            <partial name="OrdersManagementPartials/OrderDetails" />
+        </div>
+        <div class="tab-pane fade show" id="ty" role="tabpanel" aria-labelledby="home-tab">
+            <partial name="OrdersManagementPartials/ComponentOrders" />
+        </div>
+        <div class="tab-pane fade show" id="tz" role="tabpanel" aria-labelledby="home-tab">
+            <partial name="OrdersManagementPartials/CustomerOrders" />
+        </div>
+    </div>
+</div>

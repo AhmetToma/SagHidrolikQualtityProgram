@@ -108,5 +108,15 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+
+        public IActionResult OrderMangement()
+        {
+            return View();
+        }
+
+        public IActionResult SettignsReject()
+        {
+            return View();
+        }
     }
 }

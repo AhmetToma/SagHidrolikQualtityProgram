@@ -65,5 +65,37 @@ namespace SagHidrolik.webApp.Controllers
             return Json(count);
         }
         #endregion
+
+
+        #region Reject
+        public JsonResult GetSettingsReject([FromBody]RequestQuery requestQuery)
+        {
+            var list = RejectGetData.GetSettingsReject(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetSettingsRejectCount()
+        {
+            int count = RejectGetData.GetSettingsRejectCount().Result;
+            return Json(count);
+        }
+
+        public JsonResult AddSettingsReject([FromBody]RejectViewModel r)
+        {
+            int count = RejectGetData.AddSettingsReject(r).Result;
+            return Json(count);
+        }
+
+        public JsonResult DeleteSettingsReject([FromQuery]int rejectId)
+        {
+            int count = RejectGetData.DeleteSettingsReject(rejectId).Result;
+            return Json(count);
+        }
+
+        public JsonResult EditSettingsReject([FromBody]RejectViewModel r)
+        {
+            int count = RejectGetData.EditSettingsReject(r).Result;
+            return Json(count);
+        }
+        #endregion
     }
 }

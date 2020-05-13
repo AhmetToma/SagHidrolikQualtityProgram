@@ -207,7 +207,7 @@ $('#btn-settingsProcessNew-confirmAdd').click((event) => {
                         title: 'Başarılı!',
                         text: 'yeni process  Başarı ile eklendi',
                         type: 'success',
-                        timer: 200
+                        timer: 2000
                     });
                 }
                 else {

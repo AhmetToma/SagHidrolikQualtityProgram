@@ -8,7 +8,7 @@ namespace SagHidrolik.Models.ViewModesl
     public class RejectViewModel
     {
 
-        public int Reject_ID { get; set; }
+        public int? Reject_ID { get; set; }
         public string Reject_Code { get; set; }
         public string REject_Name { get; set; }
 

@@ -77,6 +77,14 @@ const HttpUrls = {
     GetShippmentReport: BaseUrl + "TTFTeslimatGetData/GetShippmentReport",
 
 
+    GetSettingsReject: BaseUrl + "SettingData/GetSettingsReject",
+    GetSettingsRejectCount: BaseUrl + "SettingData/GetSettingsRejectCount",
+    AddSettingsReject: BaseUrl + "SettingData/AddSettingsReject",
+    DeleteSettingsReject: BaseUrl + "SettingData/DeleteSettingsReject?rejectId=",
+    EditSettingsReject: BaseUrl + "SettingData/EditSettingsReject",
+
+
+
 
 
 
@@ -293,6 +301,7 @@ const TablesId = {
     boxType: "#table-boxType",
     settingsProcessNew: "#table-settingsProcessNew",
     machineSettings: "#table-machineSettings",
+    settingsReject: "#table-settingsReject",
 
 
 
@@ -341,7 +350,9 @@ const Inputs = {
     machineSettings_machineName: '#inp-machineSettings-machineName',
     settingsProcessNew_processAdi: '#inp-settingsProcessNew-searchprocessAdi',
     ProductionSummary_searchStk: "#inp-productionSummary-searchStk",
-
+    orderDetails_searchStk: "#inp-orderDetails-searchStk",
+    componentOrders_searchStk: "#inp-componentOrders-searchStk",
+    customerOrders_searchStk: "#inp-customerOrders-searchStk",
 
     tamirIsEmri_searchByStk: "#inp-tamirIsEmri-inputSearch",
     tmairIsEmri_stk: ".tamirIsEmri-first-stk",
@@ -349,7 +360,7 @@ const Inputs = {
     tmairIsEmri_tamirMiktar: ".tamirIsEmri-first-tamirMiktari",
     tmairIsEmri_tarih: ".tamirIsEmri-first-tarih",
     tamirIsEmri_newLotNo: "#inp-tamirIsemri-newLotNo",
-
+    settingsReject_searchRejectName:"#inp-settingsReject-searchRejectName",
 
     claimType_tr: "#inp-claimType-tr",
     calimType_en: "#inp-claimType-en",
@@ -463,6 +474,7 @@ const recordsNotFound = {
     productionStatus: "#recordNotFoundDiv_productionStatus",
     orderDetails: "#recordNotFoundDiv_orderDetails",
     settingsProcessNew: "#recordNotFound_settingsProcessNew",
+    settingsReject: "#recordNotFound_settingsReject",
 
 
 
@@ -521,10 +533,16 @@ const PreviousButtons = {
     stokAll: "#btn-stokAll-previous",
     boxType: "#btn-boxType-previous",
     settingsProcessNew: "#btn-settingsProcessNew-previous",
+    settingsReject: "#btn-settingsReject-previous",
     machineSettings: "#btn-machineSettings-previous",
     bakimAriza_AllMachines: "#btn-bakimAriza-previous",
     bakimAriza_gecmisTalepler: "#btn-bakimArizaGecmisTalepler-previous",
     tamirIsEmri_productionOrders: "#btn-tamirIsEmri-previous",
+    orderDetails: "#btn-orderDetails-previous",
+    componentOrders: "#btn-componentOrders-previous",
+    customerOrders: "#btn-customerOrders-previous",
+
+
 
 };
 const NextButtons = {
@@ -557,6 +575,11 @@ const NextButtons = {
     settingsProcessNew: "#btn-settingsProcessNew-next",
     productionSummary: "#btn-productionSummary-next",
     tamirIsEmri_productionOrders: "#btn-tamirIsEmri-next",
+    orderDetails: "#btn-orderDetails-next",
+    componentOrders: "#btn-componentOrders-next",
+    customerOrders: "#btn-customerOrders-next",
+    settingsReject: "#btn-settingsReject-next",
+
 
 };
 const pageNumbers = {
