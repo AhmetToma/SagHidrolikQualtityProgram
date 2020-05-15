@@ -38,11 +38,11 @@ const HttpUrls = {
     GetAllGunlukHatBazindUretimList: BaseUrl + "UretimData/GetAllGunlukHatBazindUretimList",
     GetAllStokEtiketi: BaseUrl + "Etiketler/GetAllStokEtiketi",
     GetGirisKabulEtiketiList: BaseUrl + "Etiketler/GetGirisKabulEtiketiList",
-    GetBomProccessInAddOrUpdateProcess: BaseUrl + "AddOrUpdateProcess/GetAllBomProcessInAddOrUpdateProcess",
-    GetBomProcessTemp: BaseUrl + "AddOrUpdateProcess/GetBomProcessTemp",
-    CopyToBomProcessTemp: BaseUrl + "AddOrUpdateProcess/CopyToBomProcessTemp?pId=",
-    DeleteFromBomProcessTemp: BaseUrl + "AddOrUpdateProcess/DeleteFromBomProcessTemp?pId=",
-    addUpdateProceecSave: BaseUrl + "AddOrUpdateProcess/addUpdateProceecSave",
+    GetBomProccessInAddOrUpdateProcess: BaseUrl + "UretimData/GetAllBomProcessInAddOrUpdateProcess",
+    GetBomProcessTemp: BaseUrl + "UretimData/GetBomProcessTemp",
+    CopyToBomProcessTemp: BaseUrl + "UretimData/CopyToBomProcessTemp?pId=",
+    DeleteFromBomProcessTemp: BaseUrl + "UretimData/DeleteFromBomProcessTemp?pId=",
+    addUpdateProceecSave: BaseUrl + "UretimData/addUpdateProceecSave",
     GetStokAll: BaseUrl + "StokGetData/GetStokAll",
     GetStokAllCount: BaseUrl + "StokGetData/GetStokAllCount",
     GetAllProductionOrders: BaseUrl + "WOGetData/GetAllProductionOrders",
@@ -53,10 +53,12 @@ const HttpUrls = {
     AddToProductionOrdersPrintOut: BaseUrl + "WOGetData/AddToProductionOrdersPrintOut",
     DeleteFromPrintOut: BaseUrl + "WOGetData/DeleteFromPrintOut?productId=",
     DeleteAllPrintOut: BaseUrl + "WOGetData/DeleteAllPrintOut",
-    GetProcessFlowInProcessDetails: BaseUrl + "ProcessDetailsGetData/GetProcessFlowInProcessDetails",
-    GetProcessFlowDetailsInProcessDetails: BaseUrl + "ProcessDetailsGetData/GetProcessFlowDetailsInProcessDetails",
-    GetAllFindInBom: BaseUrl + "FindInBomGetData/GetAllFindInBom",
-    GetAllFindInBomCount: BaseUrl + "FindInBomGetData/GetAllFindInBomCount",
+    GetProcessFlowInProcessDetails: BaseUrl + "UretimData/GetProcessFlowInProcessDetails",
+    GetProcessFlowDetailsInProcessDetails: BaseUrl + "UretimData/GetProcessFlowDetailsInProcessDetails",
+
+    GetAllFindInBom: BaseUrl + "StokGetData/GetAllFindInBom",
+    GetAllFindInBomCount: BaseUrl + "StokGetData/GetAllFindInBomCount",
+
     GetTeslimatDurumu: BaseUrl + "TTFTeslimatGetData/GetTeslimatDurumu",
     GetTeslimatDurumuCount: BaseUrl + "TTFTeslimatGetData/GetTeslimatDurumuCount",
     GetAllProductionStatus: BaseUrl + "ProdutionStartGetData/GetAllProductionStatus",
@@ -201,6 +203,16 @@ const HttpUrls = {
 
 
 
+    GetSettingsOperator: BaseUrl + "SettingData/GetSettingsOperator",
+    GetSettingsOperatorCount: BaseUrl + "SettingData/GetSettingsOperatorCount",
+    GetSettingsOperatorPolivalance: BaseUrl + "SettingData/GetSettingsOperatorPolivalance?operatorId=",
+    AddToSettingOperator: BaseUrl + "SettingData/AddToSettingOperator",
+    EditSettingsOperator: BaseUrl + "SettingData/EditSettingsOperator",
+    DeleteSettingOperator: BaseUrl + "SettingData/DeleteSettingOperator?operatorId=",
+
+
+
+
 
 
 
@@ -302,6 +314,8 @@ const TablesId = {
     settingsProcessNew: "#table-settingsProcessNew",
     machineSettings: "#table-machineSettings",
     settingsReject: "#table-settingsReject",
+    settingsOperator: "#table-settingsOperator",
+    settingsOperatorPolivalance: "#table-settingsOperatorPolivalance",
 
 
 
@@ -353,7 +367,7 @@ const Inputs = {
     orderDetails_searchStk: "#inp-orderDetails-searchStk",
     componentOrders_searchStk: "#inp-componentOrders-searchStk",
     customerOrders_searchStk: "#inp-customerOrders-searchStk",
-
+    findInBom_searchStk: "#inp-findInBom-searchStk",
     tamirIsEmri_searchByStk: "#inp-tamirIsEmri-inputSearch",
     tmairIsEmri_stk: ".tamirIsEmri-first-stk",
     tmairIsEmri_LotNo: ".tamirIsEmri-first-lotNo",
@@ -361,7 +375,7 @@ const Inputs = {
     tmairIsEmri_tarih: ".tamirIsEmri-first-tarih",
     tamirIsEmri_newLotNo: "#inp-tamirIsemri-newLotNo",
     settingsReject_searchRejectName:"#inp-settingsReject-searchRejectName",
-
+    addOrUpdateProcess_searchStk: "#inp-addOrUpdateProcess-stokSearch",
     claimType_tr: "#inp-claimType-tr",
     calimType_en: "#inp-claimType-en",
     claimType_tr_edt: "#inp-claimType-tr-edit",
@@ -446,6 +460,7 @@ const Inputs = {
     customerPerfReport_searchStk: "#inp-customerPerfReport-searchStk",
     monthlyProdcutionReport_searchMachinNo: "#inp-monthlyProdcutionReport-searchMachinNo",
     sellDateReport_searchStk: "#inp-sellDateReport-searchStk",
+    settingsOperator_searchOperatorName: "#inp-settingsOperator-searchOperatorName",
 
 
 
@@ -475,6 +490,8 @@ const recordsNotFound = {
     orderDetails: "#recordNotFoundDiv_orderDetails",
     settingsProcessNew: "#recordNotFound_settingsProcessNew",
     settingsReject: "#recordNotFound_settingsReject",
+    settingsOperator: "#recordNotFound_settingsOperator",
+    settingsOperatorPolivalance: "#recordNotFoundDiv_settingsOperatorPolivalance",
 
 
 
@@ -541,7 +558,8 @@ const PreviousButtons = {
     orderDetails: "#btn-orderDetails-previous",
     componentOrders: "#btn-componentOrders-previous",
     customerOrders: "#btn-customerOrders-previous",
-
+    findInBom: "#btn-findInBom-previous",
+    settingsOperator: "#btn-settingsOperator-previous",
 
 
 };
@@ -579,6 +597,9 @@ const NextButtons = {
     componentOrders: "#btn-componentOrders-next",
     customerOrders: "#btn-customerOrders-next",
     settingsReject: "#btn-settingsReject-next",
+    findInBom: "#btn-findInBom-next",
+    settingsOperator: "#btn-settingsOperator-next",
+
 
 
 };
@@ -621,6 +642,7 @@ const pageNumbers = {
     sellDateReport: "#number-sellDateReport-pageNumber",
     reworkReport: "#number-reworkReport-pageNumber",
     productionSummary: "#number-reworkReport-pageNumber",
+    settingsOperator: "#number-settingsOperator-pageNumber",
 }
 
 function ShowLoader() {

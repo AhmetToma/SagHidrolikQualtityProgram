@@ -1,0 +1,88 @@
+﻿<div class="container-AddUpdateProcess" style="height:1330px">
+    <div style="" class="alert defaultBackground" role="alert">
+        <h4>
+            Add-Update Process
+        </h4>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <form>
+                <div class="input-group urunEtiketiSearchDiv">
+                    <span class="input-group-text " style="background-color:#2A3F54;color:white" id="basic-addon1">STK</span>
+                    <input autofocus id="inp-addOrUpdateProcess-stokSearch"  type="search" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <table class="table table-bordered  tableHoverDefault">
+                <thead class="tabh">
+                    <tr>
+                        <th>STK</th>
+                        <th>STA</th>
+                        <th>Adres</th>
+                    </tr>
+                </thead>
+                <tbody id="table-addOrUpdateProcess-stokgenSearch">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Tab panes -->
+    @*@*style="display:none";*@
+    @*style="opacity:0" ;*@
+    <hr style="opacity:0" class="toscroll" />
+
+    <div style="opacity:0;" class="addUpdateProcessSection">
+
+        <div class="row" style="margin-top:3rem;margin-bottom:4rem; margin-left:20%!important">
+            <a id="btn-addOrUpdateProcess-copy" style="background-color:#18375d;color:white" class="btn">Copy to table</a>
+            <a id="btn-addOrUpdateProcess-save" style="background-color:#18375d;color:white" class="btn">Save Update</a>
+            <a href="" target="_blank" id="btn-addOrUpdateProcess-dosya" class="btn" style="background-color:#18375d;color:white;">Dosya Aç</a>
+            <a id="btn-addOrUpdateProcess-cleantable" style="color:white" class="btn btn-danger">Clean Table</a>
+            <a id="btn-addOrUpdateProcess-reset"  style="color:white" class="btn btn-danger">Reset</a>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="alertProcessInOrderDetails" style="opacity:0.8">
+                    <h3>Current Process </h3>
+                </div>
+                <div class="zxc">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sub Part No</th>
+                                <th scope="col">Prcess Name </th>
+                                <th scope="col">QtY</th>
+                                <th scope="col">Quality</th>
+                                <th scope="col">Measurement</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-addOrUpdateProcess-bomProcessCurrent" class="">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="alertProcessInOrderDetails">
+                    <h3>New Process </h3>
+                </div>
+                <div class="zxc">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sub Part No</th>
+                                <th scope="col">Prcess Name </th>
+                                <th scope="col">QtY</th>
+                                <th scope="col">Quality</th>
+                                <th scope="col">Measurement</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-addOrUpdateProcess-bomProcessNew" class="">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

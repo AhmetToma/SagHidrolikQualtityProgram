@@ -241,6 +241,32 @@ namespace SagHidrolik.DataAccesslayer.Stok
 
         #endregion
 
+        #region findInBom
+
+        public static async Task<IEnumerable<FindInBomViewModel>> GetAllFindInBom(RequestQuery requestQuery)
+        {
+            requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<FindInBomViewModel>(SqlQueryRepo.GetAllFindInBom(requestQuery));
+                return list;
+            }
+        }
+
+
+        public static async Task<int> GetAllFindInBomCount()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var count = await connection.QueryFirstAsync<int>(SqlQueryRepo.GetAllFindInBomCount);
+                return count;
+            }
+        }
+        #endregion
+
+
     }
 }
 

@@ -146,6 +146,23 @@ namespace SagHidrolik.Models.SqlRepository
         }
         #endregion
 
+
+        #region FindInBom
+
+        public static string GetAllFindInBom(RequestQuery requestQuery)
+        {
+            query = $"SELECT dbo.STOKGEN.STK AS PartNo, dbo.TSTOKRECETESI.STK AS Material, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
+                $" FROM dbo.TSTOKRECETESI INNER JOIN dbo.STOKGEN ON dbo.TSTOKRECETESI.STOKP_ID = dbo.STOKGEN.P_ID where STOKGEN.STK like '%{requestQuery.Stk}%'" +
+                $" GROUP BY dbo.STOKGEN.STK, dbo.TSTOKRECETESI.STK, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
+                $"  order By PartNo OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
+            return query;
+        }
+
+
+        public static string GetAllFindInBomCount = "select COUNT(*) from( SELECT dbo.STOKGEN.STK AS PartNo, dbo.TSTOKRECETESI.STK AS Material, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
+            " FROM dbo.TSTOKRECETESI INNER JOIN dbo.STOKGEN ON dbo.TSTOKRECETESI.STOKP_ID = dbo.STOKGEN.P_ID" +
+            " GROUP BY dbo.STOKGEN.STK, dbo.TSTOKRECETESI.STK, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR)numberCount";
+        #endregion
         #endregion
 
         #region Uretim
@@ -355,9 +372,57 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
 
         #endregion
 
+        #region Add-update Process 
+        public static string GetAllBomProcessInAddOrUpdateProcess(RequestQuery request)
+        {
+            query = $"Select SubPartNo, PartNo_ID ,Qty,Quality,ProcessName, Process_Planning.ProsesAdi from BOM_Process inner join" +
+                $" Process_Planning on SubPartNo = Process_Planning.ProcessNo" +
+                $" where PartNo_ID = '{request.pid}'";
+            return query;
+        }
+
+        public static string GetBomProcessTemp(RequestQuery requestQuery)
+        {
+            query = $"Select SubPartNo, PartNo_ID ,Qty,Quality,ProcessName, Process_Planning.ProsesAdi from BOM_Process_Temp inner join" +
+                $" Process_Planning on SubPartNo = Process_Planning.ProcessNo" +
+                $" where PartNo_ID = '{requestQuery.pid}'";
+            return query;
+        }
+
+        public static string CheckOrderNo = "SELECT BOM_Process_Temp.OrderNo, Count(*) AS say FROM BOM_Process_temp GROUP BY BOM_Process_Temp.OrderNo HAVING Count(*)>1";
+        public static string CheckSubPartNo = "SELECT BOM_Process_Temp.SubPartNo, Count(*) AS say FROM BOM_Process_temp GROUP BY BOM_Process_Temp.SubPartNo HAVING (((Count(*))>1));";
+        public static string bomProcessTempCount = "select Count(*) from  BOM_Process_Temp";
 
 
+        public static string DeleteFromBomProcessTemp(string pId)
+        {
+            query = $"delete  from BOM_Process_Temp where PartNo_ID ='{pId}'";
+            return query;
+        }
 
+        public static string CopyToBomProcessTemp(string pId)
+        {
+            query = $"delete  from BOM_Process_Temp where PartNo_ID ='{pId}';insert into BOM_Process_Temp (PartNo_ID,SubPartNo,SubPartNoNext,OrderNo,Qty,Quality)" +
+                "(SELECT BOM_Process.PartNo_ID," +
+                "BOM_Process.SubPartNo, BOM_Process.SubPartNoNext, BOM_Process.OrderNo, BOM_Process.Qty, BOM_Process.Quality" +
+                $" FROM BOM_Process WHERE BOM_Process.PartNo_ID = '{pId}'); ";
+            return query;
+        }
+
+
+        public static string DeleteFromBomProcess(string pId)
+        {
+            query = $"delete From BOM_Process where PartNo_ID ='{pId}'";
+            return query;
+        }
+
+
+        public static string InsertIntoBomProcess(BomProcessViewModel b)
+        {
+            query = $"insert into BOM_Process(PartNo_ID,OrderNo,Qty,Quality,SubPartNo,SubPartNoNext)" +
+                $" values('{b.PartNo_ID}', {b.OrderNo}, {b.Qty}, '{b.Quality}', {b.SubPartNo}, {b.SubPartNoNext});";
+            return query;
+        }
         #endregion
 
         #region tamir is emri 
@@ -421,6 +486,34 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         }
 
         #endregion
+
+        #region processDetails
+        public static string GetProcessFlowInProcessDetails(RequestQuery requestQuery)
+        {
+            query = $"select Flow_ID,ProcessNo_ID,ProductOrder_ID,Ok_Qty,Process_qty,Process_reject,Process_Rework,Order_no ,ProsesAdi from ProcessFlow  inner join Process_Planning On  ProcessFlow.ProcessNo_ID =Process_Planning.ProcessNo where ProductOrder_ID={requestQuery.ProductOrderId} order by Flow_ID" +
+                 $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
+            return query;
+        }
+
+
+        public static string GetProcessFlowDetailsInProcessDetails(RequestQuery requestQuery)
+        {
+            query = $"select ProcessFlowDetail.Finish_time AS FinishTime,ProcessFlowDetail.Np_time," +
+                $" Process_Planning.ProsesAdi, ProcessFlowDetail.Ok_Qty," +
+                $" Operator.Operator_Name,ProcessFlowDetail.Start_time,dbo.[10_MakinaListesiNew].Machine_no" +
+                $" FROM(((ProcessFlowDetail INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID)" +
+                $" INNER JOIN Process_Planning ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo)" +
+                $" inner join dbo.[10_MakinaListesiNew] on dbo.[10_MakinaListesiNew].Machine_Id = ProcessFlowDetail.Machine" +
+                $" inner join Local_ProductionOrders  ON ProcessFlow.ProductOrder_ID = Local_ProductionOrders.ProductOrderID)" +
+                $" INNER JOIN Operator ON ProcessFlowDetail.Operator = Operator.Operator_ID" +
+                $" where Local_ProductionOrders.ProductOrderID like'%{requestQuery.ProductOrderId}%' " +
+                $" ORDER BY Finish_time DESC OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
+            return query;
+        }
+        #endregion
+        #endregion
+
+
 
         #region Bakim Ariza
         public static string GetAllMachine(RequestQuery requestQuery)
@@ -1188,7 +1281,7 @@ where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH
         #region Order Management
         public static string GetOrderDetails(RequestQuery r)
         {
-            query = "SELECT dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR, cast(dbo.SIPARIS_ALT.TESTARIHI as date) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
+            query = "SELECT dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,103) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
                 " FROM((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON(dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND(dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID) LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF " +
                 $" where SIPARIS_ALT.STK like '%{r.Stk}%' GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR, dbo.SIPARIS_ALT.TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA " +
                 $"order by STK OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -1281,6 +1374,29 @@ order by 1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;
         public static string DeleteSettingsReject(int rejectId) => $"delete from Reject_def where Reject_ID={rejectId}";
 
         public static string EditSettingsReject(RejectViewModel r) => $"update Reject_def set Reject_Code='{r.Reject_Code}' ,REject_Name='{r.REject_Name}' where Reject_ID={r.Reject_ID}";
+        #endregion
+
+        #region Operator
+        public static string GetSettingsOperator(RequestQuery r) => $@" set DateFormat dmy; 
+ select Operator_ID ,Operator_Name,Bolum,Aktif,CONVERT(varchar,GirisTarihi,103) as GirisTarihi FROM Operator where Operator_Name like N'%{r.operatorName}%'
+order by 1  
+OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
+
+        public static string GetSettingsOperatorCount() => @" select count(1) from( select Operator_ID ,Operator_Name,Bolum,
+CAST(GirisTarihi AS date)GirisTarihi,Aktif FROM Operator )countNumber  
+";
+
+        public static string AddToSettingOperator(SettingsOperatorViewModel s)=>$@"SET DATEFORMAT dmy insert into Operator (Operator_Name,Bolum,GirisTarihi,Aktif)
+values ('{s.Operator_Name}','{s.Bolum}','{s.GirisTarihi}','{s.Aktif}')";
+        public static string GetSettingsOperatorPolivalance(int operatorId) => $@"select PP.ProcessNo,Op.Level,PP.ProcessName 
+from OperatorPolivalance Op
+ inner join Process_Planning PP on  Op.ProcessNo = PP.ProcessNo
+ where Op.OperatorNo={operatorId}";
+
+        public static string DeleteSettingOperator(int opertorId) => $"delete from Operator where Operator_ID ={opertorId}";
+        public static string EditSettingsOperator(SettingsOperatorViewModel s) => $@"SET DATEFORMAT dmy;update Operator set Operator_Name='{s.Operator_Name}' ,Bolum='{s.Bolum}', GirisTarihi='{s.GirisTarihi}'
+,Aktif='{s.Aktif}'
+where Operator_ID ={s.Operator_ID}";
         #endregion
         #endregion
     }

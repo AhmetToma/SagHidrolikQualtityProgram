@@ -1,0 +1,171 @@
+﻿<div>
+    <div class="alert  defaultBackground" role="alert">
+        Operator
+    </div>
+    <div class="teslimat">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group" style="margin-top:1.7rem">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text defaultBackground" id="basic-addon1">Operator Name</span>
+                    </div>
+                    <input id="inp-settingsOperator-searchOperatorName" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="operator Name giriniz">
+                </div>
+            </div>
+
+            <div class="col-md-4" style="margin-top:1.7rem">
+                <select class="custom-select" id="selectRowCount-settingsOperator">
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button style="margin-top: 7%;" class="btn btn-success" id="btn-settingsOperator-addNewOperator"> Add New Operator</button>
+            </div>
+            <div class="col-md-1">
+                <button style="margin-top: 21%;" class="btn btn-danger" id="btn-settingsOperator-reset"> Reset</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="alertProcessInOrderDetails" style="margin-top:5%;margin-left:30%">
+                    <h3>Operator </h3>
+                </div>
+                <table class="table table-bordered tableHoverDefault">
+                    <caption> Operator Toplam: <span style="color:black;font-weight:bold" id="span-settingOperator-rowCount"></span></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Bolum</th>
+                            <th scope="col">Giriş Tarihi</th>
+                            <th scope="col">Aktif</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-settingsOperator"></tbody>
+                </table>
+
+                <div id="recordNotFound_settingsOperator" class="recordNotFoundDiv">
+                    <h3></h3>
+                </div>
+                <nav aria-label="Page navigation example" class="nav-review">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a id="btn-settingsOperator-previous" class="page-link" href="" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a id="number-settingsOperator-pageNumber" class="page-link" href="">1</a></li>
+                        <li class="page-item">
+                            <a id="btn-settingsOperator-next" class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-5" style="opacity:1" id="settingsOperatorSection">
+                <div class="alertProcessInOrderDetails" style="margin-top:7%;margin-left:25%">
+                    <h3>Operator Polivalance</h3>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">ProcessNo</th>
+                            <th scope="col">Process Name</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-settingsOperatorPolivalance"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_settingsOperatorPolivalance" class="recordNotFoundDiv">
+                    <h3></h3>
+                </div>
+                <div class="clearFix">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="settingsOperator-AddModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Process</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Opeartor Name : </label>
+                        <input type="text"  class="form-control" id="inp-settingsOperator-operatorName">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Bolum</label>
+                        <input type="text" class="form-control" id="inp-settingsOperator-bolum">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">giriş tarih : </label>
+                        <input type="text" class="form-control" id="inp-settingsOperator-girisTarihi">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Aktif : </label>
+                        <input style="width:7%" id="inp-settingsOperator-aktif"  class="form-control" type="checkbox"  />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-settingsOperator-confirmAdd" type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="settingsOperator-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit settingsOperators</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Opeartor Name : </label>
+                        <input type="text" class="form-control" id="edt-inp-settingsOperator-operatorName">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Bolum</label>
+                        <input type="text" class="form-control" id="edt-inp-settingsOperator-bolum">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">giriş tarih : </label>
+                        <input type="text" class="form-control" id="edt-inp-settingsOperator-girisTarihi">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Aktif : </label>
+                        <input style="width:7%" id="edt-inp-settingsOperator-aktif" class="form-control" type="checkbox" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="edt-btn-settingsOperator-confirmEdit" type="button" class="btn btn-primary">Save Editing</button>
+            </div>
+        </div>
+    </div>
+</div>

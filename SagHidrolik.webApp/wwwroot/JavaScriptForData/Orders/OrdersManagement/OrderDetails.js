@@ -97,7 +97,7 @@ function CreateOrderDetailsTable(list, tablId) {
 <td>${el.totalInvoice}</td>
 <td>${el.turac}</td>
 <td>${el.fatirstur}</td>
-<td>${el.testarihi.slice(0,-11)}</td>
+<td>${el.testarihi}</td>
 <td>${el.sta}</td>
 </tr>
 `)

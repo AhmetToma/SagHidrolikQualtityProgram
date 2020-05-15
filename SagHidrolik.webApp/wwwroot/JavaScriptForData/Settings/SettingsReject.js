@@ -11,7 +11,7 @@
 let requestQueryForSettingsReject = {
     pageSize: 6,
     pageNumber: 1,
-    processAdi: "",
+    rejectName:"",
     Group: ""
 };
 let settingsRejectModel = {
@@ -103,12 +103,7 @@ $('#selectRowCount-settingsReject').on('change', () => {
 
 
 
-$('#selectGroup-settingsReject').on('change', () => {
-    let selectedVal = $("#selectGroup-settingsReject option:selected").val();
-    requestQueryForSettingsReject.pageNumber = 1;
-    requestQueryForSettingsReject.Group = selectedVal;
-    GetAllsettingsRejectsAjaxCall();
-});
+
 //#endregion
 
 
@@ -327,11 +322,9 @@ $('#edt-btn-settingsReject-confirmEdit').click((event) => {
 $('#btn-settingsReject-reset').click(() => {
     requestQueryForSettingsReject.pageNumber = 1;
     requestQueryForSettingsReject.pageSize = 6;
-    requestQueryForSettingsReject.Group = "";
-    requestQueryForSettingsReject.processAdi = "";
-    $('#selectGroup-settingsReject').val('');
+    requestQueryForSettingsReject.rejectName = "";
     $('#selectRowCount-settingsReject').val('6');
-    $(Inputs.settingsReject_processAdi).val('');
+    $(Inputs.settingsReject_searchRejectName).val('');
     GetAllsettingsRejectsAjaxCall();
 })
 //#endregion

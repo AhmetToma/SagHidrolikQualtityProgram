@@ -1,0 +1,174 @@
+﻿
+
+<div class="container-setUp">
+    <div  class="alert defaultBackground" role="alert">
+        <h4>
+            Process Details
+        </h4>
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group urunEtiketiSearchDiv">
+                    <span class="input-group-text"  style="background-color:#2A3F54;color:white" >STK</span>
+                    <input autofocus id="inp-processDetails-inputSearch" type="text" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="alertProcessInOrderDetails">
+                    <h3>Stok</h3>
+                </div>
+                <div class="panel panel-default urunEtiketitableContent">
+                    <table class="table table-bordered tableHoverDefault">
+                        <thead>
+                            <tr>
+                                <th>STK</th>
+                                <th>STA</th>
+                                <th>Adres</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-processDetails-searchStk" class="urunEtkietiTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="opacity:1" class="col-md-7 urunEtiketiProdcutionOrders">
+                <div class="alertProcessInOrderDetails">
+                    <h3>production Orders </h3>
+                </div>
+                <table class="table table-bordered tableHoverDefault ">
+                    <thead>
+                        <tr>
+                            <th scope="col">PartNo_ID</th>
+                            <th scope="col">Lot No</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Compl</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">issueDate</th>
+                            <th scope="col">Require Date</th>
+                            <th scope="col">Reviesed Date</th>
+                            <th scope="col">Remark</th>
+                            <th scope="col">CloseDate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-processDetails-productioOrders"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_processDetails_productionOrders" class="recordNotFoundDiv">
+                    <h3></h3>
+                </div>
+
+                <nav aria-label="Page navigation example" class="nav-review">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a id="btn-processDetails-previous" class="page-link" href="" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a id="number-processDetails-ProductionOrders" class="page-link" href="">1</a></li>
+                        <li class="page-item">
+                            <a id="btn-processDetails-next" class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="clearFix">
+    </div>
+    <hr style="opacity:1" id="urunEtiket-scroll" />
+    @*printModel*@
+    <div class="row">
+        <div class="col-md-6">
+            <div class="alertProcessInOrderDetails">
+                <h3>Process Flow</h3>
+            </div>
+            <div style="opacity:1" class="urunEtiketiProdcutionOrders">
+                <table class="table table-bordered urunEtkietiTbody ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Flow ID</th>
+                            <th scope="col">ProductorderID</th>
+                            <th scope="col">Process Name</th>
+                            <th scope="col">Process Qty</th>
+                            <th scope="col">Ok Qty</th>
+                            <th scope="col">Reject</th>
+                            <th scope="col">Rework</th>
+                            <th scope="col">Order No</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-processDetails-processFlow"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_processDetails_processFlow" class="recordNotFoundDiv">
+                    <h3></h3>
+                </div>
+
+                <nav aria-label="Page navigation example" class="nav-review">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a id="btn-processDetails-processFlow-previous" class="page-link" href="" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a id="number-processDetails-processFlow-pageNumber" class="page-link" href="">1</a></li>
+                        <li class="page-item">
+                            <a id="btn-processDetails-processFlow-next" class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="alertProcessInOrderDetails">
+                <h3>Process Flow Details</h3>
+            </div>
+            <div style="opacity:1" class="urunEtiketiProdcutionOrders">
+                <table class="table table-bordered urunEtkietiTbody ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">Finish Time</th>
+                            <th scope="col">Np Time</th>
+                            <th scope="col">Ok Qty</th>
+                            <th scope="col">Machine</th>
+                            <th scope="col">Operator</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-processDetails-processFlowDetails"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_processDetails_processFlowDetails" class="recordNotFoundDiv">
+                    <h3></h3>
+                </div>
+
+
+                <nav aria-label="Page navigation example" class="nav-review">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a id="btn-processDetails-processFlowDetails-previous" class="page-link" href="" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a id="number-processDetails-processFlowDetails-pageNumber" class="page-link" href="">1</a></li>
+                        <li class="page-item">
+                            <a id="btn-processDetails-processFlowDetails-next" class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

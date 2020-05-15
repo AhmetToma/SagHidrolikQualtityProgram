@@ -97,5 +97,41 @@ namespace SagHidrolik.webApp.Controllers
             return Json(count);
         }
         #endregion
+
+        #region operator
+        public JsonResult GetSettingsOperator([FromBody]RequestQuery requestQuery)
+        {
+            var list = OpertorData.GetSettingsOperator(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetSettingsOperatorCount()
+        {
+            int count = OpertorData.GetSettingsOperatorCount().Result;
+            return Json(count);
+        }
+
+        public JsonResult AddToSettingOperator([FromBody]SettingsOperatorViewModel s)
+        {
+            var list = OpertorData.AddToSettingOperator(s).Result;
+            return Json(list);
+        }
+
+        public JsonResult DeleteSettingOperator(int operatorId)
+        {
+            var list = OpertorData.DeleteSettingOperator(operatorId).Result;
+            return Json(list);
+        }
+
+        public JsonResult EditSettingsOperator([FromBody]SettingsOperatorViewModel s)
+        {
+            var list = OpertorData.EditSettingsOperator(s).Result;
+            return Json(list);
+        }
+        public JsonResult GetSettingsOperatorPolivalance([FromQuery]int operatorId)
+        {
+            var list = OpertorData.GetSettingsOperatorPolivalance(operatorId).Result;
+            return Json(list);
+        }
+        #endregion
     }
 }

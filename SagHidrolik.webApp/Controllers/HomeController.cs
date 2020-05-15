@@ -118,5 +118,23 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+
+        public IActionResult FindInBom()
+        {
+            return View();
+        }
+        public IActionResult SettignsOperator()
+        {
+            return View();
+        }
+
+        public IActionResult AddOrUpdateProcess()
+        {
+            return View();
+        }
+        public IActionResult ProcessDetails()
+        {
+            return View();
+        }
     }
 }

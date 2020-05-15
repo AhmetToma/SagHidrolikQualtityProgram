@@ -65,7 +65,7 @@ function creatStokgenTable(list, tableId) {
     }
     else {
         $(tableId).append(`
-          <div class="stokgeNotFoundResult"> <p>aradığınız stk'a ait hiç bir sonuç Bulunmamaktadır</p> </div>`);
+          <div class="stokgeNotFoundResult"> <h3 style ="text-align:center">aradığınız stk'a ait hiç bir sonuç Bulunmamaktadır</h3> </div>`);
     }
     HideLoader();
 }

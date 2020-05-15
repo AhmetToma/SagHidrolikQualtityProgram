@@ -21,5 +21,7 @@ namespace SagHidrolik.Models.ViewModesl
         public string machineNo { get; set; }
         public string machineName { get; set; }
         public string rejectName { get; set; }
+        public string operatorName { get; set; }
+        public int? ProductOrderId { get; set; }
     }
 }

@@ -15,8 +15,11 @@ namespace SagHidrolik.webApp.Controllers
 {
     public class StokGetDataController : Controller
     {
+        #region Stok
 
         RequestQuery requestQuery = new RequestQuery();
+
+
         public JsonResult GetStokByStk([FromBody]string searcedValue)
         {
             requestQuery.Stk = searcedValue;
@@ -108,6 +111,9 @@ namespace SagHidrolik.webApp.Controllers
             var productImage = StokReadingData.GetProductImage(stk).Result;
             return Json(productImage);
         }
+        #endregion
+
+        #region StokAll
         public JsonResult GetStokAll([FromBody]RequestQuery requestQuery)
         {
             var list = StokReadingData.GetStokAll(requestQuery).Result;
@@ -120,6 +126,19 @@ namespace SagHidrolik.webApp.Controllers
             return Json(count);
         }
 
-       
+        #endregion
+
+        #region FindInBom
+        public JsonResult GetAllFindInBom([FromBody] RequestQuery requestQuery)
+        {
+            var list = StokReadingData.GetAllFindInBom(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetAllFindInBomCount()
+        {
+            var count = StokReadingData.GetAllFindInBomCount().Result;
+            return Json(count);
+        }
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ErpSagHidrolik.DataAccessLayer.AddUpadateprocess;
 using Microsoft.AspNetCore.Mvc;
 using SagHidrolik.DataAccesslayer.Uretim;
 using SagHidrolik.Models.ViewModesl;
@@ -137,5 +138,49 @@ namespace SagHidrolik.webApp.Controllers
         }
         #endregion
 
+        #region Add-Update Process
+
+        public IActionResult GetAllBomProcessInAddOrUpdateProcess([FromBody] RequestQuery requestQuery)
+        {
+            var list = AddUpdateProcesssData.GetAllBomProcessInAddOrUpdateProcess(requestQuery).Result;
+            return Json(list);
+        }
+
+        public IActionResult GetBomProcessTemp([FromBody] RequestQuery requestQuery)
+        {
+            var list = AddUpdateProcesssData.GetBomProcessTemp(requestQuery).Result;
+            return Json(list);
+        }
+
+        public IActionResult CopyToBomprocessTemp([FromQuery]string pId)
+        {
+            var list = AddUpdateProcesssData.CopyToBomProcessTemp(pId).Result;
+            return Json(list);
+        }
+
+        public IActionResult DeleteFromBomProcessTemp([FromQuery]string pId)
+        {
+            var list = AddUpdateProcesssData.DeleteFromBomProcessTemp(pId).Result;
+            return Json(list);
+        }
+        public IActionResult addUpdateProceecSave([FromBody]RequestQuery request)
+        {
+            string message = AddUpdateProcesssData.addUpdateProceecSave(request).Result;
+            return Json(message);
+        }
+        #endregion
+
+        #region Process Details
+        public JsonResult GetProcessFlowInProcessDetails([FromBody]RequestQuery requestQuery)
+        {
+            var list = ProcessDetailsData.GetProcessFlowInProcessDetails(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetProcessFlowDetailsInProcessDetails([FromBody]RequestQuery requestQuery)
+        {
+            var list = ProcessDetailsData.GetProcessFlowDetailsInProcessDetails(requestQuery).Result;
+            return Json(list);
+        }
+        #endregion
     }
 }
