@@ -1,0 +1,272 @@
+﻿<div class="container-allWo">
+    <div  class="alert defaultBackground" role="alert">
+        <h4>
+            All WO
+        </h4>
+    </div>
+    <div class="clearfix"></div>
+    <div class="Content-uretimPalni">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text defaultBackground " id="basic-addon1">STK</span>
+                    </div>
+                    <input id="inp-allWo-searchStk" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu giriniz">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select class="custom-select uretimPlani-select" id="select-allWo-selectRowCount"></select>
+            </div>
+            <div class="col-md-4">
+                <select class="custom-select uretimPlani-select" id="select-allWo-selectUretimPlaniType">
+                    <option value="" selected>Seç...</option>
+                    <option value="1">Open</option>
+                    <option value="2">In Progres</option>
+                    <option value="3">CLosed</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <button id="btn-allWo-addtoWorkOrders" style="margin-top:1.5rem;margin-right:3rem;;margin-left:25rem" class="btn btn-success">Add To Work Orders</button>
+            <button id="btn-allWo-addtoTable" style="margin-top:1.5rem ;margin-right:3rem;" class="btn btn-primary">Add To PrintOut</button>
+            <button id="btn-allWo-deleteSelected" style="margin-top:1.5rem;margin-right:3rem; color:white" class="btn btn-warning">Delete Selected</button>
+            <button id="btn-allWo-reset" style="margin-top:1.5rem;margin-right:3rem;" class="btn btn-danger">Reset</button>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <hr />
+    <div class="">
+        <div id="cap2-allWo" style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem;display:none">
+            selected record : <span id="span-allWo-selectedRow" style="color:red"></span>
+            <span id="span-allWo-UnSelectRows" style="margin-left:1rem;color:#337ab7"><i class="fas fa-undo fa-2x"></i></span>
+        </div>
+        <table class="table table-bordered">
+            <caption style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem"> Toplam Records: <span id="span-allWo-rowCount" style="color:red"></span> </caption>
+            <caption id="cap2-allWo" style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem;display:none">
+                selected record : <span id="span-allWo-selectedRow" style="color:red"></span>
+                <span id="span-allWo-UnSelectRows" style="margin-left:1rem;color:#337ab7"><i class="fas fa-undo fa-2x"></i></span>
+            </caption>
+            <thead>
+                <tr style="background-color:#193c40;color:white">
+                    <th scope="col"> </th>
+                    <th scope="col">PartNo ID</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Completed</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">LotNo</th>
+                    <th scope="col">Issue Date</th>
+                    <th scope="col">Required Date</th>
+                    <th scope="col">Close Date</th>
+                    <th scope="col">Remark</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="table-allWo"></tbody>
+        </table>
+        <div id="recordNotFoundDiv_allWo" class="recordNotFoundDiv">
+            <h3>    </h3>
+        </div>
+        <div class="clearFix">
+        </div>
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-allWo-previous" class="page-link" href="" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="num-allWo-pageNumber" class="page-link" href="">1</a></li>
+                <li class="page-item">
+                    <a id="btn-allWo-next" class="page-link" href="" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="">
+        <div class="alertProcessInOrderDetails" style="margin-left: 23%;">
+            <h3>Production Orders Printout</h3>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text defaultBackground " id="basic-addon1">STK</span>
+                    </div>
+                    <input id="inp-ProductionOrdersPrintout-searchStk" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu giriniz">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select class="custom-select uretimPlani-select" id="select-ProductionOrdersPrintout-selectRowCount">
+                    <option value="6">6</option>
+                    <option value="6">10</option>
+                    <option value="6">20</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select class="custom-select uretimPlani-select" id="select-ProductionOrdersPrintout-selectUretimPlaniType">
+                    <option value="" selected>Seç...</option>
+                    <option value="1">Open</option>
+                    <option value="2">In Progres</option>
+                    <option value="3">CLosed</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+
+            <button id="btn-allWo-printWo" style="margin:1.5rem 1rem 1.5rem 38rem" class="btn btn-dark">print Wo</button>
+            <button id="btn-allWo-usage" style="margin:1.5rem 1rem 1.5rem 3rem;background-color:#2578d0;color:white" class="btn">Usage</button>
+            <button id="btn-allWo-clearPrintOut" style="margin:1.5rem 1rem 1.5rem 3rem" class="btn btn-danger">Clear All printOut</button>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr style="background-color:#193c40;color:white">
+                    <th scope="col">PartNo ID</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Completed</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">LotNo</th>
+                    <th scope="col">Issue Date</th>
+                    <th scope="col">Required Date</th>
+                    <th scope="col">Close Date</th>
+                    <th scope="col">Remark</th>
+                    <th scope="col">Dosya</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="table-productionOrderPrintOut"></tbody>
+        </table>
+        <div id="recordNotFoundDiv_ProductionOrdersPrintout" class="recordNotFoundDiv">
+            <h3> </h3>
+        </div>
+        <div class="clearFix">
+        </div>
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-ProductionOrdersPrintout-previous" class="page-link" href="" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="num-ProductionOrdersPrintout-pageNumber" class="page-link" href="">1</a></li>
+                <li class="page-item">
+                    <a id="btn-ProductionOrdersPrintout-next" class="page-link" href="" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="allWo-DeleteModel">
+    <div class="modal-dialog modal-xl" style="width:910px" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Will Delete Wo</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="background-color:#193c40;color:white">
+                            <th scope="col">PartNo ID</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Completed</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">LotNo</th>
+                            <th scope="col">Issue Date</th>
+                            <th scope="col">Required Date</th>
+                            <th scope="col">Close Date</th>
+                            <th scope="col">Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-allWo-delete"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-allWo-confirmDelete" type="button" class="btn btn-danger">Confrim Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="allWo-AddModel" style="overflow:auto">
+    <div class="modal-dialog modal-xl" style="width:910px" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Add New Work Order</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="input-group bakimArizaSearchDiv">
+                            <input style="width: 100%;" autofocus id="inp-allWo-addModel-searchStk" type="text" class="form-control" placeholder="ürün kodu giriniz" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr style="background-color:#193c40;color:white">
+                                    <th scope="col">STK</th>
+                                    <th scope="col">STA</th>
+                                    <th scope="col">Adres</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-allWo-addModel-stkTable"></tbody>
+                        </table>
+
+                        <div id="recordNotFoundDiv_AddModelStk" class="recordNotFoundDiv">
+                            <h3>    </h3>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="addModelInputs">
+                    <div class="row">
+                        <div class="input-group bakimArizaSearchDiv" style="margin-left:1rem">
+                            <input style="width: 100%;" disabled id="inp-allWo-addModel-selectedStk" type="text" class="form-control" placeholder="Selected Stk" aria-describedby="">
+                        </div>
+                        <div class="input-group bakimArizaSearchDiv" style="margin-left:1rem">
+                            <input style="width: 100%;"  autofocus id="inp-allWo-addModel-remark" type="text" class="form-control" placeholder="Remark" aria-describedby="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group bakimArizaSearchDiv" style="margin-left:1rem">
+                            <input style="width: 100%;" autofocus id="inp-allWo-addModel-issueDate" type="text" class="form-control" placeholder="Issue Date" aria-describedby="">
+                        </div>
+                        <div class="input-group bakimArizaSearchDiv" style="margin-left:1rem">
+                            <input style="width: 100%;" autofocus id="inp-allWo-addModel-requireDate" type="text" class="form-control" placeholder="Require Date" aria-describedby="">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-group bakimArizaSearchDiv" style="margin-left:1rem">
+                            <input style="width: 100%;" autofocus id="inp-allWo-addModel-qty" type="number" class="form-control" placeholder="Qty" aria-describedby="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                <button id="btn-allWo-confrimAdd" type="button" class="btn btn-success">Confrim Add</button>
+            </div>
+        </div>
+    </div>
+</div>

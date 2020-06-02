@@ -1,0 +1,43 @@
+﻿
+
+@media print {
+    .tekli_20_80 {
+        page-break-inside: avoid;
+
+    }
+    /* top-level divs with ids */
+
+    /*.seprator {
+        page-break-after: always;
+    }*/
+    .printModeOut {
+        display: block;
+        -ms-overflow-style: none;
+        overflow: hidden !important;
+    }
+}
+.tekli_20_80 {
+    width: 127px;
+    height: 294.57637795px;
+    position: relative;
+    color: black;
+    font-weight: bold;
+}
+.tekilCol1 {
+    transform: rotate(90deg);
+    position: relative;
+    right: 50%;
+    top: 9.5rem;
+    height: 49.247244094px;
+    width: 207.76062992px;
+    font-size: 2.5rem;
+}
+
+.tekilCol2 {
+    transform: rotate(90deg);
+    position: relative;
+    top: 50%;
+    height: 48.982677165px;
+    width: 82.771653543px;
+    font-size: 2.5rem;
+}

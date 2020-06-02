@@ -1,0 +1,79 @@
+﻿
+ 
+@media print {
+    /* top-level divs with ids */
+
+
+    .dikey_20_80 {
+        page-break-inside: avoid !important;
+        page-break-after: always;
+
+    }
+    .printModeOut {
+        display: block;
+        -ms-overflow-style: none;
+        overflow: hidden !important;
+    }
+
+}
+.printModeOut {
+    display: block;
+    -ms-overflow-style: none;
+    overflow: hidden !important;
+    overflow-y: hidden !important
+}
+.printModal {
+    height: auto;
+
+}
+/* start dikey 20*80*/
+.dikey_20_80 {
+    width: 125px;
+    height: 20rem;
+    position: relative;
+    color: black;
+    font-weight: bold;
+}
+.co {
+    height: 72px;
+    width: 90px;
+}
+
+.co1 {
+    position: relative;
+    left: 6px;
+    top: 5px
+}
+
+.co2 {
+    position: relative;
+    right: 3rem;
+    transform: rotate(90deg);
+    font-size:3rem;
+}
+
+.co3 {
+    position: relative;
+    right: 25px;
+    transform: rotate(90deg);
+    top: 8rem;
+    font-size:1.5rem;
+}
+.urunEtiketiOzet {
+    border: 1px solid;
+    box-shadow: 8px 9px 14px black;
+    border-radius: 25px;
+}
+.urunEtiketiOzet h4 {
+    font-weight: bold;
+}
+.urunEtiketiOzet span {
+    font-weight: bold;
+    font-size: 15px;
+    color: #B52E31;
+}
+.btn-yazdir {
+    float: right;
+    margin-top: 47%;
+}
+/* end dikey 20*80*/

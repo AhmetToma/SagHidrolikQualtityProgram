@@ -12,13 +12,13 @@ namespace SagHidrolik.Models.ViewModesl
         public int? LotNo { get; set; }
         public int? Qty { get; set; }
         public int? Completed_Qty { get; set; }
-        public DateTime? IssueDate { get; set; }
-        public DateTime? RequireDate { get; set; }
+        public string IssueDate { get; set; }
+        public string RequireDate { get; set; }
         public bool? Printed { get; set; }
         public int? Status { get; set; }
-        public DateTime? RevisedDate { get; set; }
+        public  string RevisedDate { get; set; }
         public string Remark { get; set; }
-        public DateTime? CloseDate { get; set; }
+        public string CloseDate { get; set; }
         public  string Stk { get; set; }
         public  string DosyaUrl { get; set; }
 

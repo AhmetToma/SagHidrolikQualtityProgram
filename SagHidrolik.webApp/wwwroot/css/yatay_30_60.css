@@ -1,0 +1,88 @@
+﻿
+@media print {
+    .des-yatay_30_60Table {
+        page-break-inside:  avoid !important;
+        page-break-after:always;
+    }
+    /* top-level divs with ids */
+
+    /*.seprator {
+        page-break-after: always;
+    }*/
+    .printModeOut {
+        display: block;
+        -ms-overflow-style: none;
+        overflow: hidden;
+    }
+
+}
+.des-yatay_30_60Table {
+    border: 1.5px solid;
+    width: 22rem;
+    height: 8rem;
+}
+
+.des-yatay_30_60stk {
+    border-bottom: 1.5px solid;
+    height: 19px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.des-yatay_30_60altLeft {
+    text-align: center;
+    width: 45%;
+    float: left;
+    height: 40px;
+}
+
+  
+.des-yatay_30_60altLeft_tarih {
+    font-weight: bold;
+    border-bottom: 1.5px solid;
+}
+
+.des-yatay_30_60altRight {
+    width: 20%;
+    float: left;
+    border-left: 1.5px solid;
+    height: 5.9rem;
+}
+.des-yatay_30_60lot {
+    width: 40px;
+    float: left;
+    margin-top: -8px;
+    text-align: center;
+    height: 40px;
+}
+
+.des-yatay_30_60lotNo {
+    margin-top: -10px;
+    text-align: center;
+    width: 50px;
+    float: left;
+    border-left: 1.5px solid;
+    height: 3.8rem;
+    font-weight: bold;
+}
+
+.des-yatay_30_60altRight p {
+    position: relative;
+    top: 0px;
+    left: 25px;
+    font-weight: bold;
+    font-size: 32px;
+    height: 10px;
+    width: 15px;
+}
+
+.des-yatay_30_60altRight span {
+    position: relative;
+    left: 95px;
+}
+
+
+.yatay_30_60_yazdir {
+    float: right;
+    margin-top: 50px;
+}

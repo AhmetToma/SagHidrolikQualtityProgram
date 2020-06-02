@@ -26,6 +26,7 @@ $('#previous-table-StokDetailsFirst').click((e) => {
     getproductOrdersAjaxCall(TablesId.productionOrdersInStok, recordsNotFound.productionOrders);
 });
 function getproductOrdersAjaxCall(tableId, notFoundId) {
+    console.log('inside ajax', requstQueryForProductOrders.pageNumber)
 
 
 
@@ -37,6 +38,7 @@ function getproductOrdersAjaxCall(tableId, notFoundId) {
         ActiveButton('#previous-table-StokDetailsFirst');
         ActiveButton('#next-table-StokDetailsFirst');
     }
+
 
 
     $.ajax({
@@ -110,6 +112,8 @@ function previousProductionOrders() {
 function nextProductionOrders() {
     ShowLoader();
     requstQueryForProductOrders.pageNumber += 1;
+
+
 }
 
 

@@ -93,9 +93,6 @@ namespace SagHidrolik.webApp.Controllers
         }
         public JsonResult UpdateAction([FromBody]ActionListViewModel actionListViewModel)
         {
-            string z = "5/12/2020";
-            actionListViewModel.TargetDate = DateTime.Parse(actionListViewModel.TargetDate).ToString("dd/MM/yyyy");
-            actionListViewModel.CloseDate = DateTime.Parse(actionListViewModel.CloseDate).ToString("dd/MM/yyyy");
             var model = ReviewData.UpdateAction(actionListViewModel).Result;
             return Json(model);
         }

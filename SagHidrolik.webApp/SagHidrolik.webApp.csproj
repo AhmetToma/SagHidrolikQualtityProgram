@@ -98,11 +98,24 @@
   <ItemGroup>
     <None Include="wwwroot\JavaScriptForData\BakimAriza\BakimAriza.js" />
     <None Include="wwwroot\JavaScriptForData\BakimAriza\gecmisTalepler.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\GirişKabulEtiketi\girisKabulEtiketi.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\GirişKabulEtiketi\girisKabulEtiketiPrintModeli.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\SevkiyetKutuEtiketi\sevkiyetKutuEtiketi.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\SevkiyetKutuEtiketi\sevkiyetKutuEtiketi_PrintModeli.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\StokEtiketi\StokEtiketit.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\StokEtiketi\stokEtiketi_mamulA4.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\StokEtiketi\stokEtiketi_uretimeSevk.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\UrunEtiketi\printModels.js" />
+    <None Include="wwwroot\JavaScriptForData\Etiketler\UrunEtiketi\urunEtiketi.js" />
+    <None Include="wwwroot\JavaScriptForData\TranferWo\TranferWo.js" />
+    <None Include="wwwroot\JavaScriptForData\TTFTeslimat\ShippmentReport.js" />
+    <None Include="wwwroot\JavaScriptForData\TTFTeslimat\TTFTeslimat.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\gunlukHatBazindaUretim.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\UretimBasla.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\UretimBitir.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\TamirIsEmri\tamirIsEmriCiktisi.js" />
     <None Include="wwwroot\JavaScriptForData\Uretim\TamirIsEmri\tamriIsEmri.js" />
+    <None Include="wwwroot\JavaScriptForData\Wo\AllWo.js" />
     <None Include="wwwroot\webfonts\fa-brands-400.svg" />
     <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
     <None Include="wwwroot\webfonts\fa-regular-400.svg" />
@@ -114,7 +127,7 @@
   <ItemGroup>
     <PackageReference Include="Dapper.FluentMap" Version="1.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
   </ItemGroup>
 
   <ItemGroup>

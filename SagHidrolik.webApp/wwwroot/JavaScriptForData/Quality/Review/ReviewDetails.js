@@ -195,8 +195,8 @@ function createActionList(list) {
                         <td>${actionType}</td>
                         <td>${resposibleName} </td>
                         <td>${element.actin_Def}</td>
-                        <td> ${targetDate.slice(0, -11)}</td>
-                        <td>${closeDate.slice(0, -11)}</td>
+                        <td> ${targetDate}</td>
+                        <td>${closeDate}</td>
                         <td><i class="${status}" aria-hidden="true"></i></td>
                         <td id='actinoId${element.actN_ID}' onclick="editAction(${element.actN_ID})"><i class="fas fa-edit fa-2x  text-primary"> </i> </td>
                         <td id='actinoId${element.actN_ID}' onclick="deleteImmediateAction(${element.actN_ID})"><i class="fas   fa-2x fa-trash text-danger"> </i> </td>
@@ -348,8 +348,8 @@ function editAction(ActionId) {
         selectedModel = selectedModel[0];
         $('#select-reviewDetails-edit-actionType').val(selectedModel.action_Type);
         $('#inp-reviewDetails-edit-actionDef').val(selectedModel.actin_Def);
-        $('#inp-reviewDetails-edit-targetDate').val(selectedModel.targetDate.slice(0, -11))
-        $('#inp-reviewDetails-edit-closeDate').val(selectedModel.closeDate.slice(0, -11));
+        $('#inp-reviewDetails-edit-targetDate').val(selectedModel.targetDate)
+        $('#inp-reviewDetails-edit-closeDate').val(selectedModel.closeDate);
         $('#inp-reviewDetails-edit-responsible').val(`${selectedModel.responsibleId}`).trigger('change');
         selectedModel.status ? $("#inp-reviewDetails-edit-status").prop("checked", true) : $("#inp-reviewDetails-edit-status").prop("checked", false);
         $('#actionList-edit').modal('show');
@@ -615,7 +615,7 @@ function CreateDocumentControlTable(element) {
 <tr>
 
 <td>${element.documentType}</td>
-<td>${element.changeDate.slice(0, -11)}</td>
+<td>${element.changeDate}</td>
 <td>${element.newRev}</td>
 <td>${element.notes}</td>
 <td id="documentControlId${element.id}" onclick="deleteDocumentControl(${element.id})" ><i class="fas  fa-2x fa-trash text-danger"> </i></td>
@@ -749,7 +749,7 @@ function editDocumentControl(documentControlId) {
         selectedModel = selectedModel[0];
         documentControlModel = selectedModel;
         $('#select-reviewDetails-edit-documentControlType').val(selectedModel.documentType);
-        $('#inp-reviewDetails-edit-changeDate').val(selectedModel.changeDate.slice(0, -11));
+        $('#inp-reviewDetails-edit-changeDate').val(selectedModel.changeDate);
         $('#inp-reviewDetails-edit-notes').val(selectedModel.notes);
         $('#inp-reviewDetails-edit-newRev').val(selectedModel.newRev);
         $('#documentControl-edit').modal('show');

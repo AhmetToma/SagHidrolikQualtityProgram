@@ -459,6 +459,14 @@
     border-radius: 10px 120px;
 }
 /*end orders Managment*/
+
+/* start AllWo*/
+.selectedRow {
+    background-color: #f0ad4e;
+    color: white;
+    transition: all 0.5s ease-in-out;
+}
+/*end AllWo*/
 i {
     cursor: pointer;
 }
@@ -638,10 +646,10 @@ i {
             cursor: pointer;
         }
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    color: white;
-    background-color: #2A3F54;
-}
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .container-setUp .nav-tabs li a:active{
+        color: white;
+        background-color: #2A3F54;
+    }
 
 .container-setUp-partial table thead {
     background-color: #2A3F54;
@@ -823,3 +831,84 @@ textarea {
     font-weight: bold !important;
     font-size: 1rem !important;
 }
+
+
+/* start giris Kontrol */
+
+.girisKontrolCard label {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #b13e5b;
+}
+/* end giris Kontrol */
+
+
+/* start urun etiket*/
+.etkitCard {
+    width: 100%;
+    height: auto;
+    border: 2px solid black;
+    box-shadow: 10px 10px 30px;
+    padding:1rem;
+}
+
+    .etkitCard label {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        color: black;
+        font-weight: bold;
+        font-size: 1rem;
+        text-decoration: underline;
+        text-decoration-color: #b13e5b;
+    }
+
+
+.etiketEkleButtons {
+    margin-top: 10px;
+}
+
+    .etiketEkleButtons button {
+        margin-left: 6px;
+        margin-bottom: 15px;
+        font-size: 0.9em;
+    }
+
+
+        .etiketEkleButtons button:hover {
+            background-color: #28A745 !important;
+            color: white !important;
+            font-weight: bold;
+            box-shadow: 2px 2px 2px #28A745;
+        }
+
+        .etiketEkleButtons button:focus {
+            outline: none !important;
+            background-color: black !important;
+            color: white !important;
+            border: none;
+        }
+
+.btn-etiketEkle {
+    margin-top: 9px;
+    width: 100%;
+    background-color: #ca0298;
+    color: white;
+    margin-bottom: 30px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+    .btn-etiketEkle:hover, .btn-etiketEkle:focus {
+        outline: 0;
+    }
+.urunEtiketiThirdTable {
+    height: 350px;
+    overflow-y: scroll;
+    border: 2px solid black;
+    box-shadow: 10px 10px 30px;
+    padding: 15px;
+}
+/*.printModel {
+    opacity: 0;
+}*/
+/* end urun etiket*/

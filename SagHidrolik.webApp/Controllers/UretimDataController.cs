@@ -182,5 +182,32 @@ namespace SagHidrolik.webApp.Controllers
             return Json(list);
         }
         #endregion
+
+        #region production Start 
+
+        public JsonResult GetAllProductionStatus([FromBody]RequestQuery requestQuery)
+        {
+            var list = ProductionStartData.GetAllProductionStatus(requestQuery).Result;
+            return Json(list);
+        }
+
+        public void DeleteproductionStatus(int sheetId)
+        {
+            ProductionStartData.DeleteproductionStatus(sheetId);
+        }
+
+
+        public JsonResult AddToProductionStatus([FromQuery] string inputDate, [FromQuery] int productId, [FromQuery]int qty)
+        {
+            var message = ProductionStartData.AddToProductionStatus(inputDate, productId, qty).Result;
+            return Json(message);
+        }
+        public JsonResult TransferToSystem([FromQuery]int productId)
+        {
+            var message = ProductionStartData.TransferToSystem(productId).Result;
+            return Json(message);
+        }
+        #endregion
+
     }
 }

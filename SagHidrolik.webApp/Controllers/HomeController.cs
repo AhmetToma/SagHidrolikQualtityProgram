@@ -136,5 +136,32 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult AllWo()
+        {
+            return View();
+        }
+
+        public IActionResult GirisKontrol()
+        {
+            return View();
+        }
+
+        public IActionResult UrunEtiketi()
+        {
+            return View();
+        }
+
+        public IActionResult ProductionStart()
+        {
+            return View();
+        }
+        public IActionResult TTFTeslimat()
+        {
+            return View();
+        }
+        public IActionResult TransferWoToSystem()
+        {
+            return View();
+        }
     }
 }

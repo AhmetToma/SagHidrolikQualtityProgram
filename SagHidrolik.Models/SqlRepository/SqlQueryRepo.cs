@@ -49,17 +49,18 @@ namespace SagHidrolik.Models.SqlRepository
             query = $"select * from dbo.STOKGEN where dbo.STOKGEN.STK='{stk}'";
             return query;
         }
-
-
         public static string GetProductOrdersByStokgenId(RequestQuery requestQuery)
         {
 
-            query = $"select * from dbo.Local_ProductionOrders where dbo.Local_ProductionOrders.PartNo_ID='{requestQuery.pid}' Order By LotNo desc  " +
-                $" OFFSET { requestQuery.pageNumber} ROWS FETCH NEXT { requestQuery.pageSize} ROWS ONLY;";
+            query = $@"select  ProductOrderID,PartNo,PartNo_ID,LotNo,Qty,Completed_Qty,
+convert(varchar(10), cast(IssueDate As Date), 104) as IssueDate ,
+convert(varchar(10), cast(RequireDate As Date), 104) as RequireDate ,
+convert(varchar(10), cast(RevisedDate As Date), 104) as RevisedDate ,
+convert(varchar(10), cast(CloseDate As Date), 104) as CloseDate ,
+Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_ProductionOrders.PartNo_ID='{requestQuery.pid}' Order By LotNo desc  
+                 OFFSET { requestQuery.pageNumber} ROWS FETCH NEXT { requestQuery.pageSize} ROWS ONLY;";
             return query;
         }
-
-
         public static string GetAllStokAlt(RequestQuery requestQuery)
         {
             query = "SELECT STOK_ALT.STOKREF,STOK_ALT.STK,STOK_ALT.STA,STOK_ALT.STB,STOK_ALT.MIKTAR,STOK_ALT.BRKODU,STOK_ALT.TURAC,STOK_ALT.AORS,  IIf(AORS = 'S', -1, 1) * MIKTAR AS Toplam," +
@@ -69,21 +70,15 @@ namespace SagHidrolik.Models.SqlRepository
                 $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
-
-
         public static string GetaltStokToplam(RequestQuery requestQuery)
         {
             query = "SELECT SUM(IIf(AORS = 'S', -1, 1) * MIKTAR) AS Toplam from dbo.STOK_ALT " +
                 $" where STK = '{requestQuery.Stk}'";
             return query;
         }
-
-
         public static string GetGalvanize = "SELECT STOK_ALT.REF,STOK_ALT.STOKREF,STOK_ALT.STK,STOK_ALT.TURAC,STOK_ALT.MIKTAR, Left([STK], Len([STK])-2) AS stokrefnew,STOK_ALT.TARIH, IIf([AORS] = 'S',-1,1) AS carpan " +
              " FROM STOK_ALT WHERE(((STOK_ALT.STK)Like '%-g%' Or(STOK_ALT.STK) Like '%-k%') AND((Left([STK], Len([STK]) - 2)) Is Not Null))" +
            " order by STOK_ALT.TARIH desc";
-
-
         public static string GetBomProcessInStok(RequestQuery requestQuery)
         {
             query = " select Qty,Quality ,Process_Planning.ProsesAdi from dbo.BOM_Process inner join Process_Planning on dbo.BOM_Process.SubPartNo = Process_Planning.ProcessNo " +
@@ -119,8 +114,6 @@ namespace SagHidrolik.Models.SqlRepository
         }
 
         public static string GetAllProductFile = "select P_ID,DOSYAADI  from STOKDOSYALAR";
-
-
 
         public static string GetProductImage(string stk)
         {
@@ -511,6 +504,47 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
             return query;
         }
         #endregion
+
+        #region Production Start
+        public static string GetAllProductionStatus(string m, RequestQuery r)
+        {
+            query = $"select ProductionSheet,LotNo, ProductionStatusTemp.Qty ,Stock,Stock_Out,InputDate,Process_ID,Process_Planning.ProsesAdi,PartNo_ID from" +
+                $" ProductionStatusTemp inner join Process_Planning on ProductionStatusTemp.Process_ID = Process_Planning.ProcessNo" +
+                $" inner join Local_ProductionOrders on ProductionSheet = Local_ProductionOrders.ProductOrderID where PartNo_ID  in({m}) order by ProductionSheet" +
+                $" OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
+            return query;
+        }
+
+        public static string DeleteproductionStatus(int sheetId)
+        {
+            query = $"delete from ProductionStatusTemp where ProductionSheet= {sheetId}";
+            return query;
+        }
+
+
+        public static string AddToProductionStatus(string date, int sheetId, int? orderNo, int qty)
+        {
+            query = $"SET DATEFORMAT dmy; insert into ProductionStatusTemp(ProductionSheet,Qty,Process_ID,InputDate) values ({sheetId},{qty},{orderNo},'{date}')";
+            return query;
+        }
+        public static string UpdateRevisedDateInLocalProductionOrders(int productId)
+        {
+            query = $"SET DATEFORMAT dmy; Update Local_ProductionOrders set RevisedDate = GETDATE(), [Status] = 2 where ProductOrderID = {productId}";
+            return query;
+        }
+
+        public static string InsertIntoProcessFlowInProductionStart(int productId)
+        {
+            query = $"SET DATEFORMAT dmy; INSERT INTO ProcessFlow(ProductOrder_ID, OK_Qty, Process_reject, Process_Rework," +
+                $" ProcessNo_ID, ProcessNo_next, Order_no, Require_Date, Process_qty)SELECT dbo.Local_ProductionOrders.ProductOrderID, 0 AS OK_Qty, 0 AS Process_reject, " +
+                $"0 AS Process_Rework, BOM_Process.SubPartNo, BOM_Process.SubPartNoNext, BOM_Process.OrderNo,dbo.Local_ProductionOrders.RequireDate," +
+                $" IIf([BOM_Process].[OrderNo] = 1,dbo.Local_ProductionOrders.Qty,0) AS QTY FROM ProductionStatusTemp INNER JOIN " +
+                $" (dbo.Local_ProductionOrders INNER JOIN BOM_Process ON dbo.Local_ProductionOrders.PartNo_ID = BOM_Process.PartNo_ID) " +
+                $" ON ProductionStatusTemp.ProductionSheet = dbo.Local_ProductionOrders.ProductOrderID " +
+                $" ORDER BY dbo.Local_ProductionOrders.ProductOrderID, BOM_Process.OrderNo;";
+            return query;
+        }
+        #endregion
         #endregion
 
 
@@ -817,7 +851,8 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         }
         public static string GetImmediateAction(int ncId)
         {
-            query = $"SET DATEFORMAT dmy;select ACTN_ID,NC_ID,Action_Type,Actin_Def,Responsible as ResponsibleId,TargetDate,CloseDate,[Status] from  dbo.C_ActionList where" +
+            query = $"SET DATEFORMAT dmy;select ACTN_ID,NC_ID,Action_Type,Actin_Def,Responsible as ResponsibleId," +
+                $" convert(varchar(10), cast(TargetDate As Date), 104) as TargetDate ,convert(varchar(10), cast(CloseDate As Date), 104) as CloseDate,[Status] from  dbo.C_ActionList where" +
                 $" NC_ID = {ncId}";
             return query;
         }
@@ -831,7 +866,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
 
         public static string GetDocumentControlList(int ncId)
         {
-            query = $"select ID, NC_ID,Document as DocumentType,ChangeDate,NewRev,Notes  from J_DocumentControl  where NC_ID = {ncId}";
+            query = $"select ID, NC_ID,Document as DocumentType, convert(varchar(10), cast(ChangeDate As Date), 104) as ChangeDate,NewRev,Notes  from J_DocumentControl  where NC_ID = {ncId}";
             return query;
         }
         public static string SaveReviewDetalis(ReviewViewModel rev)
@@ -902,7 +937,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
 
         public static string UpdateDocumentControl(DocumentControlViewModel doc)
         {
-            query = $"update J_DocumentControl set NC_ID={doc.NC_ID},Document='{doc.DocumentType}'" +
+            query = $"  set DateFormat dmy; update J_DocumentControl set NC_ID={doc.NC_ID},Document='{doc.DocumentType}'" +
                 $",ChangeDate='{doc.ChangeDate}',NewRev='{doc.NewRev}',Notes='{doc.Notes}' where ID={doc.ID}";
             return query;
         }
@@ -1281,7 +1316,7 @@ where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH
         #region Order Management
         public static string GetOrderDetails(RequestQuery r)
         {
-            query = "SELECT dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,103) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
+            query = "SELECT dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,104) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
                 " FROM((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON(dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND(dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID) LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF " +
                 $" where SIPARIS_ALT.STK like '%{r.Stk}%' GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR, dbo.SIPARIS_ALT.TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA " +
                 $"order by STK OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -1323,6 +1358,75 @@ where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH
                 " )  SELECT* FROM   Sales  PIVOT(SUM(RemainQty)  FOR  YearDate IN('+@cols+')) P;';EXECUTE sp_executesql @query; ";
             return query;
         }
+        #endregion
+        #region Wo 
+        public static string GetAllProductionOrders(string m, RequestQuery r)
+        {
+            query = $@"SET DATEFORMAT dmy; select ProductOrderID,PartNo,PartNo_ID,LotNo,Qty,
+Completed_Qty,
+convert(varchar(10), cast(RequireDate As Date), 104) as RequireDate ,
+convert(varchar(10), cast(IssueDate As Date), 104) as IssueDate ,
+convert(varchar(10), cast(RevisedDate As Date), 104) as RevisedDate ,
+convert(varchar(10), cast(CloseDate As Date), 104) as CloseDate ,
+Printed,Status,CONVERT(varchar,RevisedDate,104) as RevisedDate,
+Remark,CONVERT(varchar,CloseDate,104) as CloseDate
+  from dbo.Local_ProductionOrders where PartNo_ID in ({m})  and  [Status] like '%{r.uretimPlaniType}%' 
+                 ORDER BY dbo.Local_ProductionOrders.RequireDate DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;" 
+;
+            return query;
+        }
+
+        public static string GetprocutionOrdersCount()
+        {
+            query = "select Count(*) from (select * from Local_ProductionOrders)countNumber";
+
+            return query;
+        }
+
+        public static string GetprocutionOrderByProductId(int productId)
+        {
+            query = $"select * from Local_ProductionOrders  where ProductOrderID={productId}";
+
+            return query;
+        }
+
+        public static string DeleteWo(string v)
+        {
+            query = $"delete  from Local_ProductionOrders where ProductOrderID in ({v})";
+            return query;
+        }
+        public static string AddNewWorkOrder(ProductOrderViewModel p)
+        {
+            query = $"SET DATEFORMAT dmy;insert into Local_ProductionOrders(PartNo_ID,IssueDate,RequireDate,Remark,Qty,Status,Printed) values ('{p.PartNo_ID}','{p.IssueDate}','{p.RequireDate}','{p.Remark}',{p.Qty},1,0);SELECT CAST(SCOPE_IDENTITY() as int)";
+            return query;
+        }
+
+        public static string GetAllProductionOrdersPrintOut(RequestQuery r)
+        {
+            query = $"select  ProductionOrdersPrintout.ProductOrderID,PartNo_ID,LotNo,Qty,Completed,convert(varchar(10), cast(RequireDate As Date), 104) as RequireDate ," +
+                $" convert(varchar(10), cast(IssueDate As Date), 104) as IssueDate,[Closed],[Status]," +
+                $" convert(varchar(10), cast(RevisedDate As Date), 104) as RevisedDate ,  RevisedDate,Remark " +
+                $" from dbo.ProductionOrdersPrintout where  [Status] like '%{r.uretimPlaniType}%' " +
+                $" ORDER BY dbo.ProductionOrdersPrintout.ProductOrderID DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
+            return query;
+        }
+
+        public static string AddToProductionOrdersPrintOut(string v)
+        {
+            query = $"insert into ProductionOrdersPrintout " +
+                $"(ProductOrderID, PartNo_ID, PartNo, LotNo, Qty, IssueDate, RequireDate, Remark,[Status])" +
+                $"(select ProductOrderID, PartNo_ID, PartNo_ID, LotNo, Qty, IssueDate, RequireDate, Remark,[Status] from Local_ProductionOrders where ProductOrderID in ({v}))";
+            return query;
+        }
+
+        public static string DeleteFromPrintOut(int productId)
+        {
+            query = $"delete from ProductionOrdersPrintout where ProductOrderID={productId}";
+            return query;
+        }
+
+        public static string DeleteAllPrintOut = "delete from ProductionOrdersPrintout";
+
         #endregion
 
         #region settings
@@ -1378,7 +1482,7 @@ order by 1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;
 
         #region Operator
         public static string GetSettingsOperator(RequestQuery r) => $@" set DateFormat dmy; 
- select Operator_ID ,Operator_Name,Bolum,Aktif,CONVERT(varchar,GirisTarihi,103) as GirisTarihi FROM Operator where Operator_Name like N'%{r.operatorName}%'
+ select Operator_ID ,Operator_Name,Bolum,Aktif,CONVERT(varchar,GirisTarihi,104) as GirisTarihi FROM Operator where Operator_Name like N'%{r.operatorName}%'
 order by 1  
 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
 
@@ -1397,6 +1501,134 @@ from OperatorPolivalance Op
         public static string EditSettingsOperator(SettingsOperatorViewModel s) => $@"SET DATEFORMAT dmy;update Operator set Operator_Name='{s.Operator_Name}' ,Bolum='{s.Bolum}', GirisTarihi='{s.GirisTarihi}'
 ,Aktif='{s.Aktif}'
 where Operator_ID ={s.Operator_ID}";
+        #endregion
+        #endregion
+
+        #region TTF Teslimat
+        public static string GetTeslimatDurumu(RequestQuery requestQuery)
+        {
+            query = $"SELECT [Sipariş blgtürü] as siparisBlturu,Sprşblgno as sprsblgno,Klmno,[Ürün]as urunKodu," +
+                $" Mştrlok as mstrlok,VdGlnMkt as vdGlnmkt,[Ölçü birimi] as olcuBirimi ,Göndtrh as gondtrh" +
+                $" FROM TTFTeslimat where[Ürün] like'%{requestQuery.Stk}%' order by  [Ürün] OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
+            return query;
+        }
+
+        public static string GetTeslimatDurumuCount = "select COUNT(*) from ( SELECT [Sipariş blgtürü] as siparisBlturu,Sprşblgno as sprsblgno,Klmno,[Ürün]as urunKodu," +
+                " Mştrlok as mstrlok,VdGlnMkt as vdGlnmkt,[Ölçü birimi] as olcuBirimi ,Göndtrh as gondtrh" +
+                " FROM TTFTeslimat)countNumber ";
+
+
+
+        public static string GetShippmentReport(RequestQuery r)
+        {
+            query = "DECLARE @cols AS nvarchar(max)DECLARE @query AS nvarchar(max)SELECT @cols = STUFF((" +
+                "SELECT DISTINCT    ',' + QUOTENAME(Month(TTFTeslimat.Göndtrh))FROM[dbo].TTFTeslimat order by 1 FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)')," +
+                " 1, 1, ''); set @query = N'WITH Sales AS (SELECT S.[Sipariş blgtürü] as BilgiTuru, S.Mştrlok as mstrlok, S.Ürün as stk, S.VdGlnMkt, S.[Ölçü birimi] as OlcuBirimi, MONTH(S.Göndtrh) as [month], I.FIELD18 +''-''+I.FIELD19 as Raf , I.STR_3 as kutuTipi, I.STR_4 as KutuIciMiktari,Sum(S.VdGlnMkt) AS ToplamSevk," +
+                $"Sum(S.VdGlnMkt) AS Toplam FROM dbo.TTFTeslimat S left JOIN dbo.STOKGEN I on S.Ürün = I.STK where S.Ürün like ''%{r.Stk}%''Group by S.[Sipariş blgtürü], S.Mştrlok, S.Ürün,S.VdGlnMkt, S.[Ölçü birimi],Göndtrh,I.FIELD18,I.FIELD19, I.STR_3, I.STR_4)SELECT* FROM   Sales PIVOT(SUM(ToplamSevk) FOR  [month] IN ('+@cols+')) P; '" +
+                " EXECUTE sp_executesql @query;";
+            return query;
+        }
+        #endregion
+
+        #region ProductionOrders Transfer 
+        public static string GetProductionOrdersTransfer(RequestQuery r, string m)
+        {
+            query = $"select * from ProductionOrders_Transfer where PartNo in ({m}) order by PartNo  OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
+            return query;
+        }
+
+        public static string GetprocutionOrdersTranferCount()
+        {
+            query = "select Count(*) from(select * from ProductionOrders_Transfer) countNumber";
+            return query;
+        }
+
+        public static string DeleteFromTranferWo(string partNo)
+        {
+            query = $"delete from ProductionOrders_Transfer where PartNo ='{partNo}';";
+            return query;
+        }
+        public static string DeleteAllTranferWo()
+        {
+            query = $"delete from ProductionOrders_Transfer";
+            return query;
+        }
+
+        public static string CheckTransferInStokgen(string m)
+        {
+            query = $"SELECT dbo.STOKGEN.STK, dbo.STOKGEN.tur, dbo.STOKGEN.P_ID " +
+                $" FROM dbo.STOKGEN WHERE P_ID in({m}) and((dbo.STOKGEN.tur) = 2 Or(dbo.STOKGEN.tur) = 3)";
+            return query;
+        }
+
+        public static string Transfer_InsertIntoProductionOrders_getlotNo(ProductionOrdersTransferModel m)
+        {
+            query = "SET DATEFORMAT dmy;" +
+                $"insert into Local_ProductionOrders(PartNo_ID, Qty, IssueDate, RequireDate, Remark,[Status], Printed)" +
+                $" values('{m.PartNo}', {m.Qty}, '{m.IssueDate}', '{m.RequireDate}', '{m.Remark}', 1, 0); SELECT CAST(SCOPE_IDENTITY() as int);";
+            return query;
+        }
+        #endregion
+
+        #region Etiketler
+
+        // sevkiyet etiketi
+        public static string GetSevkiyetKutuEtiketiList(RequestQuery requestQuery)
+        {
+            query = "SELECT dbo.STOK_ALT.TARIH, dbo.CARIGEN.STA as carigen_sta, dbo.STOK_ALT.STK, dbo.STOKGEN.STA as stokgen_sta,dbo.STOK_ALT.MIKTAR, dbo.STOK_ALT.SIPEVRAKNO, dbo.STOK_ALT.STB, dbo.STOK_ALT.TUR, dbo.STOK_ALT.TURAC, dbo.STOKGEN.P_ID, dbo.STOKGEN.FIELD18, dbo.STOKGEN.FIELD19,dbo.STOK_ALT.CARIREF, dbo.STOK_ALT.KALITEKODU, dbo.STOK_ALT.KALITEKODU, dbo.STOK_ALT.IRSEVRAKNO, " +
+                " dbo.STOK_ALT.SIPSATIRP_ID, dbo.CARIGEN.ADRES1, dbo.CARIGEN.ADRES2, dbo.CARIGEN.SEMT,  dbo.CARIGEN.SEHIR ,dbo.CARIGEN.POSTAKODU AS ADRESS, dbo.CARISUBE.ADRESI FROM((((dbo.STOKGEN RIGHT JOIN dbo.STOK_ALT ON dbo.STOKGEN.P_ID = dbo.STOK_ALT.STOKP_ID) LEFT JOIN dbo.CARIGEN ON dbo.STOK_ALT.CARIREF = dbo.CARIGEN.REF) LEFT JOIN dbo.SIPARIS_ALT ON dbo.STOK_ALT.SIPSATIRP_ID = dbo.SIPARIS_ALT.SATIRP_ID) LEFT JOIN dbo.IRSALIYE ON dbo.STOK_ALT.IRS_PID = dbo.IRSALIYE.P_ID) LEFT JOIN dbo.CARISUBE ON dbo.IRSALIYE.CARISUBE = dbo.CARISUBE.REF WHERE(((dbo.STOK_ALT.TUR) = 60 Or(dbo.STOK_ALT.TUR) = 70 Or(dbo.STOK_ALT.TUR) = 280)) " +
+                $"and dbo.STOKGEN.STK like'%{requestQuery.Stk}%' ORDER BY dbo.STOK_ALT.TARIH DESC, dbo.CARIGEN.STA, dbo.STOK_ALT.STK " +
+                $"OFFSET { requestQuery.pageNumber} ROWS FETCH NEXT { requestQuery.pageSize} ROWS ONLY;";
+            return query;
+        }
+
+        // stok etiketi
+        public static string GetAllStokEtiketi(RequestQuery requestQuery)
+        {
+            query = $" SELECT STOKGEN.STK, SUM(IIf(AORS = 'S', -1, 1) * MIKTAR) AS TotalStok," +
+                $" STOKGEN.TUR,STOKGEN.STA,STOKGEN.REF,STOK_ALT.STOKREF,STOKGEN.P_ID,STOKGEN.FIELD18,STOKGEN.FIELD19 " +
+                $" from dbo.STOK_ALT right join STOKGEN On STOK_ALT.STK = STOKGEN.STK " +
+                $" where dbo.STOKGEN.STK like '%{requestQuery.Stk}%'" +
+                $" group by dbo.STOKGEN.STK,STOKGEN.TUR,STOKGEN.STA,STOKGEN.REF,STOK_ALT.STOKREF,STOKGEN.P_ID,STOKGEN.FIELD18,STOKGEN.FIELD19" +
+              $" order by dbo.STOKGEN.STK  OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
+            return query;
+        }
+        // giris kabul etiketi
+
+        public static string GirisKabulEtiketiList(RequestQuery requestQuery)
+        {
+            query = "SELECT dbo.IRSALIYE_ALT.TARIH,dbo.CARIGEN.STA as CARIGENSTA,dbo.IRSALIYE_ALT.STK," +
+                " dbo.STOKGEN.STA as STOKGENSTA ,dbo.IRSALIYE_ALT.MIKTAR, dbo.IRSALIYE_ALT.SIPEVRAKNO, dbo.IRSALIYE_ALT.STB, " +
+                " dbo.IRSALIYE_ALT.TUR, dbo.IRSALIYE_ALT.TURAC, dbo.STOKGEN.P_ID,dbo.STOKGEN.FIELD18, dbo.STOKGEN.FIELD19, dbo.IRSALIYE_ALT.CARIREF,dbo.IRSALIYE_ALT.KALITEKODU," +
+                " dbo.IRSALIYE_ALT.REF,dbo.IRSALIYE_ALT.IRSEVRAKNO FROM (STOKGEN INNER JOIN dbo.IRSALIYE_ALT ON dbo.STOKGEN.P_ID =dbo.IRSALIYE_ALT.STOKP_ID)" +
+                " INNER JOIN dbo.CARIGEN ON dbo.IRSALIYE_ALT.CARIREF =dbo.CARIGEN.REF " +
+                " WHERE (((IRSALIYE_ALT.TUR)=1 Or (dbo.IRSALIYE_ALT.TUR)=62 Or (dbo.IRSALIYE_ALT.TUR)=72)) " +
+                $" and dbo.STOKGEN.STK like '%{requestQuery.Stk}%' ORDER BY dbo.IRSALIYE_ALT.TARIH DESC ,dbo.CARIGEN.STA,dbo.IRSALIYE_ALT.STK" +
+                $" OFFSET {requestQuery.pageNumber}  ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY";
+            return query;
+        }
+
+
+        #region Giris Kontrol
+        public static string GetGirisKontrol(RequestQuery r ) => $@"
+SELECT convert(varchar(10), cast( dbo.IRSALIYE_ALT.TARIH As Date), 104) as Tarih, dbo.CARIGEN.STA, dbo.IRSALIYE_ALT.STK, dbo.IRSALIYE_ALT.MIKTAR,
+ dbo.IRSALIYE_ALT.SIPEVRAKNO, dbo.STOKGEN.P_ID, dbo.STOKGEN.FIELD18, dbo.STOKGEN.FIELD19
+  , dbo.IRSALIYE_ALT.KALITEKODU,dbo.IRSALIYE_ALT.CARIREF,
+   dbo.IRSALIYE_ALT.REF, dbo.IRSALIYE_ALT.IRSEVRAKNO
+FROM (dbo.STOKGEN INNER JOIN dbo.IRSALIYE_ALT ON dbo.STOKGEN.P_ID = dbo.IRSALIYE_ALT.STOKP_ID) INNER JOIN dbo.CARIGEN ON dbo.IRSALIYE_ALT.CARIREF = dbo.CARIGEN.REF
+WHERE (((dbo.IRSALIYE_ALT.TUR)=1 Or (dbo.IRSALIYE_ALT.TUR)=62 Or (dbo.IRSALIYE_ALT.TUR)=72)) and IRSALIYE_ALT.STK like N'%{r.Stk}%'
+ORDER BY dbo.IRSALIYE_ALT.TARIH DESC , dbo.CARIGEN.STA, dbo.IRSALIYE_ALT.STK OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
+        public static string GetGirisKontrolCount() => @"
+ select COUNT(*) from (SELECT convert(varchar(10), cast( dbo.IRSALIYE_ALT.TARIH As Date), 103) as Tarih, dbo.CARIGEN.STA, dbo.IRSALIYE_ALT.STK, dbo.IRSALIYE_ALT.MIKTAR,
+ dbo.IRSALIYE_ALT.SIPEVRAKNO, dbo.STOKGEN.P_ID, dbo.STOKGEN.FIELD18, dbo.STOKGEN.FIELD19
+  , dbo.IRSALIYE_ALT.KALITEKODU,dbo.IRSALIYE_ALT.CARIREF,
+   dbo.IRSALIYE_ALT.REF, dbo.IRSALIYE_ALT.IRSEVRAKNO
+FROM (dbo.STOKGEN INNER JOIN dbo.IRSALIYE_ALT ON dbo.STOKGEN.P_ID = dbo.IRSALIYE_ALT.STOKP_ID) INNER JOIN dbo.CARIGEN ON dbo.IRSALIYE_ALT.CARIREF = dbo.CARIGEN.REF
+WHERE (((dbo.IRSALIYE_ALT.TUR)=1 Or (dbo.IRSALIYE_ALT.TUR)=62 Or (dbo.IRSALIYE_ALT.TUR)=72)))countNumber
+";
+
+        public static string UpdateKaliteKodu(kaliteKoduModel k) => $@"UPDATE dbo.IRSALIYE_ALT SET dbo.IRSALIYE_ALT.KALITEKODU ='{k.kaliteKodu}'
+  WHERE (((dbo.IRSALIYE_ALT.REF)='{k.refKodu}' ));select top(1) IRSALIYE_ALT.KALITEKODU from IRSALIYE_ALT where IRSALIYE_ALT.REF='{k.refKodu}'; ";
         #endregion
         #endregion
     }

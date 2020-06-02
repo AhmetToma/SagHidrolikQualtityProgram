@@ -61,10 +61,10 @@ const HttpUrls = {
 
     GetTeslimatDurumu: BaseUrl + "TTFTeslimatGetData/GetTeslimatDurumu",
     GetTeslimatDurumuCount: BaseUrl + "TTFTeslimatGetData/GetTeslimatDurumuCount",
-    GetAllProductionStatus: BaseUrl + "ProdutionStartGetData/GetAllProductionStatus",
-    DeleteproductionStatus: BaseUrl + "ProdutionStartGetData/DeleteproductionStatus?sheetId=",
-    AddToProductionStatus: BaseUrl + "ProdutionStartGetData/AddToProductionStatus",
-    TransferToSystem: BaseUrl + "ProdutionStartGetData/TransferToSystem?productId=",
+    GetAllProductionStatus: BaseUrl + "UretimData/GetAllProductionStatus",
+    DeleteproductionStatus: BaseUrl + "UretimData/DeleteproductionStatus?sheetId=",
+    AddToProductionStatus: BaseUrl + "UretimData/AddToProductionStatus",
+    TransferToSystem: BaseUrl + "UretimData/TransferToSystem?productId=",
     GetProductionSummaryReport: BaseUrl + "UretimData/GetProductionSummaryReport",
     GetProductionSummaryCount: BaseUrl + "UretimData/GetProcutionSummaryCount",
     GetProductionOrdersTransfer: BaseUrl + "ProductionOrderTranferGetData/GetProductionOrdersTransfer",
@@ -210,6 +210,8 @@ const HttpUrls = {
     EditSettingsOperator: BaseUrl + "SettingData/EditSettingsOperator",
     DeleteSettingOperator: BaseUrl + "SettingData/DeleteSettingOperator?operatorId=",
 
+    GetGirisKontrol: BaseUrl + "EtiketlerGetData/GetGirisKontrol",
+    UpdateKaliteKodu: BaseUrl + "EtiketlerGetData/UpdateKaliteKodu",
 
 
 
@@ -249,6 +251,11 @@ const Buttons = {
     reviewDetails_confrimEditAction: "#btn-reviewDetails-edit-confirmAdd",
     reviewDetails_addDocument: "#btn-reviewDetails-addDocument",
     bakimAriza_submit: "#btn-bakimAriza-submit",
+    urunEtiketi_etiketEkle: "#btn-urunEtiketi-etiketEkle",
+    urunEtiketi_dikey_20_80: "#btn-urunEtiket-dikey_20_80",
+    urunEtiketi_reset: "#btn-urunEtiketi-reset",
+    urunEtiketi_yatay_30_60: "#btn-urunEtiketi-yatay_30_60",
+    urunEtiketi_tekil_20_80: "#btn-urunEtiket-tekil_20_80",
 }
 const Models = {
     claimType_add: "#claimType-AddModel",
@@ -266,7 +273,9 @@ const Models = {
     partNumber_add: "#partNumber-AddModel",
     partNumber_edit: "#partNumber-editModel",
 
-    newNc_summary: "#newNc-summary"
+    newNc_summary: "#newNc-summary",
+    urunEtiketi_modelContnet: ".urunEtiketi-printModelContnet",
+    printModeOut: ".printModeOut"
 
 }
 const TablesId = {
@@ -316,6 +325,7 @@ const TablesId = {
     settingsReject: "#table-settingsReject",
     settingsOperator: "#table-settingsOperator",
     settingsOperatorPolivalance: "#table-settingsOperatorPolivalance",
+    girisKontrol: "#table-girisKontrol",
 
 
 
@@ -354,7 +364,9 @@ const TablesId = {
 };
 
 const Inputs = {
-    gunlukHatBazindaUretim_searchMachineNo:"#inp-gunlukHatBazindUretim-searchMakine",
+    gunlukHatBazindaUretim_searchMachineNo: "#inp-gunlukHatBazindUretim-searchMakine",
+    allWo_searchStk: "#inp-allWo-searchStk",
+    allWo_ProductionOrdersPrintout: "#inp-ProductionOrdersPrintout-searchStk",
     uretimplani_searchByStk: "#inp-uretimPlani-searchStk",
     bakimAriza_tarih: "#inp-bakimAriza-tarih",
     bakimAriza_searchMachineNo: "#inp-bakimArzia-searchInAllMachines",
@@ -374,7 +386,7 @@ const Inputs = {
     tmairIsEmri_tamirMiktar: ".tamirIsEmri-first-tamirMiktari",
     tmairIsEmri_tarih: ".tamirIsEmri-first-tarih",
     tamirIsEmri_newLotNo: "#inp-tamirIsemri-newLotNo",
-    settingsReject_searchRejectName:"#inp-settingsReject-searchRejectName",
+    settingsReject_searchRejectName: "#inp-settingsReject-searchRejectName",
     addOrUpdateProcess_searchStk: "#inp-addOrUpdateProcess-stokSearch",
     claimType_tr: "#inp-claimType-tr",
     calimType_en: "#inp-claimType-en",
@@ -461,7 +473,19 @@ const Inputs = {
     monthlyProdcutionReport_searchMachinNo: "#inp-monthlyProdcutionReport-searchMachinNo",
     sellDateReport_searchStk: "#inp-sellDateReport-searchStk",
     settingsOperator_searchOperatorName: "#inp-settingsOperator-searchOperatorName",
-
+    girisKontrol_searchStk: "#inp-girisKontrol-searchUrunNo",
+    urunEtiketi_searchStk: "#inp-urunEtiketi-inputSearch",
+    urunEtiketi_stk: "#inp-urunEtiketi-stk",
+    urunEtiketi_lotNo: "#inp-urunEtiketi-lotNot",
+    urunEtiketi_paketlemTarihi: "#inp-urunEtiketi-paketletmeTarih",
+    urunEtiketi_paketlemMiktari: "#inp-urunEtiketi-paketlemMiktari",
+    urunEtiketi_etiketAdet: "#inp-urunEtiketi-etiketAdet",
+    urunEtiketlePaketlemeTarihi: "#inp-urunEtiketi-paketletmeTarih",
+    prodcutionStart_searchStk: "#inp-prodcutionStart-searchStk",
+    productionStatus_searchStk: "#inp-productionStatus-searchStk",
+    teslimatDurumu_searchStk: "#inp-teslimatDurumu-searchStk",
+    shippmentReport_searchStk: "#inp-shippmentReport-searchStk",
+    tranferWo_searchStk: "#inp-tranferWo-searchStk",
 
 
 }
@@ -518,6 +542,7 @@ const recordsNotFound = {
     stokAll: "#recordNotFound_stokAll",
     boxType: "#recordNotFound_boxType",
     machineSettings: "#recordNotFound_machineSettings",
+    girisKontrol: "#recordNotFoundDiv_girisKontrol",
 
 
 
@@ -560,7 +585,14 @@ const PreviousButtons = {
     customerOrders: "#btn-customerOrders-previous",
     findInBom: "#btn-findInBom-previous",
     settingsOperator: "#btn-settingsOperator-previous",
-
+    allWo: "#btn-allWo-previous",
+    ProductionOrdersPrintout: "#btn-ProductionOrdersPrintout-previous",
+    girisKontrol: "#btn-girisKontrol-pervious",
+    prodcutionStart: "#btn-prodcutionStart-previous",
+    productionStatus: "#btn-productionStatus-previous",
+    shippmentReport: "#btn-shippmentReport-previous",
+    teslimatDurumu: "#btn-teslimatDurumu-previous",
+    tranferWo: "#btn-tranferWo-previous",
 
 };
 const NextButtons = {
@@ -599,12 +631,18 @@ const NextButtons = {
     settingsReject: "#btn-settingsReject-next",
     findInBom: "#btn-findInBom-next",
     settingsOperator: "#btn-settingsOperator-next",
-
-
+    allWo: "#btn-allWo-next",
+    ProductionOrdersPrintout: "#btn-ProductionOrdersPrintout-next",
+    girisKontrol: "#btn-girisKontrol-next",
+    prodcutionStart: "#btn-prodcutionStart-next",
+    productionStatus: "#btn-productionStatus-next",
+    shippmentReport: "#btn-shippmentReport-next",
+    teslimatDurumu: "#btn-teslimatDurumu-next",
+    tranferWo: "#btn-tranferWo-next",
 
 };
 const pageNumbers = {
-    stok_prodcutionOrders:"#number-productionOrders-pageNumber",
+    stok_prodcutionOrders: "#number-productionOrders-pageNumber",
     stok_stokAlt: "#number-stoklAlt-pageNumber",
     stok_galvanize: "#number-galvanize-pageNumber",
     stok_stokRecetesi: "#number-stokRecetesi-pageNumber",
@@ -643,6 +681,7 @@ const pageNumbers = {
     reworkReport: "#number-reworkReport-pageNumber",
     productionSummary: "#number-reworkReport-pageNumber",
     settingsOperator: "#number-settingsOperator-pageNumber",
+    girisKontrol: "#number-girisKontrol-pageNumber",
 }
 
 function ShowLoader() {
@@ -678,4 +717,20 @@ function ShowRecodNotFound(divId) {
     $(`${divId}`).css('opacity', '1');
     $(`${divId}`).css('display', 'block');
     $(`${divId} h3`).text("Bu stk'a ait  hiçbir kayıt bulunmamaktadır");
+}
+function checkInput(c) {
+    let Isempty;
+    $(`.${c}`).find("input").each(function () {
+        if (this.value == "") {
+            Isempty = true;
+        }
+        else Isempty = false;
+    })
+    return Isempty;
+}
+function ShowPrintModal() {
+    $(TablesId.printModal).css('opacity', '1');
+}
+function HidePrintModal() {
+    $(TablesId.printModal).css('opacity', '0');
 }

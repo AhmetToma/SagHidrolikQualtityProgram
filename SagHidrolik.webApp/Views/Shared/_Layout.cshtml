@@ -26,6 +26,9 @@
     <link href="~/css/myStyle.css" rel="stylesheet">
     <link href="~/css/loader.css" rel="stylesheet" />
 
+    <link href="~/css/dikey_20_80.css" rel="stylesheet" />
+    <link href="~/css/yatay_30_60.css" rel="stylesheet" />
+    <link href="~/css/tekli_20_80.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="~/css/jqueryUiCss.css">
     <link rel="stylesheet" href="~/css/tamirIsEmriCiktisi.css">
@@ -84,6 +87,7 @@
                                         <li><a href="/Home/TamirIsEmri">Rework/Tamir İş Emri</a></li>
                                         <li><a href="/Home/AddOrUpdateProcess">Add-Update Process</a></li>
                                         <li><a href="/Home/ProcessDetails">Process Details</a></li>
+                                        <li><a href="/Home/ProductionStart">ProductionStart</a></li>
 
                                     </ul>
                                 </li>
@@ -94,6 +98,15 @@
                                         <li><a href="/Home/Review">Review/Update NC</a></li>
                                         <li><a href="/Home/OpenAction">Open Actions</a></li>
                                         <li><a href="/Home/SetUp">Set Up</a></li>
+                                    </ul>
+                                </li>
+
+
+                                <li>
+                                    <a><i class="fas fa-2x fa-sticky-note"></i> Etiketler <span class="fas fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="/Home/UrunEtiketi">Ürün Etiketi</a></li>
+                                        <li><a href="/Home/GirisKontrol">Giriş Kontrol </a></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -107,6 +120,9 @@
                                     <a> <i class="fas fa-2x fa-mail-bulk"></i> Genel <span class="fas fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="/Home/BakimAriza">Bakım Arıza</a></li>
+                                        <li><a href="/Home/AllWo">All Wo</a></li>
+                                        <li><a href="/Home/TransferWoToSystem">Transfer Wo To System</a></li>
+                                        <li><a href="/Home/TTFTeslimat">TTFTeslimat</a></li>
 
                                     </ul>
                                 </li>
@@ -281,5 +297,13 @@
     <script src="~/JavaScriptForData/Settings/SettingsOperator.js"></script>
     <script src="~/JavaScriptForData/Uretim/AddorUpdateProcess.js"></script>
     <script src="~/JavaScriptForData/Uretim/ProcessDetails.js"></script>
+    <script src="~/JavaScriptForData/Wo/AllWo.js"></script>
+    <script src="~/JavaScriptForData/Etiketler/GirisKontrol/GirisKontrol.js"></script>
+    <script src="~/JavaScriptForData/Etiketler/UrunEtiketi/printModels.js"></script>
+    <script src="~/JavaScriptForData/Etiketler/UrunEtiketi/urunEtiketi.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/Uretim/ProductionStart.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/TTFTeslimat/TTFTeslimat.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/TTFTeslimat/ShippmentReport.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/TranferWo/TranferWo.js" type="text/javascript"></script>
 </body>
 </html>

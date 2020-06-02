@@ -1,0 +1,188 @@
+﻿@{
+    ViewData["Title"] = "UrunEtiketi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-urunEtiket">
+    <div  class="alert defaultBackground " role="alert">
+            Ürün Etiketi
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group" style="margin-top:1.7rem">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text defaultBackground">STK</span>
+                            </div>
+                            <input id="inp-urunEtiketi-inputSearch" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default urunEtiketitableContent">
+                    <table class="table table-bordered tableHoverDefault">
+                        <thead>
+                            <tr>
+                                <th>STK</th>
+                                <th>STA</th>
+                                <th>Adres</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-urunEtiketi-searchStk" class="urunEtkietiTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="opacity:0" class="col-md-7 urunEtiketiProdcutionOrders">
+                <table class="table table-bordered  tableHoverDefault">
+                    <thead>
+                        <tr>
+                            <th scope="col">PartNo_ID</th>
+                            <th scope="col">Lot No</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Compl</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">issueDate</th>
+                            <th scope="col">Require Date</th>
+                            <th scope="col">Reviesed Date</th>
+                            <th scope="col">Remark</th>
+                            <th scope="col">CloseDate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-urunEtiketi-productioOrders"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_productionOrders" class="recordNotFoundDiv">
+                    <h3></h3>
+                </div>
+
+                <nav aria-label="Page navigation example" class="nav-review">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a id="btn-urunEtiketi-productionOrder-previous" class="page-link" href="" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a id="number-urunEtiketi-productionOrder-pageNumber" class="page-link" href="">1</a></li>
+                        <li class="page-item">
+                            <a id="btn-urunEtiketi-productionOrder-next" class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="clearFix">
+    </div>
+    <hr style="opacity:0" id="urunEtiket-scroll" />
+    @*printModel*@
+    <div class="printModel">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="etkitCard">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <label >Ürün Kodu: </label>
+                                <input  value="" disabled class="form-control" id="inp-urunEtiketi-stk">
+                                <label >Ürün LotNo: </label>
+                                <input value="" disabled class="form-control" id="inp-urunEtiketi-lotNot">
+                                <label> Paketleme Miktarı: </label>
+                                <input value="" id="inp-urunEtiketi-paketlemMiktari" type="text" class="form-control" placeholder="Miktar giriniz" aria-describedby="basic-addon1">
+                                <label style="border-bottom-color:#28A745"> Etiket Adet: </label>
+                                <input value="" type="text" id="inp-urunEtiketi-etiketAdet" class="form-control" placeholder="Adet giriniz" aria-describedby="basic-addon1">
+                                <label> Paketleme Tarihi: </label>
+                                <input id="inp-urunEtiketi-paketletmeTarih" autocomplete="off" type="text" class="form-control" placeholder="Tarih Giriniz" aria-describedby="basic-addon1">
+                                @*    <a style="margin-left: 100%;background-color: #9c1b7c !important;" class="btn btn-danger"> Bugün </a>*@
+                            </div>
+                            <div class="col-md-6 col-sm-6 urunEtiketiButtons">
+
+                                <button id="btn-urunEtiketi-etiketEkle" class="btn  btn-etiketEkle">Etikete Ekle</button>
+                                <div class="etiketEkleButtons">
+                                    <button id="btn-urunEtiket-dikey_20_80" class="btn btn-size  btn-dark">Etiket 20 x 80 </button>
+                                    <button id="btn-urunEtiket-tekil_20_80" class="btn  btn-size btn-dark">20 x 80 tekli</button>
+                                    <button id="btn-urunEtiketi-yatay_30_60" class="btn btn-dark btn-size">Etiket 30 x 60 </button>
+                                    <button id="btn-urunEtiketi-reset" class="btn btn-size btn-danger">reset</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 urunEtiketiThirdTable">
+                <table class="table table-bordered">
+                    <thead class="thead-primary thead-thirdtable ">
+                        <tr>
+                            <th scope="col">urun</th>
+                            <th scope="col">Miktar</th>
+                            <th scope="col">Etiket Sira</th>
+                            <th scope="col">Tarih</th>
+                            <th scope="col">LotNo</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="table-urunEtiket-etiketEkle"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content urunEtiketi-printModelContnet">
+
+        </div>
+
+    </div>
+</div>
+<!-- modal-->
+
+<div class="printModeOut">
+</div>
+<script>
+    $(function () {
+        $(Inputs.urunEtiketlePaketlemeTarihi).datepicker({
+            dateFormat: 'dd/mm/yy'
+        })
+    });
+
+</script>
+
+
+
+@*<div class="row">
+        <div class="col-md-6">
+            <div class="des-yatay_30_60Table">
+                <div class="des-yatay_30_60stk">
+                    1252565
+                </div>
+                <div class="des-yatay_30_60alt">
+                    <div class="row">
+                        <div class="col-md-8 des-yatay_30_60altLeft">
+                            <h4>18/10/2019</h4>
+                            <div class="row">
+                                <div class="col-md-6 des-yatay_30_60lot">
+                                    Lot#
+                                </div>
+                                <div class="col-md-6  des-yatay_30_60lotNo">
+                                    12546
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 des-yatay_30_60altRight">
+                            <p>10</p>
+                            <span>AD</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-m-6"> ahmet</div>
+
+    </div>*@

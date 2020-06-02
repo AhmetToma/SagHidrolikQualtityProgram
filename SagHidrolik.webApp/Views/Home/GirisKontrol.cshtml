@@ -1,0 +1,130 @@
+﻿@{
+    ViewData["Title"] = "girisKontrol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="alert defaultBackground" role="alert">
+   Giriş Kontrol
+</div>
+<div >
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-5 ">
+                    <div class="input-group ">
+                        <input autofocus type="search" id="inp-girisKontrol-searchUrunNo"  class="form-control " placeholder="Ürün No" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <button id="btn-girisKontrol-reset" class="btn btn-danger ">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="Table-girisKontrol">
+                <table class="table table-bordered  tableHoverDefault">
+                    <thead>
+                        <tr>
+                            <th scope="col">STK</th>
+                            <th scope="col">STA</th>
+                            <th scope="col">Miktar</th>
+                            <th scope="col">CariRef</th>
+                            <th scope="col">Kaite Kodu</th>
+                            <th scope="col">Adres</th>
+                            <th scope="col">Tarih</th>
+                            <th scope="col">is</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-girisKontrol"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_girisKontrol" class="recordNotFoundDiv">
+                    <h3>Hiç bir kayıt Bulunmamaktadır</h3>
+                </div>
+            </div>
+            <div class="girisKontrolPagination">
+                <nav aria-label="Page navigation example" class="nav-review">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a id="btn-girisKontrol-pervious" class="page-link" href="" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a id="number-girisKontrol-pageNumber" class="page-link" href="">1</a></li>
+                        <li class="page-item">
+                            <a id="btn-girisKontrol-next" class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+        <div style="opacity:0;" class="col-md-5 card girisKontrolCard">
+            <form>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label>Ürün Kodu: </label>
+                            <input disabled type="text" class="form-control" id="inp-GirisKontrol-urunKodu">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Ref</label>
+                            <input disabled type="text" class="form-control" id="inp-GirisKontrol-ref" aria-describedby="emailHelp">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group processCss">
+                    <label class="">Firma: </label>
+                    <input disabled type="text" class="form-control" id="inp-GirisKontrol-sta" aria-describedby="emailHelp">
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label>Tarih: </label>
+                            <input disabled type="text" class="form-control" id="inp-GirisKontrol-tarih" aria-describedby="emailHelp">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Sipariş No: </label>
+                            <input disabled type="text" class="form-control" id="inp-GirisKontrol-servNo" aria-describedby="emailHelp">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group processCss">
+                    <label class="">Giris Kalite Kodu: </label>
+                    <input disabled type="text" class="form-control" id="inp-GirisKontrol-kaliteKodu" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <label class="">Kontrol Eden: </label>
+                    <select id="girisKontrol-activeOpertors" class="limitedNumbSelect2" multiple="true">
+                        <option value="3">AHMET  TOPÇU</option>
+                        <option value="1077">DUYGU ÇELİK</option>
+                        <option value="57">ÖZNUR ALTMIŞ</option>
+                        <option value="77">SEMİH ÇELİK</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="ok" name="KodType" value="1">
+                    <label for="ok">Ok</label><br>
+                    <input type="radio" id="sartli" name="KodType" value="2">
+                    <label for="sartli">Şartlı</label><br>
+                    <input type="radio" id="ng" name="KodType" value="3">
+                    <label for="ng">Ng</label>
+                    </div>
+                    <button id="btn-girisKontrol-submit" style="text-align:center" type="submit" class="btn  btnSubmit">Etiket Ekle</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $(".limitedNumbSelect2").select2({
+            maximumSelectionLength: 1,
+            placeholder: "operator Seçiniz"
+        })
+    });
+</script>
