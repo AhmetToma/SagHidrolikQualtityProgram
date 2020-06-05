@@ -212,6 +212,8 @@ const HttpUrls = {
 
     GetGirisKontrol: BaseUrl + "EtiketlerGetData/GetGirisKontrol",
     UpdateKaliteKodu: BaseUrl + "EtiketlerGetData/UpdateKaliteKodu",
+    login: BaseUrl + "AuthenticationData/checkLogin",
+    logout: BaseUrl + "AuthenticationData/logout",
 
 
 

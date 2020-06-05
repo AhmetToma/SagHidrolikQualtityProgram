@@ -28,6 +28,8 @@ namespace SagHidrolik.Models.SqlRepository
         public static string connctionString_SAG_PRODUCTION = $"Server={ServerName};Database=SAG_PRODUCTION;Trusted_Connection=True";
         public static string connctionString_SAG_HIDROLIK_ByYear() =>
         $"Server=AhmetPc\\SQLEXPRESS;Database=SAG_HIDROLIK_{WorkingWithYears.currentYear}T;Trusted_Connection=True";
+        public static string SagHidrolikAuthentication =
+        $"Server=AhmetPc\\SQLEXPRESS;Database=SagHidrolikAuthentication;Trusted_Connection=True";
 
         #region Stok
         public static string GetStokkenByStkList(RequestQuery requestQuery)

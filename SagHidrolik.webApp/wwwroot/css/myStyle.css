@@ -6,6 +6,13 @@
     color: black;
 }
 
+.currentRole {
+    float: left !important;
+    font-weight: bold;
+    color: black;
+    margin-left: 15rem;
+}
+
 .alert {
     position: sticky;
     padding: .75rem 1.25rem;
@@ -912,3 +919,4 @@ textarea {
     opacity: 0;
 }*/
 /* end urun etiket*/
+
