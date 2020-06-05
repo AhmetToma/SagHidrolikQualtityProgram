@@ -71,7 +71,7 @@ function CreateProdutionReportTable(list, tableId) {
         
             $(tableId).append(`
 <tr >
-  <td>${element.finishTime.slice(0,-9)}</td>
+  <td>${element.finishTime}</td>
     <td>${total}</td>
   <td>${element[keys[0]]} </td>
   <td>${element[keys[1]]} </td>

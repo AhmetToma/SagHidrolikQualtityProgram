@@ -25,7 +25,6 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
                 if (requestQuery.year == "" && requestQuery.month == "")
                 {
                     list = await connection.QueryAsync<object>(SqlQueryRepo.GetProcutionReportWithoutFilter(requestQuery));
-
                 }
                 else if (requestQuery.month == "")
                 {

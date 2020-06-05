@@ -10,15 +10,17 @@
 let requestQueryForSystemUsers = {
     pageSize: 6,
     pageNumber: 1,
-    email: "",
-
-
 };
 let systemUserModel = {
     Email: "",
     PassWord: "",
     RoleName: ""
 }
+let editSystemUserModel = {
+    Email: "",
+    PassWord: "",
+    RoleName: ""
+};
 let systemUserList = [];
 let RolesList = [];
 // #region ajaxcall ,create table ,records count  
@@ -63,6 +65,8 @@ function CreateSystemUsersTable(list, tableId) {
 <tr >
   <td>${element.email}</td>
     <td>${element.roleName}</td>
+ <td><i onclick="changeRole('${element.userId}')" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
+ <td><i onclick="ResetUserPassword('${element.userId}')" class="fas fa-edit fa-2x  text-warning"  aria-hidden="true"></td>
  <td><i onclick="deleteSystemUser('${element.email}')" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);
@@ -177,7 +181,6 @@ $('#btn-systemUser-confirmAdd').click((event) => {
             timer: 1500
         });
     }
-
     else if (validateEmail(email) === false) {
         Swal.fire({
             type: 'error',
@@ -275,21 +278,31 @@ function deleteSystemUser(email) {
 //#endregion
 
 
-////#region Edit systemUser
+//#region change Role
+function changeRole(userId) {
+    $('#systemUser-editModel .modal-body form').empty();
+    $('#systemUser-editHeader').text('changing Role');
+    $('#systemUser-editModel .modal-body form').append(`
+      </div>  <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">New Role : </label>
+                        <select class="form-control" id="selectRole-systemUser-editModel"></select>
+                    </div>
+`)
 
-//function editsystemUser(systemUserID) {
-//    let match = systemUserList.filter((Element) => {
-//        return systemUserID == Element.id;
-//    });
-//    match = match[0];
-//    $(Models.systemUser_edit).modal('show');
-//    $(Inputs.systemUser_stk_edit).val(match.stk);
-//    $(Inputs.systemUser_sta_edit).val(match.sta);
-//    $(Inputs.systemUser_type_edit).val(match.type);
-//    systemUserModel.ID = systemUserID;
-//}
-
-
+    $('#selectRole-systemUser-editModel').append(`<option  value="">...</option>`);
+    RolesList.map((element) => {
+        $('#selectRole-systemUser-editModel').append(`
+<option  value="${element.roleName}"> ${element.roleName}</option>
+`);
+    });
+    let match = systemUserList.filter((Element) => {
+        return userId == Element.userId;
+    });
+    match = match[0];
+    editSystemUserModel.Email = match.email;
+    $('#selectRole-systemUser-editModel').val(match.roleName);
+    $('#systemUser-editModel').modal('show');
+}
 //$(Buttons.systemUser_confirmEdit).click((event) => {
 //    event.preventDefault();
 //    if ($(Inputs.systemUser_stk_edit).val() === '' ||
@@ -338,4 +351,65 @@ function deleteSystemUser(email) {
 //        $(Inputs.systemUser_type_edit).val('');
 //    }
 //});
-////#endregion
+//#endregion
+
+
+//#region 
+
+function ResetUserPassword(userId) {
+    $('#systemUser-editModel .modal-body form').empty();
+    $('#systemUser-editHeader').text('Reset Password');
+    $('#systemUser-editModel .modal-body form').append(`
+      </div>  <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">New Password : </label>
+               <input type="text" class="form-control" id="inp-systemUser-password-edit">
+                    </div>
+`);
+    $('#selectRole-systemUser-editModel').append(`<option  value="">...</option>`);
+    let match = systemUserList.filter((Element) => {
+        return userId == Element.userId;
+    });
+    match = match[0];
+    editSystemUserModel.Email = match.email;
+    $('#systemUser-editModel').modal('show');
+}
+
+$('#btn-systemUser-confirmEdit').click((e) => {
+    e.preventDefault();
+    let edtPassword = $('#inp-systemUser-password-edit').val();
+    console.log($('#selectRole-systemUser-editModel').val())
+    if ($('#selectRole-systemUser-editModel').val() === undefined) {
+
+        if (edtPassword.length === 0 || edtPassword.length < 5) {
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'password should be at least 5 chracter or number',
+                timer: 4000
+            });
+        }
+        else {
+            editSystemUserModel.password = edtPassword;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                url: HttpUrls.ResetUserPassword,
+                data: JSON.stringify(editSystemUserModel),
+                success: (response) => {
+                    if (response.succeeded) {
+                        window.open(`${BaseUrl}`, "_self")
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: "you have  no permission to access to system",
+                            timer: 3000
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+})
+//#endregion

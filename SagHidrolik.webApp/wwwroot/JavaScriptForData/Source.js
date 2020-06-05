@@ -219,6 +219,8 @@ const HttpUrls = {
     GetAllUsersRoles: BaseUrl + "AuthenticationData/GetAllUsersRoles",
     AddSystemUser: BaseUrl + "AuthenticationData/AddSystemUser",
     deleteSystemUser: BaseUrl + "AuthenticationData/deleteSystemUser?email=",
+    ResetUserPassword: BaseUrl + "AuthenticationData/ResetUserPassword",
+
 
 
 
@@ -283,7 +285,8 @@ const Models = {
     newNc_summary: "#newNc-summary",
     urunEtiketi_modelContnet: ".urunEtiketi-printModelContnet",
     printModeOut: ".printModeOut",
-    systemUser_add: "#systemUser-AddModel"
+    systemUser_add: "#systemUser-AddModel",
+    systemUser_edit: "#systemUser-editModel"
 
 }
 const TablesId = {

@@ -87,13 +87,43 @@ namespace SagHidrolik.webApp.Controllers
                 return Json("");
             }
         }
-
+        [Authorize]
         public async Task<JsonResult> deleteSystemUser(string email)
         {
             var findedUser =  await _userManager.FindByEmailAsync(email);
             var result =  await _userManager.DeleteAsync(findedUser);
             if (result.Succeeded) return Json("done");
             else return Json("");
+        }
+
+        [Authorize]
+        public async Task<JsonResult> ResetUserPassword([FromBody] SystemUserViewModel s)
+        {
+            if(s!=null)
+            {
+                var findedUser = await _userManager.FindByEmailAsync(s.Email);
+                var result = await _userManager.RemovePasswordAsync(findedUser);
+                var result1 = await _userManager.AddPasswordAsync(findedUser,s.PassWord);
+                if (result1.Succeeded) return Json("done");
+                else return Json("");
+            }
+            else return Json("");
+        }
+
+
+        public async Task<IActionResult> changeRole([FromBody] SystemUserViewModel s)
+        {
+            if (s != null)
+            {
+                var findedUser = await _userManager.FindByEmailAsync(s.Email);
+                if (findedUser != null) ;
+                {
+                    var result = await _userManager.AddToRoleAsync(findedUser, s.RoleName);
+                    if (result.Succeeded) return Ok("done");
+                    else return Ok("");
+                }
+            }
+            else return Ok("");
         }
     }
 }

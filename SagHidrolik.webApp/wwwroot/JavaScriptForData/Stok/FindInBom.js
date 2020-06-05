@@ -11,6 +11,7 @@ let requestQueryForFindInBom = {
     pageNumber: 1,
     pageSize: 6,
     Stk: "",
+    material:""
 };
 
 // #region Ajax Call And create  table
@@ -26,6 +27,7 @@ function GetAllFindInBomAjaxCall() {
 
 
     requestQueryForFindInBom.Stk = $(Inputs.findInBom_searchStk).val();
+    requestQueryForFindInBom.material = $('#inp-findInBom-searchMaterial').val();
     ShowLoader();
     $(TablesId.findInBom).empty();
     $.ajax({
@@ -109,6 +111,14 @@ $(Inputs.findInBom_searchStk).keyup(function () {
     $('#num-findInBom-pageNumber').text(requestQueryForFindInBom.pageNumber);
     timer = setTimeout(GetAllFindInBomAjaxCall, doneTypingInterval);
    
+});
+
+
+$('#inp-findInBom-searchMaterial').keyup(function () {
+    clearTimeout(timer);
+    requestQueryForFindInBom.pageNumber = 1;
+    $('#num-findInBom-pageNumber').text(requestQueryForFindInBom.pageNumber);
+    timer = setTimeout(GetAllFindInBomAjaxCall, doneTypingInterval);
 });
 //user is "finished typing," do something
 

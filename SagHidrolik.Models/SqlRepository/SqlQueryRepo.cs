@@ -148,7 +148,7 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
         {
             query = $"SELECT dbo.STOKGEN.STK AS PartNo, dbo.TSTOKRECETESI.STK AS Material, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
                 $" FROM dbo.TSTOKRECETESI INNER JOIN dbo.STOKGEN ON dbo.TSTOKRECETESI.STOKP_ID = dbo.STOKGEN.P_ID where STOKGEN.STK like '%{requestQuery.Stk}%'" +
-                $" GROUP BY dbo.STOKGEN.STK, dbo.TSTOKRECETESI.STK, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
+                $"  and  dbo.TSTOKRECETESI.STK like'%{requestQuery.material}%'GROUP BY dbo.STOKGEN.STK, dbo.TSTOKRECETESI.STK, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
                 $"  order By PartNo OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
@@ -984,19 +984,19 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         public static string GetProcutionReportWithFilter(RequestQuery r, string startAt, string endAt)
 
         {
-            query = "SET DATEFORMAT dmy; WITH Sales AS(SELECT cast(S.Finish_time as Date) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
+            query = "SET DATEFORMAT dmy; WITH Sales AS(SELECT convert(varchar(10), cast(Finish_time As Date), 104) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
                 $" where Finish_time between '{startAt}' and '{endAt}' group by Finish_time, [Group], S.Ok_Qty " +
                     ") SELECT * FROM   Sales PIVOT(SUM(total) FOR[Group] IN([01_Kesim],[02_Büküm],[03_Havşa],[04_Kaynak],[041_KesDel],[042_Hazirlik],[05_Hortum],[06_Paketleme]" +
-                    $",[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil])) P order by finishTime OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
+                    $",[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil])) P order by finishTime desc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
             return query;
         }
 
         public static string GetProcutionReportWithoutFilter(RequestQuery r)
         {
-            query = "SET DATEFORMAT dmy; WITH Sales AS(SELECT cast(S.Finish_time as Date) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
+            query = "SET DATEFORMAT dmy; WITH Sales AS( SELECT  convert(varchar(10), cast(Finish_time As Date), 104) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
                 $"group by Finish_time, [Group], S.Ok_Qty " +
                     ") SELECT * FROM   Sales PIVOT(SUM(total) FOR[Group] IN([01_Kesim],[02_Büküm],[03_Havşa],[04_Kaynak],[041_KesDel],[042_Hazirlik],[05_Hortum],[06_Paketleme]" +
-                    $",[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil])) P order by finishTime OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
+                    $",[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil])) P order by finishTime desc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
             return query;
         }
         public static string GetProcutionReportCount()
@@ -1340,21 +1340,19 @@ where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH
             query = "DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT @cols = STUFF((     SELECT DISTINCT  ',' + QUOTENAME(YEAR(TESTARIHI)) " +
                 " FROM[dbo].SIPARIS_ALT order by 1  FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');" +
                 " set @query = 'WITH Sales AS ( SELECT S.STK, year(S.TESTARIHI) as YearDate, S.CARIREF,S.STA,	S.MIKTAR - isNull(Sum(I.MIKTAR), 0) AS RemainQty_total FROM" +
-                " ((dbo.SIPARIS_ALT S left JOIN dbo.STOK_ALT I ON(S.STOKP_ID = I.STOKP_ID) and(S.P_ID = i.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN " +
+                " ((dbo.SIPARIS_ALT S left JOIN dbo.STOK_ALT I ON(S.STOKP_ID = I.STOKP_ID) and(S.P_ID = I.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN " +
                 $" on S.CARIREF = CARIGEN.REF  where  S.STK like ''%{r.Stk}%'' " +
                 " GROUP BY S.STK, S.MIKTAR, S.TURAC, dbo.SIPAR.EVRAKNO, S.FATIRSTUR, S.STOKP_ID, S.TUR,  " +
-                " S.TESTARIHI, S.CARIREF, S.STA)  SELECT* FROM   Sales " +
+                " S.TESTARIHI, S.CARIREF, S.STA)  SELECT* FROM   Sales " +  
                 "   PIVOT(SUM(RemainQty_total)  FOR  YearDate IN('+@cols+' )) P; 'EXECUTE sp_executesql @query;";
             return query;
         }
-
-
         public static string GetCustomerOrders(RequestQuery r)
         {
             query = "DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT @cols = STUFF((        SELECT DISTINCT      ',' + QUOTENAME(YEAR(TESTARIHI))" +
                 " FROM[dbo].SIPARIS_ALT order by 1 FOR xml PATH(''), TYPE  ).value('.', 'NVARCHAR(MAX)') , 1, 1, '');     set @query = 'WITH Sales AS (SELECT   S.STK, year(S.TESTARIHI) as YearDate, S.CARIREF,S.STA," +
                 " S.MIKTAR - isNull(Sum(I.MIKTAR), 0) AS RemainQty FROM ((dbo.SIPARIS_ALT S  left JOIN dbo.STOK_ALT I     ON(S.STOKP_ID = I.STOKP_ID)" +
-                " and(S.P_ID = i.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID)" +
+                " and(S.P_ID = I.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID)" +
                 $" left join CARIGEN on S.CARIREF = CARIGEN.REF WHERE(((S.MIKTAR - isnull(I.MIKTAR, 0)) > 0) And((S.TUR) = 90)) and S.STK like ''%{r.Stk}%''" +
                 "  GROUP BY S.STK,S.P_ID, S.TURAC, S.STOKP_ID, S.TUR, S.TESTARIHI, S.CARIREF, S.STA ,S.MIKTAR" +
                 " )  SELECT* FROM   Sales  PIVOT(SUM(RemainQty)  FOR  YearDate IN('+@cols+')) P;';EXECUTE sp_executesql @query; ";
@@ -1520,7 +1518,7 @@ Users.Id =UserRoles.UserId inner join AspNetRoles Roles on
 UserRoles.RoleId= Roles.Id )countNumber
 ";
 
-        public static string GetAllUsersRoles() => @"select id as RoleId ,[Name] as RoleName from AspNetRoles";
+        public static string GetAllUsersRoles() => @"select Id as RoleId ,[Name] as RoleName from AspNetRoles";
         #endregion
         #endregion
 
