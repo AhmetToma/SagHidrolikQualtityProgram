@@ -50,7 +50,6 @@ $('#btn-logout').click((e) => {
         confirmButtonText: 'Yes'
     }).then((result) => {
         if (result.value) {
-
             $.ajax({
                 type: "POST",
                 contentType: "application/json;charset=utf-8",

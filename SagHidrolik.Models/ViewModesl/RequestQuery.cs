@@ -23,5 +23,8 @@ namespace SagHidrolik.Models.ViewModesl
         public string rejectName { get; set; }
         public string operatorName { get; set; }
         public int? ProductOrderId { get; set; }
+        public string email { get; set; }
+        public string roleId { get; set; }
+
     }
 }

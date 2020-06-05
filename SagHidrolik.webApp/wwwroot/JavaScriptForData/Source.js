@@ -214,6 +214,11 @@ const HttpUrls = {
     UpdateKaliteKodu: BaseUrl + "EtiketlerGetData/UpdateKaliteKodu",
     login: BaseUrl + "AuthenticationData/checkLogin",
     logout: BaseUrl + "AuthenticationData/logout",
+    AllSystemUsers: BaseUrl + "AuthenticationData/GetAllSyetemUsers",
+    GetAllSyetemUsersCount: BaseUrl + "AuthenticationData/GetAllSyetemUsersCount",
+    GetAllUsersRoles: BaseUrl + "AuthenticationData/GetAllUsersRoles",
+    AddSystemUser: BaseUrl + "AuthenticationData/AddSystemUser",
+    deleteSystemUser: BaseUrl + "AuthenticationData/deleteSystemUser?email=",
 
 
 
@@ -277,7 +282,8 @@ const Models = {
 
     newNc_summary: "#newNc-summary",
     urunEtiketi_modelContnet: ".urunEtiketi-printModelContnet",
-    printModeOut: ".printModeOut"
+    printModeOut: ".printModeOut",
+    systemUser_add: "#systemUser-AddModel"
 
 }
 const TablesId = {
@@ -328,17 +334,7 @@ const TablesId = {
     settingsOperator: "#table-settingsOperator",
     settingsOperatorPolivalance: "#table-settingsOperatorPolivalance",
     girisKontrol: "#table-girisKontrol",
-
-
-
-
-
-
-
-
-
-
-
+    systemUser: "#table-systemUser",
     claimType: "#table-claimType",
     company: "#table-company",
     department: "#table-department",
@@ -488,7 +484,7 @@ const Inputs = {
     teslimatDurumu_searchStk: "#inp-teslimatDurumu-searchStk",
     shippmentReport_searchStk: "#inp-shippmentReport-searchStk",
     tranferWo_searchStk: "#inp-tranferWo-searchStk",
-
+    systemUsers_searchEmail:"#inp-systemUser-searchEmail"
 
 }
 const recordsNotFound = {
@@ -545,11 +541,8 @@ const recordsNotFound = {
     boxType: "#recordNotFound_boxType",
     machineSettings: "#recordNotFound_machineSettings",
     girisKontrol: "#recordNotFoundDiv_girisKontrol",
-
-
-
-
-
+    systemUser: "#recordNotFound_systemUser",
+    
 }
 const PreviousButtons = {
     claimType: "#btn-claimType-previous",
@@ -595,6 +588,7 @@ const PreviousButtons = {
     shippmentReport: "#btn-shippmentReport-previous",
     teslimatDurumu: "#btn-teslimatDurumu-previous",
     tranferWo: "#btn-tranferWo-previous",
+    systemUser: "#btn-systemUser-previous",
 
 };
 const NextButtons = {
@@ -641,6 +635,7 @@ const NextButtons = {
     shippmentReport: "#btn-shippmentReport-next",
     teslimatDurumu: "#btn-teslimatDurumu-next",
     tranferWo: "#btn-tranferWo-next",
+    systemUser: "#btn-systemUser-next",
 
 };
 const pageNumbers = {
@@ -684,6 +679,7 @@ const pageNumbers = {
     productionSummary: "#number-reworkReport-pageNumber",
     settingsOperator: "#number-settingsOperator-pageNumber",
     girisKontrol: "#number-girisKontrol-pageNumber",
+    systemUser: "#number-systemUser-pageNumber",
 }
 
 function ShowLoader() {
@@ -735,4 +731,13 @@ function ShowPrintModal() {
 }
 function HidePrintModal() {
     $(TablesId.printModal).css('opacity', '0');
+}
+
+
+function validateEmail(email) {
+    let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    if (reg.test(email) == false) {
+        return false;
+    }
+    return true;
 }

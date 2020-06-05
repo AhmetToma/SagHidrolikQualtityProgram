@@ -59,91 +59,31 @@
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
-
                     <br />
-
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <h3></h3>
                             <ul class="nav side-menu">
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Kalite"))
+                                {
 
-                                <li>
-                                    <a><i class="fas fa-2x fa-cubes"></i> Stok işlemleri<span class="fas fa-chevron-down"></span></a>
-                                    <ul style="display:none!important" class="nav child_menu">
-                                        <li><a href="/Home/StokPage">Stok</a></li>
-                                        <li><a href="/Home/StokAll">Stok All</a></li>
-                                        <li><a href="/Home/FindInBom">Finde In Bom</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a><i class="fas fa-2x fa-industry"></i> Üretim<span class="fas fa-chevron-down"></span></a>
-                                    <ul style="display:none!important" class="nav child_menu">
-                                        <li><a href="/Home/UretimBasla">Üretim Başla</a></li>
-                                        <li><a href="/Home/UretimBitir">Üretim Bitir</a></li>
-                                        <li><a href="/Home/GunlukHatBazindUretim">Günlük Hat bazında üretim</a></li>
-                                        <li><a href="/Home/UretimPlani">Üretim Planı</a></li>
-                                        <li><a href="/Home/ProductionSummary">Production Summary </a></li>
-                                        <li><a href="/Home/TamirIsEmri">Rework/Tamir İş Emri</a></li>
-                                        <li><a href="/Home/AddOrUpdateProcess">Add-Update Process</a></li>
-                                        <li><a href="/Home/ProcessDetails">Process Details</a></li>
-                                        <li><a href="/Home/ProductionStart">ProductionStart</a></li>
+                                    <partial name="RolesView/KaliteView" />
+                                }
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("calisan"))
+                                {
+                                    <partial name="RolesView/UretimView.cshtml" />
+                                }
 
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a><i class="fas fa-2x fa-hourglass-half"></i>  Quality <span class="fas fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="/Home/NewNc">New NC</a></li>
-                                        <li><a href="/Home/Review">Review/Update NC</a></li>
-                                        <li><a href="/Home/OpenAction">Open Actions</a></li>
-                                        <li><a href="/Home/SetUp">Set Up</a></li>
-                                    </ul>
-                                </li>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
 
-
-                                <li>
-                                    <a><i class="fas fa-2x fa-sticky-note"></i> Etiketler <span class="fas fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="/Home/UrunEtiketi">Ürün Etiketi</a></li>
-                                        <li><a href="/Home/GirisKontrol">Giriş Kontrol </a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a><i class="fas fa-2x fa-clipboard-check"></i> Reports <span class="fas fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="/Home/AllReports">All Reports</a></li>
-                                    </ul>
-                                </li>
-
-                                <li>
-                                    <a> <i class="fas fa-2x fa-mail-bulk"></i> Genel <span class="fas fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="/Home/BakimAriza">Bakım Arıza</a></li>
-                                        <li><a href="/Home/AllWo">All Wo</a></li>
-                                        <li><a href="/Home/TransferWoToSystem">Transfer Wo To System</a></li>
-                                        <li><a href="/Home/TTFTeslimat">TTFTeslimat</a></li>
-
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a> <i class="fas fa-2x fa-dolly"></i> Orders <span class="fas fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="/Home/OrderMangement">Orders Management</a></li>
-                                    </ul>
-                                </li>
-
-                                <li>
-                                    <a> <i class="fas fa-2x fa-tools"></i> Settings <span class="fas fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="/Home/changeYear">Change Year</a></li>
-                                        <li><a href="/Home/BoxType">BoxType</a></li>
-                                        <li><a href="/Home/Machine">Machine</a></li>
-                                        <li><a href="/Home/SettignsProcessNew">Process</a></li>
-                                        <li><a href="/Home/SettignsReject">Reject</a></li>
-                                        <li><a href="/Home/SettignsOperator">Operator</a></li>
-                                    </ul>
-                                </li>
+                                    <partial name="RolesView/AdminView" />
+                                }
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("SuperAdmin"))
+                                {
+                                    <partial name="RolesView/SuperAdminView.cshtml" />
+                                }
                             </ul>
                         </div>
                     </div>
@@ -156,7 +96,6 @@
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
                     <nav class="nav navbar-nav">
-
                         <ul class=" navbar-right">
                             <li class="nav-item dropdown open" style="padding-left: 15px;">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
@@ -167,7 +106,6 @@
                                     <a id="btn-logout" class="dropdown-item" href="#"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                                 </div>
                             </li>
-
                             <li class="currentDatabase">Current Database:  <span id="currentDatabaseSpan" style="color:#b13e5b"></span></li>
                             <li class="currentRole">
                                 Role:
@@ -323,5 +261,6 @@
     <script src="~/JavaScriptForData/TTFTeslimat/ShippmentReport.js" type="text/javascript"></script>
     <script src="~/JavaScriptForData/TranferWo/TranferWo.js" type="text/javascript"></script>
     <script src="~/JavaScriptForData/Authentication/Login.js" type="text/javascript"></script>
+    <script src="~/JavaScriptForData/Authentication/systemUsers.js" type="text/javascript"></script>
 </body>
 </html>

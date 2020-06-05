@@ -1373,7 +1373,7 @@ convert(varchar(10), cast(CloseDate As Date), 104) as CloseDate ,
 Printed,Status,CONVERT(varchar,RevisedDate,104) as RevisedDate,
 Remark,CONVERT(varchar,CloseDate,104) as CloseDate
   from dbo.Local_ProductionOrders where PartNo_ID in ({m})  and  [Status] like '%{r.uretimPlaniType}%' 
-                 ORDER BY dbo.Local_ProductionOrders.RequireDate DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;" 
+                 ORDER BY dbo.Local_ProductionOrders.RequireDate DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;"
 ;
             return query;
         }
@@ -1453,11 +1453,11 @@ order by (1) asc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; "
  ProcessNo,ProsesAdi,ProcessName,ProsessDay,Manhour,[Group]   from dbo.Process_Planning)countNumber";
 
 
-        public static string AddsettingsProcessNew(settingsProcessNewViewModel s) =>$@"insert into Process_Planning (ProcessNo,ProsesAdi,ProcessName,ProsessDay,Manhour,[Group])
+        public static string AddsettingsProcessNew(settingsProcessNewViewModel s) => $@"insert into Process_Planning (ProcessNo,ProsesAdi,ProcessName,ProsessDay,Manhour,[Group])
 
 values({s.processNo},'{s.processAdi}','{s.processName}',{s.processDay},{s.manHour},'{s.group}')";
 
-        public static string DeleteSettingsProcessNew(int processId)=>$"delete from Process_Planning where ProcessID={processId}";
+        public static string DeleteSettingsProcessNew(int processId) => $"delete from Process_Planning where ProcessID={processId}";
 
         public static string EditSettingsProcessNew(settingsProcessNewViewModel s) => $@"
 update Process_Planning set 
@@ -1492,7 +1492,7 @@ OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
 CAST(GirisTarihi AS date)GirisTarihi,Aktif FROM Operator )countNumber  
 ";
 
-        public static string AddToSettingOperator(SettingsOperatorViewModel s)=>$@"SET DATEFORMAT dmy insert into Operator (Operator_Name,Bolum,GirisTarihi,Aktif)
+        public static string AddToSettingOperator(SettingsOperatorViewModel s) => $@"SET DATEFORMAT dmy insert into Operator (Operator_Name,Bolum,GirisTarihi,Aktif)
 values ('{s.Operator_Name}','{s.Bolum}','{s.GirisTarihi}','{s.Aktif}')";
         public static string GetSettingsOperatorPolivalance(int operatorId) => $@"select PP.ProcessNo,Op.Level,PP.ProcessName 
 from OperatorPolivalance Op
@@ -1503,6 +1503,24 @@ from OperatorPolivalance Op
         public static string EditSettingsOperator(SettingsOperatorViewModel s) => $@"SET DATEFORMAT dmy;update Operator set Operator_Name='{s.Operator_Name}' ,Bolum='{s.Bolum}', GirisTarihi='{s.GirisTarihi}'
 ,Aktif='{s.Aktif}'
 where Operator_ID ={s.Operator_ID}";
+        #endregion
+
+
+        #region #systemUsers
+        public static string GetAllSyetemUsers(RequestQuery requestQuery)=>$@"
+select Users.Id as UserId,Email ,Roles.[Name] as RoleName,RoleId from dbo.AspNetUsers Users inner Join AspNetUserRoles UserRoles on
+Users.Id =UserRoles.UserId inner join AspNetRoles Roles on
+UserRoles.RoleId= Roles.Id where Users.Email like'%{requestQuery.email}%' and Roles.Id like'%{requestQuery.roleId}%'
+order by UserId OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;
+";
+
+
+        public static string GetAllSyetemUsersCount() => @" select count(1) from ( select Users.Id as UserId,Email ,Roles.[Name] as RoleName,RoleId from dbo.AspNetUsers Users inner Join AspNetUserRoles UserRoles on
+Users.Id =UserRoles.UserId inner join AspNetRoles Roles on
+UserRoles.RoleId= Roles.Id )countNumber
+";
+
+        public static string GetAllUsersRoles() => @"select id as RoleId ,[Name] as RoleName from AspNetRoles";
         #endregion
         #endregion
 

@@ -1,0 +1,124 @@
+﻿<div class="container-claimtype">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group" style="margin-top:3rem">
+                <div class="input-group-prepend">
+                    <span class="input-group-text " style="background-color:#e73c68;color:white" id="basic-addon1">email</span>
+                </div>
+                <input id="inp-systemUser-searchEmail" autofocus style="border-radius:0.5rem;" type="text" class="form-control" placeholder="email giriniz">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Row count</label>
+                <select class="form-control" id="selectRowCount-systemUser"></select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Roles</label>
+                <select class="form-control" id="selectRole-systemUser"></select>
+            </div>
+        </div>
+        <div class="col-md-2 form-group">
+            <button id="btn-systemUser-add" class="btn btn-success"> Add New User</button>
+        </div>
+    </div>
+    <div class="">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="table-systemUser"></tbody>
+        </table>
+        <div class="recordNotFound" id="recordNotFound_systemUser">
+            <h3>Hiç bir kayıt Bulunmamktadır</h3>
+        </div>
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-systemUser-previous" class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="number-systemUser-pageNumber" class="page-link">1</a></li>
+                <li class="page-item">
+                    <a id="btn-systemUser-next" class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="tableCount"> Users toplam : <span id="systemUserTableCount"></span></div>
+</div>
+<div class="modal fade" id="systemUser-AddModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">email : </label>
+                        <input type="text" class="form-control" id="inp-systemUser-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">password : </label>
+                        <input type="text" class="form-control" id="inp-systemUser-password">
+                    </div>  <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Role : </label>
+                        <select class="form-control" id="selectRole-systemUser-addModel"></select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-systemUser-confirmAdd" type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="modal fade" id="systemUser-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit systemUsers</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STK : </label>
+                        <input type="text" class="form-control" id="inp-systemUser-stk-edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STA : </label>
+                        <input type="text" class="form-control" id="inp-systemUser-sta-edit">
+                    </div>  <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STK : </label>
+                        <input type="number" class="form-control" id="inp-systemUser-type-edit">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-systemUser-confirmEdit" type="button" class="btn btn-primary">Save Editing</button>
+            </div>
+        </div>
+    </div>
+</div>*@
