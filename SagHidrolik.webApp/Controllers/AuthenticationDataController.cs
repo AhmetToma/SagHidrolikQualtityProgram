@@ -118,6 +118,12 @@ namespace SagHidrolik.webApp.Controllers
                 var findedUser = await _userManager.FindByEmailAsync(s.Email);
                 if (findedUser != null) ;
                 {
+                    var roles = await _userManager.GetRolesAsync(findedUser);
+                    foreach (var role in roles)
+                    {
+                        await _userManager.RemoveFromRoleAsync(findedUser, role);
+                    }
+
                     var result = await _userManager.AddToRoleAsync(findedUser, s.RoleName);
                     if (result.Succeeded) return Ok("done");
                     else return Ok("");

@@ -67,7 +67,7 @@ function CreateDefectReportTable(list, tableId) {
         
             $(tableId).append(`
 <tr >
-  <td>${element.finishTime.slice(0, -9)}</td>
+  <td>${element.finishTime}</td>
     <td>${element.REject_Name}</td>
     <td>${total}</td>
   <td>${element[keys[0]]} </td>
@@ -181,5 +181,13 @@ $('#btn-defectReport-resetSearch').click(() => {
 
 
 
+//#region Export to Excel
+$('#btn-defectReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-defectReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Defect  Report');
+    XLSX.writeFile(wb, 'Defect Report.xlsx');
+})
 
+//#endregion
 

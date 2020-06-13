@@ -191,6 +191,7 @@ const HttpUrls = {
 
     GetBoxType: BaseUrl + "SettingData/GetBoxType",
     GetBoxTypeCount: BaseUrl + "SettingData/GetBoxTypeCount",
+    UpdateBoxType: BaseUrl + "SettingData/UpdateBoxType",
 
     GetMachineSettings: BaseUrl + "SettingData/GetMachineSettings",
     GetMachineSettingsCount: BaseUrl + "SettingData/GetMachineSettingsCount",
@@ -212,6 +213,7 @@ const HttpUrls = {
 
     GetGirisKontrol: BaseUrl + "EtiketlerGetData/GetGirisKontrol",
     UpdateKaliteKodu: BaseUrl + "EtiketlerGetData/UpdateKaliteKodu",
+
     login: BaseUrl + "AuthenticationData/checkLogin",
     logout: BaseUrl + "AuthenticationData/logout",
     AllSystemUsers: BaseUrl + "AuthenticationData/GetAllSyetemUsers",
@@ -220,6 +222,7 @@ const HttpUrls = {
     AddSystemUser: BaseUrl + "AuthenticationData/AddSystemUser",
     deleteSystemUser: BaseUrl + "AuthenticationData/deleteSystemUser?email=",
     ResetUserPassword: BaseUrl + "AuthenticationData/ResetUserPassword",
+    changeRole: BaseUrl + "AuthenticationData/changeRole",
 
 
 
@@ -282,11 +285,13 @@ const Models = {
     partNumber_add: "#partNumber-AddModel",
     partNumber_edit: "#partNumber-editModel",
 
+
     newNc_summary: "#newNc-summary",
     urunEtiketi_modelContnet: ".urunEtiketi-printModelContnet",
     printModeOut: ".printModeOut",
     systemUser_add: "#systemUser-AddModel",
-    systemUser_edit: "#systemUser-editModel"
+    systemUser_edit: "#systemUser-editModel",
+      boxType_edit: "#boxType-editModel",
 
 }
 const TablesId = {

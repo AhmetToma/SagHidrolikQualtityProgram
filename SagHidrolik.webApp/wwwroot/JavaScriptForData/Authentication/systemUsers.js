@@ -303,58 +303,10 @@ function changeRole(userId) {
     $('#selectRole-systemUser-editModel').val(match.roleName);
     $('#systemUser-editModel').modal('show');
 }
-//$(Buttons.systemUser_confirmEdit).click((event) => {
-//    event.preventDefault();
-//    if ($(Inputs.systemUser_stk_edit).val() === '' ||
-//        $(Inputs.systemUser_sta_edit).val() === '' ||
-//        $(Inputs.systemUser_type_edit).val() === ''
-//    ) {
-//        Swal.fire({
-//            type: 'error',
-//            title: 'Oops...',
-//            text: 'Tüm Inputlar Doldurmanız Gerekiyor'
-//        });
-//    }
-//    else {
-//        systemUserModel.stk = $(Inputs.systemUser_stk_edit).val();
-//        systemUserModel.sta = $(Inputs.systemUser_sta_edit).val();
-//        systemUserModel.type = parseInt($(Inputs.systemUser_type_edit).val());
-//        $.ajax({
-//            type: "POST",
-//            contentType: "application/json;charset=utf-8",
-//            url: HttpUrls.UpdatesystemUser,
-//            data: JSON.stringify(systemUserModel),
-//            success: (num) => {
-//                HideLoader();
-//                if (num !== 0) {
-//                    GetAllSystemUsersAjaxCall();
-//                    GetAllSystemUsersCount();
-//                    Swal.fire({
-//                        title: 'Başarılı!',
-//                        text: 'part Number Başarı ile düzeltildi',
-//                        type: 'success',
-//                        timer: 1500
-//                    });
-//                }
-//                else {
-//                    Swal.fire({
-//                        type: 'error',
-//                        title: 'Oops...',
-//                        text: 'Beklenmeyen bir hata oluştu'
-//                    });
-//                }
-//            }
-//        });
-//        $(Models.systemUser_edit).modal('hide');
-//        $(Inputs.systemUser_stk_edit).val('');
-//        $(Inputs.systemUser_sta_edit).val('');
-//        $(Inputs.systemUser_type_edit).val('');
-//    }
-//});
-//#endregion
 
 
-//#region 
+
+//#region  rest password
 
 function ResetUserPassword(userId) {
     $('#systemUser-editModel .modal-body form').empty();
@@ -373,7 +325,10 @@ function ResetUserPassword(userId) {
     editSystemUserModel.Email = match.email;
     $('#systemUser-editModel').modal('show');
 }
+//#endregion
 
+
+//#region confirm Update
 $('#btn-systemUser-confirmEdit').click((e) => {
     e.preventDefault();
     let edtPassword = $('#inp-systemUser-password-edit').val();
@@ -396,13 +351,18 @@ $('#btn-systemUser-confirmEdit').click((e) => {
                 url: HttpUrls.ResetUserPassword,
                 data: JSON.stringify(editSystemUserModel),
                 success: (response) => {
-                    if (response.succeeded) {
-                        window.open(`${BaseUrl}`, "_self")
+                    console.log(response);
+                    if (response === 'done') {
+                        Swal.fire({
+                            type: 'success',
+                            title: "password has been reset",
+                            timer: 3000
+                        });
                     }
                     else {
                         Swal.fire({
                             type: 'error',
-                            title: "you have  no permission to access to system",
+                            title: "you have  no permission to do this function",
                             timer: 3000
                         });
                     }
@@ -411,5 +371,43 @@ $('#btn-systemUser-confirmEdit').click((e) => {
         }
     }
 
+    else {
+        let RoleName = $('#selectRole-systemUser-editModel').val();
+
+        if (RoleName === "") Swal.fire({
+            type: 'error',
+            title: "You should select role name",
+            timer: 3000
+        });
+        else {
+            editSystemUserModel.RoleName = RoleName;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                url: HttpUrls.changeRole,
+                data: JSON.stringify(editSystemUserModel),
+                success: (response) => {
+                    if (response === 'done') {
+                        Swal.fire({
+                            type: 'success',
+                            title: "Role  has been changed",
+                            timer: 3000
+                        });
+                        GetAllSystemUsersAjaxCall();
+                        GetAllSyetemUsersCount();
+                        $('#systemUser-editModel').modal('hide');
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: "you have  no permission to do this function",
+                            timer: 3000
+                        });
+                    }
+                }
+            });
+        }
+ 
+    }
 })
 //#endregion

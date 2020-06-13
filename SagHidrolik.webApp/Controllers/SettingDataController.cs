@@ -17,6 +17,11 @@ namespace SagHidrolik.webApp.Controllers
             return Json(count);
         }
 
+        public JsonResult UpdateBoxType([FromBody]BoxTypeViewModel boxTypeViewModel)
+        {
+            var list = BoxTypeDate.UpdateBoxType(boxTypeViewModel).Result;
+            return Json(list);
+        }
         #endregion
 
         #region  Machine

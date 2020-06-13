@@ -3,6 +3,13 @@
     let b = BaseUrl + "Home/GirisKontrol";
     if (window.location.href === b) {
         GetgirisKontrolAjaxCall();
+
+        if ($('body').hasClass('nav-md')) {
+            $SIDEBAR_MENU.find('li.active ul').hide();
+            $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
+            $('body').toggleClass('nav-md nav-sm');
+            $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
+        }
     }
 });
 let requestQueryForGirisKontrol = {
@@ -13,12 +20,13 @@ let requestQueryForGirisKontrol = {
 let girisKontrolList = [];
 let girisKontrolModel = {
     operatorId: 0,
-    refKodu:"",
+    refKodu: "",
     kaliteKodu: "",
-    tarih:""
+    tarih: ""
 }
 // #region Ajax Call And create  table
 function GetgirisKontrolAjaxCall() {
+    $('.girisKontrolCard').css('opacity', '0');
     if (requestQueryForGirisKontrol.pageNumber === 1) {
         disableButton(PreviousButtons.girisKontrol);
         ActiveButton(NextButtons.girisKontrol);
@@ -38,6 +46,7 @@ function GetgirisKontrolAjaxCall() {
         data: JSON.stringify(requestQueryForGirisKontrol),
         success: (list) => {
             girisKontrolList = list;
+            console.log(girisKontrolList);
             if (list.length !== 0) {
                 $(`${recordsNotFound.girisKontrol}`).css('display', 'none');
                 CreateGirisKontrolTable(list, TablesId.girisKontrol, true);
@@ -63,6 +72,7 @@ function CreateGirisKontrolTable(list, tableId) {
     <td>${element.fielD18 ? element.fielD18 : ""}/${element.fielD19 ? element.fielD19 : ""}</td>
     <td>${element.tarih}</td>
     <td>${element.irsevrakno}</td>
+ <td><i onclick="DeleteKaliteKodu(${index}, '${element.stk}','${element.ref}')" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);
     });
@@ -118,11 +128,47 @@ function setGirisKontrol(index) {
 }
 
 
+//radio change
+$("input[name='KodType']").change(() => {
+    let kodType = $("input[name='KodType']:checked").val();
+    let tarih = girisKontrolModel.tarih.split('.');
+    if (kodType === "1") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}`;
+    if (kodType === "2") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Şartlı`;
+    if (kodType === "3") girisKontrolModel.kaliteKodu = `NG ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Red`;
+
+    $('#generatedKaliteKodu').text(girisKontrolModel.kaliteKodu);
+})
+
+$("#girisKontrol-activeOpertors").select2().on("select2:select", function (e) {
+
+        girisKontrolModel.operatorId = parseInt($('#girisKontrol-activeOpertors').val()[0]);
+
+        let kodType = $("input[name='KodType']:checked").val();
+        let tarih = girisKontrolModel.tarih.split('.');
+        if (kodType === "1") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}`;
+        if (kodType === "2") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Şartlı`;
+        if (kodType === "3") girisKontrolModel.kaliteKodu = `NG ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Red`;
+        else girisKontrolModel.kaliteKodu = `${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}`;
+        console.log(girisKontrolModel);
+        $('#generatedKaliteKodu').text(girisKontrolModel.kaliteKodu);
+ });
+
+$('#girisKontrol-activeOpertors').on("select2:unselecting", function (e) {
+
+    girisKontrolModel.operatorId = 0;
+    let kodType = $("input[name='KodType']:checked").val();
+    let tarih = girisKontrolModel.tarih.split('.');
+    if (kodType === "1") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}`;
+    if (kodType === "2") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Şartlı`;
+    if (kodType === "3") girisKontrolModel.kaliteKodu = `NG ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Red`;
+    else girisKontrolModel.kaliteKodu = `${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}`;
+    console.log(girisKontrolModel);
+    $('#generatedKaliteKodu').text(girisKontrolModel.kaliteKodu);
+});
+
 
 $('#btn-girisKontrol-submit').click((e) => {
     e.preventDefault();
-
-
     if ($('#girisKontrol-activeOpertors').val() === null) {
         Swal.fire({
             type: 'error',
@@ -156,15 +202,18 @@ $('#btn-girisKontrol-submit').click((e) => {
             url: HttpUrls.UpdateKaliteKodu,
             data: JSON.stringify(girisKontrolModel),
             success: (kaliteKodu) => {
-
                 Swal.fire({
                     type: 'success',
                     title: 'Oops...',
                     text: `kalite Kodu : ${kaliteKodu}`,
                     timer: 5000
                 });
-              
-            },
+                GetgirisKontrolAjaxCall();
+                $('.girisKontrolCard').css('opacity', '0')
+                $("#girisKontrol-activeOpertors").val(null).trigger("change");
+                $("input[name='KodType']").prop("checked", false);
+            }
+            ,
             error: () => {
                 Swal.fire({
                     type: 'error',
@@ -175,10 +224,7 @@ $('#btn-girisKontrol-submit').click((e) => {
             }
         });
     }
-    $('.girisKontrolCard').css('opacity', '0')
-    GetgirisKontrolAjaxCall();
-    $("#girisKontrol-activeOpertors").val(null).trigger("change");
-    $("input[name='KodType']").prop("checked", false);
+
 })
 
 //#endregion
@@ -197,3 +243,69 @@ $('#btn-girisKontrol-reset').click((event) => {
 //#endregion
 
 
+
+// #region
+
+
+function DeleteKaliteKodu(index, stk, ref) {
+    let mathced = girisKontrolList[index];
+    if (mathced.kalitekodu === '') {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'there is no kalite kodu to remove ',
+            timer: 3000
+        });
+    }
+    else {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+            title: `'${mathced.kalitekodu}' silenecek!`,
+            text: `'${mathced.kalitekodu}' silmek iseter misiniz?`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Evet, sil !',
+            cancelButtonText: 'Hayır , silme!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                ref = parseInt(ref);
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    url: BaseUrl + `EtiketlerGetData/DeleteKaliteKodu?irsRef=${ref}&&stk=${stk}`,
+                    success: (num) => {
+                        if (num !== 0) {
+                            GetAllCompanyAjaxCall();
+                            GetAllCompanyCount();
+                            Swal.fire({
+                                title: 'Başarılı!',
+                                text: 'kalite kodu Başarı ile Silendi',
+                                type: 'success',
+                                timer: 1500
+                            });
+                            GetgirisKontrolAjaxCall();
+                        }
+                        else {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Oops...',
+                                text: 'Beklenmeyen bir hata oluştu',
+                                timer: 1500
+
+                            });
+                        }
+                    }
+
+                });
+            }
+        });
+    }
+}
+//#endregion

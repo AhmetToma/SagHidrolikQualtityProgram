@@ -22,5 +22,8 @@ namespace SagHidrolik.DataAccesslayer.Etiketler
                 return list;
             }
         }
+
+
+       
     }
 }

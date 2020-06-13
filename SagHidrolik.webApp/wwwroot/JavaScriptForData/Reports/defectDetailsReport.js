@@ -32,7 +32,7 @@ function GetDefectDetailsReportAjaxCall() {
         data: JSON.stringify(requestQueryForDefectDetailsReport),
         success: (list) => {
             if (list.length !== 0) {
-                console.log('Defect',list);
+                console.log('Defect Deta',list);
                 $(`${recordsNotFound.defectDetailsReport}`).css('display', 'none');
                 CreatedefectDetailsReportTable(list, TablesId.defectDetailsReport);
             }
@@ -56,7 +56,7 @@ function CreatedefectDetailsReportTable(list, tableId) {
             $(tableId).append(`
 <tr >
   <td>${element.stk}</td>
-  <td>${element.finishTimeAsString}</td>
+  <td>${element.finish_time}</td>
   <td>${element.okQty}</td>
   <td>${element.adet}</td>
   <td>${element.rejectName}</td>
@@ -160,6 +160,15 @@ $('#btn-defectDetailsReport-resetSearch').click(() => {
 })
 //#endregion
 
+
+//#region Export to Excel
+$('#btn-defectDetailsReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-defectDetailsReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Defect Details Report');
+    XLSX.writeFile(wb, 'Defect Details Report.xlsx');
+})
+//#endregion
 
 
 

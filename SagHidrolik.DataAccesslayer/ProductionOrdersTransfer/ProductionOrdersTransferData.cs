@@ -76,7 +76,6 @@ namespace SagHidrolik.DataAccessLayer.ProductionOrdersTransfer
                 return message;
             }
         }
-
         public static async Task<string> TrnasferToSystem()
         {
             string message = "";
@@ -110,13 +109,9 @@ namespace SagHidrolik.DataAccessLayer.ProductionOrdersTransfer
                     var matchedModel = TranferList.Where(x => x.PartNo == item.P_ID).FirstOrDefault();
                     if (matchedModel != null) matchedList.Add(matchedModel);
                 }
-
-
-
                 using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
                 {
                     await connection.OpenAsync();
-
                     foreach (var item in matchedList)
                     {
                         int newLotNot = connection.QuerySingle<int>(SqlQueryRepo.Transfer_InsertIntoProductionOrders_getlotNo(item));

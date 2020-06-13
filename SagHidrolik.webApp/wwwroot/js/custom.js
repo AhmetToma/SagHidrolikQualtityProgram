@@ -14,7 +14,7 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
     $NAV_MENU = $('.nav_menu'),
     $FOOTER = $('footer');
 
- Sidebar
+
 $(document).ready(function() {
    //  TODO: This is some kind of easy fix, maybe we can improve this
     var setContentHeight = function () {
@@ -138,7 +138,7 @@ $(document).ready(function() {
 
 
 
- iCheck
+
 $(document).ready(function() {
     if ($("input.flat")[0]) {
         $(document).ready(function () {
@@ -151,7 +151,7 @@ $(document).ready(function() {
 });
  //iCheck
 
- Table
+
 $('table input').on('ifChecked', function () {
     checkState = '';
     $(this).parent().parent().parent().addClass('selected');
@@ -186,5 +186,4 @@ $('.bulk_action input#check-all').on('ifUnchecked', function () {
 
 
 
- Accordion
 

@@ -40,5 +40,17 @@ namespace SagHidrolik.DataAccesslayer.Etiketler
                 return list;
             }
         }
+
+        public static async Task<int> DeleteKaliteKodu(int irsRef, string stk)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var list = await connection.ExecuteAsync(SqlQueryRepo.DeleteKaliteKodu(irsRef, stk));
+                return list;
+            }
+        }
+
+
     }
 }

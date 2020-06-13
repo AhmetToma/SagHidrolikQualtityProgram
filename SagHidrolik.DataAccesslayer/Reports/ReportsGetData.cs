@@ -104,7 +104,6 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
                 }
                 else if (requestQuery.year == "")
                 {
-
                     var startTime = new DateTime(DateTime.Now.Year, int.Parse(requestQuery.month), 1);
                     var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
                     startAt = $"1-{requestQuery.month}-{DateTime.Now.Year}";
@@ -131,7 +130,6 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
 
 
                         item.Stk = dboStokgen.Stk;
-                    item.FinishTimeAsString = item.FinishTime.ToString("dd-MM-yyyy");
                     newList.Add(item);
                 }
             }
@@ -268,7 +266,6 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
                     if (dboStokgen != null)
                     {
                         item.Stk = dboStokgen.Stk;
-                        item.finishTimeAsString = item.Finish_time.ToString("dd-MM-yyyy");
                         newList.Add(item);
                     }
                 }

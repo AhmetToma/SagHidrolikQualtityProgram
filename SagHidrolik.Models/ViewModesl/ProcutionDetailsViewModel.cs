@@ -6,7 +6,7 @@ namespace SagHidrolik.Models.ViewModesl
 {
     public class ProcutionDetailsViewModel
     {
-        public DateTime FinishTime { get; set; }
+        public string FinishTime { get; set; }
         public string ProsesAdi { get; set; }
         public string Total { get; set; }
         public string PartNo_ID { get; set; }

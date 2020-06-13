@@ -27,6 +27,12 @@ namespace SagHidrolik.webApp.Controllers
             string kaliteKodu = GiriskontrolData.UpdateKaliteKodu(kaliteKoduModel).Result;
             return Json(kaliteKodu);
         }
+
+        public JsonResult DeleteKaliteKodu([FromQuery]int irsRef, [FromQuery] string stk)
+        {
+            var list = GiriskontrolData.DeleteKaliteKodu(irsRef, stk).Result;
+            return Json(list);
+        }
         #endregion
 
 
@@ -48,5 +54,7 @@ namespace SagHidrolik.webApp.Controllers
             var list = GirisKabulEtiketiGetData.GirisKabulEtiketiList(requestQuery).Result;
             return Json(list);
         }
+
+    
     }
 }

@@ -55,10 +55,10 @@ namespace SagHidrolik.Models.SqlRepository
         {
 
             query = $@"select  ProductOrderID,PartNo,PartNo_ID,LotNo,Qty,Completed_Qty,
-convert(varchar(10), cast(IssueDate As Date), 104) as IssueDate ,
-convert(varchar(10), cast(RequireDate As Date), 104) as RequireDate ,
-convert(varchar(10), cast(RevisedDate As Date), 104) as RevisedDate ,
-convert(varchar(10), cast(CloseDate As Date), 104) as CloseDate ,
+convert(varchar(10), cast(IssueDate As Date), 105) as IssueDate ,
+convert(varchar(10), cast(RequireDate As Date), 105) as RequireDate ,
+convert(varchar(10), cast(RevisedDate As Date), 105) as RevisedDate ,
+convert(varchar(10), cast(CloseDate As Date), 105) as CloseDate ,
 Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_ProductionOrders.PartNo_ID='{requestQuery.pid}' Order By LotNo desc  
                  OFFSET { requestQuery.pageNumber} ROWS FETCH NEXT { requestQuery.pageSize} ROWS ONLY;";
             return query;
@@ -854,7 +854,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         public static string GetImmediateAction(int ncId)
         {
             query = $"SET DATEFORMAT dmy;select ACTN_ID,NC_ID,Action_Type,Actin_Def,Responsible as ResponsibleId," +
-                $" convert(varchar(10), cast(TargetDate As Date), 104) as TargetDate ,convert(varchar(10), cast(CloseDate As Date), 104) as CloseDate,[Status] from  dbo.C_ActionList where" +
+                $" convert(varchar(10), cast(TargetDate As Date), 105) as TargetDate ,convert(varchar(10), cast(CloseDate As Date), 105) as CloseDate,[Status] from  dbo.C_ActionList where" +
                 $" NC_ID = {ncId}";
             return query;
         }
@@ -868,7 +868,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
 
         public static string GetDocumentControlList(int ncId)
         {
-            query = $"select ID, NC_ID,Document as DocumentType, convert(varchar(10), cast(ChangeDate As Date), 104) as ChangeDate,NewRev,Notes  from J_DocumentControl  where NC_ID = {ncId}";
+            query = $"select ID, NC_ID,Document as DocumentType, convert(varchar(10), cast(ChangeDate As Date), 105) as ChangeDate,NewRev,Notes  from J_DocumentControl  where NC_ID = {ncId}";
             return query;
         }
         public static string SaveReviewDetalis(ReviewViewModel rev)
@@ -984,7 +984,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         public static string GetProcutionReportWithFilter(RequestQuery r, string startAt, string endAt)
 
         {
-            query = "SET DATEFORMAT dmy; WITH Sales AS(SELECT convert(varchar(10), cast(Finish_time As Date), 104) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
+            query = "SET DATEFORMAT dmy; WITH Sales AS(SELECT convert(varchar(10), cast(Finish_time As Date), 105) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
                 $" where Finish_time between '{startAt}' and '{endAt}' group by Finish_time, [Group], S.Ok_Qty " +
                     ") SELECT * FROM   Sales PIVOT(SUM(total) FOR[Group] IN([01_Kesim],[02_Büküm],[03_Havşa],[04_Kaynak],[041_KesDel],[042_Hazirlik],[05_Hortum],[06_Paketleme]" +
                     $",[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil])) P order by finishTime desc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -993,7 +993,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
 
         public static string GetProcutionReportWithoutFilter(RequestQuery r)
         {
-            query = "SET DATEFORMAT dmy; WITH Sales AS( SELECT  convert(varchar(10), cast(Finish_time As Date), 104) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
+            query = "SET DATEFORMAT dmy; WITH Sales AS( SELECT  convert(varchar(10), cast(Finish_time As Date), 105) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
                 $"group by Finish_time, [Group], S.Ok_Qty " +
                     ") SELECT * FROM   Sales PIVOT(SUM(total) FOR[Group] IN([01_Kesim],[02_Büküm],[03_Havşa],[04_Kaynak],[041_KesDel],[042_Hazirlik],[05_Hortum],[06_Paketleme]" +
                     $",[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil])) P order by finishTime desc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -1008,10 +1008,12 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         }
         #endregion
         #region ProductionDetails
-        public static string GetProcutionDetailsReport(RequestQuery r, string startAt, string endAt, string v) => $@" SET DATEFORMAT dmy;SELECT CAST (Finish_time as date) AS FinishTime, Process_Planning.ProsesAdi,
+        public static string GetProcutionDetailsReport(RequestQuery r, string startAt, string endAt, string v) => $@" SET DATEFORMAT dmy;
+ select convert(varchar(10), cast( Finish_time As Date), 105) as FinishTime,
+Process_Planning.ProsesAdi,
  Sum(ProcessFlowDetail.Ok_Qty) AS Total,Local_ProductionOrders.PartNo_ID,
-  dbo.Operator.Operator_Name as OperatorName, CAST (Start_time as datetime) AS startTime
-  , CAST (Start_time as datetime) AS finishTimeWithHour, ProcessFlowDetail.Machine
+  dbo.Operator.Operator_Name as OperatorName,  FORMAT(Start_time, 'dd-MM-yyyy hh:mm:ss') as startTime
+  ,   FORMAT(Finish_time, 'dd-MM-yyyy hh:mm:ss') as   finishTimeWithHour, ProcessFlowDetail.Machine
 FROM ProcessFlowDetail 
  INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID 
  INNER JOIN Process_Planning ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo
@@ -1046,10 +1048,11 @@ GROUP BY CAST(Finish_time as date),PartNo_ID, Process_Planning.ProsesAdi, dbo.Op
         public static string GeDefectReportWithtFilter(RequestQuery r, string startAt, string endAt)
         {
             query = "SET DATEFORMAT dmy;DECLARE @cols AS nvarchar(max)DECLARE @query AS nvarchar(max)SELECT @cols = STUFF((SELECT DISTINCT    ',' + QUOTENAME([Group])FROM[dbo].Process_Planning order by 1 FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)')" +
-                ", 1, 1, ''); set @query = N'WITH Sales AS (SELECT  DATEFROMPARTS(year(S.Finish_time), month(S.Finish_time), 1) as finishTime, Z.REject_Name, [Group], sum(S.Defect1_qty) as totalQty" +
+                ", 1, 1, ''); set @query = N'WITH Sales AS (SELECT " +
+                " right(convert(varchar(10), cast( S.Finish_time As Date), 104),7 )as finishTime, Z.REject_Name, [Group], sum(S.Defect1_qty) as totalQty" +
                 " FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I on S.Flow_ID = I.Flow_ID inner join Process_Planning P on I.ProcessNo_ID = p.ProcessNo " +
                 $"inner join Reject_def Z  on Z.Reject_ID = S.Defect1_Name WHERE S.Defect1_qty > 0   and Finish_time between ''{startAt}'' and ''{endAt}''" +
-                " Group by S.Defect1_Name, Z.REject_Name, DATEFROMPARTS(year(S.Finish_time), month(S.Finish_time), 1),[Group] ) select* from Sales " +
+                " Group by S.Defect1_Name, Z.REject_Name, right(convert(varchar(10), cast( S.Finish_time As Date), 104),7 ),[Group] ) select* from Sales " +
                 $" PIVOT(SUM(totalQty) FOR[Group] IN('+@cols+')) P order by finishTime OFFSET {r.pageNumber}  rows fetch next {r.pageSize} ROWS ONLY;   'EXECUTE sp_executesql @query;";
             return query;
         }
@@ -1057,10 +1060,11 @@ GROUP BY CAST(Finish_time as date),PartNo_ID, Process_Planning.ProsesAdi, dbo.Op
         public static string GeDefectReportWithoutFilter(RequestQuery r)
         {
             query = "DECLARE @cols AS nvarchar(max)DECLARE @query AS nvarchar(max)SELECT @cols = STUFF((SELECT DISTINCT    ',' + QUOTENAME([Group])FROM[dbo].Process_Planning order by 1 FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)')" +
-                ", 1, 1, ''); set @query = N'WITH Sales AS (SELECT  DATEFROMPARTS(year(S.Finish_time), month(S.Finish_time), 1) as finishTime, Z.REject_Name, [Group], sum(S.Defect1_qty) as totalQty" +
+                ", 1, 1, ''); set @query = N'WITH Sales AS (SELECT  " +
+                "right(convert(varchar(10), cast( S.Finish_time As Date), 104),7 )as finishTime, Z.REject_Name, [Group], sum(S.Defect1_qty) as totalQty" +
                 " FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I on S.Flow_ID = I.Flow_ID inner join Process_Planning P on I.ProcessNo_ID = p.ProcessNo " +
                 $" inner join Reject_def Z  on Z.Reject_ID = S.Defect1_Name WHERE S.Defect1_qty > 0" +
-                " Group by S.Defect1_Name, Z.REject_Name, DATEFROMPARTS(year(S.Finish_time), month(S.Finish_time), 1),[Group] ) select* from Sales " +
+                " Group by S.Defect1_Name, Z.REject_Name,  right(convert(varchar(10), cast( S.Finish_time As Date), 104),7 ),[Group] ) select* from Sales " +
                 $" PIVOT(SUM(totalQty) FOR[Group] IN('+@cols+')) P order by finishTime OFFSET {r.pageNumber}  rows fetch next {r.pageSize} ROWS ONLY;   'EXECUTE sp_executesql @query;";
             return query;
         }
@@ -1079,7 +1083,7 @@ GROUP BY CAST(Finish_time as date),PartNo_ID, Process_Planning.ProsesAdi, dbo.Op
         #region DefectDetails
         public static string GetDefectDetailsWithoutFilter(RequestQuery r, string v)
         {
-            query = "SET DATEFORMAT dmy;SELECT Finish_time,Local_ProductionOrders.PartNo_ID, ProcessFlowDetail.Ok_Qty as OkQty, ProcessFlowDetail.Defect1_qty AS Adet," +
+            query = "SET DATEFORMAT dmy;SELECT  convert(varchar(10), cast(Finish_time As Date), 104) as Finish_time,Local_ProductionOrders.PartNo_ID, ProcessFlowDetail.Ok_Qty as OkQty, ProcessFlowDetail.Defect1_qty AS Adet," +
                 " Reject_def.REject_Name as RejectName , Process_Planning.ProsesAdi " +
                 " FROM ProcessFlowDetail INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID " +
                 " INNER JOIN dbo.Local_ProductionOrders ON ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID " +
@@ -1092,7 +1096,9 @@ GROUP BY CAST(Finish_time as date),PartNo_ID, Process_Planning.ProsesAdi, dbo.Op
 
         public static string GetDefectDetailsWithFilter(RequestQuery r, string v, string startAt, string endAt)
         {
-            query = "SET DATEFORMAT dmy;SELECT  cast(Finish_time as Date) as Finish_time,Local_ProductionOrders.PartNo_ID, ProcessFlowDetail.Ok_Qty as OkQty, ProcessFlowDetail.Defect1_qty AS Adet," +
+            query = "SET DATEFORMAT dmy;SELECT   " +
+                "  convert(varchar(10), cast(Finish_time As Date), 104) as Finish_time" +
+                ",Local_ProductionOrders.PartNo_ID, ProcessFlowDetail.Ok_Qty as OkQty, ProcessFlowDetail.Defect1_qty AS Adet," +
                 " Reject_def.REject_Name as RejectName , Process_Planning.ProsesAdi " +
                 " FROM ProcessFlowDetail INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID " +
                 " INNER JOIN dbo.Local_ProductionOrders ON ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID " +
@@ -1307,18 +1313,12 @@ order by 2";
         #endregion
         #endregion
 
-        #region Box Type
-
-
-        public static string GetBoxType(RequestQuery r) => $@"select  STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN
-where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
-        public static string GetBoxTypeCount() => @"select count(*) from(select  STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN)countNumber";
-        #endregion
+    
 
         #region Order Management
         public static string GetOrderDetails(RequestQuery r)
         {
-            query = "SELECT dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,104) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
+            query = "SELECT dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,105) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
                 " FROM((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON(dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND(dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID) LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF " +
                 $" where SIPARIS_ALT.STK like '%{r.Stk}%' GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR, dbo.SIPARIS_ALT.TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA " +
                 $"order by STK OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -1364,12 +1364,12 @@ where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH
         {
             query = $@"SET DATEFORMAT dmy; select ProductOrderID,PartNo,PartNo_ID,LotNo,Qty,
 Completed_Qty,
-convert(varchar(10), cast(RequireDate As Date), 104) as RequireDate ,
-convert(varchar(10), cast(IssueDate As Date), 104) as IssueDate ,
-convert(varchar(10), cast(RevisedDate As Date), 104) as RevisedDate ,
-convert(varchar(10), cast(CloseDate As Date), 104) as CloseDate ,
-Printed,Status,CONVERT(varchar,RevisedDate,104) as RevisedDate,
-Remark,CONVERT(varchar,CloseDate,104) as CloseDate
+convert(varchar(10), cast(RequireDate As Date), 105) as RequireDate ,
+convert(varchar(10), cast(IssueDate As Date), 105) as IssueDate ,
+convert(varchar(10), cast(RevisedDate As Date), 105) as RevisedDate ,
+convert(varchar(10), cast(CloseDate As Date), 105) as CloseDate ,
+Printed,Status,CONVERT(varchar,RevisedDate,105) as RevisedDate,
+Remark,CONVERT(varchar,CloseDate,105) as CloseDate
   from dbo.Local_ProductionOrders where PartNo_ID in ({m})  and  [Status] like '%{r.uretimPlaniType}%' 
                  ORDER BY dbo.Local_ProductionOrders.RequireDate DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;"
 ;
@@ -1403,9 +1403,9 @@ Remark,CONVERT(varchar,CloseDate,104) as CloseDate
 
         public static string GetAllProductionOrdersPrintOut(RequestQuery r)
         {
-            query = $"select  ProductionOrdersPrintout.ProductOrderID,PartNo_ID,LotNo,Qty,Completed,convert(varchar(10), cast(RequireDate As Date), 104) as RequireDate ," +
-                $" convert(varchar(10), cast(IssueDate As Date), 104) as IssueDate,[Closed],[Status]," +
-                $" convert(varchar(10), cast(RevisedDate As Date), 104) as RevisedDate ,  RevisedDate,Remark " +
+            query = $"select  ProductionOrdersPrintout.ProductOrderID,PartNo_ID,LotNo,Qty,Completed,convert(varchar(10), cast(RequireDate As Date), 105) as RequireDate ," +
+                $" convert(varchar(10), cast(IssueDate As Date), 105) as IssueDate,[Closed],[Status]," +
+                $" convert(varchar(10), cast(RevisedDate As Date), 105) as RevisedDate ,  RevisedDate,Remark " +
                 $" from dbo.ProductionOrdersPrintout where  [Status] like '%{r.uretimPlaniType}%' " +
                 $" ORDER BY dbo.ProductionOrdersPrintout.ProductOrderID DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
             return query;
@@ -1430,6 +1430,18 @@ Remark,CONVERT(varchar,CloseDate,104) as CloseDate
         #endregion
 
         #region settings
+
+        #region Box Type
+
+
+        public static string GetBoxType(RequestQuery r) => $@"select P_ID, STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN
+where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
+        public static string GetBoxTypeCount() => @"select count(*) from(select  STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN)countNumber";
+
+        public static string UpdateBoxType(BoxTypeViewModel b) => $@"
+update STOKGEN set STR_3 ='{b.STR_3}' ,STR_4='{b.STR_4}',TUR={b.TUR} where P_ID ='{b.P_ID}'";
+
+        #endregion
         #region machine 
 
         public static string GetMachineSettings(RequestQuery r) => $@"Select  Machine_Id ,Machine_no,Machine_Name,MODEL as model,[Bölüm] as Bolum, Producer,Yıl as Yil from [10_MakinaListesiNew]
@@ -1482,7 +1494,7 @@ order by 1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;
 
         #region Operator
         public static string GetSettingsOperator(RequestQuery r) => $@" set DateFormat dmy; 
- select Operator_ID ,Operator_Name,Bolum,Aktif,CONVERT(varchar,GirisTarihi,104) as GirisTarihi FROM Operator where Operator_Name like N'%{r.operatorName}%'
+ select Operator_ID ,Operator_Name,Bolum,Aktif,CONVERT(varchar,GirisTarihi,105) as GirisTarihi FROM Operator where Operator_Name like N'%{r.operatorName}%'
 order by 1  
 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
 
@@ -1629,7 +1641,7 @@ UserRoles.RoleId= Roles.Id )countNumber
 
         #region Giris Kontrol
         public static string GetGirisKontrol(RequestQuery r ) => $@"
-SELECT convert(varchar(10), cast( dbo.IRSALIYE_ALT.TARIH As Date), 104) as Tarih, dbo.CARIGEN.STA, dbo.IRSALIYE_ALT.STK, dbo.IRSALIYE_ALT.MIKTAR,
+SELECT convert(varchar(10), cast( dbo.IRSALIYE_ALT.TARIH As Date), 105) as Tarih, dbo.CARIGEN.STA, dbo.IRSALIYE_ALT.STK, dbo.IRSALIYE_ALT.MIKTAR,
  dbo.IRSALIYE_ALT.SIPEVRAKNO, dbo.STOKGEN.P_ID, dbo.STOKGEN.FIELD18, dbo.STOKGEN.FIELD19
   , dbo.IRSALIYE_ALT.KALITEKODU,dbo.IRSALIYE_ALT.CARIREF,
    dbo.IRSALIYE_ALT.REF, dbo.IRSALIYE_ALT.IRSEVRAKNO
@@ -1647,6 +1659,9 @@ WHERE (((dbo.IRSALIYE_ALT.TUR)=1 Or (dbo.IRSALIYE_ALT.TUR)=62 Or (dbo.IRSALIYE_A
 
         public static string UpdateKaliteKodu(kaliteKoduModel k) => $@"UPDATE dbo.IRSALIYE_ALT SET dbo.IRSALIYE_ALT.KALITEKODU ='{k.kaliteKodu}'
   WHERE (((dbo.IRSALIYE_ALT.REF)='{k.refKodu}' ));select top(1) IRSALIYE_ALT.KALITEKODU from IRSALIYE_ALT where IRSALIYE_ALT.REF='{k.refKodu}'; ";
+
+
+        public static string DeleteKaliteKodu(int irsRef, string stk) => $@"update dbo.IRSALIYE_ALT set  KALITEKODU ='' where REF ={irsRef} and STK = N'{stk}' ";
         #endregion
         #endregion
     }

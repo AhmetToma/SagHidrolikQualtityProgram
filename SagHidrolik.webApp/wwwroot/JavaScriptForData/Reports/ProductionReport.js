@@ -13,7 +13,7 @@ let requestQueryForProdutionReport = {
     year: "",
     month:""
 };
-
+let productionReportList = [];
 // #region ajaxcall ,create table ,records count  
 function GetProcutionReportAjaxCall() {
     if (requestQueryForProdutionReport.pageNumber === 1) {
@@ -35,6 +35,7 @@ function GetProcutionReportAjaxCall() {
         success: (list) => {
             if (list.length !== 0) {
                 //console.log(list);
+                productionReportList = list;
                 $(`${recordsNotFound.productionReport}`).css('display', 'none');
                 CreateProdutionReportTable(list, TablesId.productionReport);
             }
@@ -177,6 +178,17 @@ $('#btn-productionReport-resetSearch').click(() => {
     GetProcutionReportAjaxCall();
 })
 //#endregion
+
+
+
+$('#btn-productionReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-productionReport-xls'));
+    const wb= XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Production Report');
+    XLSX.writeFile(wb, 'Production Report.xlsx');
+})
+
+
 
 
 

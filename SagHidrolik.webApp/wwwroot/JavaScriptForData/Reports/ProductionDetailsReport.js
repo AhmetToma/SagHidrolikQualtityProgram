@@ -56,7 +56,7 @@ function CreateProductionDetailsReportTable(list, tableId) {
         $(tableId).append(`
 <tr >
   <td>${element.stk}</td>
-  <td>${element.finishTimeAsString}</td>
+  <td>${element.finishTime}</td>
   <td>${element.prosesAdi}</td>
   <td>${element.total}</td>
   <td>${element.prosesAdi}</td>
@@ -83,7 +83,7 @@ function GetproductionDetailsReportCount() {
 <option value="20">20</option>
 <option value="50">50</option>
 <option value="100">100</option>
-<option value="100">1000</option>
+<option value="1000">1000</option>
                   
 `);
         }
@@ -167,6 +167,13 @@ $('#btn-productionDetailsReport-resetSearch').click(() => {
 
 
 
+
+$('#btn-productionDetailsReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-productionDetailsReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Production Details Report');
+    XLSX.writeFile(wb, 'Production Detaisl Report.xlsx');
+})
 
 
 

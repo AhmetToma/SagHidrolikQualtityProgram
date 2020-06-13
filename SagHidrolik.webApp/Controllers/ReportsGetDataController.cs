@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
+using System.Text.Json;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
+using Magnum.FileSystem;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using SagHidrolik.Models.ViewModesl;
 using SagHidrolik.Quality.DataAccesslayer.Reports;
 
@@ -13,7 +19,7 @@ namespace SagHidrolik.webApp.Controllers
         #region production Report
         public JsonResult GetProcutionReport([FromBody]RequestQuery requestQuery)
         {
-            var list =   ReportsData.GetProcutionReport(requestQuery).Result;
+            var list = ReportsData.GetProcutionReport(requestQuery).Result;
             return Json(list);
         }
         public JsonResult GetProcutionReportCount()
@@ -141,7 +147,7 @@ namespace SagHidrolik.webApp.Controllers
             return Json(count);
         }
 
-        public JsonResult DeleteProcessplan([FromQuery]int id )
+        public JsonResult DeleteProcessplan([FromQuery]int id)
         {
             int count = ReportsData.DeleteProcessplan(id).Result;
             return Json(count);
@@ -176,5 +182,71 @@ namespace SagHidrolik.webApp.Controllers
 
         #endregion
 
+
+        public IActionResult ExportToExcel([FromBody] List<Object> list)
+        {
+
+
+
+            // keys
+            var zzz = JsonSerializer.Serialize<object>(list.ElementAt(0));
+            JObject jsonObj = JObject.Parse(zzz.ToString());
+            Dictionary<string, string> dictObj = jsonObj.ToObject<Dictionary<string, string>>();
+            List<string> keys = new List<string>();
+            foreach (var item in dictObj)
+            {
+
+                keys.Add(item.Key.ToString());
+            }
+            var workbook = new XLWorkbook();
+            IXLWorksheet worksheet = workbook.Worksheets.Add("Users");
+            //headers
+            for (int i = 0; i < keys.Count(); i++)
+            {
+                worksheet.Cell(1, i + 1).Value = keys.ElementAt(i);
+            }
+            foreach (var item in list)
+            {
+
+                var one = JsonSerializer.Serialize<object>(item);
+                JObject two = JObject.Parse(one.ToString());
+                Dictionary<string, string> three = jsonObj.ToObject<Dictionary<string, string>>();
+
+                for (int i = 0; i <three.Count; i++)
+                {
+
+                    for (int j = 0; j < keys.Count; j++)
+                    {
+            
+                        worksheet.Cell(i + 1, j + 1).Value = three.ElementAt(j).Value;
+                        int zz = 4;
+
+                    }
+                }
+            }
+
+            using (var stream = new MemoryStream())
+            {
+                workbook.SaveAs(stream);
+                System.IO.Stream spreadsheetStream = new System.IO.MemoryStream();
+                var content = stream.ToArray();
+                spreadsheetStream.Position = 0;
+                return new FileStreamResult(spreadsheetStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { FileDownloadName = "users.xlsx" };
+
+            }
+        }
+        public ActionResult XLSX()
+        {
+            System.IO.Stream spreadsheetStream = new System.IO.MemoryStream();
+            XLWorkbook workbook = new XLWorkbook();
+            IXLWorksheet worksheet = workbook.Worksheets.Add("example");
+            worksheet.Cell(1, 1).SetValue("example");
+            workbook.SaveAs(spreadsheetStream);
+            spreadsheetStream.Position = 0;
+
+            return new FileStreamResult(spreadsheetStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { FileDownloadName = "example.xlsx" };
+        }
+
     }
+ 
 }

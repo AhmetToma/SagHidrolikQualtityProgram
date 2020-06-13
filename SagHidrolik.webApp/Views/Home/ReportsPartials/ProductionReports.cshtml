@@ -47,13 +47,14 @@
 
         <div class="col-md-3">
             <div class="form-group">
-                <button id="btn-productionReport-resetSearch" class="btn btn-primary">Reset Search</button>
+                <button id="btn-productionReport-exportToExcel" class="btn btn-sm btn-success">export to excel</button>
+                <button id="btn-productionReport-resetSearch" style="background-color:#b13e5b;color:white" class="btn btn-sm  btn-success">Reset</button>
             </div>
         </div>
     </div>
 
     <div class="container-setUp-partial">
-        <table class="table table-bordered tableFontMaxmize">
+        <table id="table-productionReport-xls" class="table table-bordered tableFontMaxmize">
             <thead>
                 <tr>
                     <th scope="col">Date</th>

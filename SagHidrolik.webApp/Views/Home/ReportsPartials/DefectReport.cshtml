@@ -46,15 +46,17 @@
         </div>
 
         <div class="col-md-3">
-            <div class="form-group" style="margin-top:2.8rem">
-                <button id="btn-defectReport-resetSearch" class="btn btn-primary">Reset Search</button>
+            <div class="form-group" >
+
+                <button id="btn-defectReport-exportToExcel" class="btn btn-sm btn-success">export to excel</button>
+                <button id="btn-defectReport-resetSearch" style="background-color:#b13e5b;color:white" class="btn btn-sm btn-success ">Reset Search</button>
             </div>
         </div>
     </div>
 
     <div class="container-setUp-partial">
-        <table class="table table-bordered">
-            <thead>
+        <table id="table-defectReport-xls" class="table table-bordered">
+            <thead >
                 <tr>
                     <th scope="col">Date</th>
                     <th scope="col">Reject Name</th>

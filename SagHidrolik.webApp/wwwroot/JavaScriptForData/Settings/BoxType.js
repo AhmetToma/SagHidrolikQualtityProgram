@@ -12,6 +12,16 @@ let requestQueryForBoxType = {
     Stk: "",
 };
 
+let boxTypeList = [];
+let boxTypeViwModel = {
+    stk: "",
+    sta: "",
+    stR_3: "",
+    stR_4: "",
+    p_ID:"",
+    tur:0
+}
+
 // #region Ajax Call And create  table
 function GetBoxTypeAjaxCall() {
     if (requestQueryForBoxType.pageNumber === 1) {
@@ -33,6 +43,7 @@ function GetBoxTypeAjaxCall() {
         data: JSON.stringify(requestQueryForBoxType),
         success: (list) => {
             if (list.length !== 0) {
+                boxTypeList = list;
                 $(`${recordsNotFound.boxType}`).css('display', 'none');
               CreateBoxTypeTable(list, TablesId.boxType, true);
             }
@@ -55,6 +66,7 @@ function CreateBoxTypeTable(list, tableId) {
     <td>${element.stR_3}</td>
     <td>${element.stR_4}</td>
     <td>${element.tur}</td>
+ <td><i onclick="editBoxType(${index})" class="fa fa-2x fa-edit  text-primary"  aria-hidden="true"></td>
              </tr>
 `);
     });
@@ -102,15 +114,85 @@ $(NextButtons.boxType).on('click', (event) => {
 // #region search
 $(Inputs.boxType_searchStk).keyup(function () {
     clearTimeout(timer);
-    if ($(Inputs.boxType_searchStk).val()) {
         requestQueryForBoxType.pageNumber = 1;
         $('#num-boxType-pageNumber').text(requestQueryForBoxType.pageNumber);
         timer = setTimeout(GetBoxTypeAjaxCall, typingInterval);
-    }
+ 
 });
 //user is "finished typing," do something
 
 // #endregion 
+
+
+
+//#region Edit partNumber
+
+function editBoxType(index) {
+    let match = boxTypeList[index];
+    console.log(match);
+    $('#inp-boxType-str3-edit').val(match.stR_3);
+    $('#inp-boxType-str4-edit').val(match.stR_4);
+    $('#inp-boxType-tur-edit').val(match.tur);
+    $(Models.boxType_edit).modal('show');
+    boxTypeViwModel.p_ID = match.p_ID;
+}
+
+
+$('#btn-boxType-confirmEdit').click((event) => {
+    event.preventDefault();
+    let str3 = $('#inp-boxType-str3-edit').val();
+    let str4 = $('#inp-boxType-str4-edit').val();
+    let tur =  $('#inp-boxType-tur-edit').val();
+    if (str3 === '' ||
+        str4 === '' ||
+     tur === ''
+    ) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Tüm Inputlar Doldurmanız Gerekiyor'
+        });
+    }
+    else {
+        boxTypeViwModel.stR_3 = str3;
+        boxTypeViwModel.stR_4 = str4;
+        boxTypeViwModel.tur = parseInt(tur);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: HttpUrls.UpdateBoxType,
+            data: JSON.stringify(boxTypeViwModel),
+            success: (num) => {
+                HideLoader();
+                if (num !== 0) {
+                    GetBoxTypeAjaxCall();
+                    Swal.fire({
+                        title: 'Başarılı!',
+                        text: 'box type Başarı ile düzeltildi',
+                        type: 'success',
+                        timer: 1500
+                    });
+                }
+                else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Beklenmeyen bir hata oluştu'
+                    });
+                }
+            },
+            error: () => {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Beklenmeyen bir hata oluştu'
+                });
+            }
+        });
+        $(Models.boxType_edit).modal('hide');
+    }
+});
+//#endregion
 // #region reset 
 $('#btn-boxType-reset').click((event) => {
     event.preventDefault();

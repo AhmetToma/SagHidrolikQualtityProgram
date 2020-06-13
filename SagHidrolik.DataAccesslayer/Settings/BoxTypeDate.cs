@@ -30,6 +30,16 @@ namespace SagHidrolik.DataAccesslayer.Settings
             }
         }
 
+        public static async Task<int> UpdateBoxType(BoxTypeViewModel boxTypeViewModel)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var list = await connection.ExecuteAsync(SqlQueryRepo.UpdateBoxType(boxTypeViewModel));
+                return list;
+            }
+        }
+
         #endregion
     }
 }

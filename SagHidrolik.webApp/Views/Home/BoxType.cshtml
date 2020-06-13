@@ -1,4 +1,4 @@
-﻿<div class="container-review">
+﻿<div class="container">
     <div class="alert defaultBackground" role="alert">
        Box Type 
     </div>
@@ -29,6 +29,7 @@
                 <th scope="col">STR 3</th>
                 <th scope="col">STR 4</th>
                 <th scope="col">TUR</th>
+                <th scope="col">Edit</th>
 
             </tr>
         </thead>
@@ -54,4 +55,37 @@
             </li>
         </ul>
     </nav>
+</div>
+
+
+<div class="modal fade" id="boxType-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit boxTypes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STR3 : </label>
+                        <input type="text" class="form-control" id="inp-boxType-str3-edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">STR4 : </label>
+                        <input type="text" class="form-control" id="inp-boxType-str4-edit">
+                    </div>  <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Tur : </label>
+                        <input type="number" class="form-control" id="inp-boxType-tur-edit">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-boxType-confirmEdit" type="button" class="btn btn-primary">Save Editing</button>
+            </div>
+        </div>
+    </div>
 </div>
