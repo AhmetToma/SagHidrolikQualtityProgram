@@ -168,4 +168,13 @@ $('#btn-customerPerfReport-resetSearch').click(() => {
 
 
 
+//#region Export to Excel
+$('#btn-customerPerfReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-customerPerfReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Customer Perf Report');
+    XLSX.writeFile(wb, 'Customer Perf Report.xlsx');
+})
+
+//#endregion
 

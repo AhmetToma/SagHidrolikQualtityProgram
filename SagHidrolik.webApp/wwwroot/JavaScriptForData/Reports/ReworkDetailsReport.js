@@ -154,3 +154,13 @@ $('#btn-reworkDetailsReport-resetSearch').click(() => {
     GetReworkDetailsReportAjaxCall();
 })
 //#endregion
+
+//#region Export to Excel
+$('#btn-reworkDetailsReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-reworkDetailsReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Rework Details Report');
+    XLSX.writeFile(wb, 'Rework Details Report.xlsx');
+})
+
+//#endregion

@@ -178,6 +178,15 @@ $('#btn-reworkReport-resetSearch').click(() => {
 
 
 
+//#region Export to Excel
+$('#btn-reworkReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-reworkReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Rework Report');
+    XLSX.writeFile(wb, 'Rework Report.xlsx');
+})
+
+//#endregion
 
 
 

@@ -1,7 +1,7 @@
 ﻿<div>
 
     <div class="row" style="margin-top:1rem;">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text  defaultBackground" id="basic-addon1">STK</span>
@@ -9,31 +9,37 @@
                 <input id="inp-customerOrders-searchStk" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu">
             </div>
         </div>
-
         <div class="col-md-3">
             <select class="custom-select gunlukHatBazindUretim-select" id="select-customerOrders-selectRowCount">
             </select>
         </div>
+
+        <div class="col-md-3">
+            <select class="custom-select gunlukHatBazindUretim-select" id="select-customerOrders-selectMonth">
+                    <option value="" selected>...</option>
+                    <option value="1">Ocak</option>
+                    <option value="2">şubat</option>
+                    <option value="3">mart</option>
+                    <option value="4">nisan</option>
+                    <option value="5">mayıs</option>
+                    <option value="6">haziran</option>
+                    <option value="7">temmus</option>
+                    <option value="8">Ağustos</option>
+                    <option value="9">Eylül</option>
+                    <option value="10">Ekim</option>
+                    <option value="11">Kasım</option>
+                    <option value="12">Aralık</option>
+            </select>
+        </div>
         <div class="col-md-2">
-            <button id="btn-customerOrders-reset" class="btn btn-danger">Reset</button>
+            <button id="btn-customerOrders-exportToExcel" class="btn btn-sm btn-success">export to excel</button>
+            <button id="btn-customerOrders-reset" style="background-color:#b13e5b;color:white" class="btn btn-sm btn-success ">Reset Search</button>
         </div>
     </div>
     <div class="Ship List">
-        <table class="table table-bordered">
+        <table  id="table-customerOrders-xls" class="table table-bordered">
             <caption style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem"> Toplam Records: <span id="span-customerOrders-rowCount" style="color:red"></span> </caption>
-            <thead>
-                <tr>
-                    <th scope="col">STK</th>
-                    <th scope="col">CariRef</th>
-                    <th scope="col">STA</th>
-                    @for (int i = 2017; i <= DateTime.Now.Year; i++)
-                    {
-                        <th scope="col">@i</th>
-                    }
-                    <th scope="col">Total All Year</th>
-                    <th scope="col">Total Stok</th>
-                    <th scope="col">InProgres</th>
-                </tr>
+            <thead id="table-customerOrders-dateHeaders">
             </thead>
             <tbody id="table-customerOrders"></tbody>
         </table>

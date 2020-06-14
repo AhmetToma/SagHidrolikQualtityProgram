@@ -164,6 +164,15 @@ $('#btn-sellDateReport-resetSearch').click(() => {
 
 
 
+//#region Export to Excel
+$('#btn-sellDateReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-sellDateReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'sell Date Report');
+    XLSX.writeFile(wb, 'sell Date Report.xlsx');
+})
+
+//#endregion
 
 
 

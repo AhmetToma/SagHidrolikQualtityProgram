@@ -235,3 +235,13 @@ function deleteProcessPlan(id, partNo)
 
 
 
+
+//#region Export to Excel
+$('#btn-processPlanReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-processPlanReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Process Plan Report');
+    XLSX.writeFile(wb, 'Process Plan Report.xlsx');
+})
+
+//#endregion

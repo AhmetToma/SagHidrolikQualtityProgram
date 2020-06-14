@@ -147,7 +147,15 @@ $('#btn-lostQtyReport-resetSearch').click(() => {
 //#endregion
 
 
+//#region Export to Excel
+$('#btn-lostQtyReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-lostQtyReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'lost Qty Report');
+    XLSX.writeFile(wb, 'lost Qty Report.xlsx');
+})
 
+//#endregion
 
 
 

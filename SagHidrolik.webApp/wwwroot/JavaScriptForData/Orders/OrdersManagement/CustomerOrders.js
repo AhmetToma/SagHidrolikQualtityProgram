@@ -3,13 +3,15 @@
         pageNumber: 1,
         pageSize: 5000000,
         Stk: "",
-        pid: ""
+        pid: "",
+        month:""
     };
 let pagination1 = {
     pageNumber: 1,
     pageSize: 6,
 }
 $('#tab-customerOrders').click((e) => {
+    $('#select-customerOrders-selectMonth').val(today.split('/')[1]);
     e.preventDefault
     ShowLoader();
     $.when($.ajax({
@@ -88,7 +90,7 @@ function GetCustomerOrdersAJaxCall() {
     });
 }
 
-//#region row count
+//#region select  row count
 $('#select-customerOrders-selectRowCount').on('change', () => {
     ShowLoader();
     pagination1.pageSize = parseInt($('#select-customerOrders-selectRowCount').val());
@@ -98,15 +100,25 @@ $('#select-customerOrders-selectRowCount').on('change', () => {
 });
 //#endregion
 
+
+//#region select Month
+$('#select-customerOrders-selectMonth').on('change', () => {
+    ShowLoader();
+    requestQueryForCustomerOrders.month = $('#select-customerOrders-selectMonth').val();
+    pagination1.pageNumber = 1;
+    $('#num-customerOrders-pageNumber').text(pagination1.pageNumber);
+    GetCustomerOrdersAJaxCall();
+});
+//#endregion
+
 function CreateCustomerOrdersTable() {
     ShowLoader();
     let pageSize = pagination1.pageSize * pagination1.pageNumber;
     let pageNumber = (pagination1.pageNumber - 1) * pagination1.pageSize;
     let slicedList = CustomerOrdersList.slice(pageNumber, pageSize);
-    let d = new Date();
-    let yearRows = "";
-    let totalAllYear = 0;
+    console.log(CustomerOrdersList);
     $(TablesId.customerOrders).empty();
+    $('#table-customerOrders-dateHeaders').empty();
     if (slicedList.length <= 0) {
         disableButton(NextButtons.customerOrders);
         ActiveButton(PreviousButtons.customerOrders);
@@ -115,36 +127,51 @@ function CreateCustomerOrdersTable() {
     }
     else {
         $('#recordNotFoundDiv_customerOrders').css('display', 'none');
-        slicedList.map((element, index) => {
-
-            for (let i = 2017; i <= d.getFullYear(); i++) {
-                element[`${i}`] ? element[`${i}`] = element[`${i}`] : element[`${i}`] = 0;
-                totalAllYear = totalAllYear + parseInt(element[`${i}`]);
-                element[`${i}`] != 0 ? element[`${i}`] = element[`${i}`] : element[`${i}`] = "";
-                yearRows = yearRows + `<td>${element[`${i}`]}</td>`
+        let headerKeys = Object.keys(slicedList[0]);
+        let headers = "";
+        for (let i = 0; i < headerKeys.length; i++) {
+            if (headerKeys[i] !== 'CARIREF' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'STA' && headerKeys[i] !== 'STK' && headerKeys[i] !== 'totalStok') {
+                console.log(headerKeys[i]);
+                headers += `<th scope="col">${headerKeys[i]}</th>`;
             }
+        }
+        console.log(headerKeys);
+        console.log(headers);
+
+        $('#table-customerOrders-dateHeaders').append(`
+   <tr>
+                            <th scope="col">STK</th>
+            <th scope="col">CariRef</th>
+            <th scope="col">STA</th>
+            <th scope="col">Total Stok</th>
+            <th scope="col">InProgres</th>
+${headers}
+                        </tr>`);
+        let dataWithTime = "";
+        slicedList.map((element, index) => {
             let matchedTotlaStok = getTotalStokByStk(element.STK);
             let matchedInProgress = getInProgresByStk(element.STK);
             matchedTotlaStok.length <= 0 ? element['totalStok'] = "" : element['totalStok'] = matchedTotlaStok[0].totalStok;
             matchedInProgress.length <= 0 ? element['InProgress'] = "" : element['InProgress'] = matchedInProgress[0].total;
+            for (let i = 0; i < headerKeys.length; i++) {
+                if (headerKeys[i] !== 'CARIREF' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'STA' && headerKeys[i] !== 'STK' && headerKeys[i] !== 'totalStok') 
+                    dataWithTime += `<td >${element[headerKeys[i]] ? element[headerKeys[i]] :""}</td>`;
+            }
             $(TablesId.customerOrders).append(`
 <tr>
     <td>${element.STK}</td>
     <td>${element.CARIREF}</td>
     <td>${element.STA}</td>
-    ${yearRows}
-    <td>${totalAllYear}</td>
     <td>${element.totalStok}</td>
     <td>${element.InProgress}</td>
+${dataWithTime}
              </tr>
 `);
-            yearRows = "";
-            totalAllYear = 0;
+            dataWithTime = "";
             matchedInProgress, matchedTotlaStok = [];
         });
     }
-    
-        HideLoader();
+    HideLoader();
 }
 
 //#region Next-Previous Hanldler
@@ -174,6 +201,8 @@ $(Inputs.customerOrders_searchStk).keyup(function () {
 //#region  reset
 $('#btn-customerOrders-reset').click(() => {
     requestQueryForCustomerOrders.pageNumber = 1;
+    pagination1.pageNumber = 1;
+    pagination1.pageSize = 6;
     $('#num-customerOrders-pageNumber').text(requestQueryForCustomerOrders.pageNumber);
     $(Inputs.customerOrders_searchStk).val('');
     $('#select-customerOrders-selectRowCount').val('6');
@@ -181,4 +210,12 @@ $('#btn-customerOrders-reset').click(() => {
 })
 //#endregion
 
+//#region Export to Excel
+$('#btn-customerOrders-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-customerOrders-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Customer Orders');
+    XLSX.writeFile(wb, 'Customer Orders.xlsx');
+})
+//#endregion
 

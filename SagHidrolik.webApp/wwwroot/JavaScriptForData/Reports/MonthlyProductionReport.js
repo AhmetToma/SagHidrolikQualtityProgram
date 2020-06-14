@@ -161,6 +161,15 @@ $('#btn-monthlyProdcutionReport-resetSearch').click(() => {
 
 
 
+//#region Export to Excel
+$('#btn-monthlyProdcutionReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-monthlyProdcutionReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Monthly Prodcution Report');
+    XLSX.writeFile(wb, 'Monthly Prodcution Report.xlsx');
+})
+
+//#endregion
 
 
 

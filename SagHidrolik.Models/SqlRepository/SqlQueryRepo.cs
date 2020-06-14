@@ -1306,19 +1306,19 @@ order by 2";
         public static string GetSellDateReportCount() => @"SELECT  dbo.STOKGEN.STK,MAX( CAST(STOK_ALT.TARIH AS DATE)) as tarih,STOKGEN.TUR,
   Sum(dbo.STOK_ALT.[GRMIK]-dbo.STOK_ALT.[CKMIK]) AS TotalStock
 FROM dbo.STOK_ALT RIGHT JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID
-WHERE (((STOKGEN.TUR)=3 Or (STOKGEN.TUR)=4)) 
+WHERE (((STOKGEN.TUR)=3 Or (STOKGEN.TUR)=4))  and  STOK_ALT.TARIH is not  null
 
 GROUP BY CAST(STOK_ALT.TARIH AS DATE),  STOKGEN.STK, STOKGEN.TUR,[CKMIK],[GRMIK]
 order by 2";
         #endregion
         #endregion
 
-    
+
 
         #region Order Management
         public static string GetOrderDetails(RequestQuery r)
         {
-            query = "SELECT dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,105) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
+            query = "SELECT dbo.SIPARIS_ALT.STK, Sum(dbo.SIPARIS_ALT.MIKTAR) AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,105) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
                 " FROM((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON(dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND(dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID) LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF " +
                 $" where SIPARIS_ALT.STK like '%{r.Stk}%' GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR, dbo.SIPARIS_ALT.TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA " +
                 $"order by STK OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -1343,21 +1343,24 @@ order by 2";
                 " ((dbo.SIPARIS_ALT S left JOIN dbo.STOK_ALT I ON(S.STOKP_ID = I.STOKP_ID) and(S.P_ID = I.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN " +
                 $" on S.CARIREF = CARIGEN.REF  where  S.STK like ''%{r.Stk}%'' " +
                 " GROUP BY S.STK, S.MIKTAR, S.TURAC, dbo.SIPAR.EVRAKNO, S.FATIRSTUR, S.STOKP_ID, S.TUR,  " +
-                " S.TESTARIHI, S.CARIREF, S.STA)  SELECT* FROM   Sales " +  
+                " S.TESTARIHI, S.CARIREF, S.STA)  SELECT* FROM   Sales " +
                 "   PIVOT(SUM(RemainQty_total)  FOR  YearDate IN('+@cols+' )) P; 'EXECUTE sp_executesql @query;";
             return query;
         }
-        public static string GetCustomerOrders(RequestQuery r)
-        {
-            query = "DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT @cols = STUFF((        SELECT DISTINCT      ',' + QUOTENAME(YEAR(TESTARIHI))" +
-                " FROM[dbo].SIPARIS_ALT order by 1 FOR xml PATH(''), TYPE  ).value('.', 'NVARCHAR(MAX)') , 1, 1, '');     set @query = 'WITH Sales AS (SELECT   S.STK, year(S.TESTARIHI) as YearDate, S.CARIREF,S.STA," +
-                " S.MIKTAR - isNull(Sum(I.MIKTAR), 0) AS RemainQty FROM ((dbo.SIPARIS_ALT S  left JOIN dbo.STOK_ALT I     ON(S.STOKP_ID = I.STOKP_ID)" +
-                " and(S.P_ID = I.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID)" +
-                $" left join CARIGEN on S.CARIREF = CARIGEN.REF WHERE(((S.MIKTAR - isnull(I.MIKTAR, 0)) > 0) And((S.TUR) = 90)) and S.STK like ''%{r.Stk}%''" +
-                "  GROUP BY S.STK,S.P_ID, S.TURAC, S.STOKP_ID, S.TUR, S.TESTARIHI, S.CARIREF, S.STA ,S.MIKTAR" +
-                " )  SELECT* FROM   Sales  PIVOT(SUM(RemainQty)  FOR  YearDate IN('+@cols+')) P;';EXECUTE sp_executesql @query; ";
-            return query;
-        }
+        public static string GetCustomerOrders(RequestQuery r,string startAt ,string endAt) => $@"set dateformat dmy;
+DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT
+ @cols = STUFF((        SELECT DISTINCT  
+     ',' + QUOTENAME( convert(varchar(10), cast( TESTARIHI As Date), 105))  
+	 FROM[dbo].SIPARIS_ALT  where TESTARIHI between '{startAt}' and '{endAt}' order by 1   FOR xml PATH(''), TYPE  ).value('.', 'NVARCHAR(MAX)') 
+	 , 1, 1, '');     set @query = 'WITH Sales AS (SELECT   S.STK, cast(S.TESTARIHI as date) as YearDate,
+	  S.CARIREF,S.STA, S.MIKTAR - isNull(Sum(I.MIKTAR), 0) AS RemainQty FROM ((dbo.SIPARIS_ALT S
+	    left JOIN dbo.STOK_ALT I     ON(S.STOKP_ID = I.STOKP_ID) and(S.P_ID = I.SIP_PID)) 
+		left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN on S.CARIREF = CARIGEN.REF
+		 WHERE(((S.MIKTAR - isnull(I.MIKTAR, 0)) > 0) And((S.TUR) = 90)) 
+	 and S.STK like ''%{r.Stk}%''  GROUP BY S.STK,S.P_ID, S.TURAC, S.STOKP_ID, S.TUR, S.TESTARIHI,
+	  S.CARIREF, S.STA ,S.MIKTAR )  SELECT* FROM   Sales  PIVOT(SUM(RemainQty)  FOR  
+	  YearDate IN('+@cols+')) P order by 5 ';EXECUTE sp_executesql @query;
+	  ";
         #endregion
         #region Wo 
         public static string GetAllProductionOrders(string m, RequestQuery r)
@@ -1517,7 +1520,7 @@ where Operator_ID ={s.Operator_ID}";
 
 
         #region #systemUsers
-        public static string GetAllSyetemUsers(RequestQuery requestQuery)=>$@"
+        public static string GetAllSyetemUsers(RequestQuery requestQuery) => $@"
 select Users.Id as UserId,Email ,Roles.[Name] as RoleName,RoleId from dbo.AspNetUsers Users inner Join AspNetUserRoles UserRoles on
 Users.Id =UserRoles.UserId inner join AspNetRoles Roles on
 UserRoles.RoleId= Roles.Id where Users.Email like'%{requestQuery.email}%' and Roles.Id like'%{requestQuery.roleId}%'
@@ -1640,7 +1643,7 @@ UserRoles.RoleId= Roles.Id )countNumber
 
 
         #region Giris Kontrol
-        public static string GetGirisKontrol(RequestQuery r ) => $@"
+        public static string GetGirisKontrol(RequestQuery r) => $@"
 SELECT convert(varchar(10), cast( dbo.IRSALIYE_ALT.TARIH As Date), 105) as Tarih, dbo.CARIGEN.STA, dbo.IRSALIYE_ALT.STK, dbo.IRSALIYE_ALT.MIKTAR,
  dbo.IRSALIYE_ALT.SIPEVRAKNO, dbo.STOKGEN.P_ID, dbo.STOKGEN.FIELD18, dbo.STOKGEN.FIELD19
   , dbo.IRSALIYE_ALT.KALITEKODU,dbo.IRSALIYE_ALT.CARIREF,

@@ -6,6 +6,7 @@ using System.Linq;
 using SagHidrolik.Models.ViewModesl;
 using SagHidrolik.Models.SqlRepository;
 using SagHidrolik.DataAccesslayer.Stok;
+using System;
 
 namespace SagHidrolik.DataAccesslayer.OrdersManagement
 {
@@ -59,10 +60,27 @@ namespace SagHidrolik.DataAccesslayer.OrdersManagement
 
         public static async Task<IEnumerable<dynamic>> GetCustomerOrders(RequestQuery requestQuery)
         {
+            string startAt, endAt, query="";
+            if (requestQuery.month == "" || requestQuery.month == null)
+            {
+                var startTime = new DateTime(Int16.Parse(WorkingWithYears.currentYear), DateTime.Now.Month, 1);
+                var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                startAt = $"1-{startTime.Month}-{startTime.Year}";
+                endAt = $"{lastDay}-{startTime.Month}-{startTime.Year}";
+                query = SqlQueryRepo.GetCustomerOrders(requestQuery, startAt, endAt);
+            }
+            else
+            {
+                var startTime = new DateTime(Int16.Parse(WorkingWithYears.currentYear), Int16.Parse(requestQuery.month), 1);
+                var lastDay = DateTime.DaysInMonth(startTime.Year, startTime.Month);
+                startAt = $"1-{startTime.Month}-{startTime.Year}";
+                endAt = $"{lastDay}-{startTime.Month}-{startTime.Year}";
+                query = SqlQueryRepo.GetCustomerOrders(requestQuery, startAt, endAt);
+            }
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
-                var list = await connection.QueryAsync<dynamic>(SqlQueryRepo.GetCustomerOrders(requestQuery));
+                var list = await connection.QueryAsync<dynamic>(query);
                 return list;
             }
         }

@@ -165,6 +165,15 @@ $('#btn-supplierPerfReport-resetSearch').click(() => {
 
 
 
+//#region Export to Excel
+$('#btn-supplierPerfReport-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-supplierPerfReport-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'supplier Perf Report');
+    XLSX.writeFile(wb, 'supplier Perf Report.xlsx');
+})
+
+//#endregion
 
 
 
