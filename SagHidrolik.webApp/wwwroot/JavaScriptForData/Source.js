@@ -33,11 +33,11 @@ const HttpUrls = {
     uretimPlani_GetAllUretimPlani: BaseUrl + "UretimData/GetAllUretimPlani",
     tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "UretimData/GetTamirIsEmriAdimlari",
     tamirIsEmri_InsertTamirIsEmri: BaseUrl + "UretimData/InsertTamirIsEmri",
-    GetSevkiyetKutuEtiketiList: BaseUrl + "Etiketler/GetSevkiyetKutuEtiketiList",
+    GetSevkiyetKutuEtiketiList: BaseUrl + "EtiketlerGetData/GetSevkiyetKutuEtiketiList",
     getAllProcessInGunlukHatBazindUretim: BaseUrl + "UretimData/getAllProcessInGunlukHatBazindUretim",
     GetAllGunlukHatBazindUretimList: BaseUrl + "UretimData/GetAllGunlukHatBazindUretimList",
-    GetAllStokEtiketi: BaseUrl + "Etiketler/GetAllStokEtiketi",
-    GetGirisKabulEtiketiList: BaseUrl + "Etiketler/GetGirisKabulEtiketiList",
+    GetAllStokEtiketi: BaseUrl + "EtiketlerGetData/GetAllStokEtiketi",
+    GetGirisKabulEtiketiList: BaseUrl + "EtiketlerGetData/GetGirisKabulEtiketiList",
     GetBomProccessInAddOrUpdateProcess: BaseUrl + "UretimData/GetAllBomProcessInAddOrUpdateProcess",
     GetBomProcessTemp: BaseUrl + "UretimData/GetBomProcessTemp",
     CopyToBomProcessTemp: BaseUrl + "UretimData/CopyToBomProcessTemp?pId=",
@@ -268,6 +268,9 @@ const Buttons = {
     urunEtiketi_reset: "#btn-urunEtiketi-reset",
     urunEtiketi_yatay_30_60: "#btn-urunEtiketi-yatay_30_60",
     urunEtiketi_tekil_20_80: "#btn-urunEtiket-tekil_20_80",
+    sevkiyetkutuEtiketi_reset: "#btn-sevkiyatKutuEtiketi-reset",
+    sevkiyetKutuEtiketi_etiketEkle: '#btn-sevkiyatKutuEtiketi-etiketEkle',
+    sevkiyetKutuEtiketi_etiket_100_150: "#btn-sevkiyatKutuEtiketi-etiket_100_150",
 }
 const Models = {
     claimType_add: "#claimType-AddModel",
@@ -371,6 +374,8 @@ const TablesId = {
 
 const Inputs = {
     gunlukHatBazindaUretim_searchMachineNo: "#inp-gunlukHatBazindUretim-searchMakine",
+    sevKabulEtiketi_stkSearch: "#inp-sevkiyatKutuEtiketi-stkSearch",
+    sevKabulEtiketi_paketlemeMiktari: "#inp-sevkiyatKutuEtiketi-paketlemeMiktari",
     allWo_searchStk: "#inp-allWo-searchStk",
     allWo_ProductionOrdersPrintout: "#inp-ProductionOrdersPrintout-searchStk",
     uretimplani_searchByStk: "#inp-uretimPlani-searchStk",
@@ -597,8 +602,37 @@ const PreviousButtons = {
     teslimatDurumu: "#btn-teslimatDurumu-previous",
     tranferWo: "#btn-tranferWo-previous",
     systemUser: "#btn-systemUser-previous",
+    sekiyetKutuEtiketi_sekKabul: "#btn-sevkiyatKutuEtiketi-previous",
 
 };
+const Texts = {
+    sevKabulEtiketi_stk: "#txt-sevkiyatKutuEtiketi-stk",
+    sevKabulEtiketi_tarih: "#txt-sevkiyatKutuEtiketi-tarih",
+    sevKabulEtiketi_firmaAdi: "#txt-sevkiyatKutuEtiketi-frimaAdi",
+    sevKabulEtiketi_kaliteKodu: "#txt-sevkiyatKutuEtiketi-kaliteKodu",
+    sevKabulEtiketi_siparisNo: "#txt-sevkiyatKutuEtiketi-siparisNo",
+    sevKabulEtiketi_rafAdres1: "#txt-sevkiyatKutuEtiketirafAdres1",
+    sevKabulEtiketi_rafAdres2: "#txt-sevkiyatKutuEtiketi-rafAdres2",
+    sevKabulEtiketi_sevAdresi: "#txt-sevkiyatKutuEtiketi-sevAdresi",
+    sevKabulEtiketi_faturaAdresi: "#txt-sevkiyatKutuEtiketi-faturaAdresi",
+    sevKabulEtiketi_kutuMiktari: "#txt-sevkiyatKutuEtiketi-kutuMiktari",
+    stokEtiketi_stk: "#txt-stokEtiketi-stk",
+    stokEtiketi_file18: "#txt-stokEtiketi-filed18",
+    stokEtiketi_file19: "#txt-stokEtiketi-filed19",
+    stokEtiketi_kutuMiktari: "#txt-stokEtiketi-kutuMiktari",
+
+    girisKabulEtiketi_stk: "#txt-girisKabulEtiketi-stk",
+    girisKabulEtiketi_tarih: "#txt-girisKabulEtiketi-tarih",
+    girisKabulEtiketi_firmaAdi: "#txt-girisKabulEtiketi-firmaAdi",
+    girisKabulEtiketi_kaliteKodu: "#txt-girisKabulEtiketi-kaliteKodu",
+    girisKabulEtiketi_siparisNo: "#txt-girisKabulEtiketi-siparisNo",
+    girisKabulEtiketi_filed18: "#txt-girisKabulEtiketi-filed18",
+    girisKabulEtiketi_filed19: "#txt-girisKabulEtiketi-filed19",
+    girisKabulEtiketi_kutuMiktari: "#txt-girisKabulEtiketi-kutuMiktari",
+    girisKabulEtiketi_paketlemeMiktari: "#txt-girisKabulEtiketi-paketlemeMiktari",
+
+
+}
 const NextButtons = {
     stokAll: "#btn-stokAll-next",
     claimType: "#btn-claimType-next",
@@ -644,6 +678,7 @@ const NextButtons = {
     teslimatDurumu: "#btn-teslimatDurumu-next",
     tranferWo: "#btn-tranferWo-next",
     systemUser: "#btn-systemUser-next",
+    sekiyetKutuEtiketi_sekKabul: "#btn-sevkiyatKutuEtiketi-next",
 
 };
 const pageNumbers = {
@@ -662,8 +697,6 @@ const pageNumbers = {
     settingsProcessNew: "#number-settingsProcessNew-pageNumber",
     machineSettings: "#num-machineSettings-pageNumber",
     stokAll: "#num-stokAll-pageNumber",
-
-
     claimType: "#number-claimType-pageNumber",
     company: "#number-company-pageNumber",
     department: "#number-department-pageNumber",

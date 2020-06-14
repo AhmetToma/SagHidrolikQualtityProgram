@@ -36,6 +36,7 @@ $('#tab-customerOrders').click((e) => {
         url: HttpUrls.GetCustomerOrders,
         success: (list) => {
             CustomerOrdersList = list;
+            console.log(list);
         }
     })
     ).done(function (a1, a2, a3) {
@@ -130,7 +131,7 @@ function CreateCustomerOrdersTable() {
         let headerKeys = Object.keys(slicedList[0]);
         let headers = "";
         for (let i = 0; i < headerKeys.length; i++) {
-            if (headerKeys[i] !== 'CARIREF' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'STA' && headerKeys[i] !== 'STK' && headerKeys[i] !== 'totalStok') {
+            if (headerKeys[i] !== 'CARIREF' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'STA' && headerKeys[i] !== 'STK' && headerKeys[i] !== 'totalStok' && headerKeys[i] !== 'carigenSta') {
                 console.log(headerKeys[i]);
                 headers += `<th scope="col">${headerKeys[i]}</th>`;
             }
@@ -141,7 +142,7 @@ function CreateCustomerOrdersTable() {
         $('#table-customerOrders-dateHeaders').append(`
    <tr>
                             <th scope="col">STK</th>
-            <th scope="col">CariRef</th>
+            <th scope="col">Carigen STA</th>
             <th scope="col">STA</th>
             <th scope="col">Total Stok</th>
             <th scope="col">InProgres</th>
@@ -154,13 +155,13 @@ ${headers}
             matchedTotlaStok.length <= 0 ? element['totalStok'] = "" : element['totalStok'] = matchedTotlaStok[0].totalStok;
             matchedInProgress.length <= 0 ? element['InProgress'] = "" : element['InProgress'] = matchedInProgress[0].total;
             for (let i = 0; i < headerKeys.length; i++) {
-                if (headerKeys[i] !== 'CARIREF' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'STA' && headerKeys[i] !== 'STK' && headerKeys[i] !== 'totalStok') 
+                if (headerKeys[i] !== 'CARIREF' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'STA' && headerKeys[i] !== 'STK' && headerKeys[i] !== 'totalStok' && headerKeys[i] !== 'carigenSta') 
                     dataWithTime += `<td >${element[headerKeys[i]] ? element[headerKeys[i]] :""}</td>`;
             }
             $(TablesId.customerOrders).append(`
 <tr>
     <td>${element.STK}</td>
-    <td>${element.CARIREF}</td>
+    <td>${element.carigenSta}</td>
     <td>${element.STA}</td>
     <td>${element.totalStok}</td>
     <td>${element.InProgress}</td>
@@ -206,6 +207,7 @@ $('#btn-customerOrders-reset').click(() => {
     $('#num-customerOrders-pageNumber').text(requestQueryForCustomerOrders.pageNumber);
     $(Inputs.customerOrders_searchStk).val('');
     $('#select-customerOrders-selectRowCount').val('6');
+    $('#select-customerOrders-selectMonth').val(today.split('/')[1]);
     GetCustomerOrdersAJaxCall();
 })
 //#endregion

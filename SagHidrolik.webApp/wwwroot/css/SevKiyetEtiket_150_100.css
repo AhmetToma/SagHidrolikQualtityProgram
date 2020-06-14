@@ -1,0 +1,146 @@
+﻿
+
+@media print {
+    .contain {
+        page-break-inside: avoid !important;
+        page-break-after: always;
+    }
+}
+ .contain  div:not(.vater) {
+    border: 1px solid black;
+}
+
+span {
+    font-weight: bold;
+}
+
+.contain {
+    transform: rotate(90deg) translate(7.5rem, 6rem);
+    width: 48rem;
+    height: 35rem;
+    overflow: hidden;
+}
+
+.div1, .div2, .div3, .div1-1, .div1-2 {
+    float: left;
+}
+
+.div1 {
+    width: 10%;
+    height: 100%;
+}
+
+    .div1 > img {
+        width: 100%;
+        height: 100%;
+    }
+
+.div1-1 {
+    width: 90%;
+    height: 10%;
+}
+
+.div1-2 {
+    width: 10%;
+    height: 10%;
+}
+
+.div1-3 {
+    width: 100%;
+    height: 50%;
+}
+
+.div1-4 {
+    width: 10%;
+    height: 20%;
+    float: right;
+    position: relative;
+    bottom: 4rem;
+}
+
+.div1-5 {
+    width: 100%;
+    height: 10%;
+}
+
+.div1-6 {
+    width: 100%;
+    height: 40%;
+}
+
+.div2 {
+    width: 60%;
+    height: 100%;
+}
+
+.div3 {
+    width: 30%;
+    height: 100%;
+}
+
+.div3-1 {
+    width: 100%;
+    height: 10%;
+}
+
+.div3-2 {
+    width: 100%;
+    height: 40%;
+}
+
+.div3-3 {
+    width: 100%;
+    height: 10%;
+}
+
+.div3-4 {
+    width: 100%;
+    height: 20%;
+}
+
+.div3-5 {
+    width: 100%;
+    height: 10%;
+}
+
+.div3-6 {
+    width: 100%;
+    height: 10%;
+}
+.div1-3 p {
+   text-align:center;
+    font-weight: bolder;
+    font-size: 21px;
+}
+.div1-3 svg {
+    height: 91px;
+    width: 109px;
+    position: relative;
+    left: 37%;
+}
+
+.div1-6 p:nth-child(1) {
+    margin-left: 0.51rem;
+    font-weight: bold;
+    font-size: 2.2rem;
+}
+.sevkiyatKutuEtiketi_adetBarcode {
+    position: relative;
+    height: 75px;
+    top: 7rem;
+    left: 1rem;
+}
+
+.div3-2 span {
+    position: relative;
+    left: 6rem;
+    font-size: 3rem;
+    top: 2rem;
+}
+
+.div3-4 span, .div3-6 span {
+    position: relative;
+    left: 2rem;
+    top: 1rem;
+    font-weight: bolder;
+}

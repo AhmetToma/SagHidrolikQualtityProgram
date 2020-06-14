@@ -1,5 +1,4 @@
 ﻿$(function () {
-
     let dataUrl = "Home/SevkiyatKutuEtiketi";
     let sevkiyetKutuEtiketiurl = BaseUrl + dataUrl;
     let serverUrl = BaseServerUrl + dataUrl;
@@ -15,14 +14,13 @@ let regustQueryForSekiyetKutuEtiketi = {
 let sevkiyatKabulEtiketiModel;
 let sevkiyetKutuAllRecords;
 // #region search
-let timerforSevkiyetKutu;
-let TypingIntervalforSevkiyetKutu = 500;
+
 $(Inputs.sevKabulEtiketi_stkSearch).keyup(function () {
     $('.sevkiyatKutuEtiketiUnderSection').css('opacity', '0');
     regustQueryForSekiyetKutuEtiketi.pageNumber = 1;
     $(PageNumbers.sekiyetKutuEtiketi_sekKabul).text(regustQueryForSekiyetKutuEtiketi.pageNumber);
-    clearTimeout(timerforSevkiyetKutu);
-        timerforSevkiyetKutu = setTimeout(GetSekviyetKutuEtiketiAjaxCall, TypingIntervalforSevkiyetKutu);
+    clearTimeout(timer);
+    timer = setTimeout(GetSekviyetKutuEtiketiAjaxCall, doneTypingInterval);
 });
 
 // #endregion
@@ -44,8 +42,8 @@ $(NextButtons.sekiyetKutuEtiketi_sekKabul).on('click', (event) => {
 //#region ajax call ,create table and  select row
 function GetSekviyetKutuEtiketiAjaxCall() {
     ShowLoader();
-    regustQueryForSekiyetKutuEtiketi.Stk = $(Inputs.sevKabulEtiketi_stkSearch).val();
 
+    regustQueryForSekiyetKutuEtiketi.Stk = $(Inputs.sevKabulEtiketi_stkSearch).val();
     $(TablesId.sekiyetKutuEtiketi_sevKabul).empty();
     $.ajax({
         type: "POST",
@@ -55,14 +53,13 @@ function GetSekviyetKutuEtiketiAjaxCall() {
         success: (list) => {
             console.log(list);
             if (list.length !== 0) {
-             
-                $(`${NotFoundRecordsId.sekiyetKuttEtiketi}`).css('display', 'none');
+                $(`${recordsNotFound.sekiyetKuttEtiketi}`).css('display', 'none');
                 CreateSevkiyetKutuEtiketTable(list, TablesId.sekiyetKutuEtiketi_sevKabul);
             }
             else {
 
-                $(`${NotFoundRecordsId.sekiyetKuttEtiketi} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
-                $(`${NotFoundRecordsId.sekiyetKuttEtiketi}`).css('display', 'block');
+                $(`${recordsNotFound.sekiyetKuttEtiketi} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
+                $(`${recordsNotFound.sekiyetKuttEtiketi}`).css('display', 'block');
                 HideLoader();
             }
         }
@@ -141,7 +138,6 @@ $(Buttons.sevkiyetKutuEtiketi_etiketEkle).click((event) => {
     let c = kutuIciMiktari - a * paketlemeMiktari;
     if (paketlemeMiktari > 0) {
        
-    
         for (var i = 1; i <= a; i++) {
             $(TablesId.sekiyetKutuEtiketi_result).append(`
 <tr>
@@ -186,7 +182,7 @@ $(Buttons.sevkiyetKutuEtiketi_etiketEkle).click((event) => {
 
     if (rowCount > 0);
     {
-        for (var i = 0; i < rowCount; i++) {
+        for (let i = 0; i < rowCount; i++) {
             sevkiyetResultTable[i] = $(`${TablesId.sekiyetKutuEtiketi_result} tr:nth-child(${i + 1}) td:nth-child(${2})`).text();
 
         }
@@ -197,7 +193,6 @@ $(Buttons.sevkiyetKutuEtiketi_etiketEkle).click((event) => {
 
 
 $(Buttons.sevkiyetKutuEtiketi_etiket_100_150).click((event) => {
-    
     event.preventDefault();
     let rowCount = $(`${TablesId.sekiyetKutuEtiketi_result} tr`).length;
     if (rowCount > 0) {
@@ -205,7 +200,6 @@ $(Buttons.sevkiyetKutuEtiketi_etiket_100_150).click((event) => {
         let paketlemeMiktari = 0;
         $('.sevkiyatKutuEtiketi_printModeli').empty();
         for (var i = 0; i < rowCount; i++) {
-
             paketlemeMiktari = sevkiyetResultTable[i];
             $('.sevkiyatKutuEtiketi_printModeli').append(sevkiyetKutuEtiketiSetEtiket(sevkiyatKabulEtiketiModel
                 , paketlemeMiktari, i+1));
@@ -228,7 +222,7 @@ $(Buttons.sevkiyetKutuEtiketi_etiket_100_150).click((event) => {
     }
 });
 function HideSeviyatKutEtiketPrintModeli() {
-   $('.sevkiyatKutuEtiketi_printModeli').empty();
+ $('.sevkiyatKutuEtiketi_printModeli').empty();
     $('.sevkiyatKutuEtiketi_printModeli').css('opacity', '1');
 }
 //#endregion

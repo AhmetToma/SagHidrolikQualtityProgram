@@ -5,7 +5,8 @@ let requestQueryForComponentOrders = {
     pageNumber: 1,
     pageSize: 5000000,
     Stk: "",
-    pid: ""
+    pid: "",
+    month:""
 };
 let pagination = {
     pageNumber: 1,
@@ -15,7 +16,7 @@ $('#tab-componentOrders').click((e) => {
     e.preventDefault();
     //GetAllTotalStokAjaxCall();
     //  GetAllInProgresAjaxCall();
-     
+    $('#select-componentOrders-selectMonth').val(today.split('/')[1]);
     ShowLoader();
     $.when($.ajax({
         type: "POST",
@@ -31,6 +32,7 @@ $('#tab-componentOrders').click((e) => {
         url: HttpUrls.GetInProgress,
         success: (list) => {
             InProgresList = list;
+            console.log(list);
         }
     }), $.ajax({
         type: "POST",
@@ -39,6 +41,7 @@ $('#tab-componentOrders').click((e) => {
         url: HttpUrls.GetComponentOrders,
         success: (list) => {
             componentOrderslist = list;
+            console.log(componentOrderslist);
         }
     })
     ).done(function (a1, a2, a3) {
@@ -133,7 +136,7 @@ function getInProgresByStk(stk) {
     return matched;
 }
 
-//#region row count
+//#region select  row count
 
 $('#select-componentOrders-selectRowCount').on('change', () => {
     pagination.pageSize = parseInt($('#select-componentOrders-selectRowCount').val());
@@ -143,44 +146,77 @@ $('#select-componentOrders-selectRowCount').on('change', () => {
 });
 //#endregion
 
+
+//#region select Month
+$('#select-componentOrders-selectMonth').on('change', () => {
+    ShowLoader();
+    requestQueryForComponentOrders.month = $('#select-componentOrders-selectMonth').val();
+    pagination.pageNumber = 1;
+    $('#num-customerOrders-pageNumber').text(pagination.pageNumber);
+    GetComponentOrdersAJaxCall();
+});
+//#endregion
+
+
 function CreateComponetOrdersTable() {
     ShowLoader();
     let pageSize = pagination.pageSize * pagination.pageNumber;
     let pageNumber =  (pagination.pageNumber-1)*pagination.pageSize;
     let slicedList = componentOrderslist.slice(pageNumber, pageSize);
-    console.log('AFTER', pageNumber, pageSize, slicedList);
-    console.log(componentOrderslist.length);
-    let d = new Date();
-    let yearRows = "";
-    let totalAllYear = 0;
     $(TablesId.componentOrders).empty();
-    slicedList.map((element, index) => {
-
-        for (let i = 2017; i <= d.getFullYear(); i++) {
-            element[`${i}`] ? element[`${i}`] = element[`${i}`] : element[`${i}`] = 0;
-            totalAllYear = totalAllYear + parseInt(element[`${i}`]);
-            element[`${i}`] !=0? element[`${i}`] = element[`${i}`] : element[`${i}`] = "";
-            yearRows = yearRows + `<td>${element[`${i}`]}</td>`
+    $('#table-componentOrders-dateHeaders').empty();
+    if (slicedList.length <= 0) {
+        disableButton(NextButtons.componentOrders);
+        ActiveButton(PreviousButtons.componentOrders);
+        $(`#recordNotFoundDiv_componentOrders h3`).text('Hiç Bir Kayit Bulunmamaktadır');
+        $('#recordNotFoundDiv_componentOrders').css('display', 'block');
+    }
+    else {
+        $('#recordNotFoundDiv_componentOrders').css('display', 'none');
+        let headerKeys = Object.keys(slicedList[0]);
+        let headers = "";
+        for (let i = 0; i < headerKeys.length; i++) {
+            if (headerKeys[i] !== 'CARIREF' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'STA' && headerKeys[i] !== 'STK' && headerKeys[i] !== 'totalStok' && headerKeys[i] !== 'carigenSta') {
+                console.log(headerKeys[i]);
+                headers += `<th scope="col">${headerKeys[i]}</th>`;
+            }
         }
-        let matchedTotlaStok = getTotalStokByStk(element.STK);
-        let matchedInProgress = getInProgresByStk(element.STK);
 
-        matchedTotlaStok.length <= 0 ? element['totalStok'] = "" : element['totalStok'] = matchedTotlaStok[0].totalStok;
-        matchedInProgress.length <= 0 ? element['InProgress'] = "" : element['InProgress'] = matchedInProgress[0].total;
-        $(TablesId.componentOrders).append(`
+        $('#table-componentOrders-dateHeaders').append(`
+   <tr>
+                            <th scope="col">STK</th>
+            <th scope="col">Carigen STA</th>
+            <th scope="col">STA</th>
+            <th scope="col">Total Stok</th>
+            <th scope="col">InProgres</th>
+${headers}
+                        </tr>`);
+
+        let dataWithTime = "";
+        slicedList.map((element, index) => {
+            let matchedTotlaStok = getTotalStokByStk(element.STK);
+            let matchedInProgress = getInProgresByStk(element.STK);
+            matchedTotlaStok.length <= 0 ? element['totalStok'] = "" : element['totalStok'] = matchedTotlaStok[0].totalStok;
+            matchedInProgress.length <= 0 ? element['InProgress'] = "" : element['InProgress'] = matchedInProgress[0].total;
+            for (let i = 0; i < headerKeys.length; i++) {
+                if (headerKeys[i] !== 'CARIREF' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'STA' && headerKeys[i] !== 'STK' && headerKeys[i] !== 'totalStok' & headerKeys[i] !== 'carigenSta')
+                    dataWithTime += `<td >${element[headerKeys[i]] ? element[headerKeys[i]] : ""}</td>`;
+            }
+            $(TablesId.componentOrders).append(`
 <tr>
     <td>${element.STK}</td>
-    <td>${element.CARIREF}</td>
-    ${yearRows}
-    <td>${totalAllYear}</td>
+    <td>${element.carigenSta}</td>
+    <td>${element.STA}</td>
     <td>${element.totalStok}</td>
     <td>${element.InProgress}</td>
+${dataWithTime}
              </tr>
 `);
-        yearRows = "";
-        totalAllYear = 0;
-        matchedInProgress,matchedTotlaStok = []; 
-    });
+
+            dataWithTime = "";
+            matchedInProgress, matchedTotlaStok = [];
+        });
+    }
     HideLoader();
 }
 
@@ -213,9 +249,22 @@ $(Inputs.componentOrders_searchStk).keyup(function () {
 //#region  reset
 $('#btn-componentOrders-reset').click(() => {
     requestQueryForComponentOrders.pageNumber = 1;
+    pagination.pageNumber = 1;
+    pagination.pageSize = 6;
     $('#num-componentOrders-pageNumber').text(requestQueryForComponentOrders.pageNumber);
     $(Inputs.componentOrders_searchStk).val('');
     $('#select-componentOrders-selectRowCount').val('6');
+    $('#select-componentOrders-selectMonth').val(today.split('/')[1]);
     GetComponentOrdersAJaxCall();
+})
+//#endregion
+
+
+//#region Export to Excel
+$('#btn-componentOrders-exportToExcel').click((e) => {
+    const ws = XLSX.WorkSheet = XLSX.utils.table_to_sheet(document.getElementById('table-componentOrders-xls'));
+    const wb = XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Component Orders');
+    XLSX.writeFile(wb, 'Component Orders.xlsx');
 })
 //#endregion

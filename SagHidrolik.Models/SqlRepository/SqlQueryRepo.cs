@@ -1335,29 +1335,33 @@ order by 2";
             return query;
         }
 
-        public static string GetComponentOrders(RequestQuery r)
-        {
-            query = "DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT @cols = STUFF((     SELECT DISTINCT  ',' + QUOTENAME(YEAR(TESTARIHI)) " +
-                " FROM[dbo].SIPARIS_ALT order by 1  FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');" +
-                " set @query = 'WITH Sales AS ( SELECT S.STK, year(S.TESTARIHI) as YearDate, S.CARIREF,S.STA,	S.MIKTAR - isNull(Sum(I.MIKTAR), 0) AS RemainQty_total FROM" +
-                " ((dbo.SIPARIS_ALT S left JOIN dbo.STOK_ALT I ON(S.STOKP_ID = I.STOKP_ID) and(S.P_ID = I.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN " +
-                $" on S.CARIREF = CARIGEN.REF  where  S.STK like ''%{r.Stk}%'' " +
-                " GROUP BY S.STK, S.MIKTAR, S.TURAC, dbo.SIPAR.EVRAKNO, S.FATIRSTUR, S.STOKP_ID, S.TUR,  " +
-                " S.TESTARIHI, S.CARIREF, S.STA)  SELECT* FROM   Sales " +
-                "   PIVOT(SUM(RemainQty_total)  FOR  YearDate IN('+@cols+' )) P; 'EXECUTE sp_executesql @query;";
-            return query;
-        }
+        public static string GetComponentOrders(RequestQuery r,string startAt,string endAt) => $@"
+set dateformat dmy;
+DECLARE @cols AS nvarchar(max);
+ DECLARE @query AS nvarchar(max);
+  SELECT @cols = STUFF(( 
+  SELECT DISTINCT      ',' + QUOTENAME( convert(varchar(10), cast( TESTARIHI As Date), 105))  
+	 FROM[dbo].SIPARIS_ALT  where TESTARIHI between '{startAt}' and '{endAt}'
+	  order by 1  FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
+	  set @query = 'WITH Sales AS ( SELECT S.STK, convert(varchar(10), cast( S.TESTARIHI As Date), 105) as YearDate,CARIGEN.STA as carigenSta, S.CARIREF,S.STA,S.MIKTAR - 
+	  isNull(Sum(I.MIKTAR), 0) AS RemainQty_total FROM ((dbo.SIPARIS_ALT S left JOIN dbo.STOK_ALT I ON(S.STOKP_ID = I.STOKP_ID) 
+	  and(S.P_ID = I.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN  on S.CARIREF = CARIGEN.REF 
+	   where  S.STK like ''%{r.Stk}%''  GROUP BY S.STK, S.MIKTAR, S.TURAC, dbo.SIPAR.EVRAKNO, S.FATIRSTUR, S.STOKP_ID, S.TUR, CARIGEN.STA  ,
+	      S.TESTARIHI, S.CARIREF, S.STA)  SELECT* FROM   Sales    PIVOT(SUM(RemainQty_total)  FOR  YearDate IN('+@cols+' )) P;'
+		  EXECUTE sp_executesql @query;
+";
+      
         public static string GetCustomerOrders(RequestQuery r,string startAt ,string endAt) => $@"set dateformat dmy;
 DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT
  @cols = STUFF((        SELECT DISTINCT  
      ',' + QUOTENAME( convert(varchar(10), cast( TESTARIHI As Date), 105))  
 	 FROM[dbo].SIPARIS_ALT  where TESTARIHI between '{startAt}' and '{endAt}' order by 1   FOR xml PATH(''), TYPE  ).value('.', 'NVARCHAR(MAX)') 
-	 , 1, 1, '');     set @query = 'WITH Sales AS (SELECT   S.STK, cast(S.TESTARIHI as date) as YearDate,
+	 , 1, 1, '');     set @query = 'WITH Sales AS (SELECT   S.STK, cast(S.TESTARIHI as date) as YearDate,CARIGEN.STA as carigenSta,
 	  S.CARIREF,S.STA, S.MIKTAR - isNull(Sum(I.MIKTAR), 0) AS RemainQty FROM ((dbo.SIPARIS_ALT S
 	    left JOIN dbo.STOK_ALT I     ON(S.STOKP_ID = I.STOKP_ID) and(S.P_ID = I.SIP_PID)) 
 		left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN on S.CARIREF = CARIGEN.REF
 		 WHERE(((S.MIKTAR - isnull(I.MIKTAR, 0)) > 0) And((S.TUR) = 90)) 
-	 and S.STK like ''%{r.Stk}%''  GROUP BY S.STK,S.P_ID, S.TURAC, S.STOKP_ID, S.TUR, S.TESTARIHI,
+	 and S.STK like ''%{r.Stk}%''  GROUP BY S.STK,S.P_ID, S.TURAC, S.STOKP_ID, S.TUR, S.TESTARIHI,CARIGEN.STA  ,
 	  S.CARIREF, S.STA ,S.MIKTAR )  SELECT* FROM   Sales  PIVOT(SUM(RemainQty)  FOR  
 	  YearDate IN('+@cols+')) P order by 5 ';EXECUTE sp_executesql @query;
 	  ";

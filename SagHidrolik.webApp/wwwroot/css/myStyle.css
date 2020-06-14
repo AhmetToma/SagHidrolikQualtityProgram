@@ -920,3 +920,103 @@ textarea {
 }*/
 /* end urun etiket*/
 
+
+
+/* start sevkiyat kabul etiketi*/
+
+.nav-sevkiyatKutuEtiketi {
+    margin-left: 45%;
+}
+
+    .nav-sevkiyatKutuEtiketi li a {
+        color: white;
+        margin-right: 10px;
+        background-color: #2A3F54;
+    }
+
+        .nav-sevkiyatKutuEtiketi li a:hover {
+            background-color: #b52e31;
+            color: white;
+            cursor: pointer;
+        }
+
+
+.sevkiyatKutuEtiketiCard label {
+   font-size:1.5rem;
+}
+.sevkiyatKutuEtiketiTable tbody tr:hover {
+    background-color: #2A3F54;
+    color: white;
+    cursor: pointer;
+}
+
+.sevkiyatKutuEtiketiCard {
+    width: 100%;
+    padding:1rem;
+}
+
+.zxc {
+    height: 400px;
+    overflow-y: auto;
+}
+
+.sevkiyatKutuEtiketiCard .row input {
+    margin-bottom: 5px;
+}
+
+.sevkiyatKutuEtiketiCard .row label {
+    color: #b52e31;
+    text-decoration: none !important;
+    border-bottom: 2px solid black;
+    ;
+}
+
+.sevkiyatKutuEtiketiCard .row {
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+    .sevkiyatKutuEtiketiCard .row input:disabled {
+        background-color: #2A3F54;
+        color: white;
+    }
+
+.sevkiyatKutuEtiketiCard p {
+    color: black;
+    font-weight: bold;
+}
+
+.sevkiyatKutuEtiketiCard {
+    border: 1.5px solid #2A3F54;
+    box-shadow: 10px 10px 10px #2A3F54;
+}
+
+    .sevkiyatKutuEtiketiCard h1:nth-child(1) {
+        background-color: #2A3F54;
+        color: white;
+        text-align: center;
+        font-size: 23px;
+        border-radius: 37px;
+        width: 42%;
+        margin-left: 26%;
+        padding: 5px;
+    }
+
+.sevkiyatKutuEtiketiLastTable button {
+    background-color: #2A3F54 !important;
+    color: white !important;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#btn-sevkiyatKutuEtiketi-reset {
+    background-color: #e73c68 !important;
+    color: white !important;
+}
+
+.sevkiyatKutuEtiketiLastTable button:focus {
+    background-color: #2A3F54 !important;
+    color: white !important;
+}
+/* end sevkiyat kabul etiketi*/
