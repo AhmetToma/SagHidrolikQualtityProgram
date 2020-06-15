@@ -1,0 +1,178 @@
+﻿.containqA4 div {
+    border: 1px solid black;
+}
+
+span {
+    font-weight: bold;
+}
+
+.containqA4 {
+    margin: 2rem 2rem 6rem 2rem;
+    width: 75rem;
+    height: 20rem;
+}
+
+.containq2-1 span {
+    text-align: center;
+    margin-left: 32%;
+    font-size: 2rem;
+}
+.containq2-2 svg {
+    height: 3.8rem;
+    width: 100%;
+}
+.containq3 p:nth-child(1) {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bolder;
+}
+
+.containq3 p:nth-child(2) {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    position: relative;
+    bottom: 1rem;
+}
+
+.containq4-2 span {
+    margin-left: 34%;
+    font-size: 1.4rem
+}
+
+.containq4-3 span {
+    font-weight: bolder;
+    font-size: 3rem;
+    margin-left: 21%
+}
+
+.containq5-5 span {
+    position: relative;
+    font-size: 4rem;
+    font-weight: bold;
+    left: 42%;
+}
+
+.containq5-7 svg {
+    height: 4.4rem;
+    transform: translate(0,0);
+    width: 100%;
+}
+
+.containq1, .containq2, .containq2-1, .containq2-2, .containq3,
+.containq4, .containq5, .containq5-1, .containq5-2, .containq5-3, .containq5-4,
+.containq5-5, .containq5-6, .containq5-7 {
+    float: left;
+}
+
+.containq1 {
+    width: 8%;
+    height: 126%;
+}
+
+    .containq1 img {
+        width: 90%;
+        height: 100%;
+    }
+
+.containq2 {
+    width: 85%;
+    height: 21%;
+}
+
+.containq2-1, .containq2-2 {
+    width: 50%;
+    height: 100%;
+}
+
+.containq3 {
+    width: 85%;
+    height: 30%;
+}
+
+.containq4 {
+    width: 46%;
+    height: 76%;
+}
+
+.containq5 {
+    width: 39%;
+    height: 76%;
+}
+
+.containq4-1 {
+    width: 100%;
+    height: 35%;
+}
+
+.containq4-2 {
+    width: 100%;
+    height: 25%;
+}
+
+.containq4-3 {
+    width: 100%;
+    height: 40%;
+}
+
+.containq5-1 {
+    width: 50%;
+    height: 15%;
+}
+
+.containq5-2 {
+    width: 50%;
+    height: 15%;
+}
+
+.containq5-3 {
+    width: 50%;
+    height: 20%;
+}
+
+.containq5-4 {
+    width: 50%;
+    height: 20%;
+}
+
+.containq5-5 {
+    width: 75%;
+    height: 40%;
+}
+
+.containq5-6 {
+    width: 25%;
+    height: 40%;
+}
+
+.containq5-7 {
+    width: 100%;
+    height: 25%;
+}
+.containq5-1 p, .containq5-3 p{
+    margin-left:6px;
+    font-weight:bold;
+}
+.containq4-1 {
+    border-right: none !important;
+}
+.containq4-3 {
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important
+}
+.seprator {
+    color: white;
+    height: 1.2rem;
+    background-color: white;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+
+/*@media print {
+    .containA4{
+        page-break-inside: avoid !important;
+        page-break-after: always;
+    }
+}*/

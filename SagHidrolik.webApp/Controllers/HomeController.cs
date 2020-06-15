@@ -44,12 +44,18 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
-
+        public IActionResult GirisKabulEtiketi()
+        {
+            return View();
+        }
         public IActionResult ReviewDetails()
         {
             return View();
         }
-
+        public IActionResult StokEtiketi()
+        {
+            return View();
+        }
         public IActionResult AllReports()
         {
             return View();

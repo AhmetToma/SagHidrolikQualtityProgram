@@ -236,7 +236,11 @@ const Buttons = {
     claimType_Add: "#btn-claimType-add",
     calimType_confirmAdd: "#btn-claimType-confirmAdd",
     calimType_confirmEdit: "#btn-claimType-confirmEdit",
-
+    stokEtiketi_reset: "#btn-stokEtiketi-reset",
+    stokEtiketi_tekEtiket: "#btn-stokEtiketi-tekEtiket",
+    stokEtiketi_topluEtiket: "#btn-stokEtiketi-topluEtiket",
+    stokEtiketi_mamulA4: "#btn-stokEtiketi-mamulA4",
+    stokEtiketi_A4: "#btn-stokEtiketi-A4",
     compnay_Add: "#btn-company-add",
     compnay_confrim: "#btn-company-confirmAdd",
     company_confirmEdit: "#btn-company-confirmEdit",
@@ -271,6 +275,9 @@ const Buttons = {
     sevkiyetkutuEtiketi_reset: "#btn-sevkiyatKutuEtiketi-reset",
     sevkiyetKutuEtiketi_etiketEkle: '#btn-sevkiyatKutuEtiketi-etiketEkle',
     sevkiyetKutuEtiketi_etiket_100_150: "#btn-sevkiyatKutuEtiketi-etiket_100_150",
+    girisKabulEitketi_reset: '#btn-girisKabulEtiketi-reset',
+    girisKabulEitketi_etiketEkle: "#btn-girisKabulEtiketi-etiketEkle",
+    girisKabulEitketi_A4Zirva: "#btn-girisKabulEtiketi-A4Zirva"
 }
 const Models = {
     claimType_add: "#claimType-AddModel",
@@ -374,6 +381,11 @@ const TablesId = {
 
 const Inputs = {
     gunlukHatBazindaUretim_searchMachineNo: "#inp-gunlukHatBazindUretim-searchMakine",
+    girisKabulEtiketi_searchStk: "#inp-girisKabulEtiketi-stkSearch",
+    girisKabulEtiketi_paketlemeMiktari: "#inp-girisKabulEtiketi-paketlemeMiktari",
+    stokEtiekt_stkSearch: "#inp-stokEtiketi-stkSearch",
+    stokEtiekt_paketlemeTarihi: "#inp-stokEtiketi-paketletmeTarih",
+    stokEtiekt_paketlemeMiktari: "#inp-stokEtiketi-paketlemeMiktari",
     sevKabulEtiketi_stkSearch: "#inp-sevkiyatKutuEtiketi-stkSearch",
     sevKabulEtiketi_paketlemeMiktari: "#inp-sevkiyatKutuEtiketi-paketlemeMiktari",
     allWo_searchStk: "#inp-allWo-searchStk",
@@ -603,7 +615,8 @@ const PreviousButtons = {
     tranferWo: "#btn-tranferWo-previous",
     systemUser: "#btn-systemUser-previous",
     sekiyetKutuEtiketi_sekKabul: "#btn-sevkiyatKutuEtiketi-previous",
-
+    girisKabulEtiketi: "#btn-girisKabulEtiketi-previous",
+    stokEtiketi: "#btn-stokEtiketi-previous",
 };
 const Texts = {
     sevKabulEtiketi_stk: "#txt-sevkiyatKutuEtiketi-stk",
@@ -679,6 +692,9 @@ const NextButtons = {
     tranferWo: "#btn-tranferWo-next",
     systemUser: "#btn-systemUser-next",
     sekiyetKutuEtiketi_sekKabul: "#btn-sevkiyatKutuEtiketi-next",
+    girisKabulEtiketi: "#btn-girisKabulEtiketi-next",
+    stokEtiketi: "#btn-stokEtiketi-next",
+
 
 };
 const pageNumbers = {
@@ -733,7 +749,12 @@ function HideLoader() {
     //  $('.loader-Container').css('display', 'none');
 
 }
-
+function checkRowCount(rowCount) {
+    let messag = "";
+    rowCount = rowCount % 2;
+    rowCount !== 0 ? messag = 'tek' : messag = 'cift';
+    return messag;
+}
 
 function disableButton(id) {
     $(id).css({ 'pointer-events': 'none', 'background-color': 'grey', 'cursor': 'no-drop' });
@@ -782,3 +803,20 @@ function validateEmail(email) {
     }
     return true;
 }
+
+String.prototype.turkishtoEnglish = function () {
+    return this.replace('Ğ', 'g')
+        .replace('Ü', 'u')
+        .replace('Ş', 's')
+        .replace('I', 'i')
+        .replace('İ', 'i')
+        .replace('Ö', 'o')
+        .replace('Ç', 'c')
+        .replace('ğ', 'g')
+        .replace('ü', 'u')
+        .replace('ş', 's')
+        .replace('ı', 'i')
+        .replace('ö', 'o')
+        .replace('İ', 'I')
+        .replace('ç', 'c');
+};

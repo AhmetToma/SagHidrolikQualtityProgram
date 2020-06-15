@@ -14,11 +14,10 @@ let regustQueryForSekiyetKutuEtiketi = {
 let sevkiyatKabulEtiketiModel;
 let sevkiyetKutuAllRecords;
 // #region search
-
 $(Inputs.sevKabulEtiketi_stkSearch).keyup(function () {
     $('.sevkiyatKutuEtiketiUnderSection').css('opacity', '0');
     regustQueryForSekiyetKutuEtiketi.pageNumber = 1;
-    $(PageNumbers.sekiyetKutuEtiketi_sekKabul).text(regustQueryForSekiyetKutuEtiketi.pageNumber);
+    $(pageNumbers.sekiyetKutuEtiketi_sekKabul).text(regustQueryForSekiyetKutuEtiketi.pageNumber);
     clearTimeout(timer);
     timer = setTimeout(GetSekviyetKutuEtiketiAjaxCall, doneTypingInterval);
 });
@@ -28,14 +27,14 @@ $(Inputs.sevKabulEtiketi_stkSearch).keyup(function () {
 $(PreviousButtons.sekiyetKutuEtiketi_sekKabul).on('click', (event) => {
     event.preventDefault();
     if (regustQueryForSekiyetKutuEtiketi.pageNumber > 1) regustQueryForSekiyetKutuEtiketi.pageNumber -= 1;
-    $(PageNumbers.sekiyetKutuEtiketi_sekKabul).text(regustQueryForSekiyetKutuEtiketi.pageNumber);
+    $(pageNumbers.sekiyetKutuEtiketi_sekKabul).text(regustQueryForSekiyetKutuEtiketi.pageNumber);
     GetSekviyetKutuEtiketiAjaxCall();
 
 });
 $(NextButtons.sekiyetKutuEtiketi_sekKabul).on('click', (event) => {
     event.preventDefault();
     regustQueryForSekiyetKutuEtiketi.pageNumber += 1;
-    $(PageNumbers.sekiyetKutuEtiketi_sekKabul).text(regustQueryForSekiyetKutuEtiketi.pageNumber);
+    $(pageNumbers.sekiyetKutuEtiketi_sekKabul).text(regustQueryForSekiyetKutuEtiketi.pageNumber);
     GetSekviyetKutuEtiketiAjaxCall();
 });
 //#endregion
@@ -203,7 +202,7 @@ $(Buttons.sevkiyetKutuEtiketi_etiket_100_150).click((event) => {
             paketlemeMiktari = sevkiyetResultTable[i];
             $('.sevkiyatKutuEtiketi_printModeli').append(sevkiyetKutuEtiketiSetEtiket(sevkiyatKabulEtiketiModel
                 , paketlemeMiktari, i+1));
-            JsBarcode(".sevkiyatKutuEtiketi_stkBarcode", `${sevkiyatKabulEtiketiModel.stk}`, { format: "CODE128", text: "" });
+            JsBarcode(".sevkiyatKutuEtiketi_stkBarcode", `${sevkiyatKabulEtiketiModel.stk.turkishtoEnglish()}`, { format: "CODE128", text: "" });
             JsBarcode(".sevkiyatKutuEtiketi_adetBarcode", `${paketlemeMiktari}`, { format: "CODE128", text: "" });
         }
         $('.sevkiyatKutuEtiketi_printModeli').css('opacity', '1');

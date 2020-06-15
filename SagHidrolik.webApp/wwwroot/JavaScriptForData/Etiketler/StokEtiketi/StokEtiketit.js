@@ -1,5 +1,5 @@
 ﻿    $(function () {
-    let dataUrl = "Home/StokEtiketi";
+        let dataUrl = "Home/StokEtiketi";
     let tamirIsUrl = BaseUrl + dataUrl;     let serverUrl = BaseServerUrl + dataUrl;
     if (window.location.href === tamirIsUrl || window.location.href === serverUrl) {
         GetAllStokEtiketiAjaxCall();
@@ -29,13 +29,13 @@ function GetAllStokEtiketiAjaxCall() {
         success: (list) => {
             stokEtiketiList = list;
             if (list.length !== 0) {
-                $(NotFoundRecordsId.stokEtiketi).css('display', 'none');
+                $(recordsNotFound.stokEtiketi).css('display', 'none');
                 CreateAllStokEtiketiTable(list, TablesId.stokEtiketi_stokEtiketiList);
             }
             else {
 
-                $(`${NotFoundRecordsId.stokEtiketi} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
-                $(NotFoundRecordsId.stokEtiketi).css('display', 'block');
+                $(`${recordsNotFound.stokEtiketi} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
+                $(recordsNotFound.stokEtiketi).css('display', 'block');
                 HideLoader();
             }
         }
@@ -104,26 +104,23 @@ $(TablesId.stokEtiketi_stokEtiketiList).on('click', 'tr', function () {
 $(PreviousButtons.stokEtiketi).on('click', (event) => {
     event.preventDefault();
     if (requestQueryForStokEtiketi.pageNumber > 1) requestQueryForStokEtiketi.pageNumber -= 1;
-    $(PageNumbers.stokEtiketi).text(requestQueryForStokEtiketi.pageNumber);
+    $(pageNumbers.stokEtiketi).text(requestQueryForStokEtiketi.pageNumber);
     GetAllStokEtiketiAjaxCall();
 });
 $(NextButtons.stokEtiketi).on('click', (event) => {
     event.preventDefault();
     requestQueryForStokEtiketi.pageNumber += 1;
-    $(PageNumbers.stokEtiketi).text(requestQueryForStokEtiketi.pageNumber);
+    $(pageNumbers.stokEtiketi).text(requestQueryForStokEtiketi.pageNumber);
     GetAllStokEtiketiAjaxCall();
 });
 //#endregion
 // #region search
-let stokEtiketiTypingTimer;
-let stokEtiketidoneTypingInterval = 500;
 $(Inputs.stokEtiekt_stkSearch).keyup(function () {
 
-    clearTimeout(stokEtiketiTypingTimer);
-
-        requestQueryForStokEtiketi.pageNumber = 1;
-        $(PageNumbers.stokEtiketi).text(requestQueryForStokEtiketi.pageNumber);
-        stokEtiketiTypingTimer = setTimeout(GetAllStokEtiketiAjaxCall, stokEtiketidoneTypingInterval);
+    clearTimeout(timer);
+    requestQueryForStokEtiketi.pageNumber = 1;
+    $(pageNumbers.stokEtiketi).text(requestQueryForStokEtiketi.pageNumber);
+    timer = setTimeout(GetAllStokEtiketiAjaxCall, doneTypingInterval);
 });
 
 // #endregion 
@@ -234,7 +231,7 @@ $(Buttons.stokEtiketi_topluEtiket).click((event) => {
     let rowCount = $(`${TablesId.stokEtiket_tableResult} tr`).length;
     if (rowCount > 0);
     {
-        for (var i = 0; i < rowCount; i++) {
+        for (let i = 0; i < rowCount; i++) {
             stokEtiketiResultTable[i] = $(`${TablesId.stokEtiket_tableResult} tr:nth-child(${i + 1}) td:nth-child(${2})`).text();
         }
     }
@@ -265,7 +262,7 @@ $(Buttons.stokEtiketi_A4).click((event) => {
             paketlemeMiktari = stokEtiketiResultTable[i];
             $('.stokEtiketi_uretimeSevk').append(stokEtiketi_setUretimeSevk(stokEtiketiModel, paketlemeMiktari, tarih,
                 i + 1));
-            JsBarcode(".uretimeSevk_stkBarcode", `${stokEtiketiModel.stk}`, { format: "CODE128", text: "" });
+            JsBarcode(".uretimeSevk_stkBarcode", `${stokEtiketiModel.stk.turkishtoEnglish()}`, { format: "CODE128", text: "" });
             JsBarcode(".uretimeSevk_adet", `${paketlemeMiktari}`, { format: "CODE128", text: "" });
         }
 
@@ -287,7 +284,7 @@ $(Buttons.stokEtiketi_A4).click((event) => {
 });
 
 function HideA4Model() {
-    $('.stokEtiketi_uretimeSevk').empty();
+   // $('.stokEtiketi_uretimeSevk').empty();
     $('.stokEtiketi_uretimeSevk').css('opacity', '1');
 }
 
@@ -321,7 +318,7 @@ $(Buttons.stokEtiketi_mamulA4).click((event) => {
         else {
             rowCount = rowCount - 1;
             rowCount = rowCount/2;
-            for (var i = 0; i < rowCount; i++) {
+            for (let i = 0; i < rowCount; i++) {
                 paketlemeMiktari = stokEtiketiResultTable[i];
                 $('.stokEtiketi_mmaulA4PrintModeli').append(stokEtiketi_setA4Mamul("cift", stokEtiketiModel,paketlemeMiktari));
             }

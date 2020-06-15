@@ -1020,3 +1020,161 @@ textarea {
     color: white !important;
 }
 /* end sevkiyat kabul etiketi*/
+
+
+
+/*start stokEtiketi*/
+#basic-addon9 {
+    background-color: #2A3F54;
+    color: white;
+}
+
+.stokEtiketiTable table tbody tr:hover {
+    background-color: #2A3F54;
+    color: white;
+    cursor: pointer;
+}
+
+.nav-stokEtiketi {
+    margin-left: 38%;
+}
+
+    .nav-stokEtiketi li a {
+        color: white;
+        margin-right: 10px;
+        background-color: #2A3F54;
+    }
+
+        .nav-stokEtiketi li a:hover {
+            background-color: #2A3F54;
+            color: white;
+            cursor: pointer;
+        }
+
+.stokEtiketiCard {
+    border: 1.5px solid #2A3F54;
+    box-shadow: 10px 10px 10px #2A3F54;
+    padding:1rem;
+}
+
+    .stokEtiketiCard p {
+        color: black;
+        font-weight: bold;
+    }
+
+    .stokEtiketiCard label {
+        border-bottom: 1.5px solid black;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #b13e5b
+    }
+
+.stokEtiketiCard {
+    padding: 5px 5px 60px 5px;
+    margin-bottom: 15px;
+}
+
+.stokEtiketiLastTable button {
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
+
+
+
+
+    .stokEtiketiLastTable button:hover {
+        background-color: #e73c68 !important;
+        color: white;
+        outline: none;
+    }
+
+.stokEtiketiLastTable .btn-success:focus {
+    color: #fff !important;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+}
+
+.stokEtiketiLastTable .btn-primary:focus {
+    color: #fff !important;
+    background-color: #337ab7 !important;
+    border-color: #4cae4c !important;
+}
+
+#btn-stokEtiketi-reset {
+    background-color: #e73c68 !important;
+    color: white;
+}
+
+/*end stokEtiketi*/
+
+
+/* start giriş kabul etiketi*/
+#basic-addon12 {
+    background-color: #2A3F54;
+    color: white;
+}
+
+
+
+
+.nav-girisKabulEtiketi {
+    margin-left: 42%;
+}
+
+    .nav-girisKabulEtiketi li a {
+        color: white;
+        margin-right: 10px;
+        background-color: #2A3F54;
+    }
+
+        .nav-girisKabulEtiketi li a:hover {
+            background-color: #2A3F54;
+            color: white;
+            cursor: pointer;
+        }
+
+.girisKabulEtiketiCard {
+    border: 1.5px solid #2A3F54;
+    box-shadow: 10px 10px 10px #2A3F54;
+}
+
+    .girisKabulEtiketiCard p {
+        color: black;
+        font-weight: bold;
+    }
+
+    .girisKabulEtiketiCard label {
+        border-bottom: 1.5px solid black;
+        color: #2A3F54;
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        color: #b13e5b
+    }
+
+.girisKabulEtiketiCard {
+    padding: 5px 5px 60px 5px;
+    margin-bottom: 15px;
+}
+
+
+.stokEtiketiLastTable .btn-success {
+    background-color: #2A3F54 !important;
+    color: white !important
+}
+
+.stokEtiketiLastTable .btn-danger {
+    background-color: #e73c68 !important;
+    color: white;
+}
+
+.girisKabulEtiketiCard p {
+    font-size: 2rem;
+}
+
+.girisKabulEtiketiTable table tbody tr:hover {
+    background-color: #2A3F54;
+    color: white;
+    cursor: pointer;
+}
+/* end giriş kabul etiketi*/

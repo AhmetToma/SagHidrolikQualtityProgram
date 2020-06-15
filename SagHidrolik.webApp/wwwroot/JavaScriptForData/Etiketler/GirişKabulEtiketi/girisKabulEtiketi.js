@@ -3,8 +3,6 @@
     let tamirIsUrl = BaseUrl + dataUrl;
     let serverUrl = BaseServerUrl + dataUrl;
     if (window.location.href === tamirIsUrl || window.location.href === serverUrl) {
-
-
         GetAllGirisKabulEtiketiAjaxCall();
     }
 });
@@ -20,7 +18,6 @@ let girisKabulEtiketiModel = {};
 
 // #region Ajax Call And create All stok etiketi and select row
 function GetAllGirisKabulEtiketiAjaxCall() {
-
     requestQueryForGirisKabulEtiketi.Stk = $(Inputs.girisKabulEtiketi_searchStk).val();
     ShowLoader();
     $(TablesId.girisKabulEtiketi_girisKabulEtiketiList).empty();
@@ -33,13 +30,13 @@ function GetAllGirisKabulEtiketiAjaxCall() {
             girisKabulEtiketiList = list;
             console.log(list);
             if (list.length !== 0) {
-                $(NotFoundRecordsId.girisKabulEtiketi).css('display', 'none');
+                $(recordsNotFound.girisKabulEtiketi).css('display', 'none');
                 CreateAllgirisKabulEtiketiTable(list, TablesId.girisKabulEtiketi_girisKabulEtiketiList);
             }
             else {
 
-                $(`${NotFoundRecordsId.girisKabulEtiketi} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
-                $(NotFoundRecordsId.girisKabulEtiketi).css('display', 'block');
+                $(`${recordsNotFound.girisKabulEtiketi} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
+                $(recordsNotFound.girisKabulEtiketi).css('display', 'block');
                 HideLoader();
             }
         }
@@ -112,24 +109,23 @@ $(TablesId.girisKabulEtiketi_girisKabulEtiketiList).on('click', 'tr', function (
 $(PreviousButtons.girisKabulEtiketi).on('click', (event) => {
     event.preventDefault();
     if (requestQueryForGirisKabulEtiketi.pageNumber > 1) requestQueryForGirisKabulEtiketi.pageNumber -= 1;
-    $(PageNumbers.girisKabulEtiketi).text(requestQueryForGirisKabulEtiketi.pageNumber);
+    $(pageNumbers.girisKabulEtiketi).text(requestQueryForGirisKabulEtiketi.pageNumber);
     GetAllGirisKabulEtiketiAjaxCall();
 });
 $(NextButtons.girisKabulEtiketi).on('click', (event) => {
     event.preventDefault();
     requestQueryForGirisKabulEtiketi.pageNumber += 1;
-    $(PageNumbers.girisKabulEtiketi).text(requestQueryForGirisKabulEtiketi.pageNumber);
+    $(pageNumbers.girisKabulEtiketi).text(requestQueryForGirisKabulEtiketi.pageNumber);
     GetAllGirisKabulEtiketiAjaxCall();
 });
 //#endregion
 // #region search
-let girisKabulTypingTimer;
-let girisKabuldoneTypingInterval = 500;
+
 $(Inputs.girisKabulEtiketi_searchStk).keyup(function () {
-    clearTimeout(girisKabulTypingTimer);
+    clearTimeout(timer);
     requestQueryForGirisKabulEtiketi.pageNumber = 1;
-    $(PageNumbers.girisKabulEtiketi).text(requestQueryForGirisKabulEtiketi.pageNumber);
-    girisKabulTypingTimer = setTimeout(GetAllGirisKabulEtiketiAjaxCall, girisKabuldoneTypingInterval);
+    $(pageNumbers.girisKabulEtiketi).text(requestQueryForGirisKabulEtiketi.pageNumber);
+    timer = setTimeout(GetAllGirisKabulEtiketiAjaxCall, doneTypingInterval);
 });
 
 // #endregion 
@@ -213,7 +209,7 @@ $(Buttons.girisKabulEitketi_etiketEkle).click((event) => {
 
     if (rowCount > 0);
     {
-        for (var i = 0; i < rowCount; i++) {
+        for (let i = 0; i < rowCount; i++) {
             girisKabulEtiketiResultTable[i] = $(`${TablesId.girisKabulEtiketi_tableResult} tr:nth-child(${i + 1}) td:nth-child(${2})`).text();
 
         }
@@ -225,6 +221,7 @@ $(Buttons.girisKabulEitketi_etiketEkle).click((event) => {
 
 // print A4 Zirve
 $(Buttons.girisKabulEitketi_A4Zirva).click((event) => {
+   
     event.preventDefault();
     let rowCount = $(`${TablesId.girisKabulEtiketi_tableResult} tr`).length;
     if (rowCount > 0) {
@@ -237,7 +234,7 @@ $(Buttons.girisKabulEitketi_A4Zirva).click((event) => {
 
             $('.girisKabulEtiketiprintModeli').append(girisKabulEtiketi_A4Zirve(girisKabulEtiketiModel
                 , paketlemeMiktari, i+1));
-            JsBarcode(".girisKabulEtiketi_stkBarcode", `${girisKabulEtiketiModel.stk}`, { format: "CODE128", text: "" });
+            JsBarcode(".girisKabulEtiketi_stkBarcode", `${girisKabulEtiketiModel.stk.turkishtoEnglish()}`, { format: "CODE128", text: "" });
             JsBarcode(".girisKabulEtiketi_adet", `${paketlemeMiktari}`, { format: "CODE128", text: "" });
         }
         $('.girisKabulEtiketiprintModeli').css('opacity', '1');

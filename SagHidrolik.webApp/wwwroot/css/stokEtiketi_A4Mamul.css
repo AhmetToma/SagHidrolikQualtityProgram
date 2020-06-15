@@ -1,0 +1,91 @@
+﻿
+@media print {
+    .stokEtiketi_A4Mamul-row {
+        page-break-inside: avoid !important;
+        page-break-after: always;
+        page: auto !important;
+        page-
+    }
+
+    @page {
+        size: auto !important;
+    }
+
+    @media print {
+        @page {
+            size: auto !important
+        }
+    }
+
+    .stokEtiketi_A4Mamul-container {
+        width: 491px;
+        height: 730px;
+        border: 2px solid;
+        margin: 20px 40px 20px 40px;
+    }
+
+    .stokEtiketi_A4Mamul-row {
+        width: 100%;
+        display: flex;
+    }
+
+    .firstCopy {
+        float: left;
+    }
+
+    .secondCopy {
+        float: right;
+    }
+
+    .secondCopy, .firstCopy {
+        width: 50%;
+    }
+
+    .stokEtiketi_A4Mamul-container p {
+        font-weight: bold;
+        margin-left: 5px;
+    }
+
+    .stokEtiketi_A4Mamul-container div:nth-child(1) {
+        text-align: center;
+        border-bottom: 2px solid;
+        font-weight: 900;
+    }
+
+    .stokEtiketi_A4Mamul-image {
+        border-bottom: 2px solid;
+        height: 75px;
+    }
+
+        .stokEtiketi_A4Mamul-image img {
+            width: 100%;
+            height: 99%;
+        }
+
+    .stokEtiketi_A4Mamul-stk {
+        height: 113.38px;
+        font-weight: 900;
+        text-align: center;
+        font-size: 60px;
+        border-bottom: 2px solid black;
+        margin-bottom: 10px;
+    }
+
+    .stokEtiketi_A4Mamul-table {
+        height: 415px;
+        padding: 20px 5px;
+    }
+
+        .stokEtiketi_A4Mamul-table table, th, td {
+            border: 1px solid black;
+            border-left: 1px solid black;
+            height: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+    .stokEtiketi_A4Mamul-footer {
+        margin-top: 15px;
+        font-size: 15px;
+        margin-left: 5px;
+    }

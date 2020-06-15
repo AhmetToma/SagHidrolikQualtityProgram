@@ -1,0 +1,145 @@
+﻿.containA4 div {
+    border: 1px solid black;
+} 
+span {
+    font-weight: bold;
+
+}
+
+.containA4 {
+    margin: 2rem 2rem 6rem 1rem;
+    width: 75rem;
+    height: 20rem;
+}
+
+.contain2-1 span{
+    text-align: center;
+    margin-left: 32%;
+    font-size: 2rem;
+}
+.contain2-2 svg {
+    height: 3.8rem;
+    width: 100%;
+}
+.contain3 p:nth-child(1) {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bolder;
+}
+.contain3 p:nth-child(2) {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    position: relative;
+    bottom: 1rem;
+}
+.contain4-2 span {
+    margin-left: 34%;
+    font-size: 1.4rem
+}
+.contain4-3 span {
+    font-weight: bolder;
+    font-size: 3rem;
+    margin-left: 21%
+}
+.contain5-5 span {
+    position: relative;
+    font-size: 4rem;
+    font-weight: bold;
+    left: 42%;
+}
+.contain5-7 svg {
+    height: 4.4rem;
+    transform: translate(0,0);
+    width: 100%;
+}
+.contain1, .contain2, .contain2-1, .contain2-2, .contain3,
+.contain4, .contain5, .contain5-1, .contain5-2, .contain5-3, .contain5-4,
+.contain5-5, .contain5-6, .contain5-7 {
+    float: left;
+}
+
+.contain1 {
+    width: 8%;
+    height: 126%;
+}
+.contain1 img{
+    width: 90%;
+    height: 100%;
+}
+.contain2 {
+    width: 85%;
+    height: 21%;
+}
+.contain2-1 ,.contain2-2  {
+    width: 50%;
+    height: 100%;
+}
+.contain3 {
+    width: 85%;
+    height: 30%;
+}
+.contain4 {
+    width: 46%;
+    height: 76%;
+}
+.contain5{
+    width: 39%;
+    height: 76%;
+}
+
+ .contain4-1 {
+    width: 100%;
+    height: 35%;
+}
+.contain4-2 {
+    width: 100%;
+    height: 25%;
+}
+.contain4-3 {
+    width: 100%;
+    height: 40%;
+}
+.contain5-1 {
+    width: 50%;
+    height: 15%;
+}
+.contain5-2 {
+    width: 50%;
+    height: 15%;
+}
+.contain5-3 {
+    width: 50%;
+    height: 20%;
+}
+.contain5-4 {
+    width: 50%;
+    height: 20%;
+}
+.contain5-5 {
+    width: 75%;
+    height: 40%;
+}
+.contain5-6 {
+    width: 25%;
+    height: 40%;
+}
+.contain5-7 {
+    width: 100%;
+    height: 25;
+}
+.seprator {
+    color: white;
+    height: 1.2rem;
+    background-color: white;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+
+/*@media print {
+    .containA4{
+        page-break-inside: avoid !important;
+        page-break-after: always;
+    }
+}*/

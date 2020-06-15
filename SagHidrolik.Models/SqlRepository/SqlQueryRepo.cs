@@ -34,21 +34,21 @@ namespace SagHidrolik.Models.SqlRepository
         #region Stok
         public static string GetStokkenByStkList(RequestQuery requestQuery)
         {
-            query = $"select * from dbo.STOKGEN where dbo.STOKGEN.STK like '%{requestQuery.Stk}%'";
+            query = $"select * from dbo.STOKGEN where dbo.STOKGEN.STK like N'%{requestQuery.Stk}%'";
             return query;
         }
 
 
         public static string GetStokkenByStkListOnlypageSize(RequestQuery requestQuery)
         {
-            query = $"select * from dbo.STOKGEN where dbo.STOKGEN.STK like '%{requestQuery.Stk}%' order By STK" +
+            query = $"select * from dbo.STOKGEN where dbo.STOKGEN.STK like N'%{requestQuery.Stk}%' order By STK" +
                 $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
         public static string GetDboStokgenPIdByStk(string stk)
         {
 
-            query = $"select * from dbo.STOKGEN where dbo.STOKGEN.STK='{stk}'";
+            query = $"select * from dbo.STOKGEN where dbo.STOKGEN.STK= N'{stk}'";
             return query;
         }
         public static string GetProductOrdersByStokgenId(RequestQuery requestQuery)
@@ -128,14 +128,14 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
         public static string GetStokAll(RequestQuery request)
         {
             query = $"SELECT  dbo.STOK_ALT.STK, dbo.STOK_ALT.STA,dbo.STOKGEN.TUR, sum ( isnull((dbo.STOK_ALT.GRMIK-dbo.STOK_ALT.CKMIK),0)) as totalStok" +
-                $" FROM dbo.STOK_ALT left JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID  where dbo.STOK_ALT.STK like '%{request.Stk}%'" +
+                $" FROM dbo.STOK_ALT left JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID  where dbo.STOK_ALT.STK like N'%{request.Stk}%'" +
                 $" GROUP BY STOK_ALT.STK, dbo.STOK_ALT.STA,STOKGEN.TUR" +
                 $" order by STOK_ALT.STK OFFSET  {request.pageNumber} rows fetch next {request.pageSize} rows only; ";
             return query;
         }
         public static string GetStokAllCount()
         {
-            query = "select count(*)from (SELECT  dbo.STOK_ALT.STK, dbo.STOK_ALT.STA,dbo.STOKGEN.TUR, sum ( isnull((dbo.STOK_ALT.GRMIK-dbo.STOK_ALT.CKMIK),0)) as totalStok FROM dbo.STOK_ALT left JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID  where dbo.STOK_ALT.STK like '%%'" +
+            query = "select count(*)from (SELECT  dbo.STOK_ALT.STK, dbo.STOK_ALT.STA,dbo.STOKGEN.TUR, sum ( isnull((dbo.STOK_ALT.GRMIK-dbo.STOK_ALT.CKMIK),0)) as totalStok FROM dbo.STOK_ALT left JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID  where dbo.STOK_ALT.STK like N'%%'" +
                 "GROUP BY STOK_ALT.STK, dbo.STOK_ALT.STA,STOKGEN.TUR )countNumber";
             return query;
         }
@@ -147,8 +147,8 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
         public static string GetAllFindInBom(RequestQuery requestQuery)
         {
             query = $"SELECT dbo.STOKGEN.STK AS PartNo, dbo.TSTOKRECETESI.STK AS Material, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
-                $" FROM dbo.TSTOKRECETESI INNER JOIN dbo.STOKGEN ON dbo.TSTOKRECETESI.STOKP_ID = dbo.STOKGEN.P_ID where STOKGEN.STK like '%{requestQuery.Stk}%'" +
-                $"  and  dbo.TSTOKRECETESI.STK like'%{requestQuery.material}%'GROUP BY dbo.STOKGEN.STK, dbo.TSTOKRECETESI.STK, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
+                $" FROM dbo.TSTOKRECETESI INNER JOIN dbo.STOKGEN ON dbo.TSTOKRECETESI.STOKP_ID = dbo.STOKGEN.P_ID where STOKGEN.STK like N'%{requestQuery.Stk}%'" +
+                $"  and  dbo.TSTOKRECETESI.STK like N'%{requestQuery.material}%'GROUP BY dbo.STOKGEN.STK, dbo.TSTOKRECETESI.STK, dbo.TSTOKRECETESI.STA, dbo.TSTOKRECETESI.MIKTAR" +
                 $"  order By PartNo OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
@@ -192,7 +192,7 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
                 " [Process_qty] -[Ok_Qty] -[Process_reject] -[Process_Rework] AS Miktar, ProcessFlow.Require_Date, dbo.Local_ProductionOrders.Status, " +
                 " dbo.Local_ProductionOrders.LotNo FROM   ProcessFlow INNER JOIN dbo.Local_ProductionOrders ON ProcessFlow.ProductOrder_ID = dbo.Local_ProductionOrders.ProductOrderID" +
                 " left join dbo.Process_Planning on Process_Planning.ProcessNo = ProcessFlow.ProcessNo_ID WHERE((([Process_qty] -[Ok_Qty] -[Process_reject] -[Process_Rework]) > 0) AND((dbo.Local_ProductionOrders.Status) = 2))" +
-                $" and LotNo like '%{requestQuery.lotNo}%' " +
+                $" and LotNo like N'%{requestQuery.lotNo}%' " +
                 " order By  dbo.Local_ProductionOrders.LotNo asc ;";
             return query;
         }
@@ -227,7 +227,7 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
                 " inner join dbo.Operator on dbo.Operator.Operator_ID = ProcessFlowDetail.Operator " +
                 " inner Join  [dbo].[10_MakinaListesiNew] on  [dbo].[10_MakinaListesiNew].Machine_Id = ProcessFlowDetail.Machine " +
                 " WHERE(((ProcessFlowDetail.Finish_time)Is Null) AND((dbo.Local_ProductionOrders.Status) = 2))" +
-                $" And dbo.Local_ProductionOrders.LotNo like '%{requestQuery.lotNo}%'" +
+                $" And dbo.Local_ProductionOrders.LotNo like N'%{requestQuery.lotNo}%'" +
                 $" order By dbo.Local_ProductionOrders.LotNo asc OFFSET { requestQuery.pageNumber} ROWS FETCH NEXT { requestQuery.pageSize}ROWS ONLY;";
             return query;
         }
@@ -314,7 +314,7 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
                    " dbo.ProcessPlanFollowTable.[Group], ProcessPlanFollowTable.ProsesAdi, ProcessPlanFollowTable.PartNo, ProcessPlanFollowTable.WOLot, ProcessPlanFollowTable.RemainProcessqty, ProcessPlanFollowTable.WONewDate, ProcessPlanFollowTable.Balance, ProcessPlanFollowTable.Order_no, ProcessPlanFollowTable.ProcessNo_ID, ProcessPlanFollowTable.Qty, ProcessPlanFollowTable.Process_qty, ProcessPlanFollowTable.Ok_Qty, ProcessPlanFollowTable.Process_reject, ProcessPlanFollowTable.Process_Rework, ProcessPlanFollowTable.Complete " +
                    " FROM ProcessPlanFollowTable " +
                    " WHERE(((ProcessPlanFollowTable.RemainProcessqty) > 0)) " +
-                   $" and ProcessPlanFollowTable.PartNo like '%{requestQuery.Stk}%'" +
+                   $" and ProcessPlanFollowTable.PartNo like N'%{requestQuery.Stk}%'" +
                    $" and ProcessPlanFollowTable.[Group] like N'%{requestQuery.uretimPlaniType}%'" +
                    $" order by ProcessDate asc OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY";
             return query;
@@ -330,7 +330,7 @@ $" ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo)" +
 $" inner join dbo.[10_MakinaListesiNew] on dbo.[10_MakinaListesiNew].Machine_Id = ProcessFlowDetail.Machine inner join Local_ProductionOrders " +
 $" ON ProcessFlow.ProductOrder_ID = Local_ProductionOrders.ProductOrderID) " +
 $" INNER JOIN Operator ON ProcessFlowDetail.Operator = Operator.Operator_ID " +
-$" where Process_Planning.ProsesAdi like N'%{requestQuery.processAdi}%' and dbo.[10_MakinaListesiNew].Machine_no like '%{requestQuery.machineNo}%' " +
+$" where Process_Planning.ProsesAdi like N'%{requestQuery.processAdi}%' and dbo.[10_MakinaListesiNew].Machine_no like N'%{requestQuery.machineNo}%' " +
 $" GROUP BY ProcessFlowDetail.Finish_time, Process_Planning.ProsesAdi,Operator.Operator_Name, ProcessFlowDetail.Start_time, " +
 $" ProcessFlowDetail.Finish_time,ProcessFlowDetail.Machine,ProcessFlowDetail.Finish_time, Local_ProductionOrders.PartNo_ID " +
 $" ,dbo.[10_MakinaListesiNew].Machine_no ORDER BY Finish_time DESC" +
@@ -501,7 +501,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
                 $" inner join dbo.[10_MakinaListesiNew] on dbo.[10_MakinaListesiNew].Machine_Id = ProcessFlowDetail.Machine" +
                 $" inner join Local_ProductionOrders  ON ProcessFlow.ProductOrder_ID = Local_ProductionOrders.ProductOrderID)" +
                 $" INNER JOIN Operator ON ProcessFlowDetail.Operator = Operator.Operator_ID" +
-                $" where Local_ProductionOrders.ProductOrderID like'%{requestQuery.ProductOrderId}%' " +
+                $" where Local_ProductionOrders.ProductOrderID like N'%{requestQuery.ProductOrderId}%' " +
                 $" ORDER BY Finish_time DESC OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
             return query;
         }
@@ -555,7 +555,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         public static string GetAllMachine(RequestQuery requestQuery)
         {
             query = "SELECT [dbo].[10_MakinaListesiNew].Machine_Id, [dbo].[10_MakinaListesiNew].Machine_no,[dbo].[10_MakinaListesiNew].Machine_Name , [dbo].[10_MakinaListesiNew].MODEL," +
-             $" [dbo].[10_MakinaListesiNew].Bölüm  as Bolum FROM[dbo].[10_MakinaListesiNew] where [dbo].[10_MakinaListesiNew].Machine_no like '%{requestQuery.machineNo}%'" +
+             $" [dbo].[10_MakinaListesiNew].Bölüm  as Bolum FROM[dbo].[10_MakinaListesiNew] where [dbo].[10_MakinaListesiNew].Machine_no like N'%{requestQuery.machineNo}%'" +
              "ORDER BY [dbo].[10_MakinaListesiNew].Machine_no" +
              $" OFFSET  {requestQuery.pageNumber} rows fetch next {requestQuery.pageSize} rows only; ";
             return query;
@@ -616,7 +616,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         #region company
         public static string GetAllCompany(RequestQuery requestQuery)
         {
-            query = $"select * from dbo.D_Company where D_Company.CompanyType like '%{requestQuery.companyType}%' order by Id_Cust" +
+            query = $"select * from dbo.D_Company where D_Company.CompanyType like N'%{requestQuery.companyType}%' order by Id_Cust" +
                $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
@@ -746,7 +746,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         public static string GetAllPartNumbersCount = "select COUNT(ID) from G_PartNumbers";
         public static string GetAllPartNumbers(RequestQuery requestQuery)
         {
-            query = $"select * from G_PartNumbers  where  STK like '%{requestQuery.Stk}%' order By ID desc " +
+            query = $"select * from G_PartNumbers  where  STK like N'%{requestQuery.Stk}%' order By ID desc " +
                $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
@@ -807,7 +807,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
                 " B_NonConformityReport.NC_Responsible = F_Operator.Op_ID left join dbo.D_Company on B_NonConformityReport.NC_Customer_Supplier = D_Company.Id_Cust " +
                 " left join E_Department on B_NonConformityReport.Department = E_Department.DEPT_ID " +
                 " left join G_PartNumbers on PartNo=G_PartNumbers.ID" +
-                $" where STK like '%{requestQuery.Stk}%'  ORDER BY B_NonConformityReport.NC_TargetDate DESC" +
+                $" where STK like N'%{requestQuery.Stk}%'  ORDER BY B_NonConformityReport.NC_TargetDate DESC" +
               $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
 
             return query;
@@ -959,7 +959,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
                 $" left join F_Operator on C_ActionList.Responsible = Op_ID" +
                 $" left Join D_Company on D_Company.Id_Cust = NC_Customer_Supplier" +
                 $" left Join E_Department on E_Department.DEPT_ID = NC_Customer_Supplier" +
-                $" WHERE C_ActionList.Status = 0 OR C_ActionList.Status Is Null and PartNo like '%{requestQuery.Stk}%' or PartNo Is Null" +
+                $" WHERE C_ActionList.Status = 0 OR C_ActionList.Status Is Null and PartNo like N'%{requestQuery.Stk}%' or PartNo Is Null" +
                 $" order By ACTN_ID OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
@@ -1297,7 +1297,7 @@ ProcessFlowDetail.Machine,Machine_no,MODEL)countNumber
         public static string GetSellDateReport(RequestQuery r, string startAt, string endAt) => $@"SET DATEFORMAT dmy;SELECT  dbo.STOKGEN.STK,MAX( CAST(STOK_ALT.TARIH AS DATE)) as tarih,STOKGEN.TUR,
   Sum(dbo.STOK_ALT.[GRMIK]-dbo.STOK_ALT.[CKMIK]) AS TotalStock
 FROM dbo.STOK_ALT RIGHT JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID
-WHERE (((STOKGEN.TUR)=3 Or (STOKGEN.TUR)=4)) and dbo.STOKGEN.STK like'%{r.Stk}%'
+WHERE (((STOKGEN.TUR)=3 Or (STOKGEN.TUR)=4)) and dbo.STOKGEN.STK like N'%{r.Stk}%'
 and  STOK_ALT.TARIH between '{startAt}' and '{endAt}'
 
 GROUP BY CAST(STOK_ALT.TARIH AS DATE),  STOKGEN.STK, STOKGEN.TUR,[CKMIK],[GRMIK]
@@ -1320,7 +1320,7 @@ order by 2";
         {
             query = "SELECT dbo.SIPARIS_ALT.STK, Sum(dbo.SIPARIS_ALT.MIKTAR) AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,105) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
                 " FROM((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON(dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND(dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID) LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF " +
-                $" where SIPARIS_ALT.STK like '%{r.Stk}%' GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR, dbo.SIPARIS_ALT.TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA " +
+                $" where SIPARIS_ALT.STK like N'%{r.Stk}%' GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR, dbo.SIPARIS_ALT.TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA " +
                 $"order by STK OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
             return query;
         }
@@ -1346,7 +1346,7 @@ DECLARE @cols AS nvarchar(max);
 	  set @query = 'WITH Sales AS ( SELECT S.STK, convert(varchar(10), cast( S.TESTARIHI As Date), 105) as YearDate,CARIGEN.STA as carigenSta, S.CARIREF,S.STA,S.MIKTAR - 
 	  isNull(Sum(I.MIKTAR), 0) AS RemainQty_total FROM ((dbo.SIPARIS_ALT S left JOIN dbo.STOK_ALT I ON(S.STOKP_ID = I.STOKP_ID) 
 	  and(S.P_ID = I.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN  on S.CARIREF = CARIGEN.REF 
-	   where  S.STK like ''%{r.Stk}%''  GROUP BY S.STK, S.MIKTAR, S.TURAC, dbo.SIPAR.EVRAKNO, S.FATIRSTUR, S.STOKP_ID, S.TUR, CARIGEN.STA  ,
+	   where  S.STK like N''%{r.Stk}%''  GROUP BY S.STK, S.MIKTAR, S.TURAC, dbo.SIPAR.EVRAKNO, S.FATIRSTUR, S.STOKP_ID, S.TUR, CARIGEN.STA  ,
 	      S.TESTARIHI, S.CARIREF, S.STA)  SELECT* FROM   Sales    PIVOT(SUM(RemainQty_total)  FOR  YearDate IN('+@cols+' )) P;'
 		  EXECUTE sp_executesql @query;
 ";
@@ -1361,7 +1361,7 @@ DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT
 	    left JOIN dbo.STOK_ALT I     ON(S.STOKP_ID = I.STOKP_ID) and(S.P_ID = I.SIP_PID)) 
 		left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN on S.CARIREF = CARIGEN.REF
 		 WHERE(((S.MIKTAR - isnull(I.MIKTAR, 0)) > 0) And((S.TUR) = 90)) 
-	 and S.STK like ''%{r.Stk}%''  GROUP BY S.STK,S.P_ID, S.TURAC, S.STOKP_ID, S.TUR, S.TESTARIHI,CARIGEN.STA  ,
+	 and S.STK like N''%{r.Stk}%''  GROUP BY S.STK,S.P_ID, S.TURAC, S.STOKP_ID, S.TUR, S.TESTARIHI,CARIGEN.STA  ,
 	  S.CARIREF, S.STA ,S.MIKTAR )  SELECT* FROM   Sales  PIVOT(SUM(RemainQty)  FOR  
 	  YearDate IN('+@cols+')) P order by 5 ';EXECUTE sp_executesql @query;
 	  ";
@@ -1377,7 +1377,7 @@ convert(varchar(10), cast(RevisedDate As Date), 105) as RevisedDate ,
 convert(varchar(10), cast(CloseDate As Date), 105) as CloseDate ,
 Printed,Status,CONVERT(varchar,RevisedDate,105) as RevisedDate,
 Remark,CONVERT(varchar,CloseDate,105) as CloseDate
-  from dbo.Local_ProductionOrders where PartNo_ID in ({m})  and  [Status] like '%{r.uretimPlaniType}%' 
+  from dbo.Local_ProductionOrders where PartNo_ID in ({m})  and  [Status] like N'%{r.uretimPlaniType}%' 
                  ORDER BY dbo.Local_ProductionOrders.RequireDate DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;"
 ;
             return query;
@@ -1413,7 +1413,7 @@ Remark,CONVERT(varchar,CloseDate,105) as CloseDate
             query = $"select  ProductionOrdersPrintout.ProductOrderID,PartNo_ID,LotNo,Qty,Completed,convert(varchar(10), cast(RequireDate As Date), 105) as RequireDate ," +
                 $" convert(varchar(10), cast(IssueDate As Date), 105) as IssueDate,[Closed],[Status]," +
                 $" convert(varchar(10), cast(RevisedDate As Date), 105) as RevisedDate ,  RevisedDate,Remark " +
-                $" from dbo.ProductionOrdersPrintout where  [Status] like '%{r.uretimPlaniType}%' " +
+                $" from dbo.ProductionOrdersPrintout where  [Status] like N'%{r.uretimPlaniType}%' " +
                 $" ORDER BY dbo.ProductionOrdersPrintout.ProductOrderID DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
             return query;
         }
@@ -1442,7 +1442,7 @@ Remark,CONVERT(varchar,CloseDate,105) as CloseDate
 
 
         public static string GetBoxType(RequestQuery r) => $@"select P_ID, STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN
-where STK like '%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
+where STK like N'%{r.Stk}%' order  by STR_3 DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
         public static string GetBoxTypeCount() => @"select count(*) from(select  STK,STA,STR_3,STR_4,TUR from dbo.STOKGEN)countNumber";
 
         public static string UpdateBoxType(BoxTypeViewModel b) => $@"
@@ -1546,7 +1546,7 @@ UserRoles.RoleId= Roles.Id )countNumber
         {
             query = $"SELECT [Sipariş blgtürü] as siparisBlturu,Sprşblgno as sprsblgno,Klmno,[Ürün]as urunKodu," +
                 $" Mştrlok as mstrlok,VdGlnMkt as vdGlnmkt,[Ölçü birimi] as olcuBirimi ,Göndtrh as gondtrh" +
-                $" FROM TTFTeslimat where[Ürün] like'%{requestQuery.Stk}%' order by  [Ürün] OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
+                $" FROM TTFTeslimat where[Ürün] like N'%{requestQuery.Stk}%' order by  [Ürün] OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
             return query;
         }
 
@@ -1614,7 +1614,7 @@ UserRoles.RoleId= Roles.Id )countNumber
         {
             query = "SELECT dbo.STOK_ALT.TARIH, dbo.CARIGEN.STA as carigen_sta, dbo.STOK_ALT.STK, dbo.STOKGEN.STA as stokgen_sta,dbo.STOK_ALT.MIKTAR, dbo.STOK_ALT.SIPEVRAKNO, dbo.STOK_ALT.STB, dbo.STOK_ALT.TUR, dbo.STOK_ALT.TURAC, dbo.STOKGEN.P_ID, dbo.STOKGEN.FIELD18, dbo.STOKGEN.FIELD19,dbo.STOK_ALT.CARIREF, dbo.STOK_ALT.KALITEKODU, dbo.STOK_ALT.KALITEKODU, dbo.STOK_ALT.IRSEVRAKNO, " +
                 " dbo.STOK_ALT.SIPSATIRP_ID, dbo.CARIGEN.ADRES1, dbo.CARIGEN.ADRES2, dbo.CARIGEN.SEMT,  dbo.CARIGEN.SEHIR ,dbo.CARIGEN.POSTAKODU AS ADRESS, dbo.CARISUBE.ADRESI FROM((((dbo.STOKGEN RIGHT JOIN dbo.STOK_ALT ON dbo.STOKGEN.P_ID = dbo.STOK_ALT.STOKP_ID) LEFT JOIN dbo.CARIGEN ON dbo.STOK_ALT.CARIREF = dbo.CARIGEN.REF) LEFT JOIN dbo.SIPARIS_ALT ON dbo.STOK_ALT.SIPSATIRP_ID = dbo.SIPARIS_ALT.SATIRP_ID) LEFT JOIN dbo.IRSALIYE ON dbo.STOK_ALT.IRS_PID = dbo.IRSALIYE.P_ID) LEFT JOIN dbo.CARISUBE ON dbo.IRSALIYE.CARISUBE = dbo.CARISUBE.REF WHERE(((dbo.STOK_ALT.TUR) = 60 Or(dbo.STOK_ALT.TUR) = 70 Or(dbo.STOK_ALT.TUR) = 280)) " +
-                $"and dbo.STOKGEN.STK like'%{requestQuery.Stk}%' ORDER BY dbo.STOK_ALT.TARIH DESC, dbo.CARIGEN.STA, dbo.STOK_ALT.STK " +
+                $"and dbo.STOKGEN.STK like N'%{requestQuery.Stk}%' ORDER BY dbo.STOK_ALT.TARIH DESC, dbo.CARIGEN.STA, dbo.STOK_ALT.STK " +
                 $"OFFSET { requestQuery.pageNumber} ROWS FETCH NEXT { requestQuery.pageSize} ROWS ONLY;";
             return query;
         }
@@ -1625,7 +1625,7 @@ UserRoles.RoleId= Roles.Id )countNumber
             query = $" SELECT STOKGEN.STK, SUM(IIf(AORS = 'S', -1, 1) * MIKTAR) AS TotalStok," +
                 $" STOKGEN.TUR,STOKGEN.STA,STOKGEN.REF,STOK_ALT.STOKREF,STOKGEN.P_ID,STOKGEN.FIELD18,STOKGEN.FIELD19 " +
                 $" from dbo.STOK_ALT right join STOKGEN On STOK_ALT.STK = STOKGEN.STK " +
-                $" where dbo.STOKGEN.STK like '%{requestQuery.Stk}%'" +
+                $" where dbo.STOKGEN.STK like N'%{requestQuery.Stk}%'" +
                 $" group by dbo.STOKGEN.STK,STOKGEN.TUR,STOKGEN.STA,STOKGEN.REF,STOK_ALT.STOKREF,STOKGEN.P_ID,STOKGEN.FIELD18,STOKGEN.FIELD19" +
               $" order by dbo.STOKGEN.STK  OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
             return query;
@@ -1640,7 +1640,7 @@ UserRoles.RoleId= Roles.Id )countNumber
                 " dbo.IRSALIYE_ALT.REF,dbo.IRSALIYE_ALT.IRSEVRAKNO FROM (STOKGEN INNER JOIN dbo.IRSALIYE_ALT ON dbo.STOKGEN.P_ID =dbo.IRSALIYE_ALT.STOKP_ID)" +
                 " INNER JOIN dbo.CARIGEN ON dbo.IRSALIYE_ALT.CARIREF =dbo.CARIGEN.REF " +
                 " WHERE (((IRSALIYE_ALT.TUR)=1 Or (dbo.IRSALIYE_ALT.TUR)=62 Or (dbo.IRSALIYE_ALT.TUR)=72)) " +
-                $" and dbo.STOKGEN.STK like '%{requestQuery.Stk}%' ORDER BY dbo.IRSALIYE_ALT.TARIH DESC ,dbo.CARIGEN.STA,dbo.IRSALIYE_ALT.STK" +
+                $" and dbo.STOKGEN.STK like N'%{requestQuery.Stk}%' ORDER BY dbo.IRSALIYE_ALT.TARIH DESC ,dbo.CARIGEN.STA,dbo.IRSALIYE_ALT.STK" +
                 $" OFFSET {requestQuery.pageNumber}  ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY";
             return query;
         }

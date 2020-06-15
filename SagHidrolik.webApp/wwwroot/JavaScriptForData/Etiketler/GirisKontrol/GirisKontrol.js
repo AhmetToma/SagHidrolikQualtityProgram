@@ -125,13 +125,15 @@ function setGirisKontrol(index) {
     $('#inp-GirisKontrol-servNo').val(matched.irsevrakno);
     girisKontrolModel.refKodu = matched.ref;
     girisKontrolModel.tarih = matched.tarih;
+    console.log(matched);
+    console.log(girisKontrolModel);
 }
 
 
 //radio change
 $("input[name='KodType']").change(() => {
     let kodType = $("input[name='KodType']:checked").val();
-    let tarih = girisKontrolModel.tarih.split('.');
+    let tarih = girisKontrolModel.tarih.split('-');
     if (kodType === "1") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}`;
     if (kodType === "2") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Şartlı`;
     if (kodType === "3") girisKontrolModel.kaliteKodu = `NG ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Red`;
@@ -144,7 +146,7 @@ $("#girisKontrol-activeOpertors").select2().on("select2:select", function (e) {
         girisKontrolModel.operatorId = parseInt($('#girisKontrol-activeOpertors').val()[0]);
 
         let kodType = $("input[name='KodType']:checked").val();
-        let tarih = girisKontrolModel.tarih.split('.');
+        let tarih = girisKontrolModel.tarih.split('-');
         if (kodType === "1") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}`;
         if (kodType === "2") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Şartlı`;
         if (kodType === "3") girisKontrolModel.kaliteKodu = `NG ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Red`;
@@ -157,7 +159,7 @@ $('#girisKontrol-activeOpertors').on("select2:unselecting", function (e) {
 
     girisKontrolModel.operatorId = 0;
     let kodType = $("input[name='KodType']:checked").val();
-    let tarih = girisKontrolModel.tarih.split('.');
+    let tarih = girisKontrolModel.tarih.split('-');
     if (kodType === "1") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}`;
     if (kodType === "2") girisKontrolModel.kaliteKodu = `OK ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Şartlı`;
     if (kodType === "3") girisKontrolModel.kaliteKodu = `NG ${tarih[2]}${tarih[1]} ${girisKontrolModel.operatorId}Red`;
