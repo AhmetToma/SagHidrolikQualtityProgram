@@ -1591,18 +1591,18 @@ UserRoles.RoleId= Roles.Id )countNumber
             return query;
         }
 
-        public static string CheckTransferInStokgen(string m)
+        public static string CheckTransferInStokgen()
         {
-            query = $"SELECT dbo.STOKGEN.STK, dbo.STOKGEN.tur, dbo.STOKGEN.P_ID " +
-                $" FROM dbo.STOKGEN WHERE P_ID in({m}) and((dbo.STOKGEN.tur) = 2 Or(dbo.STOKGEN.tur) = 3)";
+            query = $@"SELECT dbo.STOKGEN.STK, dbo.STOKGEN.tur, dbo.STOKGEN.P_ID 
+                FROM dbo.STOKGEN WHERE ((dbo.STOKGEN.tur) = 2 Or(dbo.STOKGEN.tur) = 3)";
             return query;
         }
 
-        public static string Transfer_InsertIntoProductionOrders_getlotNo(ProductionOrdersTransferModel m)
+        public static string Transfer_InsertIntoProductionOrders_getlotNo(TrnasferWoToSystemViewModel m)
         {
             query = "SET DATEFORMAT dmy;" +
                 $"insert into Local_ProductionOrders(PartNo_ID, Qty, IssueDate, RequireDate, Remark,[Status], Printed)" +
-                $" values('{m.PartNo}', {m.Qty}, '{m.IssueDate}', '{m.RequireDate}', '{m.Remark}', 1, 0); SELECT CAST(SCOPE_IDENTITY() as int);";
+                $" values('{m.partNoId}', {m.qty}, '{m.issueDate}', '{m.requireDate}', '{m.remark}', 1, 0); SELECT CAST(SCOPE_IDENTITY() as int);";
             return query;
         }
         #endregion

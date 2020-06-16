@@ -4,23 +4,13 @@
     </div>
     <div class="clearfix"></div>
     <div class="Content-uretimPalni">
+        <div>  <h4 style="color:black"> <span style="font-weight:bold; color:red; font-size:3rem">**</span> sütün adları böyle olmalı : stk , qty , issueDate,requireDate,remark,control </h4></div>
         <div class="row">
-            <div class="col-md-4">
-
-                <div class="input-group" style="margin-top:1.7rem">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text defaultBackground">STK</span>
-                    </div>
-                    <input id="inp-tranferWo-searchStk" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu">
-                </div>
-            </div>
-            <div class="col-md-3" style="margin-top:1.7rem">
-                <select class="custom-select uretimPlani-select" id="select-tranferWo-selectRowCount"></select>
-            </div>
-            <div class="col-md-5">
-                <button id="btn-tranferWo-addAndTransfer" style="margin-top:1.5rem;" class="btn btn-success">Add To Wo and Clear List</button>
-                <button id="btn-tranferWo-deleteAll" style="margin-top:1.5rem;margin-left:2rem;" class="btn btn-primary">Clear List</button>
-                <button id="btn-tranferWo-reset" style="margin-top:1.5rem;margin-left:2rem;" class="btn btn-danger">Reset</button>
+            <div class="col-md-7" style="margin-top:1.7rem">
+                <button id="btn-tranferWo-addAndTransfer" class="btn btn-sm btn-primary">Add To Wo and Clear List</button>
+                <button id="btn-tranferWo-addExcleFile" class="btn btn-success btn-sm"> Excel File</button>
+                <input id="inp-tranferWo-excelFile" type="file" name="name" style="display: none;" />
+                <button id="btn-tranferWo-deleteAll" class="btn  btn-sm btn-danger">Clear List</button>
             </div>
         </div>
     </div>
@@ -30,39 +20,65 @@
             <caption style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem"> Toplam Records: <span id="span-tranferWo-rowCount" style="color:red"></span> </caption>
             <thead>
                 <tr >
-                    <th scope="col">PartNo ID</th>
-                    <th scope="col">Qty</th>
+                    <th scope="col">stk</th>
+                    <th scope="col">qty</th>
                     <th scope="col">Issue Date</th>
                     <th scope="col">Require Date</th>
                     <th scope="col">Remark</th>
                     <th scope="col">Control</th>
-                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody id="table-tranferWo"></tbody>
         </table>
-        <div id="recordNotFoundDiv_tranferWo" class="recordNotFoundDiv">
-            <h3>    </h3>
-        </div>
         <div class="clearFix">
         </div>
+    </div>
+</div>
 
-        <nav aria-label="Page navigation example" class="nav-review">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a id="btn-tranferWo-previous" class="page-link" href="" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item"><a id="num-tranferWo-pageNumber" class="page-link" href="">1</a></li>
-                <li class="page-item">
-                    <a id="btn-tranferWo-next" class="page-link" href="" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+
+
+<div class="modal fade" id="tranferWo-summary" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div style="width:50rem" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="exampleModalLabel">Non Accepted Records</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#stk" role="tab" aria-controls="home"
+                           aria-selected="true">stk Empty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="home-tab" data-toggle="tab" href="#qty" role="tab" aria-controls="home"
+                           aria-selected="true">Qty Empty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="home-tab" data-toggle="tab" href="#issueDate" role="tab" aria-controls="home"
+                           aria-selected="true">issue  Date Empty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="home-tab" data-toggle="tab" href="#requireDate" role="tab" aria-controls="home"
+                           aria-selected="true">Require Date Empty</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div style="margin-top:15px;" class="tab-pane fade show active" id="stk" role="tabpanel" aria-labelledby="home-tab">
+                    </div>
+                    <div   style="margin-top:15px;" class="tab-pane fade show " id="qty" role="tabpanel" aria-labelledby="home-tab">
+                    </div>
+                    <div   style="margin-top:15px;" class="tab-pane fade show " id="issueDate" role="tabpanel" aria-labelledby="home-tab">
+                    </div>
+                    <div  style="margin-top:15px;" class="tab-pane fade show " id="requireDate" role="tabpanel" aria-labelledby="home-tab">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>

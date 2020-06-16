@@ -1,164 +1,66 @@
-﻿$(function () {
+﻿let acceptedTransfer = [];
+function CreateTranferWoTable(list, tableId, isModel) {
+    $('#stk').empty();
+    $('#qty').empty();
+    $('#requireDate').empty();
+    $('#issueDate').empty();
+    let stkEmpty = [];
+    let qtyEmpty = [];
+    let issueDateEmpy = [];
+    let requireDateEmpty = [];
 
-    let b = BaseUrl + "Home/TransferWoToSystem";
-    if (window.location.href === b) {
-        GetTranferWoAjaxCall();
-        GetTranferWoCount();
-    }
-});
-
-let requestQuerytranferWo = {
-    pageNumber: 1,
-    pageSize: 6,
-    Stk: "",
-};
-
-// #region Ajax Call And create  table
-function GetTranferWoAjaxCall() {
-    requestQuerytranferWo.Stk = $(Inputs.tranferWo_searchStk).val();
-    ShowLoader();
-    $(TablesId.tranferWo).empty();
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: HttpUrls.GetProductionOrdersTransfer,
-        data: JSON.stringify(requestQuerytranferWo),
-        success: (list) => {
-            if (list.length !== 0) {
-                $('#recordNotFoundDiv_tranferWo').css('display', 'none');
-                console.log('Reprot', list);
-             CreateTranferWoTable(list, TablesId.tranferWo);
-            }
-            else {
-                $(`#recordNotFoundDiv_tranferWo h3`).text('Hiç Bir Kayit Bulunmamaktadır');
-                $('#recordNotFoundDiv_tranferWo').css('display', 'block');
-                HideLoader();
-            }
-        }
-    });
-};
-function CreateTranferWoTable(list, tableId) {
     $(tableId).empty();
     list.map((element, index) => {
-        element.stk ? element.stk = element.stk : element.stk = "";
-        element.qty ? element.stk = element.qty : element.qty = "";
-        element.issueDate ? element.issueDate = element.issueDate : element.issueDate = "";
-        element.requireDate ? element.requireDate = element.requireDate : element.requireDate = "";
-        element.remark ? element.remark = element.remark : element.remark = "";
-        element.control ? element.control = element.control : element.control = "";
+
+        if (isNaN(element.qty)) {
+            qtyEmpty.push(element);
+
+        }
+        else if (element.stk === "" || element.stk === undefined) stkEmpty.push(element);
+        else if (element.issueDate === "" || element.issueDate === undefined) issueDateEmpy.push(element);
+        else if (element.requireDate === "" || element.requireDate === undefined) requireDateEmpty.push(element);
+        else {
+            if (typeof (element.qty) === "string") element.qty = parseInt(element.qty);
+            element.stk = element.stk.toString();
+            acceptedTransfer.push(element);
             $(tableId).append(`
 <tr >
   <td>${element.stk} </td>
   <td>${element.qty} </td>
-  <td>${element.issueDate.slice(0,-11)} </td>
-  <td>${element.requireDate.slice(0, -11)} </td>
+  <td>${element.issueDate} </td>
+  <td>${element.requireDate} </td>
   <td>${element.remark} </td>
-  <td>${element.control} </td>
-  <td onclick="DeleteFromTransferWo('${element.partNo}','${element.stk}')"><i  class="fas fa-trash-alt fa-2x text-danger"></i></td>
+  <td>${element.control ? element.control : ""} </td>
              </tr>
 `);
-    });
-    HideLoader();
-}
-function GetTranferWoCount() {
-
-    $('#select-tranferWo-selectRowCount').empty();
-    $.getJSON(`${HttpUrls.GetprocutionOrdersTranferCount}`, function (num) {
-        $('#select-tranferWo-selectRowCount').append(`
-               <option selected value="6">6</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                    <option value="${num}">(${num}) All Records</option>
-
-`);
-        $('#span-tranferWo-rowCount').text(num);
-
-    })
-
-}
-
-$('#select-tranferWo-selectRowCount').on('change', () => {
-    requestQuerytranferWo.pageSize = parseInt($('#select-tranferWo-selectRowCount').val());
-    requestQuerytranferWo.pageNumber = 1;
-    $('#num-tranferWo-pageNumber').text(requestQuerytranferWo.pageNumber);
-    GetTranferWoAjaxCall();
-});
-//#endregion
-//#region Next-Previous Hanldler
-$(PreviousButtons.tranferWo).on('click', (event) => {
-    event.preventDefault();
-    if (requestQuerytranferWo.pageNumber > 1) requestQuerytranferWo.pageNumber -= 1;
-    $('#num-tranferWo-pageNumber').text(requestQuerytranferWo.pageNumber);
-    GetTranferWoAjaxCall();
-});
-$(NextButtons.tranferWo).on('click', (event) => {
-    event.preventDefault();
-    requestQuerytranferWo.pageNumber += 1;
-    $('#num-tranferWo-pageNumber').text(requestQuerytranferWo.pageNumber);
-    GetTranferWoAjaxCall();
-});
-//#endregion
-// #region search
-
-$(Inputs.tranferWo_searchStk).keyup(function () {
-
-    clearTimeout(timer);
-    requestQuerytranferWo.pageNumber = 1;
-    $('#num-tranferWo-pageNumber').text(requestQuerytranferWo.pageNumber);
-    timer = setTimeout(GetTranferWoAjaxCall, doneTypingInterval);
-});
-
-
-// #endregion 
-// #region reset 
-$('#btn-tranferWo-reset').click((event) => {
-    event.preventDefault();
-    $(Inputs.tranferWo_searchStk).val('');
-    requestQuerytranferWo.Stk = '';
-    requestQuerytranferWo.pageNumber = 1;
-    requestQuerytranferWo.pageSize = 6;
-    $('#select-tranferWo-selectRowCount').val('6');
-    $('#num-tranferWo-pageNumber').text(requestQuerytranferWo.pageNumber);
-    GetTranferWoAjaxCall();
-});
-
-//#endregion
-
-
-//#region  delete
-function DeleteFromTransferWo(partNo,stk) {
-    Swal.fire({
-        title: `${stk}`,
-        text: ` stk :${stk} will delete? `,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.value) {
-            ShowLoader();
-            $.ajax({
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                url: HttpUrls.DeleteFromTranferWo + partNo,
-                success: (message) => {
-                    HideLoader();
-                    Swal.fire({
-                        type: 'success',
-                        title: "Done!",
-                        text: `${stk} ${message}`,
-                        timer: 2000
-                    });
-                    GetTranferWoAjaxCall();
-                    GetTranferWoCount();
-                }
-            });
         }
-    })
+    });
+
+
+
+
+    if (isModel) {
+        CreateNonAcceptedReocrdsInTranferWo(stkEmpty, 'stk');
+        CreateNonAcceptedReocrdsInTranferWo(qtyEmpty, 'qty');
+        CreateNonAcceptedReocrdsInTranferWo(issueDateEmpy, 'issueDate');
+        CreateNonAcceptedReocrdsInTranferWo(requireDateEmpty, 'requireDate');
+        $('#tranferWo-summary').modal('show');
+
+    }
+
 }
 
+function CreateNonAcceptedReocrdsInTranferWo(list, id) {
+    if (list.length > 0) {
+        list.map((element) => {
+            $(`#${id}`).append(`
+<p style="color:black"> STK : ${element.stk} , QTY: ${element.qty} , issue Date : ${element.issueDate} , Require Date :  ${element.requireDate}</p>
+`)
+        })
+    }
+}
+
+//#region  Clear 
 $('#btn-tranferWo-deleteAll').click((e) => {
     e.preventDefault();
 
@@ -172,23 +74,9 @@ $('#btn-tranferWo-deleteAll').click((e) => {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.value) {
-            ShowLoader();
-            $.ajax({
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                url: HttpUrls.DeleteAllTranferWo,
-                success: (message) => {
-                    HideLoader();
-                    Swal.fire({
-                        type: 'success',
-                        title: "Done!",
-                        text: `${message}`,
-                        timer: 2000
-                    });
-                    GetTranferWoAjaxCall();
-                    GetTranferWoCount();
-                }
-            });
+
+            $(TablesId.tranferWo).empty();
+        //    location.reload();
         }
     })
 })
@@ -209,24 +97,85 @@ $('#btn-tranferWo-addAndTransfer').click((e) => {
         confirmButtonText: 'Yes!'
     }).then((result) => {
         if (result.value) {
-            ShowLoader();
-            $.ajax({
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                url: HttpUrls.TrnasferToSystem,
-                success: (message) => {
-                    HideLoader();
-                    Swal.fire({
-                        type: 'success',
-                        title: "Done!",
-                        text: `${message}`,
-                        timer: 3000
-                    });
-                    GetTranferWoAjaxCall();
-                    GetTranferWoCount();
-                }
-            });
+            if (acceptedTransfer.length === 0) {
+                Swal.fire({
+                    type: 'error',
+                    title: "..Ops",
+                    text: `there is no records to tranfer`,
+                    timer: 3500
+                });
+            }
+            else {
+                ShowLoader();
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(acceptedTransfer),
+                    url: HttpUrls.TrnasferWoToSystem,
+                    success: (list) => {
+                        HideLoader()
+                        if (list === 'empty' || list.length === 0)
+                            Swal.fire({
+                                type: 'error',
+                                title: "Ops..",
+                                text: `no records has been added`,
+                                timer: 3500
+                            });
+                        else {
+                            Swal.fire({
+                                type: 'success',
+                                title: "Done!",
+                                text: `${list.length} records has been added rest records Have issues`,
+
+                            });
+                            let stkList = [];
+                            for (let i = 0; i < list.length; i++) {
+                                stkList.push(list[i].stk);
+                            }
+                            for (let i = 0; i < stkList.length; i++) {
+                                acceptedTransfer.map((el, index) => {
+                                    if (stkList[i] === el.stk) acceptedTransfer.splice(index, 1);
+                                })
+                            }
+                            $(TablesId.tranferWo).empty();
+                            CreateTranferWoTable(acceptedTransfer, TablesId.tranferWo, false);
+                            acceptedTransfer = [];
+
+                        }
+                    }
+                });
+            }
         }
     })
 })
 //#endregion
+
+
+
+//#region upload Excel File
+$('#btn-tranferWo-addExcleFile').click((event) => {
+
+    event.preventDefault();
+    $('#inp-tranferWo-excelFile').trigger('click');
+
+});
+
+$('#inp-tranferWo-excelFile').change((e) => {
+    selectedFile = event.target.files[0];
+    if (selectedFile) {
+        acceptedTransfer = [];
+        let fileReader = new FileReader();
+        fileReader.readAsBinaryString(selectedFile);
+        fileReader.onload = (event) => {
+            let data = event.target.result;
+            let workbook = XLSX.read(data, { type: "binary", cellDates: true });
+            workbook.SheetNames.forEach(sheet => {
+                let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], { raw: false, dateNF: 'dd/mm/yyyy' });
+                CreateTranferWoTable(rowObject, TablesId.tranferWo, true);
+            });
+        }
+    }
+});
+
+
+//#endregion 

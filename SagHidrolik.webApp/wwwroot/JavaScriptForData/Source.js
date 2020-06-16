@@ -53,6 +53,8 @@ const HttpUrls = {
     AddToProductionOrdersPrintOut: BaseUrl + "WOGetData/AddToProductionOrdersPrintOut",
     DeleteFromPrintOut: BaseUrl + "WOGetData/DeleteFromPrintOut?productId=",
     DeleteAllPrintOut: BaseUrl + "WOGetData/DeleteAllPrintOut",
+    TrnasferWoToSystem: BaseUrl + "WOGetData/TrnasferWoToSystem",
+
     GetProcessFlowInProcessDetails: BaseUrl + "UretimData/GetProcessFlowInProcessDetails",
     GetProcessFlowDetailsInProcessDetails: BaseUrl + "UretimData/GetProcessFlowDetailsInProcessDetails",
 
@@ -612,7 +614,6 @@ const PreviousButtons = {
     productionStatus: "#btn-productionStatus-previous",
     shippmentReport: "#btn-shippmentReport-previous",
     teslimatDurumu: "#btn-teslimatDurumu-previous",
-    tranferWo: "#btn-tranferWo-previous",
     systemUser: "#btn-systemUser-previous",
     sekiyetKutuEtiketi_sekKabul: "#btn-sevkiyatKutuEtiketi-previous",
     girisKabulEtiketi: "#btn-girisKabulEtiketi-previous",
@@ -689,7 +690,6 @@ const NextButtons = {
     productionStatus: "#btn-productionStatus-next",
     shippmentReport: "#btn-shippmentReport-next",
     teslimatDurumu: "#btn-teslimatDurumu-next",
-    tranferWo: "#btn-tranferWo-next",
     systemUser: "#btn-systemUser-next",
     sekiyetKutuEtiketi_sekKabul: "#btn-sevkiyatKutuEtiketi-next",
     girisKabulEtiketi: "#btn-girisKabulEtiketi-next",

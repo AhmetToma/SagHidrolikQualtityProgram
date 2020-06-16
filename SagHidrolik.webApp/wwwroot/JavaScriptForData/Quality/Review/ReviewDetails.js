@@ -545,7 +545,6 @@ $('#document-input').change(function () {
     let ncId = parseInt(window.localStorage.getItem('reviewDetails'));
     let documentPath = $(this).val();
     if (documentPath !== '') {
-
         let documentModel = {
             nC_ID: ncId,
             documentLink: documentPath,

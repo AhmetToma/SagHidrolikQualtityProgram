@@ -56,5 +56,22 @@ namespace SagHidrolik.webApp.Controllers
             var message = AllWOData.DeleteAllPrintOut().Result;
             return Json(message);
         }
+
+
+        #region
+        public IActionResult TrnasferWoToSystem([FromBody]List<TrnasferWoToSystemViewModel> list)
+        {
+
+            if(list.Count<=0)
+                return Json("empty");
+      
+            else
+            {
+                var message = AllWOData.TrnasferWoToSystem(list).Result;
+                return Json(message);
+            }
+        
+        }
+        #endregion
     }
 }

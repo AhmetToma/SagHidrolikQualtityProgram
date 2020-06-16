@@ -13,7 +13,12 @@ namespace SagHidrolik.DataAccesslayer.Wo
 {
     public static class AllWOData
     {
-        public static async Task<IEnumerable<DboLocalProductionOrders>> GetAllProductionOrders(RequestQuery requestQuery)
+        public static bool IsDateTime(string txtDate)
+        {
+            DateTime tempDate;
+            return DateTime.TryParse(txtDate, out tempDate);
+        }
+            public static async Task<IEnumerable<DboLocalProductionOrders>> GetAllProductionOrders(RequestQuery requestQuery)
         {
             var stkList = StokReadingData.GetStokkenByStkList(requestQuery).Result;
             requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
@@ -76,13 +81,12 @@ namespace SagHidrolik.DataAccesslayer.Wo
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
                 await connection.OpenAsync();
-                var productId =  connection.QuerySingle<int>(SqlQueryRepo.AddNewWorkOrder(product));
+                var productId = connection.QuerySingle<int>(SqlQueryRepo.AddNewWorkOrder(product));
                 var x = connection.Execute(SqlQueryRepo.InsertTamirIsEmri_productionOrders_setLotNo(productId));
                 var model = connection.QueryFirstAsync<DboLocalProductionOrders>(SqlQueryRepo.GetprocutionOrderByProductId(productId)).Result;
                 return model;
             }
         }
-
         public static async Task<IEnumerable<DboLocalProductionOrders>> GetAllProductionOrdersPrintOut(RequestQuery requestQuery)
         {
             var stkList = StokReadingData.GetStokkenByStkList(requestQuery).Result;
@@ -92,18 +96,18 @@ namespace SagHidrolik.DataAccesslayer.Wo
             if (stkList.Count() <= 0) return newList;
             else
             {
-             
-               
+
+
                 using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
                 {
                     await connection.OpenAsync();
                     var list = await connection.QueryAsync<DboLocalProductionOrders>(SqlQueryRepo.GetAllProductionOrdersPrintOut(requestQuery));
-              foreach (var item in list)
+                    foreach (var item in list)
                     {
                         var dboStokgen = stkList.Where(x => x.P_ID == item.PartNo_ID).FirstOrDefault();
-                        var dosya= DosyaList.Where(x => x.P_ID == item.PartNo_ID).FirstOrDefault();
+                        var dosya = DosyaList.Where(x => x.P_ID == item.PartNo_ID).FirstOrDefault();
 
-                        if(dosya !=null || dosya!=null)
+                        if (dosya != null || dosya != null)
                         {
                             if (dboStokgen != null)
                             {
@@ -120,15 +124,13 @@ namespace SagHidrolik.DataAccesslayer.Wo
                 }
             }
         }
-
-
         public static async Task<string> AddToProductionOrdersPrintOut(int[] arr)
         {
             string message;
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
                 var productOrderIdArray = await connection.QueryAsync<int>(" select ProductOrderID from ProductionOrdersPrintout");
-                List<int> finalArray=new List<int>();
+                List<int> finalArray = new List<int>();
                 for (int i = 0; i < arr.Length; i++)
                 {
                     var match = productOrderIdArray.Where(x => x == arr[i]);
@@ -139,7 +141,7 @@ namespace SagHidrolik.DataAccesslayer.Wo
                     }
 
                 }
-               
+
                 if (finalArray.Count <= 0) message = "already in PrintOut Table";
                 else
                 {
@@ -155,11 +157,9 @@ namespace SagHidrolik.DataAccesslayer.Wo
                 }
                 return message;
             }
-                      
-               
+
+
         }
-
-
         public static async Task<string> DeleteFromPrintOut(int productId)
         {
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
@@ -170,7 +170,6 @@ namespace SagHidrolik.DataAccesslayer.Wo
                 return messag;
             }
         }
-
         public static async Task<string> DeleteAllPrintOut()
         {
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
@@ -184,6 +183,49 @@ namespace SagHidrolik.DataAccesslayer.Wo
 
 
 
-        
+        public static async Task<IEnumerable<TrnasferWoToSystemViewModel>> TrnasferWoToSystem(List<TrnasferWoToSystemViewModel> excelList)
+        {
+            IEnumerable<DboStokgen> sotkgenList;
+            List<TrnasferWoToSystemViewModel> AcceptedList = new List<TrnasferWoToSystemViewModel>();
+            List<TrnasferWoToSystemViewModel> AddedList = new List<TrnasferWoToSystemViewModel>();
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<DboStokgen>(SqlQueryRepo.CheckTransferInStokgen());
+                sotkgenList = list;
+            }
+            List<TrnasferWoToSystemViewModel> matchedList = new List<TrnasferWoToSystemViewModel>();
+            foreach (var item in excelList)
+            {
+                var mathcedModel = sotkgenList.Where(x => x.Stk == item.stk).FirstOrDefault();
+                if (mathcedModel != null && item.qty > 0 && item.issueDate != ""&& IsDateTime(item.issueDate) && IsDateTime(item.requireDate))
+                {
+                    int x = 5;
+                    AcceptedList.Add(item);
+                }
+            }
+            if (AcceptedList.Count > 0)
+            {
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+                {
+                    await connection.OpenAsync();
+                    foreach (var item in AcceptedList)
+                    {
+                        int newLotNot = connection.QuerySingle<int>(SqlQueryRepo.Transfer_InsertIntoProductionOrders_getlotNo(item));
+                        if (newLotNot != 0)
+                        {
+                            AddedList.Add(item);
+                        }
+                    }
+                }
+            }
+            return AddedList;
+
+
+        }
+
     }
-}
+
+ }
+
+
