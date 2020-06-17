@@ -13,11 +13,12 @@
                     $('.ui-datepicker').css('z-index', 99999999999999);
                 }, 0);
             },
-            
+
         });
         $('#inp-productionStatus-date').val(today);
     }
 });
+let productionStatusList = [];
 
 let requestQueryForProducTionStart = {
     pageNumber: 1,
@@ -36,10 +37,10 @@ let selectedProductionList = [];
 
 // #region Ajax call ,Create Table,search Open production orders 
 function GetAllOpenProductionOrdersAjaxCall() {
+   
     $(TablesId.prodcutionStart).empty();
     requestQueryForProducTionStart.Stk = $(Inputs.prodcutionStart_searchStk).val();
     requestQueryForProducTionStart.uretimPlaniType = '1';
-
     $('#cap2-prodcutionStart').hide();
     ShowLoader();
     $.ajax({
@@ -90,7 +91,6 @@ function createOpenProductionOrdersTable(list, tableId) {
     <td>${element.remark}</td>
     <td onclick="DeleteWo('${element.productOrderId}','${element.stk}')"><i  class="fas fa-trash-alt fa-2x text-danger"></i></td>
   <td onclick="AddToProductionStatus('${element.productOrderId}','${element.qty}')" ><i class="fas fa-2x fa-plus-circle text-dark"></i></td>
-  <td onclick="TransferToSystem(${element.productOrderId})"> <i class="fas fa-exchange-alt fa-2x text-primary"></i></td>
              </tr>
 `);
     });
@@ -175,7 +175,7 @@ $('#select-prodcutionStart-selectRowCount').on('change', (e) => {
 
 $('#span-prodcutionStart-UnSelectRows').click((event) => {
     event.preventDefault();
-    if (selectedProductionList.length != 0) {
+    if (selectedProductionList.length !== 0) {
         selectedProductionList.map((id) => {
             $(`#${id}`).parent().parent().removeClass('selectedRow');
             $(`#${id}`).prop('checked', false);
@@ -204,9 +204,9 @@ function GetAllProductionStatusAjaxCall() {
         url: HttpUrls.GetAllProductionStatus,
         success: (list) => {
             if (list.length !== 0) {
-                console.log('st', list)
+                productionStatusList = list;
                 $(recordsNotFound.productionStatus).css('display', 'none');
-              CreatProductionStatusTable(list, TablesId.productionStatus);
+                CreatProductionStatusTable(list, TablesId.productionStatus);
             }
             else {
                 $(`${recordsNotFound.productionStatus} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
@@ -224,16 +224,14 @@ function CreatProductionStatusTable(list, tableId) {
         if (element.status === 1) status = 'açık';
         if (element.status === 2) status = 'üretimde';
         if (element.status === 3) status = 'kapalı';
-
-        
-
         $(tableId).append(`
 <tr>
   <td>${element.stk}</td>
   <td>${element.lotNo}</td>
     <td>${element.qty} </td>
     <td>${element.prosesAdi}</td>
-    <td>${element.inputDate.slice(0,-11)}</td>
+    <td>${element.inputDate.slice(0, -11)}</td>
+    <td>${element.roleName}</td>
     <td><i onclick="DeleteproductionStatus('${element.productionSheet}','${element.stk}')" class="fas fa-trash-alt fa-2x text-danger"></i></td>
              </tr>
 `);
@@ -297,14 +295,24 @@ function DeleteproductionStatus(sheetId, stk) {
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
                 url: HttpUrls.DeleteproductionStatus + sheet_id,
-                success: (message) => {
-                    GetAllProductionStatusAjaxCall();
-                    Swal.fire({
-                        type: 'success',
-                        title: 'Başarılı!',
-                        text: 'production status silindi',
-                        timer: 1500
-                    });
+                success: (num) => {
+                    if (num !== 0) {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Başarılı!',
+                            text: 'production status silindi',
+                            timer: 1500
+                        });
+                        GetAllProductionStatusAjaxCall();
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'opps!',
+                            text: 'Beklenmeyen bir hata oldu',
+                            timer: 1500
+                        });
+                    }
                 },
                 error: () => {
                     Swal.fire({
@@ -321,9 +329,9 @@ function DeleteproductionStatus(sheetId, stk) {
 
 
 let selectedproductId = 0;
-let selectedQty=0
+let selectedQty = 0
 // add to production Status
-function AddToProductionStatus(productId,qty) {
+function AddToProductionStatus(productId, qty) {
     $('#produtionStatusModal').modal('show');
     selectedproductId = productId;
     selectedQty = qty;
@@ -332,7 +340,7 @@ function AddToProductionStatus(productId,qty) {
 $('#btn-productionStatus-confrimAdd').click(() => {
 
     let inputDate = $('#inp-productionStatus-date').val();
-    if (inputDate == "") Swal.fire({
+    if (inputDate === "") Swal.fire({
         type: 'error',
         title: 'empty input!',
         text: 'you should enter date',
@@ -346,7 +354,7 @@ $('#btn-productionStatus-confrimAdd').click(() => {
             url: HttpUrls.AddToProductionStatus + v,
             success: (message) => {
                 let type = "";
-                message == "there is no order No!" ? type = "error" : type="success"
+                message === "there is no order No!" ? type = "error" : type = "success"
                 Swal.fire({
                     type: `${type}`,
                     title: 'Done!',
@@ -365,13 +373,63 @@ $('#btn-productionStatus-confrimAdd').click(() => {
 
 //#region tranfer to system
 
+
+$('#btn-productionStatus-tranferToSystemAndClear').click(() => {
+    if (productionStatusList.length === 0) {
+        Swal.fire({
+            type: `error`,
+            title: 'NO Records!',
+            text: `there is no record to tranfer`,
+            timer: 3500
+        });
+    }
+
+
+    Swal.fire({
+        title: `Tranfer Opeartion!`,
+        text: `Are you sure`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "Get",
+                contentType: "application/json;charset=utf-8",
+                url: HttpUrls.TransferToSystem,
+                success: (message) => {
+
+                    Swal.fire({
+                        type: `success`,
+                        title: 'Done!',
+                        text: `${message}`,
+                        timer: 3500
+                    });
+                    GetAllProductionStatusAjaxCall();
+                }
+            });
+         
+        }
+    })
+
+
+
+
+  
+})
+
+
+
+
 function TransferToSystem(productId) {
     $.ajax({
         type: "Get",
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.TransferToSystem + productId,
         success: (message) => {
-      
+
             Swal.fire({
                 type: `success`,
                 title: 'Done!',

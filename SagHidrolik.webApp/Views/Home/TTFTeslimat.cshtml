@@ -15,7 +15,7 @@
         <div role="tabpanel" class="tab-pane active" id="tsD">
             <div class="teslimat">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="input-group" style="margin-top:1.7rem">
                             <div class="input-group-prepend">
                                 <span class="input-group-text defaultBackground">STK</span>
@@ -23,12 +23,10 @@
                             <input id="inp-teslimatDurumu-searchStk" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="ürün kodu">
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-top:1.7rem">
-                        <select class="custom-select uretimPlani-select" id="select-teslimatDurumu-selectRowCount">
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <button style="margin:1.5rem auto auto 2.5rem" id="btn-teslimatDurumu-reset" class="btn btn-danger">Reset</button>
+                    <div class="col-md-7">
+                        <button style="margin-top:2rem" id="btn-teslimatDurumu-addExcleFile" class="btn btn-success btn-sm"> Excel File</button>
+                        <input id="inp-teslimatDurumu-excelFile" type="file" name="name" style="display: none;" />
+                        <button style="margin-top:2rem" id="btn-teslimatDurumu-deleteAll" class="btn  btn-sm btn-primary">Clear List</button>
                     </div>
                 </div>
                 <table class="table table-bordered">
@@ -123,6 +121,50 @@
                         </li>
                     </ul>
                 </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="teslimatDurumu-summary" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div style="width:50rem" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="exampleModalLabel">Non Accepted Records</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#urunKodu" role="tab" aria-controls="home"
+                           aria-selected="true">stk Empty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="home-tab" data-toggle="tab" href="#vdGlnmkt" role="tab" aria-controls="home"
+                           aria-selected="true">Qty Empty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="home-tab" data-toggle="tab" href="#gondtrh" role="tab" aria-controls="home"
+                           aria-selected="true">issue  Date Empty</a>
+                    </li>
+             
+                </ul>
+                <div class="tab-content" id="myTabContent">
+             
+                    <div style="margin-top:15px;" class="tab-pane fade show " id="urunKodu" role="tabpanel" aria-labelledby="home-tab">
+                    </div>
+                    <div style="margin-top:15px;" class="tab-pane fade show " id="vdGlnmkt" role="tabpanel" aria-labelledby="home-tab">
+                    </div>
+                    <div style="margin-top:15px;" class="tab-pane fade show " id="gondtrh" role="tabpanel" aria-labelledby="home-tab">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 ﻿
 $('#btn-login-submit').click((e) => {
+    ShowLoader();
     e.preventDefault();
     let user = {
         email: $('#inp-login-email').val(),
@@ -12,6 +13,7 @@ $('#btn-login-submit').click((e) => {
             title: "you should enter all fields",
             timer: 3000
         });
+        HideLoader();
     }
     else {
         $.ajax({
@@ -22,6 +24,7 @@ $('#btn-login-submit').click((e) => {
             success: (response) => {
                 if (response.succeeded) {
                     window.open(`${BaseUrl}`, "_self")
+
                 }
                 else {
                     Swal.fire({
@@ -29,6 +32,7 @@ $('#btn-login-submit').click((e) => {
                         title: "you have  no permission to access to system",
                         timer: 3000
                     });
+                    HideLoader()
                 }
             }
         });
@@ -39,6 +43,7 @@ $('#btn-login-submit').click((e) => {
 
 
 $('#btn-logout').click((e) => {
+    HideLoader();
     e.preventDefault();
     Swal.fire({
         title: `logout!`,

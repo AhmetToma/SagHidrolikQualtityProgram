@@ -1,15 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using ErpSagHidrolik.DataAccessLayer.AddUpadateprocess;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SagHidrolik.DataAccesslayer.Uretim;
 using SagHidrolik.Models.ViewModesl;
 
 namespace SagHidrolik.webApp.Controllers
 {
+    [Authorize]
     public class UretimDataController : Controller
     {
+
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ILogger<AuthenticationDataController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UretimDataController(SignInManager<IdentityUser> signInManager, ILogger<AuthenticationDataController> logger, 
+            IHttpContextAccessor httpContextAccessor,
+            RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+
         #region Uretim Basla
         public IActionResult GetProcessFLowInUretim([FromBody]RequestQuery requestQuery)
         {
@@ -109,7 +134,6 @@ namespace SagHidrolik.webApp.Controllers
 
         #endregion
 
-
         #region Production Summary
         public JsonResult GetProductionSummaryReport([FromBody]RequestQuery requestQuery)
         {
@@ -185,26 +209,51 @@ namespace SagHidrolik.webApp.Controllers
 
         #region production Start 
 
-        public JsonResult GetAllProductionStatus([FromBody]RequestQuery requestQuery)
+        public async Task<JsonResult> GetAllProductionStatus([FromBody]RequestQuery requestQuery)
         {
             var list = ProductionStartData.GetAllProductionStatus(requestQuery).Result;
-            return Json(list);
+            List<ProductionStatusViewModel> filtredList=  new  List<ProductionStatusViewModel>();
+            var userId =  _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var findedUser = await _userManager.FindByIdAsync(userId);
+            var roles = await _userManager.GetRolesAsync(findedUser);
+            foreach (var role in roles)
+            {
+                foreach (var item in list)
+                {
+                    var xxx = item;
+                    if (role == item.RoleName) filtredList.Add(item);
+                }
+            }
+            return Json(filtredList);
         }
 
-        public void DeleteproductionStatus(int sheetId)
+        public async Task<JsonResult> DeleteproductionStatus(int sheetId)
         {
-            ProductionStartData.DeleteproductionStatus(sheetId);
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var findedUser = await _userManager.FindByIdAsync(userId);
+            var roles = await _userManager.GetRolesAsync(findedUser);
+         var c=    ProductionStartData.DeleteproductionStatus(sheetId, roles[0]).Result;
+            
+            return Json(c);
         }
 
 
-        public JsonResult AddToProductionStatus([FromQuery] string inputDate, [FromQuery] int productId, [FromQuery]int qty)
+        public  async Task<JsonResult> AddToProductionStatus([FromQuery] string inputDate, [FromQuery] int productId, [FromQuery]int qty)
         {
-            var message = ProductionStartData.AddToProductionStatus(inputDate, productId, qty).Result;
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var findedUser = await _userManager.FindByIdAsync(userId);
+            var roles = await _userManager.GetRolesAsync(findedUser);
+
+            var message = ProductionStartData.AddToProductionStatus(inputDate, productId, qty,roles[0]).Result;
             return Json(message);
         }
-        public JsonResult TransferToSystem([FromQuery]int productId)
+        public async Task<JsonResult> TransferToSystem()
         {
-            var message = ProductionStartData.TransferToSystem(productId).Result;
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var findedUser = await _userManager.FindByIdAsync(userId);
+            var roles = await _userManager.GetRolesAsync(findedUser);
+
+            var message = ProductionStartData.TransferToSystem(roles[0]).Result;
             return Json(message);
         }
         #endregion

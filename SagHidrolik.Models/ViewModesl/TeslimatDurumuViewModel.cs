@@ -12,7 +12,7 @@ namespace SagHidrolik.Models.ViewModesl
         public string Klmno { get; set; }
         public string urunKodu { get; set; }
         public string mstrlok { get; set; }
-        public string vdGlnmkt { get; set; }
+        public int vdGlnmkt { get; set; }
         public string olcuBirimi { get; set; }
         public string gondtrh { get; set; }
     }

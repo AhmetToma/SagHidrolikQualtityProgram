@@ -14,8 +14,9 @@ function CreateTranferWoTable(list, tableId, isModel) {
 
         if (isNaN(element.qty)) {
             qtyEmpty.push(element);
-
-        }
+} 
+     
+     
         else if (element.stk === "" || element.stk === undefined) stkEmpty.push(element);
         else if (element.issueDate === "" || element.issueDate === undefined) issueDateEmpy.push(element);
         else if (element.requireDate === "" || element.requireDate === undefined) requireDateEmpty.push(element);
@@ -37,15 +38,12 @@ function CreateTranferWoTable(list, tableId, isModel) {
     });
 
 
-
-
     if (isModel) {
         CreateNonAcceptedReocrdsInTranferWo(stkEmpty, 'stk');
         CreateNonAcceptedReocrdsInTranferWo(qtyEmpty, 'qty');
         CreateNonAcceptedReocrdsInTranferWo(issueDateEmpy, 'issueDate');
         CreateNonAcceptedReocrdsInTranferWo(requireDateEmpty, 'requireDate');
         $('#tranferWo-summary').modal('show');
-
     }
 
 }
@@ -170,7 +168,7 @@ $('#inp-tranferWo-excelFile').change((e) => {
             let data = event.target.result;
             let workbook = XLSX.read(data, { type: "binary", cellDates: true });
             workbook.SheetNames.forEach(sheet => {
-                let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], { raw: false, dateNF: 'dd/mm/yyyy' });
+                let rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], { raw: false, dateNF: 'DD/MM/YYYY' });
                 CreateTranferWoTable(rowObject, TablesId.tranferWo, true);
             });
         }

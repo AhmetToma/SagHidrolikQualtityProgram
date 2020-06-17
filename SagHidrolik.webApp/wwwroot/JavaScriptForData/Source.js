@@ -63,10 +63,12 @@ const HttpUrls = {
 
     GetTeslimatDurumu: BaseUrl + "TTFTeslimatGetData/GetTeslimatDurumu",
     GetTeslimatDurumuCount: BaseUrl + "TTFTeslimatGetData/GetTeslimatDurumuCount",
+    AddTeslimatDurumu: BaseUrl + "TTFTeslimatGetData/AddTeslimatDurumu",
+    DropAllTTFTeslimatTable: BaseUrl + "TTFTeslimatGetData/DropAllTTFTeslimatTable",
     GetAllProductionStatus: BaseUrl + "UretimData/GetAllProductionStatus",
     DeleteproductionStatus: BaseUrl + "UretimData/DeleteproductionStatus?sheetId=",
     AddToProductionStatus: BaseUrl + "UretimData/AddToProductionStatus",
-    TransferToSystem: BaseUrl + "UretimData/TransferToSystem?productId=",
+    TransferToSystem: BaseUrl + "UretimData/TransferToSystem",
     GetProductionSummaryReport: BaseUrl + "UretimData/GetProductionSummaryReport",
     GetProductionSummaryCount: BaseUrl + "UretimData/GetProcutionSummaryCount",
     GetProductionOrdersTransfer: BaseUrl + "ProductionOrderTranferGetData/GetProductionOrdersTransfer",

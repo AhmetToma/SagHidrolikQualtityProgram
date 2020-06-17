@@ -6,40 +6,43 @@
         pid: ""
     };
 let pagination2 = {
-    pageNumber: 1,
-    pageSize: 6,
+    pageNumber: 10,
+  pageSize:6,
 }
 $('#tab-shippmentReport').click((e) => {
     e.preventDefault;
-    ShowLoader();
-    $.when($.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        url: HttpUrls.GetStokAll,
-        data: JSON.stringify(requestQueryForShippmentReport),
-        success: (list) => {
-            totalStokList = list;
-        }
-    }), $.ajax({
-        type: "GET",
-        contentType: "application/json;charset=utf-8",
-        url: HttpUrls.GetInProgress,
-        success: (list) => {
-            InProgresList = list;
-        }
-    }), $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        data: JSON.stringify(requestQueryForShippmentReport),
-        url: HttpUrls.GetShippmentReport,
-        success: (list) => {
-            ShippmentReportList = list;
-        }
-    })
-    ).done(function (a1, a2, a3) {
-        CreateShippmentReportTable();
-        GetShippmentReportCount();
-    });
+    if (addedList.length !== 0) {
+        ShowLoader();
+        $.when($.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: HttpUrls.GetStokAll,
+            data: JSON.stringify(requestQueryForShippmentReport),
+            success: (list) => {
+                totalStokList = list;
+            }
+        }), $.ajax({
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            url: HttpUrls.GetInProgress,
+            success: (list) => {
+                InProgresList = list;
+            }
+        }), $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(requestQueryForShippmentReport),
+            url: HttpUrls.GetShippmentReport,
+            success: (list) => {
+                ShippmentReportList = list;
+            }
+        })
+        ).done(function (a1, a2, a3) {
+            CreateShippmentReportTable();
+            GetShippmentReportCount();
+        });
+    }
+  
 })
 function GetShippmentReportCount() {
     $('#select-shippmentReport-selectRowCount').empty();
@@ -93,26 +96,30 @@ function CreateShippmentReportTable() {
     let pageSize = pagination2.pageSize * pagination2.pageNumber;
     let pageNumber = (pagination2.pageNumber - 1) * pagination2.pageSize;
     let slicedList = ShippmentReportList.slice(pageNumber, pageSize);
-    let objKeys = Object.keys(ShippmentReportList[0]);
-    let monthArray = [];
-    let existedMonth = [];
-    let monthCoulmn = "";
-    let monthValues = "";
-    let monthNames = ['ocak', 'şubat', 'mart', 'nisan', 'mayıs', 'haziran', 'temmuz', 'ağustos', 'eylül', 'ekim', 'kasım', 'aralık']
-    for (var i = 1; i < 13; i++) {
-        monthArray.push(`${i}`);
+
+
+
+
+
+    $('#shippmentReportColumns').empty();
+    if (slicedList.length <= 0) {
+        disableButton(NextButtons.shippmentReport);
+        ActiveButton(PreviousButtons.shippmentReport);
+        $(`#recordNotFoundDiv_shippmentReport h3`).text('Hiç Bir Kayit Bulunmamaktadır');
+        $('#recordNotFoundDiv_shippmentReport').css('display', 'block');
     }
 
-    for (var x = 0; x < objKeys.length; x++) {
-        let finded = monthArray.filter(el => {
-            if (el == objKeys[x]) return el;
-        });
-        if (finded.length > 0) existedMonth.push(finded[0]);
-    }
-    for (var i = 0; i < existedMonth.length; i++) {
-        monthCoulmn = monthCoulmn + `<th scope='col'>${monthNames[parseInt(existedMonth[i]) - 1]}</th >`
-    }
-    $('#shippmentReportColumns').append(`
+    else {
+        $('#recordNotFoundDiv_shippmentReport').css('display', 'none');
+        let headerKeys = Object.keys(slicedList[0]);
+        let headers = "";
+        for (let i = 0; i < headerKeys.length; i++) {
+            if (headerKeys[i] !== 'BilgiTuru' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'KutuIciMiktari' && headerKeys[i] !== 'OlcuBirimi' && headerKeys[i] !== 'Raf' && headerKeys[i] !== 'Toplam' && headerKeys[i] !== 'VdGlnMkt' && headerKeys[i] !== 'kutuTipi' && headerKeys[i] !== 'mstrlok' && headerKeys[i] !== 'stk' && headerKeys[i] !== 'totalStok') {
+                console.log(headerKeys[i]);
+                headers += `<th scope="col">${headerKeys[i]}</th>`;
+            }
+        }
+        $('#shippmentReportColumns').append(`
    <tr>
                             <th scope="col">STK</th>
                             <th scope="col">Sipariş Bilgi Türü</th>
@@ -123,25 +130,25 @@ function CreateShippmentReportTable() {
                             <th scope="col">In Progress</th>
                             <th scope="col">Kutu içi Miktari</th>
                             <th id="" scope="col">Toplam Sevk</th>
-${monthCoulmn}
+${headers}
                         </tr>
 `
-    );
+        );
 
-    let d = new Date();
-    $(TablesId.shippmentReport).empty();
-    slicedList.map((element, index) => {
-        let matchedTotlaStok = getTotalStokByStk(element.stk);
-        let matchedInProgress = getInProgresByStk(element.stk);
-        matchedTotlaStok.length <= 0 ? element['totalStok'] = "" : element['totalStok'] = matchedTotlaStok[0].totalStok;
-        matchedInProgress.length <= 0 ? element['InProgress'] = "" : element['InProgress'] = matchedInProgress[0].total;
+        let dataWithTime = "";
+        $(TablesId.shippmentReport).empty();
+        slicedList.map((element, index) => {
+            let matchedTotlaStok = getTotalStokByStk(element.stk);
+            let matchedInProgress = getInProgresByStk(element.stk);
+            matchedTotlaStok.length <= 0 ? element['totalStok'] = "" : element['totalStok'] = matchedTotlaStok[0].totalStok;
+            matchedInProgress.length <= 0 ? element['InProgress'] = "" : element['InProgress'] = matchedInProgress[0].total;
 
-        for (var i = 0; i < existedMonth.length; i++) {
-            element[existedMonth[i]] ? element[existedMonth[i]] = element[existedMonth[i]] : element[existedMonth[i]] = "";
-            monthValues = monthValues + `<td>${element[existedMonth[i]]}</td>`
-        }
-        console.log(monthValues);
-        $(TablesId.shippmentReport).append(`
+            for (let i = 0; i < headerKeys.length; i++) {
+                if (headerKeys[i] !== 'BilgiTuru' && headerKeys[i] !== 'InProgress' && headerKeys[i] !== 'KutuIciMiktari' && headerKeys[i] !== 'OlcuBirimi' && headerKeys[i] !== 'Raf' && headerKeys[i] !== 'Toplam' && headerKeys[i] !== 'VdGlnMkt' && headerKeys[i] !== 'kutuTipi' && headerKeys[i] !== 'mstrlok' && headerKeys[i] !== 'stk' && headerKeys[i] !== 'totalStok') {
+                    dataWithTime += `<td >${element[headerKeys[i]] ? element[headerKeys[i]] : ""}</td>`;
+                }
+            }
+            $(TablesId.shippmentReport).append(`
 <tr>
     <td>${element.stk}</td>
     <td>${element.BilgiTuru}</td>
@@ -152,13 +159,16 @@ ${monthCoulmn}
    <td>${element.InProgress}</td>
    <td>${element.KutuIciMiktari}</td>
    <td>${element.Toplam}</td>
-${monthValues}
+${dataWithTime}
              </tr>
+    }
+
 `);
-        monthValues = "";
-        matchedInProgress, matchedTotlaStok = [];
-    });
-    HideLoader();
+            dataWithTime = "";
+            matchedInProgress, matchedTotlaStok = [];
+        });
+        HideLoader();
+    }
 }
 
 //#region Next-Previous Hanldler

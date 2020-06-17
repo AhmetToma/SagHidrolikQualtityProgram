@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SagHidrolik.DataAccesslayer.TTFTeslimat;
 using SagHidrolik.Models.ViewModesl;
 using SagHidrolik.webApp.Data;
 using SagHidrolik.webApp.Models;
@@ -19,6 +20,7 @@ namespace SagHidrolik.webApp
         {
             Configuration = configuration;
             WorkingWithYears.GetcurrentYear();
+            TTFTeslimatData.DropAllTTFTeslimatTable();
         }
 
         public IConfiguration Configuration { get; }
@@ -65,6 +67,7 @@ options.UseSqlServer(
               //  options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
