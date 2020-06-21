@@ -21,7 +21,49 @@ namespace ErpSagHidrolik.DataAccessLayer.AddUpadateprocess
                 return list;
             }
         }
+        public static async Task<IEnumerable<ProcessPlannigModel>> GetProcessPlanning()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<ProcessPlannigModel>(SqlQueryRepo.GetTamirIsEmriAdimlari);
+                return list;
+            }
+        }
 
+        public static async Task<string> DeleteBomProcess(BomProcessViewModel bom)
+        {
+
+            if(bom.OrderNo!=null && bom.PartNo_ID!=null && bom.SubPartNo!=null)
+            {
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+                {
+                    await connection.OpenAsync();
+                    int c = await connection.ExecuteAsync(SqlQueryRepo.DeleteBomProcess(bom));
+                    if (c > 0) return "done";
+                    return "none";
+                }
+            }
+            return "not completed";
+        }
+
+
+        public static async Task<string> UpdateBomProcess(BomProcessViewModel bom)
+        {
+
+            if (bom.OrderNo != null && bom.PartNo_ID != null)
+            {
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+                {
+                    await connection.OpenAsync();
+                    int c = await connection.ExecuteAsync(SqlQueryRepo.UpdateBomProcess(bom));
+                    if (c > 0) 
+                        return "done";
+                    return "none";
+                }
+            }
+            return "not completed";
+        }
         public static async Task<IEnumerable<BomProcessViewModel>> GetBomProcessTemp(RequestQuery requestQuery)
         {
             var stokModel = StokReadingData.GetDboStokgenPIdByStk(requestQuery.Stk).Result;
@@ -33,25 +75,9 @@ namespace ErpSagHidrolik.DataAccessLayer.AddUpadateprocess
                 return list;
             }
         }
-        public static async Task<IEnumerable<BomProcessViewModel>> CopyToBomProcessTemp(string pId)
-        {
-            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
-            {
-                await connection.OpenAsync();
-                var list = await connection.QueryAsync<BomProcessViewModel>(SqlQueryRepo.CopyToBomProcessTemp(pId));
-                return list;
-            }
-        }
+        
 
-        public static async Task<IEnumerable<BomProcessViewModel>> DeleteFromBomProcessTemp(string pId)
-        {
-            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
-            {
-                await connection.OpenAsync();
-                var list = await connection.QueryAsync<BomProcessViewModel>(SqlQueryRepo.DeleteFromBomProcessTemp(pId));
-                return list;
-            }
-        }
+    
 
         public static async Task<string> addUpdateProceecSave(RequestQuery requestQuery)
         {
@@ -86,7 +112,6 @@ namespace ErpSagHidrolik.DataAccessLayer.AddUpadateprocess
                         bomProcessTempCount = bomProcessTempCount - 1;
                     }
 
-                   await DeleteFromBomProcessTemp(requestQuery.pid);
                     message = "işlem başarıyla tamamlandı";
                     }
                     return message;

@@ -815,7 +815,7 @@ textarea {
 }
 
 .modal .select2-container--default .select2-selection--multiple {
-    width: 13rem !important;
+   width: 13rem !important;
 }
 
 .inpAction {
@@ -1178,3 +1178,10 @@ textarea {
     cursor: pointer;
 }
 /* end giriş kabul etiketi*/
+
+
+/*add- update Process*/
+
+#addOrUpdateProcess-editModel .modal-dialog .modal-body .select2-container--default .select2-selection--multiple {
+    width: 27rem !important;
+}

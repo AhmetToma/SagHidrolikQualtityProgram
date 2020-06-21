@@ -10,7 +10,7 @@
             <form>
                 <div class="input-group urunEtiketiSearchDiv">
                     <span class="input-group-text " style="background-color:#2A3F54;color:white" id="basic-addon1">STK</span>
-                    <input autofocus id="inp-addOrUpdateProcess-stokSearch"  type="search" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
+                    <input autofocus id="inp-addOrUpdateProcess-stokSearch" value="47833125" type="search" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
                 </div>
             </form>
         </div>
@@ -33,37 +33,62 @@
     @*style="opacity:0" ;*@
     <hr style="opacity:0" class="toscroll" />
 
-    <div style="opacity:0;" class="addUpdateProcessSection">
+    <div style="opacity:1;" class="addUpdateProcessSection">
 
         <div class="row" style="margin-top:3rem;margin-bottom:4rem; margin-left:20%!important">
-            <a id="btn-addOrUpdateProcess-copy" style="background-color:#18375d;color:white" class="btn">Copy to table</a>
-            <a id="btn-addOrUpdateProcess-save" style="background-color:#18375d;color:white" class="btn">Save Update</a>
-            <a href="" target="_blank" id="btn-addOrUpdateProcess-dosya" class="btn" style="background-color:#18375d;color:white;">Dosya Aç</a>
-            <a id="btn-addOrUpdateProcess-cleantable" style="color:white" class="btn btn-danger">Clean Table</a>
-            <a id="btn-addOrUpdateProcess-reset"  style="color:white" class="btn btn-danger">Reset</a>
+            @*<a id="btn-addOrUpdateProcess-copy" style="background-color:#18375d;color:white" class="btn">Copy to table</a>
+                <a id="btn-addOrUpdateProcess-save" style="background-color:#18375d;color:white" class="btn">Save Update</a>
+                <a href="" target="_blank" id="btn-addOrUpdateProcess-dosya" class="btn" style="background-color:#18375d;color:white;">Dosya Aç</a>
+                <a id="btn-addOrUpdateProcess-cleantable" style="color:white" class="btn btn-danger">Clean Table</a>
+                <a id="btn-addOrUpdateProcess-reset" style="color:white" class="btn btn-danger">Reset</a>*@
         </div>
-        <div class="row">
-            <div class="col-md-6 col-sm-6">
-                <div class="alertProcessInOrderDetails" style="opacity:0.8">
-                    <h3>Current Process </h3>
+        <div class="col-md-12 col-sm-12">
+            <div class="alertProcessInOrderDetails" style="opacity:0.8;margin-left:20%">
+                <h3>Current Process </h3>
+            </div>
+            <div class="row" style="margin-top:3rem;margin-bottom:1rem;">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" style="color:black">select table row count : </label>
+                        <select style="color:black" class="form-control" id="select-stokAll-selectRowCount">
+                            <option>10</option>
+                            <option>25</option>
+                            <option>50</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="zxc">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">Sub Part No</th>
-                                <th scope="col">Prcess Name </th>
-                                <th scope="col">QtY</th>
-                                <th scope="col">Quality</th>
-                                <th scope="col">Measurement</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-addOrUpdateProcess-bomProcessCurrent" class="">
-                        </tbody>
-                    </table>
+                <div class="col-md-5">
+                    <div class="form-group" style="margin-top:1.7rem;">
+                        <a href="" target="_blank" id="btn-addOrUpdateProcess-dosya" class="btn" style="background-color:#18375d;color:white;">Dosya Aç</a>
+                        <a id="btn-addOrUpdateProcess-reset" style="color:white" class="btn btn-danger">Reset seacrh</a>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6 col-sm-6">
+            <div class="">
+                <table class="table table-bordered">
+                    <caption> toplam count : 15</caption>
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Order No</th>
+                            <th scope="col">Process Adi</th>
+                            <th scope="col">Prcess Name </th>
+                            <th scope="col">Sub Part No</th>
+                            <th scope="col">QtY</th>
+                            <th scope="col">Quality</th>
+                            <th scope="col">Measurement</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-addOrUpdateProcess-bomProcessCurrent" class="">
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+        @*<div class="col-md-6 col-sm-6">
                 <div class="alertProcessInOrderDetails">
                     <h3>New Process </h3>
                 </div>
@@ -82,6 +107,74 @@
                         </tbody>
                     </table>
                 </div>
+            </div>*@
+    </div>
+</div>
+
+// summary 
+<div class="modal fade" id="addOrUpdateProcess-summary" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#b13e5b; color:white">
+                <h5 class="modal-title" id="exampleModalLabel">Process Summary</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4 style="color:#b13e5b">STK :  <span style="color:black">15455</span></h4>
+                <h4 style="color:#b13e5b">Order No :  <span style="color:black"></span></h4>
+                <h4 style="color:#b13e5b">process Name :  &nbsp;&nbsp <span style="color:black">15455</span>    <i class="fa   fa-arrow-right text-danger"></i>     <i class="fa   fa-arrow-right text-danger"></i>   <span style="color:black">452</span>  </h4>
+                <h4 style="color:#b13e5b">proses Adi :  &nbsp;&nbsp &nbsp;&nbsp <span style="color:black">15455</span>   <i class="fa   fa-arrow-right text-danger"></i>    <i class="fa   fa-arrow-right text-danger"></i>     <span style="color:black">452</span>  </h4>
+                <h4 style="color:#b13e5b">Qty :   &nbsp;&nbsp <span style="color:black">15455</span>     <i class="fa   fa-arrow-right text-danger"></i>  <i class="fa   fa-arrow-right text-danger"></i>     <span style="color:black">452</span>  </h4>
+                <h4 style="color:#b13e5b">Quality :  &nbsp;&nbsp; <span style="color:black">15455</span>   <i class="fa   fa-arrow-right text-danger"></i>    <i class="fa   fa-arrow-right text-danger"></i>     <span style="color:black">452</span>  </h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-addOrUpdateProcess-confirm" type="button" class="btn btn-success">Save Editing</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ <!-- add edit -->
+<div class="modal fade" id="addOrUpdateProcess-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header"  style="background-color:#b13e5b;color:white">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Bom process</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">OrderNo   : </label>
+                        <input type="number" min="1"  disabled class="form-control" id="inp-addOrUpdateProcess-edit-orderNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Qty   : </label>
+                        <input type="number" min="0"  class="form-control" id="inp-addOrUpdateProcess-edit-qty">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Quality   : </label>
+                        <input type="text"  class="form-control" id="inp-addOrUpdateProcess-edit-quality">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Sub part No - Process Name : </label><br />
+                        <select id="inp-addOrUpdateProcess-edit-subpartNo" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Process Adi : </label><br />
+                        <select id="inp-addOrUpdateProcess-edit-processAdi" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-addOrUpdateProcess-edit-saveEdit" type="button" class="btn btn-success">Save editing</button>
             </div>
         </div>
     </div>

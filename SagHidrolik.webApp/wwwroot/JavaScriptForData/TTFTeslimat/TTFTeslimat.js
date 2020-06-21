@@ -3,13 +3,13 @@
     let b = BaseUrl + "Home/TTFTeslimat";
     if (window.location.href === b) {
 
-         DropAllTTFTeslimatTable();
-     //   GetTeslimatDurumuAjaxCall();
-    //   GetTeslimatDurumuCount();
+        DropAllTTFTeslimatTable();
+        //   GetTeslimatDurumuAjaxCall();
+        //   GetTeslimatDurumuCount();
 
     }
 });
-function DropAllTTFTeslimatTable(){
+function DropAllTTFTeslimatTable() {
     $.ajax({
         type: "GET",
         contentType: "application/json;charset=utf-8",
@@ -47,7 +47,11 @@ function GetTeslimatDurumuAjaxCall() {
                 $('#recordNotFoundDiv_teslimatDurumu').css('display', 'block');
                 HideLoader();
             }
+        },
+        error: () => {
+            HideLoader();
         }
+
     });
 };
 function CreateTeslimatDurumu(list, tableId) {
@@ -62,7 +66,7 @@ function CreateTeslimatDurumu(list, tableId) {
     <td>${element.klmno}</td>
     <td>${element.mstrlok}</td>
     <td>${element.olcuBirimi}</td>
-    <td>${element.gondtrh.slice(0,-11)}</td>
+    <td>${element.gondtrh.slice(0, -11)}</td>
              </tr>
 `);
     });
@@ -107,7 +111,7 @@ $(NextButtons.teslimatDurumu).on('click', (event) => {
 // #region search
 $(Inputs.teslimatDurumu_searchStk).keyup(function () {
     clearTimeout(timer);
-        requestQueryForTeslimatDurumu.pageNumber = 1;
+    requestQueryForTeslimatDurumu.pageNumber = 1;
     $('#num-teslimatDurumu-pageNumber').text(requestQueryForTeslimatDurumu.pageNumber);
     timer = setTimeout(GetTeslimatDurumuAjaxCall, doneTypingInterval);
 });
@@ -168,9 +172,9 @@ function CreateTeslimatTable(list, tableId, isModel) {
             $(tableId).append(`
 <tr >
   <td>${element.urunKodu} </td>
-  <td>${element.siparisBlturu ? element.siparisBlturu:""} </td>
-  <td>${element.sprsblgno ? element.sprsblgno:""} </td>
-  <td>${element.klmno ? element.klmno:""} </td>
+  <td>${element.siparisBlturu ? element.siparisBlturu : ""} </td>
+  <td>${element.sprsblgno ? element.sprsblgno : ""} </td>
+  <td>${element.klmno ? element.klmno : ""} </td>
   <td>${element.mstrlok ? element.mstrlok : ""} </td>
   <td>${element.olcuBirimi ? element.olcuBirimi : ""} </td>
   <td>${element.gondtrh ? element.gondtrh : ""} </td>
@@ -200,7 +204,7 @@ function CreateTeslimatTable(list, tableId, isModel) {
                     type: `success`,
                     title: 'Done!',
                     text: `${list.length} has been eklendi`,
-                    timer: 3500
+               
                 });
             }
         });
@@ -222,7 +226,7 @@ Klmno :  ${element.gondtrh},gondtrh :  ${element.gondtrh}
 }
 
 //#region  Clear 
-$('#btn-tranferWo-deleteAll').click((e) => {
+$('#btn-teslimatDurumu-deleteAll').click((e) => {
     e.preventDefault();
 
     Swal.fire({
@@ -235,8 +239,10 @@ $('#btn-tranferWo-deleteAll').click((e) => {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.value) {
-
-            $(TablesId.tranferWo).empty();
+            $(TablesId.teslimatDurumu).empty();
+            DropAllTTFTeslimatTable();
+            $('#inp-teslimatDurumu-excelFile').val('');
+            $('#inp-teslimatDurumu-excelFile').trigger('change');
             //    location.reload();
         }
     })

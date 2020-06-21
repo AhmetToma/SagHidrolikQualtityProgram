@@ -13,7 +13,7 @@ $('#btn-login-submit').click((e) => {
             title: "you should enter all fields",
             timer: 3000
         });
-        HideLoader();
+    
     }
     else {
         $.ajax({
@@ -23,7 +23,9 @@ $('#btn-login-submit').click((e) => {
             data: JSON.stringify(user),
             success: (response) => {
                 if (response.succeeded) {
+
                     window.open(`${BaseUrl}`, "_self")
+                    HideLoader();
 
                 }
                 else {

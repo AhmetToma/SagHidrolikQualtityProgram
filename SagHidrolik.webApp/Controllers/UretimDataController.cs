@@ -170,26 +170,29 @@ namespace SagHidrolik.webApp.Controllers
             return Json(list);
         }
 
-        public IActionResult GetBomProcessTemp([FromBody] RequestQuery requestQuery)
+
+        public IActionResult DeleteBomProcess([FromBody]  BomProcessViewModel bom)
         {
-            var list = AddUpdateProcesssData.GetBomProcessTemp(requestQuery).Result;
-            return Json(list);
+
+            if(bom!=null)
+            {
+                var list = AddUpdateProcesssData.DeleteBomProcess(bom).Result;
+                return Json(list);
+            }
+            return  Json("model is empty");
+         
         }
 
-        public IActionResult CopyToBomprocessTemp([FromQuery]string pId)
-        {
-            var list = AddUpdateProcesssData.CopyToBomProcessTemp(pId).Result;
-            return Json(list);
-        }
 
-        public IActionResult DeleteFromBomProcessTemp([FromQuery]string pId)
+
+        public IActionResult GetProcessPlanning()
         {
-            var list = AddUpdateProcesssData.DeleteFromBomProcessTemp(pId).Result;
+            var list = AddUpdateProcesssData.GetProcessPlanning().Result;
             return Json(list);
         }
-        public IActionResult addUpdateProceecSave([FromBody]RequestQuery request)
+        public IActionResult UpdateBomProcess([FromBody]BomProcessViewModel bom)
         {
-            string message = AddUpdateProcesssData.addUpdateProceecSave(request).Result;
+            string message = AddUpdateProcesssData.UpdateBomProcess(bom).Result;
             return Json(message);
         }
         #endregion

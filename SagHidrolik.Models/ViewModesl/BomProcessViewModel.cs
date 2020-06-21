@@ -17,6 +17,7 @@ namespace SagHidrolik.Models.ViewModesl
         public int? OrderNo { get; set; }
         public string PartNo_ID { get; set; }
         public string ProcessName { get; set; }
+        public string ProcessNo { get; set; }
 
     }
 }

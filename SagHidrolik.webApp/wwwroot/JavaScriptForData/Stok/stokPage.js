@@ -55,7 +55,7 @@ function creatStokgenTable(list, tableId) {
             if (element.field18 === null) element.field18 = " ";
             if (element.field19 === null) element.field19 = " ";
             $(tableId).append(`
-<tr id="${element.stk}" data-id="${element.stk}" data-p_ID=${element.p_ID}>
+<tr id="'${element.stk}'" data-id="${element.stk}" data-p_ID=${element.p_ID}>
   <td>${element.stk}</td>
     <td>${element.sta}</td>
     <td>${element.field18} / ${element.field19}</td>

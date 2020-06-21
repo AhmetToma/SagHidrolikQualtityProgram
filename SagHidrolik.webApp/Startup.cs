@@ -62,7 +62,7 @@ options.UseSqlServer(
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = false;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(25);
                 options.LoginPath = "/AuthenticationData/loginPage";
               //  options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;

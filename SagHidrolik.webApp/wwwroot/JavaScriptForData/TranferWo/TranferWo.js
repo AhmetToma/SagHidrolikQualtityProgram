@@ -74,6 +74,8 @@ $('#btn-tranferWo-deleteAll').click((e) => {
         if (result.value) {
 
             $(TablesId.tranferWo).empty();
+            $('#inp-tranferWo-excelFile').val('');
+            $('#inp-tranferWo-excelFile').trigger('change');
         //    location.reload();
         }
     })

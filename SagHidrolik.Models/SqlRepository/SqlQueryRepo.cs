@@ -370,11 +370,18 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         #region Add-update Process 
         public static string GetAllBomProcessInAddOrUpdateProcess(RequestQuery request)
         {
-            query = $"Select SubPartNo, PartNo_ID ,Qty,Quality,ProcessName, Process_Planning.ProsesAdi from BOM_Process inner join" +
+            query = $"Select Process_Planning.ProcessNo, BOM_Process.OrderNo, SubPartNo, PartNo_ID ,Qty,Quality,ProcessName, Process_Planning.ProsesAdi from BOM_Process inner join" +
                 $" Process_Planning on SubPartNo = Process_Planning.ProcessNo" +
                 $" where PartNo_ID = '{request.pid}'";
             return query;
         }
+        public static string DeleteBomProcess(BomProcessViewModel bom) => $@"delete from BOM_Process where PartNo_ID ='{bom.PartNo_ID}' and OrderNo ={bom.OrderNo} and SubPartNo = {bom.SubPartNo}";
+        public static string UpdateBomProcess(BomProcessViewModel bom) => $@"
+update BOM_Process set Quality = '{bom.Quality}' ,
+SubPartNo={bom.ProcessNo},Qty={bom.Qty} where OrderNo ={bom.OrderNo} and PartNo_ID='{bom.PartNo_ID}'
+";
+        public static string GetProcessPlanning = "select Distinct  ProcessNo,ProsesAdi,ProcessName from Process_Planning";
+
 
         public static string GetBomProcessTemp(RequestQuery requestQuery)
         {

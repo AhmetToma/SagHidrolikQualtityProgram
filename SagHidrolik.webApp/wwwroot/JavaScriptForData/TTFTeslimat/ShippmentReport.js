@@ -6,7 +6,7 @@
         pid: ""
     };
 let pagination2 = {
-    pageNumber: 10,
+    pageNumber: 1,
   pageSize:6,
 }
 $('#tab-shippmentReport').click((e) => {
