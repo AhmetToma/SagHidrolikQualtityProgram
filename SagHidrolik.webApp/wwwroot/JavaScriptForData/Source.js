@@ -39,6 +39,7 @@ const HttpUrls = {
     GetAllStokEtiketi: BaseUrl + "EtiketlerGetData/GetAllStokEtiketi",
     GetGirisKabulEtiketiList: BaseUrl + "EtiketlerGetData/GetGirisKabulEtiketiList",
     GetBomProccessInAddOrUpdateProcess: BaseUrl + "UretimData/GetAllBomProcessInAddOrUpdateProcess",
+    AddBomProcess: BaseUrl + "UretimData/AddBomProcess",
     UpdateBomProcess: BaseUrl + "UretimData/UpdateBomProcess",
     GetProcessPlanning: BaseUrl + "UretimData/GetProcessPlanning",
     DeleteBomProcess: BaseUrl + "UretimData/DeleteBomProcess",

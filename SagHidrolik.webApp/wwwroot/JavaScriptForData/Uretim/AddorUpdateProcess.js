@@ -9,7 +9,6 @@
             maximumSelectionLength: 1,
             placeholder: "Seçiniz"
         })
-        //$('#addOrUpdateProcess-editModel').modal('show'); 
     }
 });
 
@@ -22,6 +21,9 @@ let requestQueryForAddOrUpdateProcess = {
 let processPlaningList = [];
 let beforEditModel = {};
 let afterEditModel = {};
+let addModel = {
+    PartNo_ID:""
+};
 //#region Search ,select from table ,get bom process
 $(Inputs.addOrUpdateProcess_searchStk).keyup(function () {
     //  ResetUrunEtiketi();
@@ -48,7 +50,6 @@ $(TablesId.addOrUpdateProcess_stkTable).on('click', 'tr', function () {
     ShowLoader();
     let stk = $(this).data('id');
     let pId = $(this).data('p_id');
-    console.log(stk, pId);
     $('.addUpdateProcessSection').css('opacity', '1');
     $([document.documentElement, document.body]).animate({
         scrollTop: $(".alertProcessInOrderDetails").offset().top
@@ -56,6 +57,8 @@ $(TablesId.addOrUpdateProcess_stkTable).on('click', 'tr', function () {
     typeof (stk) === 'string' ? stk = stk : stk = stk.toString();
     typeof (pId) === 'string' ? pId = pId : pId = pId.toString();
     afterEditModel.partNo_ID = pId;
+    addModel.PartNo_ID = pId;
+    _selectedStk = stk;
     requestQueryForAddOrUpdateProcess.Stk = stk;
     requestQueryForAddOrUpdateProcess.pid = pId;
     GetBomProccessInAddOrUpdateProcessAjaxCall();
@@ -80,7 +83,6 @@ function GetBomProccessInAddOrUpdateProcessAjaxCall() {
 }
 function CreateBomProcessTableInAddOrUpdateProcess(list, tablId) {
     $(tablId).empty();
-    console.log(list);
     list.map((el, index) => {
         el.subPartNo ? el.subPartNo = el.subPartNo : el.subPartNo = '';
         el.processName ? el.processName = el.processName : el.processName = '';
@@ -113,7 +115,6 @@ function GetProcessPlanning() {
         url: HttpUrls.GetProcessPlanning,
         success: (list) => {
             processPlaningList = list;
-            console.log(list);
             $('#inp-addOrUpdateProcess-edit-subpartNo').empty();
             $('#inp-addOrUpdateProcess-edit-processAdi').empty();
             list.map(p => {
@@ -212,14 +213,11 @@ function DeleteProcess(index) {
 
 // #endregion
 
-
-
 //#region Edit 
 function EditBomProcess(index) {
     let matched = bomProcessList[index];
     if (matched !== null) {
         beforEditModel = matched;
-        console.log(beforEditModel);
         $('#inp-addOrUpdateProcess-edit-orderNo').val(matched.orderNo);
         $('#inp-addOrUpdateProcess-edit-qty').val(matched.qty);
         $('#inp-addOrUpdateProcess-edit-quality').val(matched.quality);
@@ -230,7 +228,7 @@ function EditBomProcess(index) {
 }
 $('#btn-addOrUpdateProcess-edit-saveEdit').click((e) => {
     e.preventDefault();
-    console.log(afterEditModel);
+
     if ($('#inp-addOrUpdateProcess-edit-qty').val() === '' || afterEditModel.processNo === '') {
         Swal.fire({
             type: 'error',
@@ -297,9 +295,71 @@ $('#inp-addOrUpdateProcess-edit-processAdi').on("select2:unselecting", function 
 
 //#endregion
 
+//#region Add Process 
+$('#btn-addOrUpdateProcess-addNewBomProcess').click((e) => {
+    e.preventDefault();
+    $('#inp-addOrUpdateProcess-add-subPartNo-processAdi').empty();
+    $('#inp-addOrUpdateProcess-add-subPartNoNext-processAdi').empty();
+    processPlaningList.map((p) => {
+        $('#inp-addOrUpdateProcess-add-subPartNo-processAdi').append(`<option value="${p.processNo}" >${p.prosesAdi}</option>`);
+        $('#inp-addOrUpdateProcess-add-subPartNoNext-processAdi').append(`<option value="${p.processNo}" >${p.prosesAdi}</option>`);
+    })
+    $(".limitedNumbSelect2").val(null).trigger("change");
+    $('#addOrUpdateProcess-addModel').modal('show');
+
+})
+
+
+
+$('#btn-addOrUpdateProcess-add-confirmAdd').click((e) => {
+    e.preventDefault();
+    let qty = $('#inp-addOrUpdateProcess-add-qty').val();
+    let quality = $('#inp-addOrUpdateProcess-add-quality').val();
+   
+
+    let subpartNo = $("#inp-addOrUpdateProcess-add-subPartNo-processAdi").val();
+    let subpartNoNext = $("#inp-addOrUpdateProcess-add-subPartNoNext-processAdi").val();
+   
+
+    if (addModel.partNo_ID === '' || addModel.partNo_ID === null) Swal.fire({
+        type: 'error',
+        title: "you should selected STK",
+        timer: 3000
+    });
+   else if (qty === "") Swal.fire({
+        type: 'error',
+        title: "you should enter Quantiy",
+        timer: 3000
+    });
+    else if (subpartNo === null || subpartNoNext === null) Swal.fire({
+        type: 'error',
+        title: "you should enter sup part No and sup part No next",
+        timer: 3000
+    });
+    else {
+       let subpartNo = $("#inp-addOrUpdateProcess-add-subPartNo-processAdi").select2('data')[0].id;
+        let subpartNoNext = $("#inp-addOrUpdateProcess-add-subPartNoNext-processAdi").select2('data')[0].id;
+
+        let subPartNoName = $("#inp-addOrUpdateProcess-add-subPartNo-processAdi").select2('data')[0].text;
+        let subpartNoNextName = $("#inp-addOrUpdateProcess-add-subPartNoNext-processAdi").select2('data')[0].text;
+        
+        addModel.qty = parseInt(qty);
+        addModel.quality= quality;
+        addModel.subPartNo= parseInt(subpartNo);
+        addModel.subpartNoNext=parseInt(subpartNoNext);
+        addModel.subPartNoName= subPartNoName;
+        addModel.subpartNoNextName= subpartNoNextName;
+        $('#addOrUpdateProcess-addModel').modal('hide');
+        CreateSummaryModel(_selectedStk, addModel, 'confrim Add');
+     
+    }
+
+})
+
+//#endregion
+
 //#region Summary 
 function CreateSummaryModel(stk, model, type) {
-    console.log(afterEditModel);
     $('#addOrUpdateProcess-summary .modal-body').empty();
     if (type === "confirm Delete") {
         $('#addOrUpdateProcess-summary .modal-body').append(`
@@ -329,6 +389,19 @@ function CreateSummaryModel(stk, model, type) {
                 <h4 style="color:#b13e5b">Qty :   &nbsp;&nbsp <span style="color:black">${beforEditModel.qty}</span>     <i class="fa   fa-arrow-right text-danger"></i>  <i class="fa   fa-arrow-right text-danger"></i>     <span style="color:black">${afterEditModel.qty}</span>  </h4>
 
                 <h4 style="color:#b13e5b">Quality :  &nbsp;&nbsp; <span style="color:black">${beforEditModel.quality}</span>   <i class="fa   fa-arrow-right text-danger"></i>    <i class="fa   fa-arrow-right text-danger"></i>     <span style="color:black">${afterEditModel.quality}</span>  </h4>
+`);
+        $('#btn-addOrUpdateProcess-confirm').text(type);
+        $('#addOrUpdateProcess-summary').modal('show');
+    }
+
+    if (type === "confrim Add") {
+        
+        $('#addOrUpdateProcess-summary .modal-body').append(`
+                <h4 style="color:#b13e5b">STK  :  <span style="color:black">${stk ? stk : ""}</span></h4>
+                <h4 style="color:#b13e5b">Sub Part No Adi :  <span style="color:black">${model.subPartNoName ? model.subPartNoName : ""}</span></h4>
+                <h4 style="color:#b13e5b">qty :  <span style="color:black">${model.qty ? model.qty : ""}</span></h4>
+                <h4 style="color:#b13e5b">quality :  <span style="color:black">${model.quality ? model.quality : ""}</span></h4>
+                <h4 style="color:#b13e5b">subPartNo Next Adi :  <span style="color:black">${model.subpartNoNextName ? model.subpartNoNextName : ""}</span></h4>
 `);
         $('#btn-addOrUpdateProcess-confirm').text(type);
         $('#addOrUpdateProcess-summary').modal('show');
@@ -365,9 +438,7 @@ function CreateSummaryModel(stk, model, type) {
             $('#addOrUpdateProcess-summary').modal('hide');
             $('#addOrUpdateProcess-summary .modal-body').empty();
         }
-
         if (type === 'confrim Edit') {
-            console.log(afterEditModel);
             $.ajax({
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
@@ -396,6 +467,40 @@ function CreateSummaryModel(stk, model, type) {
             $('#addOrUpdateProcess-summary').modal('hide');
             $('#addOrUpdateProcess-summary .modal-body').empty();
         }
+
+        if (type === 'confrim Add') {
+            console.log(model);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(model),
+                url: HttpUrls.AddBomProcess,
+                success: (message) => {
+                    if (message === 'done') {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Done!',
+                            text: 'bom process has been deleted',
+                            timer: 3500
+                        });
+                        GetBomProccessInAddOrUpdateProcessAjaxCall();
+                    }
+                    HideLoader();
+                },
+                error: () => {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'opps!',
+                        text: 'Beklenmeyen bir hata oldu',
+                        timer: 1500
+                    });
+                    HideLoader();
+                }
+            });
+            $('#addOrUpdateProcess-summary').modal('hide');
+            $('#addOrUpdateProcess-summary .modal-body').empty();
+        }
+
     })
 
 

@@ -87,6 +87,20 @@ function createproductionOrdersTable(list, tableId) {
         element.completed_Qty ? element.completed_Qty = element.completed_Qty : element.completed_Qty = '';
         element.remark ? element.remark = element.remark : element.remark = '';
 
+        let href = "";
+        let style = "";
+        let icon;
+        if (element.dosyaUrl) {
+            href = `${BaseUrl}StokGetData/OpenFileFromServer?filePath=${element.dosyaUrl}`;
+            style = "cursor: pointer ;"
+
+            icon = "far  fa-2x fa-folder-open";
+        }
+        else {
+            href = '';
+            style = "pointer-events: none;cursor: not-allowed ;";   
+            icon = "fas fa-2x fa-times-circle text-primary";
+        }
         $(tableId).append(`
 <tr>
   <td><input style="width:20px;height: 2rem;"  type="checkbox" name='f' id="${element.productOrderId}" /></td>
@@ -99,6 +113,7 @@ function createproductionOrdersTable(list, tableId) {
     <td>${element.requireDate}</td>
     <td>${element.closeDate}</td>
     <td>${element.remark}</td>
+    <td style="${style}"><a style='${style}' target= "_blank"  href="${href}"> <i class="${icon}"></i> </a></td>
     <td><i onclick="DeleteWo('${element.productOrderId}','${element.stk}')" class="fas fa-trash-alt fa-2x text-danger"></i></td>
              </tr>
 `);
@@ -531,7 +546,6 @@ function createproductionOrdersPrintOutTable(list, tableId) {
             style = "cursor: pointer ;"
           
             icon = "far  fa-2x fa-folder-open";
-       
         }
         else {
             href = '';

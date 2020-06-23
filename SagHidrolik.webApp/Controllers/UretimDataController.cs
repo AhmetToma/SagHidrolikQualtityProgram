@@ -195,6 +195,12 @@ namespace SagHidrolik.webApp.Controllers
             string message = AddUpdateProcesssData.UpdateBomProcess(bom).Result;
             return Json(message);
         }
+
+        public IActionResult AddBomProcess([FromBody]BomProcessViewModel bom)
+        {
+            string message = AddUpdateProcesssData.AddBomProcess(bom).Result;
+            return Json(message);
+        }
         #endregion
 
         #region Process Details

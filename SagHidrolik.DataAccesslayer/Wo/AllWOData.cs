@@ -21,29 +21,34 @@ namespace SagHidrolik.DataAccesslayer.Wo
             public static async Task<IEnumerable<DboLocalProductionOrders>> GetAllProductionOrders(RequestQuery requestQuery)
         {
             var stkList = StokReadingData.GetStokkenByStkList(requestQuery).Result;
+            var productFiles = StokReadingData.GetAllProductFile().Result;
             requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
             List<DboLocalProductionOrders> newList = new List<DboLocalProductionOrders>();
 
             if (stkList.Count() <= 0) return newList;
             else
             {
-                string values = "";
-                foreach (var item in stkList)
-                {
-                    values = values + "'" + item.P_ID + "'" + ",";
-                }
-                values = values.Substring(0, values.Length - 1);
+                
                 using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
                 {
                     await connection.OpenAsync();
-                    var list = await connection.QueryAsync<DboLocalProductionOrders>(SqlQueryRepo.GetAllProductionOrders(values, requestQuery));
+                    var list = await connection.QueryAsync<DboLocalProductionOrders>(SqlQueryRepo.GetAllProductionOrders(requestQuery));
                     foreach (var item in list)
                     {
                         var dboStokgen = stkList.Where(x => x.P_ID == item.PartNo_ID).SingleOrDefault();
-                        if (dboStokgen != null)
+                        var matchedFile = productFiles.Where(x => x.P_ID == item.PartNo_ID).FirstOrDefault();
+                        if (dboStokgen != null || matchedFile!=null)
                         {
-                            item.Stk = dboStokgen.Stk;
-                            newList.Add(item);
+                            if (dboStokgen != null)
+                            {
+                                item.Stk = dboStokgen.Stk;
+                            }
+                            if (matchedFile != null)
+                            {
+                                item.DosyaUrl = matchedFile.DOSYAADI;
+                            }
+
+                                    newList.Add(item);
                         }
                     }
                     return newList;
