@@ -171,5 +171,9 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult PurchaseOrderMangement()
+        {
+            return View();
+        }
     }
 }

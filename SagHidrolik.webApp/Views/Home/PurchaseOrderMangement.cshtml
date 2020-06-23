@@ -1,0 +1,102 @@
+﻿<div class="container-setUp">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="input-group">
+                <input id="" style="border-radius:0.5rem;" type="number" x class="form-control" placeholder="Lot Size">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group" style="">
+                <button class="btn btn-sm btn-warning text-white">Add Other Purchase Orders</button>
+                <button class="btn btn-sm btn-primary">Delete Table</button>
+                <button class="btn btn-sm btn-danger">Reset</button>
+                <button class="btn btn-sm btn-success">Run Mrp</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label>Back Orders</label>
+            <select class="custom-select gunlukHatBazindUretim-select" id="select-gunlukHatBazindUretim-allProcess">
+                <option>Yes</option>
+                <option>No</option>
+                <option>Exculde All Purchase orders</option>
+            </select>
+            <label>Only Missing Component</label>
+            <select class="custom-select gunlukHatBazindUretim-select" id="select-gunlukHatBazindUretim-allProcess">
+                <option>Yes</option>
+                <option>No</option>
+                <option> </option>
+            </select>
+            <label>Safety Stok</label>
+            <select class="custom-select gunlukHatBazindUretim-select" id="select-gunlukHatBazindUretim-allProcess">
+                <option>Yes</option>
+                <option>No</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-sm btn-dark">Weekly Materila Usage</button>
+            <button style="background-color:#48a8b2;color:white" class="btn btn-sm">Monthly Material Usage</button>
+        </div>
+        <div id="cap2-allWo" style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem;">
+            Toplam Record : <span id="span-allWo-selectedRow" style="color:red"></span>
+        </div>
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Type </th>
+                    <th scope="col">Order</th>
+                    <th scope="col">Edition1</th>
+                    <th scope="col">Edition2</th>
+                    <th scope="col">PartNo</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Require Date</th>
+                    <th scope="col">Require Qty</th>
+                </tr>
+            </thead>
+            <tbody id="">
+
+                @for (int i = 0; i < 7; i++)
+                {
+                    <tr>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                        <td>a</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <hr />
+    <div class="alert defaultBackground " role="alert">
+      Error Table
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">STK</th>
+                    <th scope="col">DEF</th>
+
+                </tr>
+            </thead>
+            <tbody id="">
+                @for (int i = 0; i < 7; i++)
+                {
+                    <tr>
+                        <td>a</td>
+                        <td>a</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
