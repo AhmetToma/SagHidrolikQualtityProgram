@@ -34,29 +34,16 @@ namespace SagHidrolik.webApp.Controllers
             return Json(model);
         }
 
-        public IActionResult GetAllProductionOrdersPrintOut([FromBody] RequestQuery requestQuery)
+        public IActionResult GetBomProcessForPrint(string partNoId)
         {
-            var list = AllWOData.GetAllProductionOrdersPrintOut(requestQuery).Result;
+            var list = AllWOData.GetBomProcessForPrint(partNoId).Result;
             return Json(list);
         }
-        public IActionResult AddToProductionOrdersPrintOut([FromBody] int[] ll)
+        public IActionResult GetTStokReceteForPrint(string stk)
         {
-            var list = AllWOData.AddToProductionOrdersPrintOut(ll).Result;
+            var list = AllWOData.GetTStokReceteForPrint(stk).Result;
             return Json(list);
         }
-
-        public IActionResult DeleteFromPrintOut(int productId)
-        {
-            var message = AllWOData.DeleteFromPrintOut(productId).Result;
-            return Json(message);
-        }
-
-        public IActionResult DeleteAllPrintOut()
-        {
-            var message = AllWOData.DeleteAllPrintOut().Result;
-            return Json(message);
-        }
-
 
         #region
         public IActionResult TrnasferWoToSystem([FromBody]List<TrnasferWoToSystemViewModel> list)

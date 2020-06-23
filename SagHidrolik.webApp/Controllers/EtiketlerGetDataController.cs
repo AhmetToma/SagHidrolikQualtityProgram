@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SagHidrolik.DataAccesslayer.Etiketler;
 using SagHidrolik.Models.ViewModesl;
 
 namespace SagHidrolik.webApp.Controllers
 {
+    [Authorize]
     public class EtiketlerGetDataController : Controller
     {
         #region Giris Kontrol

@@ -372,8 +372,8 @@ $('#btn-tamirIsEmri-cikiti').click((event) => {
     });
 });
 function HideModel() {
-  //$('.isEmriCiktiModel').empty();
-// $('.isEmriCiktiModel').css('opacity', '0');
+  $('.isEmriCiktiModel').empty();
+ $('.isEmriCiktiModel').css('opacity', '0');
 }
 //#endregion
 

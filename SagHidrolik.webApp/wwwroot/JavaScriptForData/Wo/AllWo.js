@@ -4,8 +4,6 @@
     if (window.location.href === u) {
         GetAllProductionOrdersInWoAjaxCall();
         GetprocutionOrdersCount();
-        GetAllProductionOrdersPrintOutAjaxCall();
-
         $('#inp-allWo-addModel-issueDate').datepicker({
             dateFormat: 'dd/mm/yy',
             beforeShow: function () {
@@ -44,6 +42,7 @@ let requestQueryForPrintOut = {
 };
 let allWoList = [];
 let selectedAlWoArray = [];
+let selectItemForPrint;
 
 // #region Ajax call ,Create Table,search
 function GetAllProductionOrdersInWoAjaxCall() {
@@ -59,7 +58,6 @@ function GetAllProductionOrdersInWoAjaxCall() {
         url: HttpUrls.GetAllProductionOrders,
         success: (list) => {
             if (list.length !== 0) {
-                console.log(list);
                 allWoList = list
                 $(recordsNotFound.allWo).css('display', 'none');
                 createproductionOrdersTable(list, TablesId.allWo);
@@ -145,7 +143,6 @@ function GetprocutionOrdersCount() {
         type: "GET",
         url: HttpUrls.GetprocutionOrdersCount,
         success: (num) => {
-            console.log(num);
             $('#select-allWo-selectRowCount').append(`
                     <option value="6" selected>6</option>
                     <option value="10">10</option>
@@ -177,7 +174,6 @@ $('#select-allWo-selectUretimPlaniType').on('change', (e) => {
     $('#num-allWo-pageNumber').text(requestQueryForWo.pageNumber);
     requestQueryForWo.pageSize = parseInt($('#select-allWo-selectRowCount').val());
     requestQueryForWo.uretimPlaniType = $('#select-allWo-selectUretimPlaniType').val();
-    console.log(requestQueryForWo);
     GetAllProductionOrdersInWoAjaxCall();
 })
 
@@ -205,12 +201,10 @@ $(NextButtons.allWo).on('click', (event) => {
 //#region Delete
 function SelectRow(id) {
     $(`#${id}`).parent().parent().toggleClass('selectedRow');
-
     let selectedItem = allWoList.filter(elem => elem.productOrderId == id);
     selectedItem = selectedItem[0];
-    console.log('s', selectedItem);
+    selectItemForPrint = selectedItem;
     let index = selectedAlWoArray.indexOf(selectedItem.productOrderId);
-
     if (index == -1) {
         selectedAlWoArray.push(selectedItem.productOrderId);
     }
@@ -226,13 +220,12 @@ function SelectRow(id) {
         $('#cap2-allWo').show();
         $('#span-allWo-selectedRow').text(selectedAlWoArray.length);
     }
-    console.log(selectedAlWoArray);
 }
 
 
 $('#span-allWo-UnSelectRows').click((event) => {
     event.preventDefault();
-    if (selectedAlWoArray.length != 0) {
+    if (selectedAlWoArray.length !== 0) {
         selectedAlWoArray.map((id) => {
             $(`#${id}`).parent().parent().removeClass('selectedRow');
             $(`#${id}`).prop('checked', false);
@@ -259,7 +252,6 @@ function DeleteWo(productId, stk) {
         if (result.value) {
             $(`#${productId}`).parent().parent().remove();
             let d = [];
-            console.log(typeof (productId));
             d.push(parseInt(productId));
             DeleteWoAjaxCall(d, false);
         }
@@ -499,245 +491,189 @@ $('#btn-allWo-reset').click((event) => {
 
 
 
-// #region prodcutionOrders PrintOut
+//#region printOut
 
-function GetAllProductionOrdersPrintOutAjaxCall() {
-    $(TablesId.ProductionOrdersPrintout).empty();
-    requestQueryForPrintOut.Stk = $(Inputs.allWo_ProductionOrdersPrintout).val();
-    ShowLoader();
-    $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        data: JSON.stringify(requestQueryForPrintOut),
-        url: HttpUrls.GetAllProductionOrdersPrintOut,
-        success: (list) => {
-            if (list.length !== 0) {
-                console.log('xzxzx', list);
-
-                $(recordsNotFound.ProductionOrdersPrintout).css('display', 'none');
-                createproductionOrdersPrintOutTable(list, TablesId.ProductionOrdersPrintout);
-            }
-            else {
-                $(`${recordsNotFound.ProductionOrdersPrintout} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
-                $(recordsNotFound.ProductionOrdersPrintout).css('display', 'block');
-                HideLoader();
-            }
-        }
-    });
-}
-
-function createproductionOrdersPrintOutTable(list, tableId) {
-    $(tableId).empty();
-    let status = '';
-    list.map((element, index) => {
-        if (element.status === 1) status = 'açık';
-        if (element.status === 2) status = 'üretimde';
-        if (element.status === 3) status = 'kapalı';
-        let href = "";
-        let style = "";
-        let icon;
-        element.issueDate ? element.issueDate = element.issueDate : element.issueDate = '';
-        element.requireDate ? element.requireDate = element.requireDate : element.requireDate = '';
-        element.closeDate ? element.closeDate = element.closeDate : element.closeDate = '';
-        element.completed_Qty ? element.completed_Qty = element.completed_Qty : element.completed_Qty = '';
-        element.remark ? element.remark = element.remark : element.remark = '';
-        if (element.dosyaUrl) {
-            href = `${BaseUrl}StokGetData/OpenFileFromServer?filePath=${element.dosyaUrl}`;
-            style = "cursor: pointer ;"
-          
-            icon = "far  fa-2x fa-folder-open";
-        }
-        else {
-            href = '';
-            style = "pointer-events: none;cursor: not-allowed ;"
-            icon = "fas fa-2x fa-times-circle text-danger";
-        }
-        $(tableId).append(`
-<tr>
-  <td>${element.stk}</td>
-    <td>${element.qty}</td>
-    <td>${element.completed_Qty} </td>
-    <td>${status}</td>
-    <td>${element.lotNo}</td>
-    <td>${element.issueDate}</td>
-    <td>${element.requireDate}</td>
-    <td>${element.closeDate}</td>
-    <td>${element.remark}</td>
-    <td style="${style}"><a style='${style}' target= "_blank"  href="${href}"> <i class="${icon}"></i> </a></td>
-    <td><i onclick="DeleteFromPrintOut('${element.productOrderId}','${element.stk}')" class="fas fa-trash-alt fa-2x text-danger"></i></td>
-             </tr>
-`);
-    });
-    HideLoader();
-
-
-
-}
-
-
-$(Inputs.allWo_ProductionOrdersPrintout).keyup(function () {
-    clearTimeout(woTimer);
-    requestQueryForPrintOut.pageNumber = 1;
-    $('#num-allWo-pageNumber').text(requestQueryForPrintOut.pageNumber);
-    woTimer = setTimeout(GetAllProductionOrdersPrintOutAjaxCall, woInterval);
-});
-
-
-
-// #region selects printOut
-
-
-$('#select-ProductionOrdersPrintout-selectRowCount').on('change', (e) => {
-    e.preventDefault();
-    requestQueryForPrintOut.pageNumber = 1;
-    $('#num-ProductionOrdersPrintout-pageNumber').text(requestQueryForPrintOut.pageNumber);
-    requestQueryForPrintOut.pageSize = parseInt($('#select-ProductionOrdersPrintout-selectRowCount').val());
-    GetAllProductionOrdersPrintOutAjaxCall();
-})
-
-
-
-$('#select-ProductionOrdersPrintout-selectUretimPlaniType').on('change', (e) => {
-    e.preventDefault();
-    requestQueryForPrintOut.pageNumber = 1;
-    $('#num-allWo-pageNumber').text(requestQueryForPrintOut.pageNumber);
-    requestQueryForPrintOut.pageSize = parseInt($('#select-ProductionOrdersPrintout-selectRowCount').val());
-    requestQueryForPrintOut.uretimPlaniType = $('#select-ProductionOrdersPrintout-selectUretimPlaniType').val();
-    GetAllProductionOrdersPrintOutAjaxCall();
-})
-
-
-
-
-//#endregion
-
-
-
-//#region Next-Previous Hanldler printOut
-$(PreviousButtons.ProductionOrdersPrintout).on('click', (event) => {
-    event.preventDefault();
-    if (requestQueryForPrintOut.pageNumber > 1) requestQueryForPrintOut.pageNumber -= 1;
-    $('#num-ProductionOrdersPrintout-pageNumber').text(requestQueryForPrintOut.pageNumber);
-    GetAllProductionOrdersPrintOutAjaxCall();
-
-});
-$(NextButtons.ProductionOrdersPrintout).on('click', (event) => {
-    event.preventDefault();
-    requestQueryForPrintOut.pageNumber += 1;
-    $('#num-ProductionOrdersPrintout-pageNumber').text(requestQueryForPrintOut.pageNumber);
-    GetAllProductionOrdersPrintOutAjaxCall();
-});
-//#endregion
-
-
-//#region Add to printOut
-
-$('#btn-allWo-addtoTable').click((e) => {
-    e.preventDefault();
-
-    if (selectedAlWoArray.length <= 0) {
+$('#btn-allWo-printOut').click(() => {
+    if (selectedAlWoArray.length === 0 || selectedAlWoArray.length!==1) 
         Swal.fire({
             type: 'error',
-            title: "you should selected records that will be added to printOut table",
-            timer: 2000
+            title: "you should select one row to print Out ",
+            timer: 5000
         });
-    }
     else {
+        let partNoId = selectItemForPrint.partNo_ID;
+        let stk = selectItemForPrint.stk;
+        let bomList_Print = [];
+        console.log(selectItemForPrint);
         ShowLoader();
-        let ll = [];
-        for (var i = 0; i < selectedAlWoArray.length; i++) {
-            for (var j = 0; j < allWoList.length; j++) {
-                if (selectedAlWoArray[i] == allWoList[j].productOrderId) {
-                    ll.push(allWoList[j].productOrderId);
-                }
-            }
-        }
-
-        $.ajax({
+            $.ajax({
             type: "POST",
-            contentType: "application/json;charset=utf-8",
-            data: JSON.stringify(ll),
-            url: HttpUrls.AddToProductionOrdersPrintOut,
-            success: (message) => {
-                Swal.fire({
-                    type: 'success',
-                    title: "Done!",
-                    text: `${message}`,
-                    timer: 2000
+                contentType: "application/json;charset=utf-8",
+                url: HttpUrls.GetBomProcessForPrint + partNoId,
+            success: (bomList_Print) => {
+                console.log('printBom', bomList_Print);
+                bomList_Print = bomList_Print;
+                
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    url: `${HttpUrls.GetTStokReceteForPrint}'${stk}'`,
+                    success: (TstokRecet_print) => {
+                        console.log('printTstok', TstokRecet_print);
+
+                        createWoPrintOutModel(stk, selectItemForPrint.lotNo, selectItemForPrint.requireDate, bomList_Print, TstokRecet_print, selectItemForPrint.qty);
+                    }
                 });
-                $('#cap2-allWo').hide();
-                selectedAlWoArray = [];
-                GetAllProductionOrdersPrintOutAjaxCall();
-                GetAllProductionOrdersInWoAjaxCall();
-                HideLoader();
+
             }
         });
-    }
+       
+
+
+        }
 })
 //#endregion
 
-function DeleteFromPrintOut(productId, stk) {
-    Swal.fire({
-        title: `product Order: ${productId}`,
-        text: ` stk :${stk} from printOut will delete? `,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.value) {
 
-            $.ajax({
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                data: JSON.stringify(requestQueryForPrintOut),
-                url: HttpUrls.DeleteFromPrintOut + productId,
-                success: (message) => {
-                    Swal.fire({
-                        type: 'success',
-                        title: "Done!",
-                        text: `${message}`,
-                        timer: 2000
-                    });
-                    GetAllProductionOrdersPrintOutAjaxCall();
-                }
-            });
-        }
-    })
+
+function createWoPrintOutModel(stk, lotNo, reqireDate,bomList,TsokList,qty) {
+    $('#woPrintModel').empty();
+    $('#woPrintModel').css('opacity', '1');
+
+    $('#woPrintModel').append(createWoCikti(bomList, TsokList, stk, lotNo, reqireDate, qty))
+    JsBarcode("#newLotNoBarcode", `${lotNo}`, { format: "CODE128", text: "" });
+    HideLoader();
+    $('#woPrintModel').printThis({
+        afterPrint: HideWoPrintModel,
+        loadCSS: "css/tamirIsEmriCiktisi.css"
+    });
+}
+
+function createWoCikti(bomList,TstokList,stk,lotNo,requireDate,qty) {
+    let TstokListBody = "";
+    let bomListBody = "";
+    if (TstokList.length !== 0) {
+        TstokList.map((el) => {
+            TstokListBody +=`
+<tr>
+<td>${el.stk}</td>
+<td>${el.sta}</td>
+<td>${el.stb}</td>
+<td>${el.miktar}</td>
+</tr>
+
+`;
+
+        })
+    }
+    if (bomList.length !== 0) {
+        bomList.map((el) => {
+            bomListBody += `
+<tr>
+<td>${el.prosesAdi}</td>
+<td>${el.processName}</td>
+td>${el.qty}</td>
+<td>${el.quality}</td>
+<td>tarih</td>
+<td>miktar</td>
+<td>operator</td>
+</tr>
+`;
+        })
+    }
+    let cikti = `<div class="tamirIsEmriCiktis">
+    <div class="first-header">
+        <div class="my_firstRow">
+            <div class="one">
+                <img src="${BaseUrl}images/tamirLogo.png" />
+                <p>Parça No/PartNo:</p>
+                <h5>${stk}</h5>
+            </div>
+            <div class="two">
+                <p class="rew">Tamir/Rework</p>
+                <div class="p1_p2">
+                    <div class="p1">Rev:</div>
+                    <div class="p2"><p>0</p></div>
+                </div>
+                <svg id="newLotNoBarcode" class="p3"></svg>
+            </div>
+            <div class="three">
+                <div class="lot">
+                    <p>Lot/Batch No:</p>
+    <p>${lotNo}</p>
+
+
+                </div>
+                <div class="tarih">
+                      <p>tarih:</p>
+    <p>${requireDate}</p>
+                </div>
+                <div class="adet" style="height: 157px">
+                    <p>Adet/Qty:</p>
+                    <p>${qty}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="second-body">
+        <h3>Tamir LotNo:${lotNo} <span></span></h3>
+
+<div class="clear">
+    </div>
+
+<table style="margin-bottom:5rem;">
+            <thead>
+                <tr>
+                    <td>STK</td>
+                    <td>STA</td>
+                    <td>STB</td>
+                    <td>miktar</td>
+                </tr>
+            </thead>'
+            <tbody>
+                  ${TstokListBody}
+            </tbody>
+        </table>
+<div class="clear">
+    </div>
+        <table>
+            <thead>
+                <tr>
+                    <td>Proses Adı</td>
+                    <td>Process Name</td>
+                    <td>qty</td>
+                    <td>tarih</td>
+                    <td>Miktar</td>
+                    <td>Operator</td>
+                </tr>
+            </thead>'
+            <tbody>
+                  ${bomListBody}
+            </tbody>
+        </table>
+    </div>
+</div>`;
+
+
+    return cikti;
+}
+function HideWoPrintModel() {
+   $('#woPrintModel').empty();
+   $('#woPrintModel').css('opacity', '0');
 }
 
 
-$('#btn-allWo-clearPrintOut').click((e) => {
-    e.preventDefault();
-    Swal.fire({
-        title: `Delete All!`,
-        text: `printOut table wil be cleared`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.value) {
 
-            $.ajax({
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                data: JSON.stringify(requestQueryForPrintOut),
-                url: HttpUrls.DeleteAllPrintOut,
-                success: (message) => {
-                    Swal.fire({
-                        type: 'success',
-                        title: "Done!",
-                        text: `${message}`,
-                        timer: 2000
-                    });
-                    GetAllProductionOrdersPrintOutAjaxCall();
-                }
-            });
-        }
-    });
 
-})
-//#endregion
+
+
+
+
+
+
+
+
+
+

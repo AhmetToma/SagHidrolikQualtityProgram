@@ -58,6 +58,8 @@ const HttpUrls = {
     DeleteFromPrintOut: BaseUrl + "WOGetData/DeleteFromPrintOut?productId=",
     DeleteAllPrintOut: BaseUrl + "WOGetData/DeleteAllPrintOut",
     TrnasferWoToSystem: BaseUrl + "WOGetData/TrnasferWoToSystem",
+    GetBomProcessForPrint: BaseUrl + "WOGetData/GetBomProcessForPrint?partNoId=",
+    GetTStokReceteForPrint: BaseUrl + "WOGetData/GetTStokReceteForPrint?stk=",
 
     GetProcessFlowInProcessDetails: BaseUrl + "UretimData/GetProcessFlowInProcessDetails",
     GetProcessFlowDetailsInProcessDetails: BaseUrl + "UretimData/GetProcessFlowDetailsInProcessDetails",

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SagHidrolik.DataAccessLayer.SagHidrolik.DataAccesslayer.BakimAriza;
 using SagHidrolik.Models.ViewModesl;
 
 namespace SagHidrolik.webApp.Controllers
 {
+    [Authorize]
     public class BakimArizaConController : Controller
     {
         public JsonResult GetAllMachine([FromBody] RequestQuery requestQuery)

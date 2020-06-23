@@ -1,9 +1,11 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SagHidrolik.DataAccesslayer.OrdersManagement;
 using SagHidrolik.Models.ViewModesl;
 namespace SagHidrolik.webApp.Controllers
 {
+    [Authorize]
     public class OrderManagementGetDataController : Controller
     {
         public JsonResult GetOrderDetails([FromBody]RequestQuery requestQuery)

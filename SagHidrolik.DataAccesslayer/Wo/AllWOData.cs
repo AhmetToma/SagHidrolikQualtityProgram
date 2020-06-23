@@ -92,102 +92,6 @@ namespace SagHidrolik.DataAccesslayer.Wo
                 return model;
             }
         }
-        public static async Task<IEnumerable<DboLocalProductionOrders>> GetAllProductionOrdersPrintOut(RequestQuery requestQuery)
-        {
-            var stkList = StokReadingData.GetStokkenByStkList(requestQuery).Result;
-            var DosyaList = StokReadingData.GetAllProductFile().Result;
-            requestQuery.pageNumber = (requestQuery.pageNumber - 1) * requestQuery.pageSize;
-            List<DboLocalProductionOrders> newList = new List<DboLocalProductionOrders>();
-            if (stkList.Count() <= 0) return newList;
-            else
-            {
-
-
-                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
-                {
-                    await connection.OpenAsync();
-                    var list = await connection.QueryAsync<DboLocalProductionOrders>(SqlQueryRepo.GetAllProductionOrdersPrintOut(requestQuery));
-                    foreach (var item in list)
-                    {
-                        var dboStokgen = stkList.Where(x => x.P_ID == item.PartNo_ID).FirstOrDefault();
-                        var dosya = DosyaList.Where(x => x.P_ID == item.PartNo_ID).FirstOrDefault();
-
-                        if (dosya != null || dosya != null)
-                        {
-                            if (dboStokgen != null)
-                            {
-                                item.Stk = dboStokgen.Stk;
-                            }
-                            if (dosya != null)
-                            {
-                                item.DosyaUrl = dosya.DOSYAADI;
-                            }
-                        }
-                        newList.Add(item);
-                    }
-                    return newList;
-                }
-            }
-        }
-        public static async Task<string> AddToProductionOrdersPrintOut(int[] arr)
-        {
-            string message;
-            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
-            {
-                var productOrderIdArray = await connection.QueryAsync<int>(" select ProductOrderID from ProductionOrdersPrintout");
-                List<int> finalArray = new List<int>();
-                for (int i = 0; i < arr.Length; i++)
-                {
-                    var match = productOrderIdArray.Where(x => x == arr[i]);
-                    int xxx = match.Count();
-                    if (match.Count() <= 0)
-                    {
-                        finalArray.Add(arr[i]);
-                    }
-
-                }
-
-                if (finalArray.Count <= 0) message = "already in PrintOut Table";
-                else
-                {
-                    string values = "";
-                    foreach (var item in finalArray)
-                    {
-                        values = values + "'" + item + "'" + ",";
-                    }
-                    values = values.Substring(0, values.Length - 1);
-                    await connection.OpenAsync();
-                    var count = await connection.ExecuteAsync(SqlQueryRepo.AddToProductionOrdersPrintOut(values));
-                    message = "Successfully Added to Production Oriders PrintOut";
-                }
-                return message;
-            }
-
-
-        }
-        public static async Task<string> DeleteFromPrintOut(int productId)
-        {
-            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
-            {
-                await connection.OpenAsync();
-                var count = await connection.ExecuteAsync(SqlQueryRepo.DeleteFromPrintOut(productId));
-                string messag = "Successfully Deleted Proccess Done!";
-                return messag;
-            }
-        }
-        public static async Task<string> DeleteAllPrintOut()
-        {
-            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
-            {
-                await connection.OpenAsync();
-                var count = await connection.ExecuteAsync(SqlQueryRepo.DeleteAllPrintOut);
-                string messag = "Successfully Deleted Proccess Done!";
-                return messag;
-            }
-        }
-
-
-
         public static async Task<IEnumerable<TrnasferWoToSystemViewModel>> TrnasferWoToSystem(List<TrnasferWoToSystemViewModel> excelList)
         {
             IEnumerable<DboStokgen> sotkgenList;
@@ -229,6 +133,25 @@ namespace SagHidrolik.DataAccesslayer.Wo
 
         }
 
+
+        public static async Task<IEnumerable<BomProcessViewModel>> GetBomProcessForPrint(string partNoId)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<BomProcessViewModel>(SqlQueryRepo.GetBomProcessForPrint(partNoId));
+                return list;
+            }
+        }
+        public static async Task<IEnumerable<DboTstokrecetesi>> GetTStokReceteForPrint(string stk)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<DboTstokrecetesi>(SqlQueryRepo.GetTStokReceteForPrint(stk));
+                return list;
+            }
+        }
     }
 
  }

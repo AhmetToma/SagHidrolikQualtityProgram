@@ -1420,31 +1420,18 @@ Remark,CONVERT(varchar,CloseDate,105) as CloseDate
             return query;
         }
 
-        public static string GetAllProductionOrdersPrintOut(RequestQuery r)
-        {
-            query = $"select  ProductionOrdersPrintout.ProductOrderID,PartNo_ID,LotNo,Qty,Completed,convert(varchar(10), cast(RequireDate As Date), 105) as RequireDate ," +
-                $" convert(varchar(10), cast(IssueDate As Date), 105) as IssueDate,[Closed],[Status]," +
-                $" convert(varchar(10), cast(RevisedDate As Date), 105) as RevisedDate ,  RevisedDate,Remark " +
-                $" from dbo.ProductionOrdersPrintout where  [Status] like N'%{r.uretimPlaniType}%' " +
-                $" ORDER BY dbo.ProductionOrdersPrintout.ProductOrderID DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
-            return query;
-        }
 
-        public static string AddToProductionOrdersPrintOut(string v)
-        {
-            query = $"insert into ProductionOrdersPrintout " +
-                $"(ProductOrderID, PartNo_ID, PartNo, LotNo, Qty, IssueDate, RequireDate, Remark,[Status])" +
-                $"(select ProductOrderID, PartNo_ID, PartNo_ID, LotNo, Qty, IssueDate, RequireDate, Remark,[Status] from Local_ProductionOrders where ProductOrderID in ({v}))";
-            return query;
-        }
 
-        public static string DeleteFromPrintOut(int productId)
-        {
-            query = $"delete from ProductionOrdersPrintout where ProductOrderID={productId}";
-            return query;
-        }
 
-        public static string DeleteAllPrintOut = "delete from ProductionOrdersPrintout";
+        public static string GetBomProcessForPrint(string partNoId) => $@"select PartNo_ID ,Process_Planning.ProsesAdi,Process_Planning.ProcessName,
+SubPartNo,BOM_Process.Qty,BOM_Process.Quality from BOM_Process inner join Process_Planning on
+SubPartNo = Process_Planning.ProcessNo  where PartNo_ID = '{partNoId}' ";
+
+
+        public static string GetTStokReceteForPrint(string stk) => $@"select STK,STA,STB,MIKTAR  from   [TSTOKRECETESI] where STK= N{stk}
+";
+
+
 
         #endregion
 
