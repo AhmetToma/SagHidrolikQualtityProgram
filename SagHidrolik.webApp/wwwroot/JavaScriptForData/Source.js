@@ -233,6 +233,7 @@ const HttpUrls = {
     deleteSystemUser: BaseUrl + "AuthenticationData/deleteSystemUser?email=",
     ResetUserPassword: BaseUrl + "AuthenticationData/ResetUserPassword",
     changeRole: BaseUrl + "AuthenticationData/changeRole",
+    GetAllPurchaseOrders: BaseUrl + "PurchaseOrderManagemntGetData/GetAllPurchaseOrders",
 
 
 
@@ -317,6 +318,7 @@ const Models = {
 const TablesId = {
 
     Stok_searchStkInStokgen: "#table-stok-stokgenSearch",
+    purchaseOrderMangemnet: "#table-purchaseOrderMangemnet",
     UrunEtiketi_searchStkInStokgen: "#table-urunEtiketi-searchStk",
     productionOrdersInUrunEtketi: "#table-urunEtiketi-productioOrders",
     productionOrdersInStok: "#table-stok-productionOrders",

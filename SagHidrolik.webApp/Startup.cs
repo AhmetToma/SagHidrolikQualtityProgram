@@ -18,6 +18,7 @@ namespace SagHidrolik.webApp
     {
         public Startup(IConfiguration configuration)
         {
+
             Configuration = configuration;
             WorkingWithYears.GetcurrentYear();
             TTFTeslimatData.DropAllTTFTeslimatTable();

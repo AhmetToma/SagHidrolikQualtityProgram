@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace SagHidrolik.webApp.Functions
 {
     public static class FunctionsHelper
@@ -14,5 +11,13 @@ namespace SagHidrolik.webApp.Functions
             if (regKey != null && regKey.GetValue("Content Type") != null) mimeType = regKey.GetValue("Content Type").ToString();
             return mimeType;
         }
+
+        public  static string GetUserNameFromEmail (string email)
+        {
+            int indexOfAt = email.IndexOf('@');
+            string userName = email.Substring(0, indexOfAt);
+            return userName;
+        }
+            
     }
 }

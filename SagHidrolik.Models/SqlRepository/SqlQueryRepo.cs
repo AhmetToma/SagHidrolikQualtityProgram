@@ -1690,5 +1690,121 @@ WHERE (((dbo.IRSALIYE_ALT.TUR)=1 Or (dbo.IRSALIYE_ALT.TUR)=62 Or (dbo.IRSALIYE_A
         public static string DeleteKaliteKodu(int irsRef, string stk) => $@"update dbo.IRSALIYE_ALT set  KALITEKODU ='' where REF ={irsRef} and STK = N'{stk}' ";
         #endregion
         #endregion
+
+        #region Purchase Orders Managment 
+        public static string GetAllPurchaseOrders = @"set DateFormat dmy;
+SELECT dbo.SIPARIS_ALT.STK,
+ convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 105) as RequireDate,
+ dbo.CARIGEN.STA,
+ dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0) as RemainQty
+FROM ((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON (dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND
+ (dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID)
+  LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF
+GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR,
+convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 105), dbo.CARIGEN.STA
+
+";
+
+
+       public static string  DropTableByName(string tableName) => $"DROP TABLE IF EXISTS dbo.[{tableName}] ;";
+
+        public static string CreateTTdFixOrdersTable(string userName) => $@"CREATE TABLE [dbo].[TTFixOrders_{userName}](
+	[Type] [nvarchar](255) NULL,
+	[Order#] [nvarchar](255) NULL,
+	[Edition#] [nvarchar](255) NULL,
+	[Edition1#] [nvarchar](255) NULL,
+	[PartNo] [nvarchar](255) NULL,
+	[Location] [nvarchar](255) NULL,
+	[RequireDate] [datetime] NULL,
+	[RequireQTY] [int] NULL,
+	[BomLevel] [int] NULL
+) ";
+        public static string CreateStokProductionTable(string userName) => $@"
+CREATE TABLE [dbo].[StokProduction_{userName}](
+	[STK] [nvarchar](50) NULL,
+	[P_ID] [nvarchar](80) NULL,
+	[Warehouse] [float] NULL,
+	[TUR] [smallint] NULL,
+	[Prod] [float] NULL,
+	[PackToday] [int] NULL,
+	[WOInprogress] [int] NULL
+) 
+";
+        public static string SetUpTTfixOrdersAndGetData(string userName) => $@"
+set DateFormat dmy;
+insert into dbo.[TTFixOrders_{userName}] (PartNo,RequireDate,Location,RequireQTY,BomLevel)  SELECT dbo.SIPARIS_ALT.STK,
+convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 105) as RequireDate,CARIGEN.STA,
+ dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0) as RemainQty,1
+FROM ((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON (dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND
+ (dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID)
+  LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF
+GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR,CARIGEN.REF,
+convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 105), dbo.CARIGEN.STA
+Having  dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0)>0
+";
+
+
+        public static string CreateTTdFixOrdersList1Table(string userName) => $@"CREATE TABLE [dbo].[TTFixOrdersList1_{userName}](
+	[Location] [nvarchar](255) NULL,
+	[PartNo] [nvarchar](255) NULL,
+	[RequireDate] [datetime] NULL,
+	[RequireQTY] [int] NULL,
+	[TotalStock] [float] NULL,
+	[Balance] [int] NULL,
+	[WOLot] [int] NULL,
+	[WONewDate] [datetime] NULL,
+	[LotQty] [int] NULL,
+	[BomLevel] [int] NULL,
+	[WOPlanned] [int] NULL
+) ";
+
+
+        public static string GetAllTTFixorders(string userName) => $@"set dateformat dmy;SELECT TTFixOrders_{userName}.PartNo,
+   convert(varchar(10), cast( dbo.TTFixOrders_{userName}.RequireDate As Date), 105) as RequireDate,
+ Sum(TTFixOrders_{userName}.RequireQTY) AS RequireQTY,
+        ( isnull(StokProduction_{userName}.Warehouse,0)+
+			 IIf(dbo.STOKGEN.TUR=4,0,isnull(StokProduction_{userName}.[Prod],0))+
+			 isnull(StokProduction_{userName}.PackToday,0) )
+			 AS TotalStock, 
+             0 AS Balance, dbo.STOKGEN.TUR FROM (TTFixOrders_{userName} LEFT JOIN StokProduction_{userName}
+			  ON TTFixOrders_{userName}.PartNo = StokProduction_{userName}.STK) 
+             LEFT JOIN dbo.STOKGEN ON StokProduction_{userName}.P_ID = dbo.STOKGEN.P_ID 
+			 GROUP BY TTFixOrders_{userName}.PartNo,
+              TTFixOrders_{userName}.RequireDate, isnull(StokProduction_{userName}.[Warehouse],0)
+			  +IIf(dbo.STOKGEN.TUR=4,0,
+              isnull(StokProduction_{userName}.Prod,0))+isnull(StokProduction_{userName}.PackToday,0),  dbo.STOKGEN.TUR
+			   ORDER BY TTFixOrders_{userName}.PartNo, TTFixOrders_{userName}.RequireDate";
+
+
+
+        public static string UpdateTTFixOrdersList1(string userName, TTFfixordersListe1 m) => $@"
+set dateformat dmy;insert into  TTFixOrdersList1_{userName} (TotalStock,Balance,WOPlanned,PartNo,RequireDate,BomLevel)
+ values ({m.TotalStock},{m.Balance},{m.WOPlanned},'{m.PartNo}','{m.RequireDate}',{m.BomLevel})";
+
+
+        public static string MarvelQurey(string userName) => $@"
+INSERT INTO TTFixOrders_{userName} ( partNo, RequireDate, Requireqty, BomLevel )
+SELECT dbo.TSTOKRECETESI.STK AS partNo, TTFixOrdersList1_{userName}.RequireDate, [Balance]*-1 AS Requireqty, 2
+FROM TTFixOrdersList1_{userName} INNER JOIN (dbo.STOKGEN INNER JOIN dbo.TSTOKRECETESI ON dbo.STOKGEN.P_ID = dbo.TSTOKRECETESI.STOKP_ID)
+ON TTFixOrdersList1_{userName}.PartNo = dbo.STOKGEN.STK
+GROUP BY dbo.TSTOKRECETESI.STK, TTFixOrdersList1_{userName}.RequireDate, [Balance]*-1, TTFixOrdersList1_{userName}.BomLevel,
+dbo.TSTOKRECETESI.STOKTUR
+HAVING ((([Balance]*-1)>0) AND ((TTFixOrdersList1_{userName}.BomLevel)=1) AND ((dbo.TSTOKRECETESI.STOKTUR)=2 Or (dbo.TSTOKRECETESI.STOKTUR)=3))
+ORDER BY dbo.TSTOKRECETESI.STK, TTFixOrdersList1_{userName}.RequireDate;
+
+";
+
+        public static string GetAllTTFixorders2(string userName) => $@"
+SELECT TTFixOrders_{userName}.PartNo, TTFixOrders_{userName}.RequireDate, 
+Sum(TTFixOrders_{userName}.RequireQTY) AS RequireQTY, isnull(StokProduction_{userName}.Warehouse,0)
++isnull(StokProduction_{userName}.[Prod],0)+isnull(StokProduction_{userName}.[PackToday],0) 
+            AS TotalStock, 0 AS Balance, TTFixOrders_{userName}.BomLevel FROM TTFixOrders_{userName} LEFT JOIN StokProduction_{userName} ON 
+			TTFixOrders_{userName}.PartNo = StokProduction_{userName}.STK GROUP BY TTFixOrders_{userName}.PartNo, TTFixOrders_{userName}.RequireDate, 
+            isnull(StokProduction_{userName}.Warehouse,0)+isnull(StokProduction_{userName}.Prod,0)+isnull(StokProduction_{userName}.PackToday,0)
+			, TTFixOrders_{userName}.BomLevel HAVING (((TTFixOrders_{userName}.BomLevel) = 2)) ORDER BY TTFixOrders_{userName}.PartNo, 
+            TTFixOrders_{userName}.RequireDate;
+";
+        #endregion
+
     }
 }

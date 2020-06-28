@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SagHidrolik.Models.ViewModesl;
 using SagHidrolik.DataAccesslayer.SystemUsers;
+using SagHidrolik.webApp.Functions;
+
 namespace SagHidrolik.webApp.Controllers
 {
     public class AuthenticationDataController : Controller
@@ -71,9 +73,10 @@ namespace SagHidrolik.webApp.Controllers
         {
             IdentityResult result,result1;
             IdentityUser findedUser=null;
+            string userName = FunctionsHelper.GetUserNameFromEmail(s.Email);
             if(s!=null)
             {
-                var user = new IdentityUser { UserName = s.Email, Email = s.Email, EmailConfirmed = true };
+                var user = new IdentityUser { UserName = userName, Email = s.Email, EmailConfirmed = true };
                  result = await _userManager.CreateAsync(user, s.PassWord);
                 if(result.Succeeded)
                 {

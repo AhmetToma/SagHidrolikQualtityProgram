@@ -7,10 +7,11 @@
         </div>
         <div class="col-md-4">
             <div class="input-group" style="">
-                <button class="btn btn-sm btn-warning text-white">Add Other Purchase Orders</button>
-                <button class="btn btn-sm btn-primary">Delete Table</button>
+                <button id="btn-purchaseOrderMangemnet-getAllPurchase" class="btn btn-sm btn-warning text-white">Add Other Purchase Orders</button>
+                <button id="btn-purchaseOrderMangemnet-deletePurchasOrdersTable" class="btn btn-sm btn-danger">Delete Table</button>
+                <button id="btn-purchaseOrderMangemnet-exportToExcel" class="btn btn-sm btn-success">export To Excel</button>
+                <button class="btn btn-sm btn-primary">Run Mrp</button>
                 <button class="btn btn-sm btn-danger">Reset</button>
-                <button class="btn btn-sm btn-success">Run Mrp</button>
             </div>
         </div>
         <div class="col-md-4">
@@ -37,38 +38,23 @@
             <button style="background-color:#48a8b2;color:white" class="btn btn-sm">Monthly Material Usage</button>
         </div>
         <div id="cap2-allWo" style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem;">
-            Toplam Record : <span id="span-allWo-selectedRow" style="color:red"></span>
+            Toplam Record : <span id="span-purchaseOrderMangemnet-toplamRows" style="color:red"></span>
         </div>
     </div>
     <div>
-        <table class="table table-bordered">
+        <table id="table-purchaseOrderMangemnet-xls" class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Type </th>
-                    <th scope="col">Order</th>
-                    <th scope="col">Edition1</th>
-                    <th scope="col">Edition2</th>
+             
                     <th scope="col">PartNo</th>
                     <th scope="col">Location</th>
                     <th scope="col">Require Date</th>
                     <th scope="col">Require Qty</th>
                 </tr>
             </thead>
-            <tbody id="">
+            <tbody id="table-purchaseOrderMangemnet">
 
-                @for (int i = 0; i < 7; i++)
-                {
-                    <tr>
-                        <td>a</td>
-                        <td>a</td>
-                        <td>a</td>
-                        <td>a</td>
-                        <td>a</td>
-                        <td>a</td>
-                        <td>a</td>
-                        <td>a</td>
-                    </tr>
-                }
+             
 
             </tbody>
         </table>
