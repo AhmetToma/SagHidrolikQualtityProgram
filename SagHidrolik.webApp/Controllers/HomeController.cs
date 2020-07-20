@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SagHidrolik.DataAccesslayer.Wo;
 
 namespace SagHidrolik.webApp.Controllers
 {
@@ -14,11 +15,14 @@ namespace SagHidrolik.webApp.Controllers
         }
         public IActionResult changeYear()
         {
+            var list = AllWOData.TEST().Result;
+
             return View();
         }
 
         public IActionResult NewNc()
         {
+
             return View();
         }
 

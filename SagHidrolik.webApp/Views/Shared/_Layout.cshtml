@@ -70,7 +70,6 @@
                             <ul class="nav side-menu">
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Kalite"))
                                 {
-
                                     <partial name="RolesView/KaliteView" />
                                 }
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("calisan"))
@@ -86,6 +85,10 @@
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("SuperAdmin"))
                                 {
                                     <partial name="RolesView/SuperAdminView.cshtml" />
+                                }
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Bakim"))
+                                {
+                                    <partial name="RolesView/BakimView.cshtml" />
                                 }
                             </ul>
                         </div>

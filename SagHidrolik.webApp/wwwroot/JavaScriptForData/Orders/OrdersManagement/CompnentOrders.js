@@ -72,7 +72,6 @@ function GetAllTotalStokAjaxCall() {
         data: JSON.stringify(requestQueryForComponentOrders),
         success: (list) => {
             totalStokList = list;
-
             return list;
         }
     });
@@ -191,7 +190,6 @@ function CreateComponetOrdersTable() {
             <th scope="col">InProgres</th>
 ${headers}
                         </tr>`);
-
         let dataWithTime = "";
         slicedList.map((element, index) => {
             let matchedTotlaStok = getTotalStokByStk(element.STK);

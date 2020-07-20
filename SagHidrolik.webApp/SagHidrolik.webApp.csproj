@@ -96,6 +96,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="wwwroot\JavaScriptForData\BakimAriza\BakimAriza.js" />
     <None Include="wwwroot\JavaScriptForData\BakimAriza\gecmisTalepler.js" />
     <None Include="wwwroot\JavaScriptForData\Etiketler\GirişKabulEtiketi\girisKabulEtiketi.js" />

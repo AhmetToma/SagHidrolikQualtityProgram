@@ -234,6 +234,16 @@ const HttpUrls = {
     ResetUserPassword: BaseUrl + "AuthenticationData/ResetUserPassword",
     changeRole: BaseUrl + "AuthenticationData/changeRole",
     GetAllPurchaseOrders: BaseUrl + "PurchaseOrderManagemntGetData/GetAllPurchaseOrders",
+    RunMrp: BaseUrl + "PurchaseOrderManagemntGetData/RunMrp?lotSize=",
+    GetwoStatuslastInprogress: BaseUrl + "PurchaseOrderManagemntGetData/GetWoStatuslastInprogress",
+    GetWoStatusLastOpen: BaseUrl + "PurchaseOrderManagemntGetData/GetWoStatusLastOpen",
+    GetTTfixOrdersOrderSummary: BaseUrl + "PurchaseOrderManagemntGetData/GetTTfixOrdersOrderSummary",
+    DropAllPurcahseOrdersTable: BaseUrl + "PurchaseOrderManagemntGetData/DropAllPurcahseOrdersTable",
+    GetMonthlyMaterialUsage: BaseUrl + "PurchaseOrderManagemntGetData/GetMonthlyMaterialUsage",
+    GetWeeklyMaterialUsage: BaseUrl + "PurchaseOrderManagemntGetData/GetWeeklyMaterialUsage",
+    GetNewWoListInPurchaseOrders: BaseUrl + "PurchaseOrderManagemntGetData/GetNewWoListInPurchaseOrders",
+    GetWoPlanListInPurchaseOrders: BaseUrl + "PurchaseOrderManagemntGetData/GetWoPlanListInPurchaseOrders",
+
 
 
 

@@ -55,10 +55,10 @@ namespace SagHidrolik.Models.SqlRepository
         {
 
             query = $@"select  ProductOrderID,PartNo,PartNo_ID,LotNo,Qty,Completed_Qty,
-convert(varchar(10), cast(IssueDate As Date), 105) as IssueDate ,
-convert(varchar(10), cast(RequireDate As Date), 105) as RequireDate ,
-convert(varchar(10), cast(RevisedDate As Date), 105) as RevisedDate ,
-convert(varchar(10), cast(CloseDate As Date), 105) as CloseDate ,
+convert(varchar(10), cast(IssueDate As Date), 103) as IssueDate ,
+convert(varchar(10), cast(RequireDate As Date), 103) as RequireDate ,
+convert(varchar(10), cast(RevisedDate As Date), 103) as RevisedDate ,
+convert(varchar(10), cast(CloseDate As Date), 103) as CloseDate ,
 Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_ProductionOrders.PartNo_ID='{requestQuery.pid}' Order By LotNo desc  
                  OFFSET { requestQuery.pageNumber} ROWS FETCH NEXT { requestQuery.pageSize} ROWS ONLY;";
             return query;
@@ -870,7 +870,7 @@ and RoleId = '{RoleId}'";
         public static string GetImmediateAction(int ncId)
         {
             query = $"SET DATEFORMAT dmy;select ACTN_ID,NC_ID,Action_Type,Actin_Def,Responsible as ResponsibleId," +
-                $" convert(varchar(10), cast(TargetDate As Date), 105) as TargetDate ,convert(varchar(10), cast(CloseDate As Date), 105) as CloseDate,[Status] from  dbo.C_ActionList where" +
+                $" convert(varchar(10), cast(TargetDate As Date), 103) as TargetDate ,convert(varchar(10), cast(CloseDate As Date), 103) as CloseDate,[Status] from  dbo.C_ActionList where" +
                 $" NC_ID = {ncId}";
             return query;
         }
@@ -884,7 +884,7 @@ and RoleId = '{RoleId}'";
 
         public static string GetDocumentControlList(int ncId)
         {
-            query = $"select ID, NC_ID,Document as DocumentType, convert(varchar(10), cast(ChangeDate As Date), 105) as ChangeDate,NewRev,Notes  from J_DocumentControl  where NC_ID = {ncId}";
+            query = $"select ID, NC_ID,Document as DocumentType, convert(varchar(10), cast(ChangeDate As Date), 103) as ChangeDate,NewRev,Notes  from J_DocumentControl  where NC_ID = {ncId}";
             return query;
         }
         public static string SaveReviewDetalis(ReviewViewModel rev)
@@ -965,7 +965,6 @@ and RoleId = '{RoleId}'";
 
         #region OpenAction
 
-
         public static string GetAllOpenAction(RequestQuery requestQuery)
         {
             query = $"SELECT C_ActionList.ACTN_ID,C_ActionList.NC_ID, C_ActionList.Action_Type, C_ActionList.Actin_Def, C_ActionList.Responsible, C_ActionList.TargetDate, C_ActionList.CloseDate, C_ActionList.Status, B_NonConformityReport.NC_Type, B_NonConformityReport.NC_Id_Def," +
@@ -1000,7 +999,7 @@ and RoleId = '{RoleId}'";
         public static string GetProcutionReportWithFilter(RequestQuery r, string startAt, string endAt)
 
         {
-            query = "SET DATEFORMAT dmy; WITH Sales AS(SELECT convert(varchar(10), cast(Finish_time As Date), 105) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
+            query = "SET DATEFORMAT dmy; WITH Sales AS(SELECT convert(varchar(10), cast(Finish_time As Date), 103) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
                 $" where Finish_time between '{startAt}' and '{endAt}' group by Finish_time, [Group], S.Ok_Qty " +
                     ") SELECT * FROM   Sales PIVOT(SUM(total) FOR[Group] IN([01_Kesim],[02_Büküm],[03_Havşa],[04_Kaynak],[041_KesDel],[042_Hazirlik],[05_Hortum],[06_Paketleme]" +
                     $",[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil])) P order by finishTime desc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -1009,7 +1008,7 @@ and RoleId = '{RoleId}'";
 
         public static string GetProcutionReportWithoutFilter(RequestQuery r)
         {
-            query = "SET DATEFORMAT dmy; WITH Sales AS( SELECT  convert(varchar(10), cast(Finish_time As Date), 105) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
+            query = "SET DATEFORMAT dmy; WITH Sales AS( SELECT  convert(varchar(10), cast(Finish_time As Date), 103) as finishTime, SUM(S.Ok_Qty) as total,[Group]  FROM  dbo.ProcessFlowDetail S INNER JOIN dbo.ProcessFlow I ON S.Flow_ID = I.Flow_ID INNER JOIN dbo.Process_Planning z     ON I.ProcessNo_ID = z.ProcessNo " +
                 $"group by Finish_time, [Group], S.Ok_Qty " +
                     ") SELECT * FROM   Sales PIVOT(SUM(total) FOR[Group] IN([01_Kesim],[02_Büküm],[03_Havşa],[04_Kaynak],[041_KesDel],[042_Hazirlik],[05_Hortum],[06_Paketleme]" +
                     $",[06_PaketlemeDiğer],[06_test],[07_Mercedes],[99_Proto],[09_Kaplama],[08_UçŞekil])) P order by finishTime desc OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -1025,7 +1024,7 @@ and RoleId = '{RoleId}'";
         #endregion
         #region ProductionDetails
         public static string GetProcutionDetailsReport(RequestQuery r, string startAt, string endAt, string v) => $@" SET DATEFORMAT dmy;
- select convert(varchar(10), cast( Finish_time As Date), 105) as FinishTime,
+ select convert(varchar(10), cast( Finish_time As Date), 103) as FinishTime,
 Process_Planning.ProsesAdi,
  Sum(ProcessFlowDetail.Ok_Qty) AS Total,Local_ProductionOrders.PartNo_ID,
   dbo.Operator.Operator_Name as OperatorName,  FORMAT(Start_time, 'dd-MM-yyyy hh:mm:ss') as startTime
@@ -1334,7 +1333,7 @@ order by 2";
         #region Order Management
         public static string GetOrderDetails(RequestQuery r)
         {
-            query = "SELECT dbo.SIPARIS_ALT.STK, Sum(dbo.SIPARIS_ALT.MIKTAR) AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,105) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
+            query = "SELECT dbo.SIPARIS_ALT.STK, Sum(dbo.SIPARIS_ALT.MIKTAR) AS OrderQty, Sum(dbo.STOK_ALT.MIKTAR) AS TotalInvoice, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO AS SIPEVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR,CONVERT(varchar,dbo.SIPARIS_ALT.TESTARIHI,103) as TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA" +
                 " FROM((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON(dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND(dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID) LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF " +
                 $" where SIPARIS_ALT.STK like N'%{r.Stk}%' GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR, dbo.SIPARIS_ALT.P_ID, dbo.SIPARIS_ALT.TURAC, dbo.SIPAR.EVRAKNO, dbo.SIPARIS_ALT.FATIRSTUR, dbo.SIPARIS_ALT.STOKP_ID, dbo.SIPARIS_ALT.TUR, dbo.SIPARIS_ALT.TESTARIHI, dbo.SIPARIS_ALT.CARIREF, dbo.CARIGEN.STA " +
                 $"order by STK OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY";
@@ -1356,10 +1355,10 @@ set dateformat dmy;
 DECLARE @cols AS nvarchar(max);
  DECLARE @query AS nvarchar(max);
   SELECT @cols = STUFF(( 
-  SELECT DISTINCT      ',' + QUOTENAME( convert(varchar(10), cast( TESTARIHI As Date), 105))  
+  SELECT DISTINCT      ',' + QUOTENAME( convert(varchar(10), cast( TESTARIHI As Date), 103))  
 	 FROM[dbo].SIPARIS_ALT  where TESTARIHI between '{startAt}' and '{endAt}'
 	  order by 1  FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
-	  set @query = 'WITH Sales AS ( SELECT S.STK, convert(varchar(10), cast( S.TESTARIHI As Date), 105) as YearDate,CARIGEN.STA as carigenSta, S.CARIREF,S.STA,S.MIKTAR - 
+	  set @query = 'WITH Sales AS ( SELECT S.STK, convert(varchar(10), cast( S.TESTARIHI As Date), 103) as YearDate,CARIGEN.STA as carigenSta, S.CARIREF,S.STA,S.MIKTAR - 
 	  isNull(Sum(I.MIKTAR), 0) AS RemainQty_total FROM ((dbo.SIPARIS_ALT S left JOIN dbo.STOK_ALT I ON(S.STOKP_ID = I.STOKP_ID) 
 	  and(S.P_ID = I.SIP_PID)) left JOIN SIPAR on S.P_ID = SIPAR.P_ID) left join CARIGEN  on S.CARIREF = CARIGEN.REF 
 	   where  S.STK like N''%{r.Stk}%''  GROUP BY S.STK, S.MIKTAR, S.TURAC, dbo.SIPAR.EVRAKNO, S.FATIRSTUR, S.STOKP_ID, S.TUR, CARIGEN.STA  ,
@@ -1370,7 +1369,7 @@ DECLARE @cols AS nvarchar(max);
         public static string GetCustomerOrders(RequestQuery r, string startAt, string endAt) => $@"set dateformat dmy;
 DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT
  @cols = STUFF((        SELECT DISTINCT  
-     ',' + QUOTENAME( convert(varchar(10), cast( TESTARIHI As Date), 105))  
+     ',' + QUOTENAME( convert(varchar(10), cast( TESTARIHI As Date), 103))  
 	 FROM[dbo].SIPARIS_ALT  where TESTARIHI between '{startAt}' and '{endAt}' order by 1   FOR xml PATH(''), TYPE  ).value('.', 'NVARCHAR(MAX)') 
 	 , 1, 1, '');     set @query = 'WITH Sales AS (SELECT   S.STK, cast(S.TESTARIHI as date) as YearDate,CARIGEN.STA as carigenSta,
 	  S.CARIREF,S.STA, S.MIKTAR - isNull(Sum(I.MIKTAR), 0) AS RemainQty FROM ((dbo.SIPARIS_ALT S
@@ -1385,12 +1384,12 @@ DECLARE @cols AS nvarchar(max) DECLARE @query AS nvarchar(max) SELECT
         #region Wo 
         public static string GetAllProductionOrders(RequestQuery r) => $@"SET DATEFORMAT dmy; select ProductOrderID,PartNo,PartNo_ID,LotNo,Qty,
 Completed_Qty,
-convert(varchar(10), cast(RequireDate As Date), 105) as RequireDate ,
-convert(varchar(10), cast(IssueDate As Date), 105) as IssueDate ,
-convert(varchar(10), cast(RevisedDate As Date), 105) as RevisedDate ,
-convert(varchar(10), cast(CloseDate As Date), 105) as CloseDate ,
-Printed,Status,CONVERT(varchar,RevisedDate,105) as RevisedDate,
-Remark,CONVERT(varchar,CloseDate,105) as CloseDate
+convert(varchar(10), cast(RequireDate As Date), 103) as RequireDate ,
+convert(varchar(10), cast(IssueDate As Date), 103) as IssueDate ,
+convert(varchar(10), cast(RevisedDate As Date), 103) as RevisedDate ,
+convert(varchar(10), cast(CloseDate As Date), 103) as CloseDate ,
+Printed,Status,CONVERT(varchar,RevisedDate,103) as RevisedDate,
+Remark,CONVERT(varchar,CloseDate,103) as CloseDate
   from dbo.Local_ProductionOrders where   [Status] like N'%{r.uretimPlaniType}%' 
                  ORDER BY dbo.Local_ProductionOrders.RequireDate DESC OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;";
 
@@ -1500,7 +1499,7 @@ order by 1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;
 
         #region Operator
         public static string GetSettingsOperator(RequestQuery r) => $@" set DateFormat dmy; 
- select Operator_ID ,Operator_Name,Bolum,Aktif,CONVERT(varchar,GirisTarihi,105) as GirisTarihi FROM Operator where Operator_Name like N'%{r.operatorName}%'
+ select Operator_ID ,Operator_Name,Bolum,Aktif,CONVERT(varchar,GirisTarihi,103) as GirisTarihi FROM Operator where Operator_Name like N'%{r.operatorName}%'
 order by 1  
 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
 
@@ -1564,8 +1563,8 @@ values('{m.urunKodu}', '{m.siparisBlturu}', '{m.sprsblgno}', '{m.mstrlok}', '{m.
         public static string GetShippmentReport(RequestQuery r) => $@"set DateFormat dmy;
 DECLARE @cols AS nvarchar(max)DECLARE @query AS nvarchar(max)SELECT @cols =
  STUFF((SELECT DISTINCT    ',' + QUOTENAME(convert(varchar(10), cast( dbo.TTFTeslimat.Göndtrh As Date), 
- 105)) FROM[dbo].TTFTeslimat order by 1 FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, ''); set @query = N'WITH Sales AS (SELECT S.[Sipariş blgtürü] as BilgiTuru,
-   S.Mştrlok as mstrlok, S.Ürün as stk, S.VdGlnMkt,   S.[olcuBirimi] as OlcuBirimi,convert(varchar(10), cast(S.Göndtrh As Date), 105) as [month], I.FIELD18 +''-''+I.FIELD19 as Raf ,
+ 103)) FROM[dbo].TTFTeslimat order by 1 FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, ''); set @query = N'WITH Sales AS (SELECT S.[Sipariş blgtürü] as BilgiTuru,
+   S.Mştrlok as mstrlok, S.Ürün as stk, S.VdGlnMkt,   S.[olcuBirimi] as OlcuBirimi,convert(varchar(10), cast(S.Göndtrh As Date), 103) as [month], I.FIELD18 +''-''+I.FIELD19 as Raf ,
 	 I.STR_3 as kutuTipi, I.STR_4 as KutuIciMiktari,Sum(S.VdGlnMkt) AS ToplamSevk,Sum(S.VdGlnMkt)  AS Toplam FROM dbo.TTFTeslimat S left JOIN dbo.STOKGEN I on S.Ürün = I.STK where S.Ürün like  ''%{r.Stk}%''Group by S.[Sipariş blgtürü], S.Mştrlok, S.Ürün,S.VdGlnMkt, S.[olcuBirimi],Göndtrh,
 	 I.FIELD18,I.FIELD19, I.STR_3, I.STR_4)SELECT* FROM   Sales PIVOT(SUM(ToplamSevk) FOR  
 	 [month] IN ('+@cols+')) P  ORDER BY 1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY ;; ' EXECUTE sp_executesql @query;";
@@ -1667,7 +1666,7 @@ DECLARE @cols AS nvarchar(max)DECLARE @query AS nvarchar(max)SELECT @cols =
 
         #region Giris Kontrol
         public static string GetGirisKontrol(RequestQuery r) => $@"
-SELECT convert(varchar(10), cast( dbo.IRSALIYE_ALT.TARIH As Date), 105) as Tarih, dbo.CARIGEN.STA, dbo.IRSALIYE_ALT.STK, dbo.IRSALIYE_ALT.MIKTAR,
+SELECT convert(varchar(10), cast( dbo.IRSALIYE_ALT.TARIH As Date), 103) as Tarih, dbo.CARIGEN.STA, dbo.IRSALIYE_ALT.STK, dbo.IRSALIYE_ALT.MIKTAR,
  dbo.IRSALIYE_ALT.SIPEVRAKNO, dbo.STOKGEN.P_ID, dbo.STOKGEN.FIELD18, dbo.STOKGEN.FIELD19
   , dbo.IRSALIYE_ALT.KALITEKODU,dbo.IRSALIYE_ALT.CARIREF,
    dbo.IRSALIYE_ALT.REF, dbo.IRSALIYE_ALT.IRSEVRAKNO
@@ -1694,20 +1693,17 @@ WHERE (((dbo.IRSALIYE_ALT.TUR)=1 Or (dbo.IRSALIYE_ALT.TUR)=62 Or (dbo.IRSALIYE_A
         #region Purchase Orders Managment 
         public static string GetAllPurchaseOrders = @"set DateFormat dmy;
 SELECT dbo.SIPARIS_ALT.STK,
- convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 105) as RequireDate,
+ convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 103) as RequireDate,
  dbo.CARIGEN.STA,
  dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0) as RemainQty
 FROM ((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON (dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND
  (dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID)
   LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF
 GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR,
-convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 105), dbo.CARIGEN.STA
+convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 103), dbo.CARIGEN.STA
 
 ";
-
-
        public static string  DropTableByName(string tableName) => $"DROP TABLE IF EXISTS dbo.[{tableName}] ;";
-
         public static string CreateTTdFixOrdersTable(string userName) => $@"CREATE TABLE [dbo].[TTFixOrders_{userName}](
 	[Type] [nvarchar](255) NULL,
 	[Order#] [nvarchar](255) NULL,
@@ -1733,17 +1729,15 @@ CREATE TABLE [dbo].[StokProduction_{userName}](
         public static string SetUpTTfixOrdersAndGetData(string userName) => $@"
 set DateFormat dmy;
 insert into dbo.[TTFixOrders_{userName}] (PartNo,RequireDate,Location,RequireQTY,BomLevel)  SELECT dbo.SIPARIS_ALT.STK,
-convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 105) as RequireDate,CARIGEN.STA,
+convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 103) as RequireDate,CARIGEN.STA,
  dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0) as RemainQty,1
 FROM ((dbo.SIPARIS_ALT LEFT JOIN dbo.STOK_ALT ON (dbo.SIPARIS_ALT.STOKP_ID = dbo.STOK_ALT.STOKP_ID) AND
  (dbo.SIPARIS_ALT.P_ID = dbo.STOK_ALT.SIP_PID)) LEFT JOIN dbo.SIPAR ON dbo.SIPARIS_ALT.P_ID = dbo.SIPAR.P_ID)
   LEFT JOIN dbo.CARIGEN ON dbo.SIPARIS_ALT.CARIREF = dbo.CARIGEN.REF
 GROUP BY dbo.SIPARIS_ALT.STK, dbo.SIPARIS_ALT.MIKTAR,CARIGEN.REF,
-convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 105), dbo.CARIGEN.STA
+convert(varchar(10), cast( dbo.SIPARIS_ALT.TESTARIHI As Date), 103), dbo.CARIGEN.STA
 Having  dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0)>0
 ";
-
-
         public static string CreateTTdFixOrdersList1Table(string userName) => $@"CREATE TABLE [dbo].[TTFixOrdersList1_{userName}](
 	[Location] [nvarchar](255) NULL,
 	[PartNo] [nvarchar](255) NULL,
@@ -1757,10 +1751,8 @@ Having  dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0)>0
 	[BomLevel] [int] NULL,
 	[WOPlanned] [int] NULL
 ) ";
-
-
         public static string GetAllTTFixorders(string userName) => $@"set dateformat dmy;SELECT TTFixOrders_{userName}.PartNo,
-   convert(varchar(10), cast( dbo.TTFixOrders_{userName}.RequireDate As Date), 105) as RequireDate,
+   convert(varchar(10), cast( dbo.TTFixOrders_{userName}.RequireDate As Date), 103) as RequireDate,
  Sum(TTFixOrders_{userName}.RequireQTY) AS RequireQTY,
         ( isnull(StokProduction_{userName}.Warehouse,0)+
 			 IIf(dbo.STOKGEN.TUR=4,0,isnull(StokProduction_{userName}.[Prod],0))+
@@ -1774,9 +1766,17 @@ Having  dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0)>0
 			  +IIf(dbo.STOKGEN.TUR=4,0,
               isnull(StokProduction_{userName}.Prod,0))+isnull(StokProduction_{userName}.PackToday,0),  dbo.STOKGEN.TUR
 			   ORDER BY TTFixOrders_{userName}.PartNo, TTFixOrders_{userName}.RequireDate";
-
-
-
+        public static string CreateMrpWeekLast(string userName) => $@"
+CREATE TABLE [dbo].[MRPWEEKCALC_Last_{userName}](
+	[STK] [nvarchar](50) NULL,
+	[Week] [nvarchar](255) NULL,
+	[TotalStock] [float] NULL,
+	[ASSTOK] [float] NULL,
+	[Usage] [float] NULL,
+	[CalculatedStock] [float] NULL,
+	[P_ID] [nvarchar](50) NULL
+) 
+";
         public static string UpdateTTFixOrdersList1(string userName, TTFfixordersListe1 m) => $@"
 set dateformat dmy;insert into  TTFixOrdersList1_{userName} (TotalStock,Balance,WOPlanned,PartNo,RequireDate,BomLevel)
  values ({m.TotalStock},{m.Balance},{m.WOPlanned},'{m.PartNo}','{m.RequireDate}',{m.BomLevel})";
@@ -1793,7 +1793,6 @@ HAVING ((([Balance]*-1)>0) AND ((TTFixOrdersList1_{userName}.BomLevel)=1) AND ((
 ORDER BY dbo.TSTOKRECETESI.STK, TTFixOrdersList1_{userName}.RequireDate;
 
 ";
-
         public static string GetAllTTFixorders2(string userName) => $@"
 SELECT TTFixOrders_{userName}.PartNo, TTFixOrders_{userName}.RequireDate, 
 Sum(TTFixOrders_{userName}.RequireQTY) AS RequireQTY, isnull(StokProduction_{userName}.Warehouse,0)
@@ -1804,7 +1803,323 @@ Sum(TTFixOrders_{userName}.RequireQTY) AS RequireQTY, isnull(StokProduction_{use
 			, TTFixOrders_{userName}.BomLevel HAVING (((TTFixOrders_{userName}.BomLevel) = 2)) ORDER BY TTFixOrders_{userName}.PartNo, 
             TTFixOrders_{userName}.RequireDate;
 ";
+
+        public static string GetAllFromTTFixOrdersTable(string userName) => $@"
+select RequireQTY,PartNo,Location,  convert(varchar(10), cast( RequireDate As Date), 103) as RequireDate ,RequireQTY,BomLevel from TTFixOrders_{userName}
+";
+
+
+        public static string GetWoStatusLastOpen = @"SELECT dbo.Local_ProductionOrders.ProductOrderID,
+ dbo.Local_ProductionOrders.PartNo_ID ,sum( dbo.Local_ProductionOrders.Qty)  as SumOfQty
+FROM dbo.Local_ProductionOrders
+WHERE (((dbo.Local_ProductionOrders.Status)=1)) and PartNo_ID is not null  and  PartNo_ID!=''
+group by PartNo_ID, ProductOrderID,Qty";
+
+
+        public static string GetwoStatuslastInprogress = @"
+SELECT 
+ dbo.Local_ProductionOrders.PartNo_ID,
+  sum(IIf(([Qty]-isnull([Completed_Qty],0))<0,0,[Qty]-isnull([Completed_Qty],0))) AS WoInProgress
+FROM dbo.Local_ProductionOrders
+WHERE (((dbo.Local_ProductionOrders.Status)=2))
+group by  
+ dbo.Local_ProductionOrders.PartNo_ID";
+
+
+        public static string GetTTfixOrdersOrderSummary(string userName) => $@"
+set dateformat dmy;
+DECLARE @cols AS nvarchar(max);
+ DECLARE @query AS nvarchar(max);
+  SELECT @cols = STUFF(( 
+  SELECT    distinct    ',' + QUOTENAME( CAST(TTFixOrders_{userName}.RequireDate as date)) 
+	 FROM TTFixOrders_{userName}   group by  TTFixOrders_{userName}.PartNo ,RequireDate
+	  order by 1  desc   FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
+	  print @cols;
+	  set @query = 'WITH Sales AS ( select TTF.PartNo,S.ASSTOK,  CAST(TTF.RequireDate as date) as RequireDate,Sum(TTF.RequireQTY) as SumOfRequireQTY from TTFixOrders_{userName} TTF
+left join dbo.STOKGEN S on
+TTF.PartNo = S.STK
+group by TTF.PartNo,CAST(TTF.RequireDate as date),TTF.RequireQTY,S.ASSTOK
+)  SELECT* FROM   Sales
+               PIVOT(SUM(SumOfRequireQTY) FOR  RequireDate IN ('+ @cols+'
+                  )) P '
+		  EXECUTE sp_executesql @query;
+
+";
+
+        public static string deleteFrom(string userName)=>$"delete From {userName}";
+
+
+        public static string CreateMrpWeekCalc(string userName) => $@"CREATE TABLE [dbo].[MRPWEEKCALC_{userName}](
+	[STK] [nvarchar](50) NULL,
+	[Week] [nvarchar](255) NULL,
+	[TotalStock] [float] NULL,
+	[ASSTOK] [float] NULL,
+	[Usage] [float] NULL,
+	[CalculatedStock] [float] NULL,
+	[P_ID] [nvarchar](50) NULL
+) ";
+
+        public static string MrpMonthlyCalc1(string userName) => $@"
+SET DateFormat dmy;
+INSERT INTO MRPWEEKCALC_{userName} ( STK, P_ID, [Week], usage )
+SELECT STOKGEN_1.STK, dbo.TSTOKRECETESI.GSTOKP_ID,
+ TTFixOrdersList1_{userName}.RequireDate,
+ dbo.TSTOKRECETESI.MIKTAR*TTFixOrdersList1_{userName}.WOPlanned AS [usage]
+FROM dbo.STOKGEN AS STOKGEN_1 INNER JOIN (TTFixOrdersList1_{userName}
+INNER JOIN (dbo.STOKGEN INNER JOIN dbo.TSTOKRECETESI 
+ON dbo.STOKGEN.P_ID = dbo.TSTOKRECETESI.STOKP_ID) ON TTFixOrdersList1_{userName}.PartNo = dbo.STOKGEN.STK) 
+ON STOKGEN_1.P_ID = dbo.TSTOKRECETESI.GSTOKP_ID
+WHERE (((STOKGEN_1.TUR)=1 Or (STOKGEN_1.TUR)=4))
+ORDER BY STOKGEN_1.STK;
+";
+
+        public static string MrpMonthlyCalc2(string userName) => $@"
+SET DateFormat dmy;
+INSERT INTO MRPWEEKCALC_{userName} ( STK, [Usage], week, P_ID )
+select  SIPARIS_ALT.STK,sum ( SIPARIS_ALT.MIKTAR ) -  
+ISNULL(STOK_ALT.totaInviloance,0) as RemainQty,
+SIPARIS_ALT.TESTARIHI,
+SIPARIS_ALT.STOKP_ID
+from SIPARIS_ALT as SIPARIS_ALT
+    left join 
+     ( 
+        select Sum(dbo.STOK_ALT.MIKTAR) totaInviloance,STOKP_ID
+        from STOK_ALT  
+        group by MIKTAR ,STOKP_ID
+    ) STOK_ALT on SIPARIS_ALT.STOKP_ID = STOK_ALT.STOKP_ID
+	group by totaInviloance,SIPARIS_ALT.TESTARIHI,SIPARIS_ALT.STK,SIPARIS_ALT.TUR,
+	SIPARIS_ALT.STOKP_ID
+	HAVING (((Sum(SIPARIS_ALT.MIKTAR- ISNULL(STOK_ALT.totaInviloance,0))))>0)
+ AND ((SIPARIS_ALT.TUR)=91);
+";
+        public static string MrpMonthlyCalc3(string userName) => $@"
+SET DateFormat dmy;
+INSERT INTO MRPWEEKCALC_{userName} ( STK, [Usage], week, P_ID )
+select  SIPARIS_ALT.STK,sum ( SIPARIS_ALT.MIKTAR ) -  
+ISNULL(STOK_ALT.totaInviloance,0) as RemainQty,
+SIPARIS_ALT.TESTARIHI,
+SIPARIS_ALT.STOKP_ID
+from SIPARIS_ALT as SIPARIS_ALT
+    left join 
+     ( 
+        select Sum(dbo.STOK_ALT.MIKTAR) totaInviloance,STOKP_ID
+        from STOK_ALT  
+        group by MIKTAR ,STOKP_ID
+    ) STOK_ALT on SIPARIS_ALT.STOKP_ID = STOK_ALT.STOKP_ID
+	group by totaInviloance,SIPARIS_ALT.TESTARIHI,SIPARIS_ALT.STK,SIPARIS_ALT.TUR,
+	SIPARIS_ALT.STOKP_ID
+	HAVING (((Sum(SIPARIS_ALT.MIKTAR- ISNULL(STOK_ALT.totaInviloance,0))))>0)
+ AND ((SIPARIS_ALT.TUR)=91) AND  SIPARIS_ALT.TESTARIHI>GETDATE()
+";
+
+
+        public static string MrpMonthlyCalc4_SafetStok(string userName)=>$@"SET DateFormat dmy;
+INSERT INTO MRPWEEKCALC_{userName} ( STK, P_ID, week, [usage] )
+
+SELECT dbo.STOKGEN.STK, dbo.STOKGEN.P_ID, 
+ convert(varchar, getdate(), 103), dbo.STOKGEN.[ASSTOK]*-1 AS Expr1
+FROM dbo.STOKGEN
+WHERE (((dbo.STOKGEN.[ASSTOK]*-1)<0) 
+AND ((dbo.STOKGEN.TUR)=1 Or (dbo.STOKGEN.TUR)=4))
+ORDER BY dbo.STOKGEN.STK;";
+
         #endregion
 
+
+        public static string MrpWeekCalcQuery(string userName) => $@"
+--- MRPWEEKCALCQUERY
+INSERT INTO MRPWEEKCALC_Last_{userName} ( STK, TotalStock, Week, ASSTOK, [Usage], P_ID )
+SELECT dbo.STOKGEN.STK,
+sum (isnull((dbo.STOK_ALT.GRMIK-dbo.STOK_ALT.CKMIK),0)) as totalStok
+, MRPWEEKCALC_{userName}.Week, dbo.STOKGEN.ASSTOK,
+ Sum(MRPWEEKCALC_{userName}.Usage) AS SumOfUsage, MRPWEEKCALC_{userName}.P_ID
+FROM (MRPWEEKCALC_{userName} LEFT JOIN STOK_ALT
+ ON MRPWEEKCALC_{userName}.STK = STOK_ALT.STK) 
+LEFT JOIN dbo.STOKGEN ON MRPWEEKCALC_{userName}.STK = dbo.STOKGEN.STK
+GROUP BY dbo.STOKGEN.STK, MRPWEEKCALC_{userName}.Week, dbo.STOKGEN.ASSTOK, 
+MRPWEEKCALC_{userName}.P_ID
+ORDER BY dbo.STOKGEN.STK, MRPWEEKCALC_{userName}.Week;
+";
+
+
+        public static string GetMrpWeekLast(string userName) => $@"select STK,Week,TotalStock,ASSTOK,Usage,CalculatedStock,P_ID from MRPWEEKCALC_Last_{userName}";
+
+        public static string updateMrpWeekLast( string userName,double CalculatedStock, string stk) => $@"
+update MRPWEEKCALC_Last_{userName} set CalculatedStock = {CalculatedStock} where STK='{stk}';
+
+";
+
+        public static string MRPWEEKCALC_Crosstab_month(string userName) => $@"
+set dateformat dmy;
+DECLARE @cols AS nvarchar(max);
+ DECLARE @query AS nvarchar(max);
+  SELECT @cols = STUFF(( 
+  SELECT    distinct    ',' + QUOTENAME(CONCAT (MONTH(MRPWEEKCALC_Last_{userName}.[Week]) ,'-', year(MRPWEEKCALC_Last_{userName}.[Week])) ) 
+	 FROM MRPWEEKCALC_Last_{userName}  
+	  order by 1  asc   FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
+	  print @cols
+	  set @query = 'WITH Sales AS 
+( SELECT S.STK, S.STA, MrpCal.TotalStock, 
+MrpCal.ASSTOK, DATEPART(WEEK, GETDATE())AS Currentweek, S.TUR,
+ Sum(MrpCal.CalculatedStock) as SumOfCalculatedStock,
+ CONCAT (MONTH(MrpCal.[Week]),''-'', year(MrpCal.[Week])) as weeks
+FROM dbo.MRPWEEKCALC_Last_{userName} MrpCal  LEFT JOIN dbo.STOKGEN  S
+  ON MrpCal.P_ID = S.P_ID
+GROUP BY S.STK, S.STA, MrpCal.TotalStock, MrpCal.ASSTOK, 
+S.TUR, MrpCal.[Week]) SELECT* FROM   Sales
+               PIVOT(SUM(SumOfCalculatedStock) 
+			   FOR weeks IN ('+ @cols+' )) P; '
+		  EXECUTE sp_executesql @query;
+";
+
+        public static string CreateMrpWeekMinus(string userName) => $@"
+CREATE TABLE [dbo].[MRPWEEKCALC_Minus_{userName}](
+	[STK] [nvarchar](50) NULL,
+	[STA] [nvarchar](50) NULL,
+	[Week] [nvarchar](255) NULL,
+	[TotalStock] [float] NULL,
+	[ASSTOK] [float] NULL,
+	[Currentweek] [float] NULL,
+	[SumOfCalculatedStock] [float] NULL,
+	[TUR] [float] NULL,
+);
+insert into MRPWEEKCALC_Minus_{userName} (STK,STA,TotalStock,ASSTOK,Week,Currentweek,TUR,SumOfCalculatedStock)
+SELECT MRPWEEKCALC_Last_{userName}.STK, dbo.STOKGEN.STA, MRPWEEKCALC_Last_{userName}.TotalStock, MRPWEEKCALC_Last_{userName}.ASSTOK,
+ MRPWEEKCALC_Last_{userName}.Week,DATEPART(WEEK, GETDATE())AS Currentweek, dbo.STOKGEN.TUR, Sum(MRPWEEKCALC_Last_{userName}.CalculatedStock) AS SumOfCalculatedStock
+FROM MRPWEEKCALC_Last_{userName} LEFT JOIN dbo.STOKGEN ON MRPWEEKCALC_Last_{userName}.STK = dbo.STOKGEN.STK
+GROUP BY MRPWEEKCALC_Last_{userName}.STK, dbo.STOKGEN.STA, MRPWEEKCALC_Last_{userName}.TotalStock,
+ MRPWEEKCALC_Last_{userName}.ASSTOK, MRPWEEKCALC_Last_{userName}.Week, dbo.STOKGEN.TUR
+HAVING (((Sum(MRPWEEKCALC_Last_{userName}.CalculatedStock))<0));
+";
+
+
+
+        public static string MRPWEEKCALC_Minus_Crosstab_month(string userName) => $@"
+set dateformat dmy;
+DECLARE @cols AS nvarchar(max);
+ DECLARE @query AS nvarchar(max);
+  SELECT @cols = STUFF(( 
+  SELECT    distinct    ',' + QUOTENAME(CONCAT (MONTH(MRPWEEKCALC_Minus_{userName}.[Week]) ,'-', year(MRPWEEKCALC_Minus_{userName}.[Week]))) 
+	 FROM MRPWEEKCALC_Minus_{userName}  
+	  order by 1  desc   FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
+	  print @cols
+	  set @query = 'WITH Sales AS 
+( SELECT MRPWEEKCALC_Minus.STK, MRPWEEKCALC_Minus.STA,MRPWEEKCALC_Minus.SumOfCalculatedStock,
+ MRPWEEKCALC_Minus.TUR, MRPWEEKCALC_Minus.ASSTOK, MRPWEEKCALC_Minus.Currentweek,
+CONCAT (MONTH(MRPWEEKCALC_Minus.[Week]) ,''-'', year(MRPWEEKCALC_Minus.[Week])) as weeks
+FROM MRPWEEKCALC_Minus_{userName} MRPWEEKCALC_Minus
+GROUP BY MRPWEEKCALC_Minus.STK, MRPWEEKCALC_Minus.STA, MRPWEEKCALC_Minus.TUR, 
+MRPWEEKCALC_Minus.ASSTOK, MRPWEEKCALC_Minus.Currentweek,MRPWEEKCALC_Minus.SumOfCalculatedStock,
+ MRPWEEKCALC_Minus.Week
+) SELECT* FROM   Sales
+               PIVOT(SUM(SumOfCalculatedStock) 
+			   FOR weeks IN ('+ @cols+' )) P; '
+		  EXECUTE sp_executesql @query;
+";
+
+        public static string MRPWEEKCALC_Crosstab_week(string userName) => $@"
+set dateformat dmy;
+DECLARE @cols AS nvarchar(max);
+ DECLARE @query AS nvarchar(max);
+  SELECT @cols = STUFF(( 
+  SELECT    distinct    ',' + QUOTENAME(CONCAT (DATEPART(wk,MRPWEEKCALC_Last_{userName}.[Week]) ,'-', year(MRPWEEKCALC_Last_{userName}.[Week])) ) 
+	 FROM MRPWEEKCALC_Last_{userName}
+	  order by 1  asc   FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
+	  print @cols
+	  set @query = 'WITH Sales AS 
+( SELECT S.STK, S.STA, MrpCal.TotalStock, 
+MrpCal.ASSTOK, DATEPART(WEEK, GETDATE())AS Currentweek, S.TUR,
+ Sum(MrpCal.CalculatedStock) as SumOfCalculatedStock,
+ CONCAT (DATEPART(wk,MrpCal.[Week]) ,''-'', year(MrpCal.[Week])) as weeks
+FROM dbo.MRPWEEKCALC_Last_{userName} MrpCal  LEFT JOIN dbo.STOKGEN  S
+  ON MrpCal.P_ID = S.P_ID
+GROUP BY S.STK, S.STA, MrpCal.TotalStock, MrpCal.ASSTOK, 
+S.TUR, MrpCal.[Week]) SELECT* FROM   Sales
+               PIVOT(SUM(SumOfCalculatedStock) 
+			   FOR weeks IN ('+ @cols+' )) P; '
+		  EXECUTE sp_executesql @query
+";
+
+        public static string MRPWEEKCALC_Minus_Crosstab_week(string userName) => $@"
+set dateformat dmy;
+DECLARE @cols AS nvarchar(max);
+ DECLARE @query AS nvarchar(max);
+  SELECT @cols = STUFF(( 
+  SELECT    distinct    ',' + QUOTENAME( CONCAT (DATEPART(wk,MRPWEEKCALC_Minus_{userName}.[Week]) ,'-', year(MRPWEEKCALC_Minus_{userName}.[Week])) ) 
+	 FROM MRPWEEKCALC_Minus_{userName} 
+	  order by 1  desc   FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
+	  set @query = 'WITH Sales AS 
+( SELECT MRPWEEKCALC_Minus.STK, MRPWEEKCALC_Minus.STA,MRPWEEKCALC_Minus.SumOfCalculatedStock,
+ MRPWEEKCALC_Minus.TUR, MRPWEEKCALC_Minus.ASSTOK, MRPWEEKCALC_Minus.Currentweek,
+
+CONCAT (DATEPART(wk,MRPWEEKCALC_Minus.[Week]) ,''-'', year(MRPWEEKCALC_Minus.[Week]))as weeks
+FROM MRPWEEKCALC_Minus_{userName} MRPWEEKCALC_Minus
+GROUP BY MRPWEEKCALC_Minus.STK, MRPWEEKCALC_Minus.STA, MRPWEEKCALC_Minus.TUR, 
+MRPWEEKCALC_Minus.ASSTOK, MRPWEEKCALC_Minus.Currentweek,MRPWEEKCALC_Minus.SumOfCalculatedStock,
+ MRPWEEKCALC_Minus.Week
+) SELECT* FROM   Sales
+               PIVOT(SUM(SumOfCalculatedStock) 
+			   FOR weeks IN ('+ @cols+' )) P; '
+		  EXECUTE sp_executesql @query;
+";
+
+
+        public static string GetNewWoListInPurchaseOrders(string userName,string currentyear) => $@"
+SELECT TTFixOrdersList1_{userName}.PartNo, lastStatusInProgrss.WoInProgress,
+
+CONCAT (DATEPART(wk,WONewDate) ,'-', year(WONewDate)) as WONewDate , TTFixOrdersList1_{userName}.WOPlanned, StokProduction_{userName}.Prod,
+ isnull(lastStatusInProgrss.WoInProgress,0)-isnull([Prod],0) AS InProgress
+FROM (TTFixOrdersList1_{userName} LEFT JOIN 
+ (SELECT 
+SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID,SAG_HIDROLIK_{currentyear}T.dbo.STOKGEN.STK,
+  sum(IIf(([Qty]-isnull([Completed_Qty],0))<0,0,[Qty]-isnull([Completed_Qty],0))) AS WoInProgress
+FROM SAG_PRODUCTION.dbo.Local_ProductionOrders
+left join SAG_HIDROLIK_{currentyear}T.dbo.STOKGEN 
+on SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID=SAG_HIDROLIK_{currentyear}T.dbo.STOKGEN.P_ID
+WHERE (((SAG_PRODUCTION.dbo.Local_ProductionOrders.Status)=2))
+group by  
+ SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID,SAG_HIDROLIK_{currentyear}T.dbo.STOKGEN.STK ) lastStatusInProgrss
+ on TTFixOrdersList1_{userName}.PartNo= lastStatusInProgrss.STK
+) LEFT JOIN StokProduction_{userName} ON TTFixOrdersList1_{userName}.PartNo = StokProduction_{userName}.STK
+WHERE (((TTFixOrdersList1_{userName}.WOPlanned)<>0))
+ORDER BY TTFixOrdersList1_{userName}.WONewDate
+";
+
+        public static string GetWoPlanListInPurchaseOrders(string userName,string currentYear) => $@"
+set dateformat dmy;
+DECLARE @cols AS nvarchar(max);
+ DECLARE @query AS nvarchar(max);
+  SELECT @cols = STUFF(( 
+  SELECT    distinct    ',' + QUOTENAME( CONCAT (DATEPART(wk,TTFixOrdersList1_{userName}.WONewDate) ,'-',
+   year(TTFixOrdersList1_{userName}.WONewDate)) ) 
+	 FROM TTFixOrdersList1_{userName} 
+	  order by 1  desc   FOR xml PATH(''), TYPE ).value('.', 'NVARCHAR(MAX)'), 1, 1, '');
+	  set @query = '
+with ss As
+(
+SELECT TTFixOrdersList1_{userName}.PartNo, lastStatusInProgrss.WoInProgress,
+CONCAT (DATEPART(wk,WONewDate) ,''-'', year(WONewDate)) as WONewDate , 
+TTFixOrdersList1_{userName}.WOPlanned, StokProduction_{userName}.Prod,
+ isnull(lastStatusInProgrss.WoInProgress,0)-isnull([Prod],0) AS InProgress
+FROM (TTFixOrdersList1_{userName} LEFT JOIN 
+ (SELECT 
+SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID,SAG_HIDROLIK_{currentYear}T.dbo.STOKGEN.STK,
+  sum(IIf(([Qty]-isnull([Completed_Qty],0))<0,0,[Qty]-isnull([Completed_Qty],0))) AS WoInProgress
+FROM SAG_PRODUCTION.dbo.Local_ProductionOrders
+left join SAG_HIDROLIK_{currentYear}T.dbo.STOKGEN 
+on SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID=SAG_HIDROLIK_{currentYear}T.dbo.STOKGEN.P_ID
+WHERE (((SAG_PRODUCTION.dbo.Local_ProductionOrders.Status)=2))
+group by  
+ SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID,SAG_HIDROLIK_{currentYear}T.dbo.STOKGEN.STK ) lastStatusInProgrss
+ on TTFixOrdersList1_{userName}.PartNo= lastStatusInProgrss.STK
+) LEFT JOIN StokProduction_{userName} ON TTFixOrdersList1_{userName}.PartNo = StokProduction_{userName}.STK
+WHERE (((TTFixOrdersList1_{userName}.WOPlanned)<>0))
+	 )select * from  ss
+               PIVOT(SUM(WOPlanned) 
+			   FOR WONewDate IN ('+ @cols+' )) P; '
+		  EXECUTE sp_executesql @query;
+
+
+";
     }
 }

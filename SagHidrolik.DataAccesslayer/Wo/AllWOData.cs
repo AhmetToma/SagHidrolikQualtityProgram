@@ -18,7 +18,25 @@ namespace SagHidrolik.DataAccesslayer.Wo
             DateTime tempDate;
             return DateTime.TryParse(txtDate, out tempDate);
         }
-            public static async Task<IEnumerable<DboLocalProductionOrders>> GetAllProductionOrders(RequestQuery requestQuery)
+
+        public static async Task<IEnumerable<DboLocalProductionOrders>> TEST()
+        {
+            RequestQuery r = new RequestQuery()
+            {
+                pageSize = 60000,
+                pageNumber = 0
+            };
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<DboLocalProductionOrders>(@"
+select dbo.Local_ProductionOrders.PartNo_ID,SAG_HIDROLIK_2019T.dbo.STOKGEN.STK from Local_ProductionOrders 
+inner join SAG_HIDROLIK_2019T.dbo.STOKGEN on
+Local_ProductionOrders.PartNo_ID =SAG_HIDROLIK_2019T.dbo.STOKGEN.P_ID");
+                return list;
+            }
+        }
+        public static async Task<IEnumerable<DboLocalProductionOrders>> GetAllProductionOrders(RequestQuery requestQuery)
         {
             var stkList = StokReadingData.GetStokkenByStkList(requestQuery).Result;
             var productFiles = StokReadingData.GetAllProductFile().Result;
@@ -28,7 +46,7 @@ namespace SagHidrolik.DataAccesslayer.Wo
             if (stkList.Count() <= 0) return newList;
             else
             {
-                
+
                 using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
                 {
                     await connection.OpenAsync();
@@ -37,7 +55,7 @@ namespace SagHidrolik.DataAccesslayer.Wo
                     {
                         var dboStokgen = stkList.Where(x => x.P_ID == item.PartNo_ID).SingleOrDefault();
                         var matchedFile = productFiles.Where(x => x.P_ID == item.PartNo_ID).FirstOrDefault();
-                        if (dboStokgen != null || matchedFile!=null)
+                        if (dboStokgen != null || matchedFile != null)
                         {
                             if (dboStokgen != null)
                             {
@@ -48,7 +66,7 @@ namespace SagHidrolik.DataAccesslayer.Wo
                                 item.DosyaUrl = matchedFile.DOSYAADI;
                             }
 
-                                    newList.Add(item);
+                            newList.Add(item);
                         }
                     }
                     return newList;
@@ -107,7 +125,7 @@ namespace SagHidrolik.DataAccesslayer.Wo
             foreach (var item in excelList)
             {
                 var mathcedModel = sotkgenList.Where(x => x.Stk == item.stk).FirstOrDefault();
-                if (mathcedModel != null && item.qty > 0 && item.issueDate != ""&& IsDateTime(item.issueDate) && IsDateTime(item.requireDate))
+                if (mathcedModel != null && item.qty > 0 && item.issueDate != "" && IsDateTime(item.issueDate) && IsDateTime(item.requireDate))
                 {
                     int x = 5;
                     AcceptedList.Add(item);
@@ -154,6 +172,6 @@ namespace SagHidrolik.DataAccesslayer.Wo
         }
     }
 
- }
+}
 
 

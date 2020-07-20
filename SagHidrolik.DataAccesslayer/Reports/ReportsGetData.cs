@@ -127,8 +127,6 @@ namespace SagHidrolik.Quality.DataAccesslayer.Reports
                 {
                     var dboStokgen = stkList.Where(x => x.P_ID == item.PartNo_ID).SingleOrDefault();
                     if (dboStokgen != null)
-
-
                         item.Stk = dboStokgen.Stk;
                     newList.Add(item);
                 }

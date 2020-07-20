@@ -2,50 +2,61 @@
     <div class="row">
         <div class="col-md-2">
             <div class="input-group">
-                <input id="" style="border-radius:0.5rem;" type="number" x class="form-control" placeholder="Lot Size">
+                <input id="inp-purchaseOrderMangemnet-lotSize" style="border-radius:0.5rem;" type="number" class="form-control" placeholder="Lot Size">
             </div>
         </div>
         <div class="col-md-4">
-            <div class="input-group" style="">
-                <button id="btn-purchaseOrderMangemnet-getAllPurchase" class="btn btn-sm btn-warning text-white">Add Other Purchase Orders</button>
-                <button id="btn-purchaseOrderMangemnet-deletePurchasOrdersTable" class="btn btn-sm btn-danger">Delete Table</button>
+            <div>
+                <button id="btn-purchaseOrderMangemnet-getAllPurchase" class="btn btn-sm btn-success">Add Other Purchase Orders</button>
+
                 <button id="btn-purchaseOrderMangemnet-exportToExcel" class="btn btn-sm btn-success">export To Excel</button>
-                <button class="btn btn-sm btn-primary">Run Mrp</button>
+                <button id="btn-purchaseOrderMangemnet-runMrp" class="btn btn-sm btn-success">Run Mrp</button>
+                <hr />
+                <button id="btn-purchaseOrderMangemnet-partOrderSummary" class="btn btn-sm btn-primary">Part Order Summary</button>
+                <button id="btn-purchaseOrderMangemnet-newWoList" class="btn btn-sm btn-primary">New Wo List Weekly</button>
+                <button id="btn-purchaseOrderMangemnet-woPlanWeekly" class="btn btn-sm btn-primary">Wo plan Weekly</button>
+                <hr />
+                <button style="color:white" id="btn-purchaseOrderMangemnet-planingMrp" class="btn btn-sm btn-warning">Plannig Mrp</button>
+                <button style="color:white" id="btn-purchaseOrderMangemnet-processDates" class="btn btn-sm btn-warning">Process Dates</button>
+                <hr />
+                <button id="btn-purchaseOrderMangemnet-deletePurchasOrdersTable" class="btn btn-sm btn-danger">Delete Table</button>
                 <button class="btn btn-sm btn-danger">Reset</button>
+
             </div>
         </div>
         <div class="col-md-4">
             <label>Back Orders</label>
-            <select class="custom-select gunlukHatBazindUretim-select" id="select-gunlukHatBazindUretim-allProcess">
-                <option>Yes</option>
+            <select class="custom-select gunlukHatBazindUretim-select" id="select-purchaseOrderMangemnet-backOrders">
+                <option PlanningWO>Yes</option>
                 <option>No</option>
                 <option>Exculde All Purchase orders</option>
             </select>
             <label>Only Missing Component</label>
-            <select class="custom-select gunlukHatBazindUretim-select" id="select-gunlukHatBazindUretim-allProcess">
-                <option>Yes</option>
-                <option>No</option>
+            <select class="custom-select gunlukHatBazindUretim-select" id="select-purchaseOrderMangemnet-missingComponent">
+                <option >Yes</option>
+                <option selected>No</option>
                 <option> </option>
             </select>
             <label>Safety Stok</label>
-            <select class="custom-select gunlukHatBazindUretim-select" id="select-gunlukHatBazindUretim-allProcess">
-                <option>Yes</option>
+            <select class="custom-select gunlukHatBazindUretim-select" id="select-purchaseOrderMangemnet-safetyStok">
+                <option selected>Yes</option>
                 <option>No</option>
             </select>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-sm btn-dark">Weekly Materila Usage</button>
-            <button style="background-color:#48a8b2;color:white" class="btn btn-sm">Monthly Material Usage</button>
+            <button id="btn-purchaseOrderMangemnet-weeklyMaterial" class="btn btn-sm btn-dark">Weekly Materila Usage</button>
+            <button id="btn-purchaseOrderMangemnet-monthlyMaterial" style="background-color:#48a8b2;color:white" class="btn btn-sm">Monthly Material Usage</button>
         </div>
         <div id="cap2-allWo" style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem;">
             Toplam Record : <span id="span-purchaseOrderMangemnet-toplamRows" style="color:red"></span>
         </div>
     </div>
-    <div>
+    <div style="height: 26rem;
+    overflow: auto;
+    margin-bottom: 25px">
         <table id="table-purchaseOrderMangemnet-xls" class="table table-bordered">
             <thead>
                 <tr>
-             
                     <th scope="col">PartNo</th>
                     <th scope="col">Location</th>
                     <th scope="col">Require Date</th>
@@ -53,36 +64,68 @@
                 </tr>
             </thead>
             <tbody id="table-purchaseOrderMangemnet">
-
-             
-
             </tbody>
         </table>
     </div>
 
     <hr />
-    <div class="alert defaultBackground " role="alert">
-      Error Table
-    </div>
-    <div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">STK</th>
-                    <th scope="col">DEF</th>
-
-                </tr>
-            </thead>
-            <tbody id="">
-                @for (int i = 0; i < 7; i++)
-                {
+    @*<div class="alert defaultBackground " role="alert">
+          Error Table
+        </div>
+        <div>
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td>a</td>
-                        <td>a</td>
-                    </tr>
-                }
+                        <th scope="col">STK</th>
+                        <th scope="col">DEF</th>
 
-            </tbody>
-        </table>
+                    </tr>
+                </thead>
+                <tbody id="">
+                    @for (int i = 0; i < 7; i++)
+                    {
+                        <tr>
+                            <td>a</td>
+                            <td>a</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>*@
+</div>
+
+
+<div class="modal fade" id="purchaseOrderMangemnet-Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="margin-left:7rem;" role="document">
+        <div  class="modal-content" style="width:105rem;">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" id="btn-purchaseOrderMangemnet-modal-exportToExcel" class="btn btn-sm btn-success">Export To Excel</button>
+                    </div>
+                    <div class="col-md-3">
+                        <h4> toplam Record <span id="table-purchaseOrderMangemnet-modal-recordCount" class="text-danger"></span></h4>
+                    </div>
+                </div>
+                    <div style="overflow-x: scroll; overflow-y: scroll;height: 43rem;">
+                        <table id="table-purchaseOrderMangemnet-modal-xls" class="table table-bordered">
+                            <thead id="tabel-purchaseOrderMangemnet-headers" >
+                            </thead>
+                            <tbody id="tabel-purchaseOrderMangemnet-body">
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+            
+        </div>
     </div>
 </div>
+
+
