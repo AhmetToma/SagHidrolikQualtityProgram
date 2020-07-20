@@ -97,8 +97,8 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="wwwroot\JavaScriptForData\BakimAriza\BakimAriza.js" />
-    <None Include="wwwroot\JavaScriptForData\BakimAriza\gecmisTalepler.js" />
+    <None Include="wwwroot\JavaScriptForData\Bakim\BakimAriza\BakimAriza.js" />
+    <None Include="wwwroot\JavaScriptForData\Bakim\BakimAriza\gecmisTalepler.js" />
     <None Include="wwwroot\JavaScriptForData\Etiketler\GirişKabulEtiketi\girisKabulEtiketi.js" />
     <None Include="wwwroot\JavaScriptForData\Etiketler\GirişKabulEtiketi\girisKabulEtiketiPrintModeli.js" />
     <None Include="wwwroot\JavaScriptForData\Etiketler\SevkiyetKutuEtiketi\sevkiyetKutuEtiketi.js" />

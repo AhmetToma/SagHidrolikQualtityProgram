@@ -567,16 +567,22 @@ and RoleId = '{RoleId}'";
         #endregion
 
 
+
+        #region Bakim
+      
         #region Bakim Ariza
         public static string GetAllMachine(RequestQuery requestQuery)
         {
             query = "SELECT [dbo].[10_MakinaListesiNew].Machine_Id, [dbo].[10_MakinaListesiNew].Machine_no,[dbo].[10_MakinaListesiNew].Machine_Name , [dbo].[10_MakinaListesiNew].MODEL," +
-             $" [dbo].[10_MakinaListesiNew].Bölüm  as Bolum FROM[dbo].[10_MakinaListesiNew] where [dbo].[10_MakinaListesiNew].Machine_no like N'%{requestQuery.machineNo}%'" +
+             $" [dbo].[10_MakinaListesiNew].Bölüm  as Bolum,[10_MakinaListesiNew].Producer FROM[dbo].[10_MakinaListesiNew] where [dbo].[10_MakinaListesiNew].Machine_no " +
+             $"like N'%{requestQuery.machineNo}%'" +
              "ORDER BY [dbo].[10_MakinaListesiNew].Machine_no" +
              $" OFFSET  {requestQuery.pageNumber} rows fetch next {requestQuery.pageSize} rows only; ";
             return query;
         }
 
+
+        public static string GetAllMachineCount = "select count(*) from ( select * from dbo.[10_MakinaListesiNew])countNumber";
 
         public static string insertIntoBakimKayit(BakimArizaModel bakimArizaModel)
         {
@@ -596,6 +602,28 @@ and RoleId = '{RoleId}'";
             return query;
         }
 
+        #endregion
+
+        #region Bakim ozet
+
+        public static string GetBakimKayitByMakineID(int makineId) => $@"
+SELECT Tbl_BakımKayit.Makina_ID,
+convert(varchar(10), cast(Tbl_BakımKayit.Tarih As Date), 103) as Tarih,
+ Tbl_BakımKayit.BakımTipi as BakimTipi,
+  Tbl_BakımKayit.BakımıYapan as BakimYapan, 
+  convert(varchar(25), cast(BaslamaSaat As datetime), 103) 
+  + ' '+ convert(varchar(25), cast(BaslamaSaat As datetime), 14)
+   as BaslamaSaat,
+   convert(varchar(25), cast(BitisSaat As datetime), 103) 
+  + ' '+ convert(varchar(25), cast(BitisSaat As datetime), 14)
+   as BitisSaat,
+  Tbl_BakımKayit.ArizaTanım as ArizaTanimi,
+    Tbl_BakımKayit.Yapılanİslem as YapilanIslem
+	 FROM Tbl_BakımKayit WHERE (((Tbl_BakımKayit.Tamamlanma)=1))
+	 and Tbl_BakımKayit.Makina_ID = {makineId}; 
+
+";
+        #endregion
         #endregion
 
         #region Quality
@@ -1923,8 +1951,7 @@ WHERE (((dbo.STOKGEN.[ASSTOK]*-1)<0)
 AND ((dbo.STOKGEN.TUR)=1 Or (dbo.STOKGEN.TUR)=4))
 ORDER BY dbo.STOKGEN.STK;";
 
-        #endregion
-
+     
 
         public static string MrpWeekCalcQuery(string userName) => $@"
 --- MRPWEEKCALCQUERY
@@ -2121,5 +2148,7 @@ WHERE (((TTFixOrdersList1_{userName}.WOPlanned)<>0))
 
 
 ";
+        #endregion
+
     }
 }

@@ -12,5 +12,6 @@ namespace SagHidrolik.Models.ViewModesl
         public string Machine_Name { get; set; }
         public string Model { get; set; }
         public string Bolum { get; set; }
+        public string Producer { get; set; }
     }
 }

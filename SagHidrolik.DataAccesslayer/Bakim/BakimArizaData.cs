@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using SagHidrolik.Models.ViewModesl;
 using SagHidrolik.Models.SqlRepository;
 
-namespace SagHidrolik.DataAccessLayer.SagHidrolik.DataAccesslayer.BakimAriza
+namespace SagHidrolik.DataAccessLayer.SagHidrolik.DataAccesslayer.Bakim
 {
     public static class BakimArizaData
     {
@@ -20,6 +20,15 @@ namespace SagHidrolik.DataAccessLayer.SagHidrolik.DataAccesslayer.BakimAriza
             }
         }
 
+        public static async Task<int> GetAllMachineCount()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                int count = await connection.ExecuteScalarAsync<int>(SqlQueryRepo.GetAllMachineCount);
+                return count;
+            }
+        }
         public static  async Task  insertIntoBakimKayit(BakimArizaModel bakimArizaModel)
         {
       

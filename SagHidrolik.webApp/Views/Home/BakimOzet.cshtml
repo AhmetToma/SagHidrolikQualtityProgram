@@ -1,0 +1,94 @@
+﻿
+<div class="alert defaultBackground" role="alert">
+  Bakım Özet Bilgileri
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-5" style="margin-top:1.7rem;">
+                    <div class="form-group">
+                        <input autofocus type="search" id="inp-bakimOzeti-SearchMachineNo" class="form-control " placeholder="Makine No" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" style="color:black">select table row count : </label>
+                        <select style="color:black" class="form-control" id="select-bakimOzeti-selectRowCount"></select>
+                    </div>
+                </div>
+                <div class="col-md-2" style="margin-top:1.7rem;">
+                    <div class="input-group">
+                        <button id="btn-bakimOzeti-reset" class="btn btn-danger ">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="Table-bakimOzeti">
+                <table class="table table-bordered  tableHoverDefault">
+                    <thead>
+                        <tr>
+                            <th scope="col">Macine No </th>
+                            <th scope="col">Machine Name</th>
+                            <th scope="col">Model</th>
+                            <th scope="col">Bolum</th>
+                            <th scope="col">Producer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-bakimOzeti"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_bakimOzeti" class="recordNotFoundDiv">
+                    <h3>Hiç bir kayıt Bulunmamaktadır</h3>
+                </div>
+            </div>
+            <div class="bakimOzetiPagination">
+                <nav aria-label="Page navigation example" class="nav-review">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a id="btn-bakimOzeti-pervious" class="page-link" href="" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a id="num-bakimOzeti-pageNumber" class="page-link" href="">1</a></li>
+                        <li class="page-item">
+                            <a id="btn-bakimOzeti-next" class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div style="opacity:0;" class="col-md-5 card bakimOzetiCard">
+            <div class="Table-bakimOzeti">
+                <table class="table table-bordered  tableHoverDefault">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tarih</th>
+                            <th scope="col">Bakım Tipi</th>
+                            <th scope="col">Bakım Yapan</th>
+                            <th scope="col">Baslama Saati</th>
+                            <th scope="col">Bitiş Saati</th>
+                            <th scope="col">Arıza Tanımı</th>
+                            <th scope="col">Yapılan işlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-BakimKayit"></tbody>
+                </table>
+                <div id="recordNotFoundDiv_bakimOzeti" class="recordNotFoundDiv">
+                    <h3>Hiç bir kayıt Bulunmamaktadır</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $(".limitedNumbSelect2").select2({
+            maximumSelectionLength: 1,
+            placeholder: "operator Seçiniz"
+        })
+    });
+</script>

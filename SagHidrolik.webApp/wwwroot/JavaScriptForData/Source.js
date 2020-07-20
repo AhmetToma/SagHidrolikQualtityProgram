@@ -30,6 +30,9 @@ const HttpUrls = {
     BakimAriza_GetAllMachines: BaseUrl + "BakimArizaCon/GetAllMachine",
     BakimAriza_insertIntoBakimKayit: BaseUrl + "BakimArizaCon/insertIntoBakimKayit",
     BakimAriza_gecmisTalepler: BaseUrl + "BakimArizaCon/gecmisTalepler",
+    GetAllMachineCount: BaseUrl + "BakimArizaCon/GetAllMachineCount",
+    GetBakimKayitByMakineID: BaseUrl + "BakimArizaCon/GetBakimKayitByMakineID?makineId=",
+
     uretimPlani_GetAllUretimPlani: BaseUrl + "UretimData/GetAllUretimPlani",
     tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "UretimData/GetTamirIsEmriAdimlari",
     tamirIsEmri_InsertTamirIsEmri: BaseUrl + "UretimData/InsertTamirIsEmri",
@@ -398,11 +401,14 @@ const TablesId = {
     processPlanReport: "#table-processPlanReport",
     monthlyProdcutionReport: "#table-monthlyProdcutionReport",
     sellDateReport: "#table-sellDateReport",
+    bakimOzeti: "#table-bakimOzeti",
+    BakimKayit: "#table-BakimKayit",
 
 };
 
 const Inputs = {
     gunlukHatBazindaUretim_searchMachineNo: "#inp-gunlukHatBazindUretim-searchMakine",
+    bakimOzeti_machineNo: "#inp-bakimOzeti-SearchMachineNo",
     girisKabulEtiketi_searchStk: "#inp-girisKabulEtiketi-stkSearch",
     girisKabulEtiketi_paketlemeMiktari: "#inp-girisKabulEtiketi-paketlemeMiktari",
     stokEtiekt_stkSearch: "#inp-stokEtiketi-stkSearch",
@@ -536,6 +542,7 @@ const Inputs = {
 }
 const recordsNotFound = {
     productionOrders: "#recordNotFoundDiv_productionOrders",
+    bakimOzeti: "#recordNotFoundDiv_bakimOzeti",
     altStok: "#recordNotFoundDiv_altStok",
     galvanize: "#recordNotFoundDiv_Galvanize",
     Dosyalar: "#recordNotFoundDiv_dosyalar",
@@ -638,6 +645,7 @@ const PreviousButtons = {
     sekiyetKutuEtiketi_sekKabul: "#btn-sevkiyatKutuEtiketi-previous",
     girisKabulEtiketi: "#btn-girisKabulEtiketi-previous",
     stokEtiketi: "#btn-stokEtiketi-previous",
+    bakimOzeti: "#btn-bakimOzeti-previous",
 };
 const Texts = {
     sevKabulEtiketi_stk: "#txt-sevkiyatKutuEtiketi-stk",
@@ -714,6 +722,8 @@ const NextButtons = {
     sekiyetKutuEtiketi_sekKabul: "#btn-sevkiyatKutuEtiketi-next",
     girisKabulEtiketi: "#btn-girisKabulEtiketi-next",
     stokEtiketi: "#btn-stokEtiketi-next",
+    bakimOzeti: "#btn-bakimOzeti-next",
+
 
 
 };
