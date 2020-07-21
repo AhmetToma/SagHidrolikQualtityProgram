@@ -1,0 +1,89 @@
+﻿<div class="container-allWo">
+    <div class="alert defaultBackground" role="alert">
+      Bakım Sorumluları
+    </div>
+    <div class="clearfix"></div>
+    <div class="Content-uretimPalni">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group" style="margin-top:1.7rem">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text defaultBackground">Ad</span>
+                    </div>
+                    <input id="inp-bakimSorumlulari-operatorName" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="Bakim Sorumlusu Adi">
+                </div>
+            </div>
+            <div class="col-md-2" style="margin-top:1.7rem">
+                <select class="custom-select uretimPlani-select" id="select-bakimSorumlulari-selectRowCount">
+                </select>
+            </div>
+            <div class="col-md-4" style="margin-top:1.7rem">
+                <button id="btn-productionStatus-tranferToSystemAndClear" class="btn btn-success">Add New Bakım Sorumlu</button>
+            </div>
+            <div class="col-md-2" style="margin-top:1.7rem">
+                <button id="btn-productionStatus-tranferToSystemAndClear" class="btn btn-danger">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="">
+        <table class="table table-bordered">
+            <caption style="font-weight:bold;color:black;margin-left:0;margin-bottom:1rem"> Toplam Records: <span id="span-bakimSorumlulari-rowCount" style="color:red"></span> </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Sorumlu Id</th>
+                    <th scope="col">Bakım Sorumlusu</th>
+                    <th scope="col">Departman</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="table-bakimSorumlulari"></tbody>
+        </table>
+        <div id="recordNotFound_bakimSorumlulari" class="recordNotFoundDiv">
+            <h3>Hiç bir kayıt bulunmamaktadır</h3>
+        </div>
+        <div class="clearFix">
+        </div>
+
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-bakimSorumlulari-previous" class="page-link" href="" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="num-bakimSorumlulari-pageNumber" class="page-link" href="">1</a></li>
+                <li class="page-item">
+                    <a id="btn-bakimSorumlulari-next" class="page-link" href="" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="produtionStatusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalCenterTitle">Adding to production Status</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Input Date</label>
+                    <input class="tamirIsEmri-first-stk" id="inp-productionStatus-date" value="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="btn-productionStatus-confrimAdd" class="btn btn-primary">Confirm Add</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SagHidrolik.DataAccesslayer.Bakim;
 using SagHidrolik.DataAccessLayer.SagHidrolik.DataAccesslayer.Bakim;
 using SagHidrolik.Models.ViewModesl;
+using System.Threading.Tasks;
 
 namespace SagHidrolik.webApp.Controllers
 {
@@ -39,6 +40,31 @@ namespace SagHidrolik.webApp.Controllers
         {
             var list = BakimOzetiData.GetBakimKayitByMakineID(makineId).Result;
             return Json(list);
+        }
+        #endregion
+
+        #region  Bakim Sorumlulari
+
+        public  JsonResult GetAllBakimSorumlulari([FromBody]RequestQuery r)
+        {
+            return Json( BakimSorumlulariData.GetAllBakimSorumlulari(r).Result);
+        }
+        public JsonResult GetAllBakimSorumlulariCount()
+        {
+            return Json(BakimSorumlulariData.GetAllBakimSorumlulariCount().Result);
+        }
+
+        public JsonResult DeleteBakimSorumlu(int sorumluId)
+        {
+            return Json(BakimSorumlulariData.DeleteBakimSorumlu(sorumluId).Result);
+        }
+        public JsonResult AddBakimSorumlu(BakimSorumluModel m)
+        {
+            return Json(BakimSorumlulariData.AddBakimSorumlu(m).Result);
+        }
+        public JsonResult EditBakimSorumlu(BakimSorumluModel m)
+        {
+            return Json(BakimSorumlulariData.EditBakimSorumlu(m).Result);
         }
         #endregion
     }

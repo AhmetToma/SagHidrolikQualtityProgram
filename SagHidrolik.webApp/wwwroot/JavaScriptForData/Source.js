@@ -32,6 +32,8 @@ const HttpUrls = {
     BakimAriza_gecmisTalepler: BaseUrl + "BakimArizaCon/gecmisTalepler",
     GetAllMachineCount: BaseUrl + "BakimArizaCon/GetAllMachineCount",
     GetBakimKayitByMakineID: BaseUrl + "BakimArizaCon/GetBakimKayitByMakineID?makineId=",
+    GetAllBakimSorumlulari: BaseUrl + "BakimArizaCon/GetAllBakimSorumlulari",
+    GetAllBakimSorumlulariCount: BaseUrl + "BakimArizaCon/GetAllBakimSorumlulariCount",
 
     uretimPlani_GetAllUretimPlani: BaseUrl + "UretimData/GetAllUretimPlani",
     tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "UretimData/GetTamirIsEmriAdimlari",
@@ -403,12 +405,14 @@ const TablesId = {
     sellDateReport: "#table-sellDateReport",
     bakimOzeti: "#table-bakimOzeti",
     BakimKayit: "#table-BakimKayit",
+    bakimSorumlulari: "#table-bakimSorumlulari",
 
 };
 
 const Inputs = {
     gunlukHatBazindaUretim_searchMachineNo: "#inp-gunlukHatBazindUretim-searchMakine",
     bakimOzeti_machineNo: "#inp-bakimOzeti-SearchMachineNo",
+    bakimSorumlulari_searchName:"#inp-bakimSorumlulari-operatorName",
     girisKabulEtiketi_searchStk: "#inp-girisKabulEtiketi-stkSearch",
     girisKabulEtiketi_paketlemeMiktari: "#inp-girisKabulEtiketi-paketlemeMiktari",
     stokEtiekt_stkSearch: "#inp-stokEtiketi-stkSearch",
@@ -596,6 +600,7 @@ const recordsNotFound = {
     machineSettings: "#recordNotFound_machineSettings",
     girisKontrol: "#recordNotFoundDiv_girisKontrol",
     systemUser: "#recordNotFound_systemUser",
+    bakimSorumlulari: "#recordNotFound_bakimSorumlulari",
     
 }
 const PreviousButtons = {
@@ -646,6 +651,8 @@ const PreviousButtons = {
     girisKabulEtiketi: "#btn-girisKabulEtiketi-previous",
     stokEtiketi: "#btn-stokEtiketi-previous",
     bakimOzeti: "#btn-bakimOzeti-previous",
+    bakimSorumlulari: "#btn-bakimSorumlulari-previous",
+
 };
 const Texts = {
     sevKabulEtiketi_stk: "#txt-sevkiyatKutuEtiketi-stk",
@@ -723,6 +730,7 @@ const NextButtons = {
     girisKabulEtiketi: "#btn-girisKabulEtiketi-next",
     stokEtiketi: "#btn-stokEtiketi-next",
     bakimOzeti: "#btn-bakimOzeti-next",
+    bakimSorumlulari: "#btn-bakimSorumlulari-next",
 
 
 
@@ -767,6 +775,7 @@ const pageNumbers = {
     settingsOperator: "#number-settingsOperator-pageNumber",
     girisKontrol: "#number-girisKontrol-pageNumber",
     systemUser: "#number-systemUser-pageNumber",
+    bakimSorumlulari: "#num-bakimSorumlulari-pageNumber",
 }
 
 function ShowLoader() {

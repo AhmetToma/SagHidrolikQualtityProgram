@@ -183,5 +183,9 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult BakimSorumlulari()
+        {
+            return View();
+        }
     }
 }

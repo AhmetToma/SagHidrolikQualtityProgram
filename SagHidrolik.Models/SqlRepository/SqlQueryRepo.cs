@@ -624,6 +624,17 @@ convert(varchar(10), cast(Tbl_BakımKayit.Tarih As Date), 103) as Tarih,
 
 ";
         #endregion
+
+        #region Bakim Sorumlulari
+        public static string GetAllBakimSorumlulari(RequestQuery r) => $@"select SorumluID as sorumluId,BakımSorumlusu as bakimSorumlusu,Departman as departman  
+from dbo.[12_BakımSorumluları] where BakımSorumlusu like N'%{r.operatorName}%' order by 1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; ";
+
+
+        public static string GetAllBakimSorumlulariCount = $"select COUNT(*) from(select  *  from dbo.[12_BakımSorumluları] )countNumber";
+        public static string DeleteBakimSorumlu(int sorumluId)=> $"delete  from [12_BakımSorumluları] where SorumluID = {sorumluId}";
+        public static string AddBakimSorumlu(BakimSorumluModel m)=> $"insert into  [12_BakımSorumluları] values('{m.bakimSorumlusu}','{m.departman}')";
+        public static string EditBakimSorumlu(BakimSorumluModel m) => $"update[12_BakımSorumluları] set BakımSorumlusu = '{m.bakimSorumlusu}',Departman='{m.departman}' where SorumluID = {m.sorumluId}";
+        #endregion
         #endregion
 
         #region Quality
