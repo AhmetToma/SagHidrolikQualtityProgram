@@ -58,11 +58,11 @@ namespace SagHidrolik.webApp.Controllers
         {
             return Json(BakimSorumlulariData.DeleteBakimSorumlu(sorumluId).Result);
         }
-        public JsonResult AddBakimSorumlu(BakimSorumluModel m)
+        public JsonResult AddBakimSorumlu([FromBody]BakimSorumluModel m)
         {
             return Json(BakimSorumlulariData.AddBakimSorumlu(m).Result);
         }
-        public JsonResult EditBakimSorumlu(BakimSorumluModel m)
+        public JsonResult EditBakimSorumlu([FromBody]BakimSorumluModel m)
         {
             return Json(BakimSorumlulariData.EditBakimSorumlu(m).Result);
         }

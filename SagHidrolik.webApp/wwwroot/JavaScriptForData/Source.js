@@ -34,6 +34,9 @@ const HttpUrls = {
     GetBakimKayitByMakineID: BaseUrl + "BakimArizaCon/GetBakimKayitByMakineID?makineId=",
     GetAllBakimSorumlulari: BaseUrl + "BakimArizaCon/GetAllBakimSorumlulari",
     GetAllBakimSorumlulariCount: BaseUrl + "BakimArizaCon/GetAllBakimSorumlulariCount",
+    DeleteBakimSorumlu: BaseUrl + "BakimArizaCon/DeleteBakimSorumlu?sorumluId=",
+    AddBakimSorumlu: BaseUrl + "BakimArizaCon/AddBakimSorumlu",
+    EditBakimSorumlu: BaseUrl + "BakimArizaCon/EditBakimSorumlu",
 
     uretimPlani_GetAllUretimPlani: BaseUrl + "UretimData/GetAllUretimPlani",
     tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "UretimData/GetTamirIsEmriAdimlari",
