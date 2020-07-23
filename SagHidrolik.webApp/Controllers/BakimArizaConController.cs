@@ -67,5 +67,43 @@ namespace SagHidrolik.webApp.Controllers
             return Json(BakimSorumlulariData.EditBakimSorumlu(m).Result);
         }
         #endregion
+
+        #region Bakim Raporu
+        public JsonResult GetBakimRaporu()
+        {
+            var list = BakimRapor.GetBakimRaporu().Result;
+            return Json(list);
+        }
+        #endregion
+
+        #region Bakim Ariza Kapama
+        public JsonResult GetAllBakimArizaKapama([FromBody] RequestQuery requestQuery)
+        {
+            var list = BakimArizaKapamaData.GetAllBakimArizaKapama(requestQuery).Result;
+            return Json(list);
+        }
+
+        public JsonResult KapatBakimAriza([FromBody] KapatBakimArizaModel m)
+        {
+            var list = BakimArizaKapamaData.KapatBakimAriza(m).Result;
+            return Json(list);
+        }
+        #endregion
+
+        #region Bakim Ariza Girisi
+        public JsonResult InsertIntoBakimGirisi([FromBody] BakimGirisiModel m)
+        {
+            var list = BakimGirisiData.InsertIntoBakimGirisi(m).Result;
+            return Json(list);
+        }
+        #endregion
+
+        #region Bakim planlama
+        public JsonResult insertIntoBakimPlanlama([FromBody] BakimPlanlamaModel m)
+        {
+            var list = BakimPlanlamaData.insertIntoBakimPlanlama(m).Result;
+            return Json(list);
+        }
+        #endregion
     }
 }

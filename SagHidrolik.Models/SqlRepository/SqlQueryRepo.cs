@@ -635,6 +635,77 @@ from dbo.[12_BakımSorumluları] where BakımSorumlusu like N'%{r.operatorName}%
         public static string AddBakimSorumlu(BakimSorumluModel m)=> $"insert into  [12_BakımSorumluları] values('{m.bakimSorumlusu}','{m.departman}')";
         public static string EditBakimSorumlu(BakimSorumluModel m) => $"update[12_BakımSorumluları] set BakımSorumlusu = '{m.bakimSorumlusu}',Departman='{m.departman}' where SorumluID = {m.sorumluId}";
         #endregion
+
+        #region Bakim Raprou
+
+        public static string GetBakimRaporu = @"
+with BakimRapor as
+(
+SELECT [11_BakımTipi].BakımTipi as BakimTipi,month( CAST(Tbl_BakımKayit.Tarih as date)) AS Expr1, 
+count([10_MakinaListesiNew].Machine_Id) as countOfMakinId,
+ Format([Tarih],'yyyy') AS yil
+FROM (Tbl_BakımKayit Tbl_BakımKayit INNER JOIN [11_BakımTipi] ON Tbl_BakımKayit.BakımTipi = 
+[11_BakımTipi].BakımID) INNER JOIN dbo.[10_MakinaListesiNew] ON Tbl_BakımKayit.Makina_ID = [10_MakinaListesiNew].Machine_Id
+WHERE ((([10_MakinaListesiNew].Aktif2)=1))  and  Format([Tarih],'yyyy') is not Null
+group by  [11_BakımTipi].BakımTipi,Format([Tarih],'yyyy'),Tarih
+) select * from BakimRapor
+               PIVOT(sum(countOfMakinId) 
+			   FOR Expr1 IN ([01],[02],[03],[04],[05],[06],[07],[08],[09],[10],[11],[12] )) P; 
+		";
+
+        #endregion
+
+        #region  bakim Kapama
+        public static string GetAllBakimArizaKapama(RequestQuery r) => $@"
+set DateFormat dmy;
+SELECT Tbl_BakımKayit.Makina_ID, Tbl_BakımKayit.Tamamlanma, 
+Tbl_BakımKayit.Planlananİslem as planlanaIslem,
+ Tbl_BakımKayit.BakımTipi as BakimTipi,dbo.[10_MakinaListesiNew].Machine_Name,
+ dbo.[10_MakinaListesiNew].Machine_no,
+  FORMAT(Tbl_BakımKayit.BaslamaSaat,'dd/MM/yyyy hh:mm:ss') as BaslamaSaat, Tbl_BakımKayit.BitisSaat,
+   Tbl_BakımKayit.BakımıTalepEden as BakimTalepEden,
+   Operator.Operator_Name,
+   FORMAT(Tbl_BakımKayit.PlanlananTarih,'dd/MM/yyyy hh:mm:ss')as PlanlananTarih,
+    Tbl_BakımKayit.Bakim_ID, Tbl_BakımKayit.PlanlananTarih
+FROM Tbl_BakımKayit inner join dbo.[10_MakinaListesiNew]
+on Tbl_BakımKayit.Makina_ID=dbo.[10_MakinaListesiNew].Machine_Id
+inner join Operator on
+Operator.Operator_ID = Tbl_BakımKayit.BakımıTalepEden
+WHERE (((Tbl_BakımKayit.Tamamlanma)=0) AND ((Tbl_BakımKayit.BakımTipi)=2))
+order by 1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; 
+";
+        #endregion
+
+        #region  Bakim kapat
+
+        public static string KapatBakimArizaModel(KapatBakimArizaModel m) => $@"
+set dateformat dmy;
+update Tbl_BakımKayit set 
+BitisSaat='{m.bitisSaat}',ArizaTanım='{m.arizaTanim}',Yapılanİslem='{m.yapilanIslemler}',Tarih='{m.tarih}',
+BakımıYapan={m.bakimYapan},Tamamlanma=1
+where Bakim_ID={m.bakimId}
+";
+        #endregion
+
+        #region  Bakim Girisi
+
+        public static string InsertIntoBakimGirisi(BakimGirisiModel m) => $@"
+set DateFormat dmy;
+insert into Tbl_BakımKayit (Makina_ID,BakımTipi,BakımıYapan,BaslamaSaat,BitisSaat,Tarih,
+ArizaTanım,Yapılanİslem,Tamamlanma)
+values ({m.machine_Id},{m.BakimTipi},{m.BakimYapan},'{m.BaslamaSaat}','{m.BitisSaat}','{m.Tarih}','{m.ArizaTanimi}','{m.YapilanIslem}',1)
+";
+        #endregion
+
+        #region Bakim planlama
+
+        public static string insertIntoBakimPlanlama(BakimPlanlamaModel m,string newDate) => $@"
+set DateFormat dmy;
+insert into Tbl_BakımKayit(Makina_ID,PlanlananTarih,BakımTipi,PlanlananBakımci,
+Planlananİslem,
+Tamamlanma)
+values({m.machineId},'{newDate}',1,{m.plananaBakimici},'{m.plananIslemler}',0)";
+        #endregion
         #endregion
 
         #region Quality
@@ -1366,8 +1437,6 @@ GROUP BY CAST(STOK_ALT.TARIH AS DATE),  STOKGEN.STK, STOKGEN.TUR,[CKMIK],[GRMIK]
 order by 2";
         #endregion
         #endregion
-
-
 
         #region Order Management
         public static string GetOrderDetails(RequestQuery r)

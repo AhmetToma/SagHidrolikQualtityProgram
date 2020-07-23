@@ -187,5 +187,21 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult BakimRaporu()
+        {
+            return View();
+        }
+        public IActionResult BakimArizaKapama()
+        {
+            return View();
+        }
+        public IActionResult BakimGirisi()
+        {
+            return View();
+        }
+        public IActionResult BakimPlanlama()
+        {
+            return View();
+        }
     }
 }

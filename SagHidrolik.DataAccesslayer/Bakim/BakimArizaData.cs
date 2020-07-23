@@ -19,7 +19,6 @@ namespace SagHidrolik.DataAccessLayer.SagHidrolik.DataAccesslayer.Bakim
                 return list;
             }
         }
-
         public static async Task<int> GetAllMachineCount()
         {
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))

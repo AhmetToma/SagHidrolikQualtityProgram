@@ -67,7 +67,6 @@ function CreateBakimOzetiTable(list, tableId) {
 
 
 $(Inputs.bakimOzeti_machineNo).keyup(function () {
-    alert('fv');
     clearTimeout(timer);
     requestQueryForBakimOzeti.pageNumber = 1;
     $('#num-bakimOzeti-pageNumber').text(requestQueryForBakimOzeti.pageNumber);
@@ -127,7 +126,6 @@ function GetAllMachineCount() {
 $(TablesId.bakimOzeti).on('click', 'tr', function () {
     $('.bakimOzetiCard').css('opacity', '1').fadeIn();
     let machine_Id = parseInt($(this).data('id'));
-    console.log('idddd', machine_Id);
     ShowLoader();
     $.ajax({
         type: "GET",

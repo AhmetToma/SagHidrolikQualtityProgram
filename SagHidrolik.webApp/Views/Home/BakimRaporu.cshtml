@@ -1,0 +1,25 @@
+﻿
+<div class="alert defaultBackground" role="alert">
+    Bakım Raporu
+</div>
+<div>
+    <div class="">
+        <table class="table table-bordered  ">
+            <thead id="table-bakimRaporu-headers">
+                <tr>
+                    <th scope="col">Yıl</th>
+                    <th scope="col">Bakım Tipi</th>
+                    <th scope="col">Total Of Makine Id</th>
+                    @for (int i=01 ; i<=12; i++)
+                    {
+                        <th scope="col">@i</th>
+                    }
+                </tr>
+            </thead>
+            <tbody id="table-bakimRaporu-body"></tbody>
+        </table>
+       
+    </div>
+</div>
+
+

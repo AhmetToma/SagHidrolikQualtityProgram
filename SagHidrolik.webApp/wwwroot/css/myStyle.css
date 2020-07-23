@@ -303,7 +303,7 @@
     display: none;
 }
 
-#btn-bakimAriza-submit {
+#btn-bakimAriza-submit, #btn-bakimArziaKapama-submit, .bakimBtn {
     background-color: white;
     color: #264656;
     font-weight: bold;

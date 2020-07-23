@@ -37,6 +37,11 @@ const HttpUrls = {
     DeleteBakimSorumlu: BaseUrl + "BakimArizaCon/DeleteBakimSorumlu?sorumluId=",
     AddBakimSorumlu: BaseUrl + "BakimArizaCon/AddBakimSorumlu",
     EditBakimSorumlu: BaseUrl + "BakimArizaCon/EditBakimSorumlu",
+    GetBakimRaporu: BaseUrl + "BakimArizaCon/GetBakimRaporu",
+    GetAllBakimArizaKapama: BaseUrl + "BakimArizaCon/GetAllBakimArizaKapama",
+    KapatBakimAriza: BaseUrl + "BakimArizaCon/KapatBakimAriza",
+    InsertIntoBakimGirisi: BaseUrl + "BakimArizaCon/InsertIntoBakimGirisi",
+    insertIntoBakimPlanlama: BaseUrl + "BakimArizaCon/insertIntoBakimPlanlama",
 
     uretimPlani_GetAllUretimPlani: BaseUrl + "UretimData/GetAllUretimPlani",
     tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "UretimData/GetTamirIsEmriAdimlari",
@@ -409,12 +414,18 @@ const TablesId = {
     bakimOzeti: "#table-bakimOzeti",
     BakimKayit: "#table-BakimKayit",
     bakimSorumlulari: "#table-bakimSorumlulari",
+    bakimArziaKapama: "#table-bakimArziaKapama",
+    bakimGirisi: "#table-bakimGirisi",
+    bakimPlanlama: "#table-bakimPlanlama",
 
 };
 
 const Inputs = {
     gunlukHatBazindaUretim_searchMachineNo: "#inp-gunlukHatBazindUretim-searchMakine",
     bakimOzeti_machineNo: "#inp-bakimOzeti-SearchMachineNo",
+    bakimGirisi_machineNo: "#inp-bakimGirisi-SearchMachineNo",
+    bakimPlanlama_machineNo: "#inp-bakimPlanlama-SearchMachineNo",
+    bakimArizaKapama_machineNo: "#inp-bakimArziaKapama-SearchMachineNo",
     bakimSorumlulari_searchName:"#inp-bakimSorumlulari-operatorName",
     girisKabulEtiketi_searchStk: "#inp-girisKabulEtiketi-stkSearch",
     girisKabulEtiketi_paketlemeMiktari: "#inp-girisKabulEtiketi-paketlemeMiktari",
@@ -550,6 +561,8 @@ const Inputs = {
 const recordsNotFound = {
     productionOrders: "#recordNotFoundDiv_productionOrders",
     bakimOzeti: "#recordNotFoundDiv_bakimOzeti",
+    bakimGirisi: "#recordNotFoundDiv_bakimGirisi",
+    bakimPlanlama: "#recordNotFoundDiv_bakimPlanlama",
     altStok: "#recordNotFoundDiv_altStok",
     galvanize: "#recordNotFoundDiv_Galvanize",
     Dosyalar: "#recordNotFoundDiv_dosyalar",
@@ -557,6 +570,7 @@ const recordsNotFound = {
     stokRecetesi: "#recordNotFoundDiv_stokRecetesi",
     uretimInStok: "#recordNotFoundDiv_uretim",
     BakimAriaz_AllMachines: "#recordNotFoundDiv_bakimAriza_AllMachines",
+    bakimArziaKapama: "#recordNotFoundDiv_bakimArizaKapma",
     sekiyetKuttEtiketi: "#recordNotFoundDiv_sevkiyatKutuEtiketi",
     uretimBasla: "#recordNotFoundDiv_uretimBasla",
     uretimBitir: "#recordNotFoundDiv_uretimBitir",
@@ -655,6 +669,9 @@ const PreviousButtons = {
     stokEtiketi: "#btn-stokEtiketi-previous",
     bakimOzeti: "#btn-bakimOzeti-previous",
     bakimSorumlulari: "#btn-bakimSorumlulari-previous",
+    bakimArziaKapama: "#btn-bakimArziaKapama-previous",
+    bakimGirisi: "#btn-bakimGirisi-previous",
+    bakimPlanlama: "#btn-bakimPlanlama-previous",
 
 };
 const Texts = {
@@ -734,6 +751,9 @@ const NextButtons = {
     stokEtiketi: "#btn-stokEtiketi-next",
     bakimOzeti: "#btn-bakimOzeti-next",
     bakimSorumlulari: "#btn-bakimSorumlulari-next",
+    bakimArziaKapama: "#btn-bakimArziaKapama-next",
+    bakimGirisi: "#btn-bakimGirisi-next",
+    bakimPlanlama: "#btn-bakimPlanlama-next",
 
 
 

@@ -18,7 +18,7 @@ let bakimSorumlulariModel = {
 }
 let bakimSorumlulariList = [];
 // #region ajaxcall ,create table ,records count  
-function GetAllBakimSorumlulariAjaxCall() {
+function GetAllBakimSorumlulariAjaxCall(create = true) {
     requestQueryForBakimSorumlu.operatorName = $(Inputs.bakimSorumlulari_searchName).val();
     ShowLoader();
     if (requestQueryForBakimSorumlu.pageNumber === 1) {
@@ -43,6 +43,7 @@ function GetAllBakimSorumlulariAjaxCall() {
                 console.log('sorumlu', list);
                 bakimSorumlulariList = list;
                 $(`${recordsNotFound.bakimSorumlulari}`).css('display', 'none');
+                if (create)
              CreateBakimSorumlulariTable(list, TablesId.bakimSorumlulari);
             }
             else {
@@ -92,7 +93,7 @@ $('#select-bakimSorumlulari-selectRowCount').on('change', () => {
     selectedRowCount = parseInt(selectedRowCount);
     requestQueryForBakimSorumlu.pageSize = selectedRowCount;
     requestQueryForBakimSorumlu.pageNumber = 1;
-    GetAllBakimSorumlulariAjaxCall();
+    GetAllBakimSorumlulariAjaxCall(true);
 });
 //#endregion
 //#region search
@@ -109,13 +110,13 @@ $(PreviousButtons.bakimSorumlulari).on('click', (event) => {
     event.preventDefault();
     if (requestQueryForBakimSorumlu.pageNumber > 1) requestQueryForBakimSorumlu.pageNumber -= 1;
     $(`${pageNumbers.bakimSorumlulari}`).text(requestQueryForBakimSorumlu.pageNumber);
-    GetAllBakimSorumlulariAjaxCall();
+    GetAllBakimSorumlulariAjaxCall(true);
 });
 $(NextButtons.bakimSorumlulari).on('click', (event) => {
     event.preventDefault();
     requestQueryForBakimSorumlu.pageNumber += 1;
     $(`${pageNumbers.bakimSorumlulari}`).text(requestQueryForBakimSorumlu.pageNumber);
-    GetAllBakimSorumlulariAjaxCall();
+    GetAllBakimSorumlulariAjaxCall(true);
 });
 //#endregion
 
@@ -150,7 +151,7 @@ $('#btn-bakimSorumlulari-confrimAdd').click((event) => {
             success: (message) => {
                 HideLoader();
                 if (message==="done") {
-                    GetAllBakimSorumlulariAjaxCall();
+                    GetAllBakimSorumlulariAjaxCall(true);
                     GetAllBakimSorumlulariCount();
                     Swal.fire({
                         title: 'Başarılı!',
@@ -268,7 +269,7 @@ $('#btn-bakimSorumlulari-confirmEdit').click((e) => {
             success: (message) => {
                 HideLoader();
                 if (message === "done") {
-                    GetAllBakimSorumlulariAjaxCall();
+                    GetAllBakimSorumlulariAjaxCall(true);
                     GetAllBakimSorumlulariCount();
                     Swal.fire({
                         title: 'Başarılı!',

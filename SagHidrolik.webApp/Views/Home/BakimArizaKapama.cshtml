@@ -1,0 +1,99 @@
+﻿
+<div class="container-BakimAriza">
+    <div class="alert defaultBackground" role="alert">
+        Bakım Arıza kapama
+    </div>
+    <div class="bakimArizaContent">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="input-group" style="margin-top:1.7rem">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text " style="background-color:#2A3F54;color:white" id="basic-addon1">Makine no</span>
+                            </div>
+                            <input id="inp-bakimArziaKapama-SearchMachineNo" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="Makine kodunu giriniz">
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="margin-top:2rem">
+                        <button id="btn-bakimArziaKapama-reset" class="btn btn-danger btn-sm">Reset</button>
+                    </div>
+                
+                </div>
+                <div class="">
+                    <table class="table table-bordered tableHoverDefault">
+                        <thead>
+                            <tr>
+                                <th scope="col">Makine No</th>
+                                <th scope="col">Makine Name</th>
+                                <th scope="col">Bakim TalepEden</th>
+                                <th scope="col">planan Islem</th>
+                                <th scope="col">Bakim Talep Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-bakimArziaKapama">
+                        </tbody>
+                    </table>
+                    <div id="recordNotFoundDiv_bakimArizaKapma" class="recordNotFoundDiv">
+                        <h3></h3>
+                    </div>
+                    <div class="clearFix">
+                    </div>
+                    <nav aria-label="Page navigation example" class="nav-review">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a id="btn-bakimArziaKapama-previous" class="page-link" href="" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a id="num-bakimArziaKapama-pageNumber" class="page-link" href="">1</a></li>
+                            <li class="page-item">
+                                <a id="btn-bakimArziaKapama-next" class="page-link" href="" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+            <div  class="col-md-6 bakimArizaCard">
+                <form id="form-bakimAriaz">
+                    <div class="form-group">
+                        <label for="">Machine No</label>
+                        <input disabled type="text" class="form-control" id="inp-bakimArziaKapama-machineNo" aria-describedby="" placeholder="MachineNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Tarih</label>
+                        <input type="text" class="form-control" id="inp-bakimArziaKapama-tarih" aria-describedby="" placeholder="Tarih Giriniz">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Bakım Yapan</label>
+                        <select style="width:100%;" id="select-bakimArziaKapama-operators" class="limitedNumbSelect2" multiple="true">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Bitis Saat</label>
+                        <input type="text" class="form-control timepicker" id="inp-bakimArziaKapama-saat" aria-describedby="" placeholder="saat Giriniz :">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Arzıa-Bakım Tanımı</label>
+                        <textarea id="textArea-bakimArziaKapama-tanim" rows="5" class="form-control" placeholder="Arzıa-Bakım Tanımı giriniz :"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Yapılan işlem</label>
+                        <textarea id="textArea-bakimAriza-yapilan" rows="5" class="form-control" placeholder="Yapilan islemler giriniz :"></textarea>
+                    </div>
+
+                    <button id="btn-bakimArziaKapama-submit" type="submit" class="btn">Bakım Talepi Giriniz</button>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+
+
