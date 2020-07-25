@@ -203,5 +203,14 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult PlanliBakim()
+        {
+            return View();
+        }
+
+        public IActionResult Makineler()
+        {
+            return View();
+        }
     }
 }

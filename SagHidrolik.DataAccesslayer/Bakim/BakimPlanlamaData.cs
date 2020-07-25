@@ -19,14 +19,13 @@ namespace SagHidrolik.DataAccesslayer.Bakim
                 await connection.OpenAsync();
                    list =  await connection.QueryAsync<object>($"select * from Tbl_BakımKayit where Makina_ID={m.machineId} and Tamamlanma=0");
             }
-
             if (list.AsList().Count > 0)
                 return "exist";
             else
             {
-                var newDate = DateTime.Parse(m.tarih);
+                var newDate = DateTime.ParseExact(m.tarih, "dd/M/yyyy", null);
                 newDate.AddDays(m.periodu);
-                string d = newDate.ToString();
+                string d = newDate.ToString("dd'/'MM'/'yyyy");
                 using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
                 {
                     await connection.OpenAsync();

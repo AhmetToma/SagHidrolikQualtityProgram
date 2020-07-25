@@ -105,5 +105,44 @@ namespace SagHidrolik.webApp.Controllers
             return Json(list);
         }
         #endregion
+
+        #region Planli Bakim Giris
+        public JsonResult GetAllPlanliBakim([FromBody] RequestQuery requestQuery)
+        {
+            var list = PlanliBakimData.GetAllPlanliBakim(requestQuery).Result;
+            return Json(list);
+        }
+
+        public JsonResult GetAllPlanliBakimCount()
+        {
+            return Json(PlanliBakimData.GetAllPlanliBakimCount().Result);
+        }
+
+        public JsonResult UpdatePlanliBakim([FromBody] planliBakimModel m)
+        {
+            var list = PlanliBakimData.UpdatePlanliBakim(m).Result;
+            return Json(list);
+        }
+        #endregion
+
+        #region Makineler
+        public JsonResult GetAllMakineler([FromBody] RequestQuery requestQuery)
+        {
+            var list = MakinerlerData.GetAllMakineler(requestQuery).Result;
+            return Json(list);
+        }
+
+        public JsonResult GetAllMakinelerCount()
+        {
+            var list = MakinerlerData.GetAllMakinelerCount().Result;
+            return Json(list);
+        }
+        public JsonResult DeleteMakine([FromQuery] int machineId)
+        {
+            var list = MakinerlerData.DeleteMakine(machineId).Result;
+            return Json(list);
+        }
+
+        #endregion
     }
 }

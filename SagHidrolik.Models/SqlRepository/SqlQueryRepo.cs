@@ -706,6 +706,54 @@ Planlananİslem,
 Tamamlanma)
 values({m.machineId},'{newDate}',1,{m.plananaBakimici},'{m.plananIslemler}',0)";
         #endregion
+
+        #region Planli Bakim
+        public static string GetAllPlanliBakim(RequestQuery r) => $@"
+SELECT Tbl_BakımKayit.Bakim_ID,
+ CONVERT(VARCHAR(10), Tbl_BakımKayit.PlanlananTarih, 103) as PlanlananTarih , [10_MakinaListesiNew].Machine_no, Tbl_BakımKayit.PlanlananBakımci as planananBakimici,[12_BakımSorumluları].BakımSorumlusu as BakimSorumlusu,
+ Tbl_BakımKayit.Planlananİslem as PlanlananIslem,
+  dbo.[10_MakinaListesiNew] .Machine_Name,[10_MakinaListesiNew].Machine_Id,
+  [10_MakinaListesiNew].MODEL ,Tbl_BakımKayit.Yapılanİslem as YapilanIslem  FROM Tbl_BakımKayit INNER JOIN [10_MakinaListesiNew] ON 
+  Tbl_BakımKayit.Makina_ID = [10_MakinaListesiNew].Machine_Id
+inner join [12_BakımSorumluları] 
+  on [12_BakımSorumluları].SorumluID = Tbl_BakımKayit.PlanlananBakımci
+WHERE 
+  (((Tbl_BakımKayit.BakımTipi)=1) AND ((Tbl_BakımKayit.Tamamlanma)=0) 
+  AND (([10_MakinaListesiNew].Aktif2)=1))
+  and Machine_no like N'%{r.machineNo}%' 
+  ORDER BY Tbl_BakımKayit.PlanlananTarih, [10_MakinaListesiNew].Machine_no
+  OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; 
+
+";
+
+        public static string GetAllPlanliBakimCount=$@"
+ select count(1) from( SELECT * FROM Tbl_BakımKayit INNER JOIN [10_MakinaListesiNew] ON 
+  Tbl_BakımKayit.Makina_ID = [10_MakinaListesiNew].Machine_Id WHERE 
+  (((Tbl_BakımKayit.BakımTipi)=1) AND ((Tbl_BakımKayit.Tamamlanma)=0) 
+  AND (([10_MakinaListesiNew].Aktif2)=1))
+)countNumber; 
+
+";
+
+        public static string UpdatePlanliBakim(planliBakimModel m,string newDate) => $@"
+set DateFormat dmy;
+update Tbl_BakımKayit  set Tarih = '{m.tarih}' ,BakımıYapan= {m.bakimYapan}, BaslamaSaat ='{m.baslamaSaat}',BitisSaat='{m.bitisSaat}',ArizaTanım ='Planlı',
+Yapılanİslem='{m.yapilanIslem}',Tamamlanma=1 where Bakim_ID = 5566515;
+insert into Tbl_BakımKayit(Makina_ID,PlanlananTarih,BakımTipi,PlanlananBakımci,Planlananİslem,Tamamlanma)
+values({m.machineId},'{newDate}',1,{m.planananBakimici},'{m.PlanlananIslem}',0);
+";
+        #endregion
+
+        #region Makineler
+        public static string GetAllMakineler(RequestQuery r)  => $@"
+select Machine_Id, [10_MakinaListesiNew].Bölüm as bolum,[10_MakinaListesiNew].Güç as guc,
+Machine_no,Machine_Name,
+model,[10_MakinaListesiNew].Yıl as Yil ,ElektrikBağlantı as elec, Birim  from [10_MakinaListesiNew]  where Machine_no  like '%{r.machineNo}%'
+order by  1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; 
+";
+        public static string GetAllMakinelerCount="select count(*)from (select * from [10_MakinaListesiNew]) countNumber";
+        public static string DeleteMakine(int machineId) => $"delete from [10_MakinaListesiNew] where Machine_Id={machineId}";
+        #endregion
         #endregion
 
         #region Quality
