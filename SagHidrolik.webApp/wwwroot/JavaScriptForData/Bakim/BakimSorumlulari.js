@@ -40,8 +40,7 @@ function GetAllBakimSorumlulariAjaxCall(create = true) {
         success: (list) => {
             bakimSorumlulariList = list;
             if (list.length !== 0) {
-                console.log('sorumlu', list);
-                bakimSorumlulariList = list;
+                console.log('bakimSorumlulariList', bakimSorumlulariList);
                 $(`${recordsNotFound.bakimSorumlulari}`).css('display', 'none');
                 if (create)
              CreateBakimSorumlulariTable(list, TablesId.bakimSorumlulari);
@@ -180,7 +179,7 @@ $('#btn-bakimSorumlulari-confrimAdd').click((event) => {
 function deletebakimSorumlulari(index) {
     let matched;
     if (bakimSorumlulariList.length > 0) {
-         matched = bakimSorumlulariList[index];
+        matched = bakimSorumlulariList[index];
     }
     
     const swalWithBootstrapButtons = Swal.mixin({
@@ -236,7 +235,7 @@ function deletebakimSorumlulari(index) {
 //#region edit
 function EditBakimSorumlusu(index) {
     let matched;
-    console.log(bakimSorumlulariList.length);
+    console.log(bakimSorumlulariList);
     if (bakimSorumlulariList.length > 0) {
         matched = bakimSorumlulariList[index];
         $('#inp-bakimSorumlulari-edt-bakimSorumlusu').val(matched.bakimSorumlusu);

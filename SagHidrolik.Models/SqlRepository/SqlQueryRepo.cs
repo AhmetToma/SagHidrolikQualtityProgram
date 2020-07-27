@@ -748,12 +748,66 @@ values({m.machineId},'{newDate}',1,{m.planananBakimici},'{m.PlanlananIslem}',0);
         public static string GetAllMakineler(RequestQuery r)  => $@"
 select Machine_Id, [10_MakinaListesiNew].Bölüm as bolum,[10_MakinaListesiNew].Güç as guc,
 Machine_no,Machine_Name,
-model,[10_MakinaListesiNew].Yıl as Yil ,ElektrikBağlantı as elec, Birim  from [10_MakinaListesiNew]  where Machine_no  like '%{r.machineNo}%'
+model,[10_MakinaListesiNew].Yıl as Yil ,ElektrikBağlantı as elec, Birim 
+,Producer,[Yetkili Servis] as YetkiliServis,PlanlıBakım as planliBakim, Aktif as aktif,Aktif2 as  uretimMakinesi
+from [10_MakinaListesiNew]  where Machine_no  like '%{r.machineNo}%'
 order by  1 OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY; 
 ";
         public static string GetAllMakinelerCount="select count(*)from (select * from [10_MakinaListesiNew]) countNumber";
         public static string DeleteMakine(int machineId) => $"delete from [10_MakinaListesiNew] where Machine_Id={machineId}";
+
+        public static string AddNewMakine(makinelerViewModel m) => $@"
+set dateformat dmy;
+insert into dbo.[10_MakinaListesiNew] (Machine_no,Machine_Name,MODEL,Bölüm,Producer,Yıl,[Yetkili Servis],
+ElektrikBağlantı,Güç,Birim,PlanlıBakım,Aktif,Aktif2)
+
+values('{m.machineNo}','{m.machineAdi}','{m.model}','{m.bolum}','{m.uretici}', '{m.yil}','{m.YetkiliServis}','{m.elec}',{m.guc},'{m.birim}',{m.planliBakim},{m.aktif},{m.uretimMakinesi})
+";
+
+        public static string UpdateMakine(makinelerViewModel m) => $@"
+update dbo.[10_MakinaListesiNew] set Machine_no='{m.machineNo}',
+Machine_Name='{m.machineAdi}' ,MODEL='{m.model}',Bölüm='{m.bolum}',Producer='{m.uretici}',[Yetkili Servis]='{m.YetkiliServis}',Yıl='{m.yil}',ElektrikBağlantı='{m.elec}',
+Güç={m.guc},Birim='{m.birim}',PlanlıBakım={m.planliBakim},Aktif={m.aktif},Aktif2={m.uretimMakinesi} where Machine_Id={m.machineId}
+";
         #endregion
+
+        #region AllBakimKayit
+
+        #endregion
+        public static string GetAllBakimRecords(RequestQuery r) => $@"
+
+set dateformat dmy;
+select Makina_ID,Bakim_ID,
+convert(varchar(10), cast(Tarih As Date), 103) as Tarih,
+BakımTipi as bakimTipi,
+ CONVERT(CHAR(8),BaslamaSaat,108) as baslamaSaat,
+ CONVERT(CHAR(8),BitisSaat,108) as bitisSaat, ArizaTanım as arizaTanim ,Yapılanİslem as  yapilanIslem,
+convert(varchar(10), cast(PlanlananTarih As Date), 103) as PlanlananTarih 
+,Planlananİslem as planlananIslem ,Tamamlanma,PlanlananBakımci as planlananBakimci,
+dbo.[10_MakinaListesiNew].Machine_no,
+ BakımıTalepEden as BakimTalepEden from Tbl_BakımKayit
+ left join dbo.[10_MakinaListesiNew] on
+ Tbl_BakımKayit.Makina_ID = dbo.[10_MakinaListesiNew].Machine_Id
+ where Machine_no like N'%{r.machineNo}%' order by Bakim_ID
+ OFFSET {r.pageNumber} ROWS FETCH NEXT {r.pageSize} ROWS ONLY;
+";
+
+        public static string GetAllBakimRecordsCount = @"select Count(*) from (select Makina_ID,Bakim_ID,
+convert(varchar(10), cast(Tarih As Date), 103) as Tarih,
+BakımTipi as bakimTipi,
+ CONVERT(CHAR(8),BaslamaSaat,108) as baslamaSaat,
+ CONVERT(CHAR(8),BitisSaat,108) as bitisSaat, ArizaTanım as arizaTanim ,Yapılanİslem as  yapilanIslem,
+convert(varchar(10), cast(PlanlananTarih As Date), 103) as PlanlananTarih 
+,Planlananİslem as planlananIslem ,Tamamlanma,PlanlananBakımci as planlananBakimci,
+dbo.[10_MakinaListesiNew].Machine_no,
+ BakımıTalepEden as BakimTalepEden from Tbl_BakımKayit
+ left join dbo.[10_MakinaListesiNew] on
+ Tbl_BakımKayit.Makina_ID = dbo.[10_MakinaListesiNew].Machine_Id
+ where Machine_no like N'%%')countNumber
+";
+
+        public static string DeleteFromTbleBakimKayit(int bakimId) => $"delete from Tbl_BakımKayit where Bakim_ID={bakimId}";
+
         #endregion
 
         #region Quality

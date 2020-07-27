@@ -1,5 +1,5 @@
 ﻿
-<div class="container-makineler">
+<div class="container-makineler" style="height:1500px">
     <div class="alert defaultBackground" role="alert">
         Makineler
     </div>
@@ -73,111 +73,227 @@
         <div class="tableCount"> Makineler Toplam : <span id="span-makineler-rowCount"></span></div>
     </div>
     <div style="clear:both"></div>
-    <div style="opacity:0" class="makinelerUnderSection">
-        <div class="row">
-            <div class="col-md-5 col-sm-5">
-                <div class="makinelerCard">
+    <div style="opacity:0" class="tamirIsEmriCard">
+        <div class="row" style="flex-wrap:nowrap">
+            <div class="col-md-3 col-lg-3 tamirIsEmri-first">
+                <p>1</p>
+                <div class="tamir-1">
                     <div class="row">
-                        <h1>ürün detayları</h1>
-                        <div class="col-md-5 sevStk">
-                            <label> stk:</label>
-                            <p id="txt-makineler-stk"></p>
+                        <div class="col-md-3">
+                            <label>Machine No</label>
                         </div>
-                        <div class="col-md-5">
-                            <label> Tarih:</label>
-                            <p id="txt-makineler-tarih"></p>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <label> Firma:</label>
-                            <p id="txt-makineler-frimaAdi"></p>
-                        </div>
-                        <div class="col-md-5">
-                            <label> Kalite Kodu:</label>
-                            <p id="txt-makineler-kaliteKodu"></p>
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-machineNo" value="">
                         </div>
                     </div>
+                </div>
+                <div class="tamir-1">
                     <div class="row">
-                        <div class="col-md-5">
-                            <label>  Sipariş No:</label>
-                            <p id="txt-makineler-siparisNo"></p>
+                        <div class="col-md-3">
+                            <label>Machine Adi</label>
                         </div>
-                        <div class="col-md-5">
-                            <label> Raf Adres:</label>
-                            <p id="txt-makineler-rafAdres1"></p>
-                            <p id="txt-makineler-rafAdres2"></p>
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-machineAdi" value="">
                         </div>
                     </div>
-
+                </div>
+                <div class="tamir-1">
                     <div class="row">
-                        <div class="col-md-12">
-                            <label>Sev Adresi:</label>
-                            <p id="txt-makineler-sevAdresi"></p>
+                        <div class="col-md-3">
+                            <label>Model</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-model" value="">
                         </div>
                     </div>
-
+                </div>
+                <div class="tamir-1">
                     <div class="row">
-                        <div class="col-md-12">
-                            <label>Fatura Adresi:</label>
-                            <p id="txt-makineler-faturaAdresi"></p>
+                        <div class="col-md-3">
+                            <label>Bolum</label>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <label> Kutu içi Miktari:</label>
-                            <p id="txt-makineler-kutuMiktari"></p>
-                        </div>
-                        <div class="col-md-5">
-                            <label> paketleme Miktari:</label>
-                            <input id="inp-makineler-paketlemeMiktari" type="number" min="1" class="form-control" placeholder="paketleme miktari" aria-describedby="basic-addon1">
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-bolum" value="">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-7 col-sm-7">
-                <div class="col-md-12 makinelerLastTable">
-                    <button id="btn-makineler-etiketEkle" class="btn btn-primary">Etikete Ekle</button>
-                    <button id="btn-makineler-etiket_100_150" class="btn btn-primary">100*150 Etiket</button>
-                    <button id="btn-makineler-reset" class="btn btn-primary">Reset</button>
-                    <div class="zxc">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Stk </th>
-                                    <th scope="col">Adet </th>
-                                    <th scope="col">tarih</th>
-                                    <th scope="col">Lot</th>
-                                    <th scope="col">Lot1</th>
-                                    <th scope="col">cari</th>
-                                    <th scope="col">raf1</th>
-                                    <th scope="col">raf2</th>
-                                    <th scope="col">kalite</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-makineler-result" class=""></tbody>
-                        </table>
-                    </div>
-                    <div class="clearFix">
+            <div class="col-md-3 col-lg-3 tamirPart">
+                <p>2</p>
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>üretici</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-uretici" value="">
+                        </div>
                     </div>
                 </div>
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Üretim Yılı</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-yil" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Yetkili Servis</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-yetkiliServis" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>ElektrikBağlantı</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-elec" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Güç</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="number" id="makineler-add-guc" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Birim</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="makineler-add-birim" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3  tamirEmriHazirlaPart">
+                <p>3</p>
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>planlı Bakım</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="checkbox" class="form-control" id="makineler-add-planliBakim">
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Aktif</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="checkbox" class="form-control" id="makineler-add-aktif" value="">
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="tamir-1">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Üretim Makinesi</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="checkbox" class="form-control" id="makineler-add-uretimMakinesi" value="">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <button style="margin-left:70%" id="makineler-add-confrimAdd" class="btn  btn-success">Confirm Adding</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="edt-MakinlerModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalCenterTitle">Adding Bakim Sorumlusu</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-form-label">Machine No</label>
+                    <input class="form-control" id="makineler-edit-machineNo" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Machine Adi</label>
+                    <input class="form-control" id="makineler-edit-machineAdi" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Model</label>
+                    <input class="form-control" id="makineler-edit-model" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Bolum</label>
+                    <input class="form-control" id="makineler-edit-bolum" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Uretici</label>
+                    <input class="form-control" id="makineler-edit-uretici" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">yil</label>
+                    <input class="form-control" id="makineler-edit-yil" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Yetkili servis</label>
+                    <input class="form-control" id="makineler-edit-yetkiliServis" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Elektrik Bağlantıları</label>
+                    <input class="form-control" id="makineler-edit-elec" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Guc</label>
+                    <input class="form-control" id="makineler-edit-guc" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Birim</label>
+                    <input class="form-control" id="makineler-edit-birim" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Planlı Bakım</label>
+                    <input type="checkbox" class="form-control" id="makineler-edit-planliBakim" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Aktif</label>
+                    <input type="checkbox" class="form-control" id="makineler-edit-aktif" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">uretim Makinesi</label>
+                    <input type="checkbox" class="form-control" id="makineler-edit-uretimMakinesi" value="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="makineler-edit-confirmEdit" class="btn btn-primary">Confirm Add</button>
             </div>
         </div>
     </div>
 </div>
-
-<div style="margin-bottom:167px" class="makineler_printModeli">
-</div>
-@*<script>
-        JsBarcode("#makineler_stkBarcode", `47582893`, { format: "CODE128", text: "" });
-        JsBarcode("#makineler_adetBarcode", `60`, { format: "CODE128", text: "" });
-
-        $('.test').click(() => {
-            $('.makineler_printModeli').printThis({
-                afterPrint: HideA4Mamul,
-                loadCSS: "css/SevKiyetEtiket_150_100.css"
-            });
-        })
-
-    </script>*@

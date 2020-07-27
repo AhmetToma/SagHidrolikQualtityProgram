@@ -9,7 +9,7 @@ using SagHidrolik.Models.ViewModesl;
 
 namespace SagHidrolik.DataAccesslayer.Bakim
 {
-   public static  class MakinerlerData
+    public static class MakinerlerData
     {
         public static async Task<IEnumerable<object>> GetAllMakineler(RequestQuery requestQuery)
         {
@@ -38,6 +38,34 @@ namespace SagHidrolik.DataAccesslayer.Bakim
                 await connection.OpenAsync();
                 int c = await connection.ExecuteAsync(SqlQueryRepo.DeleteMakine(machineId));
                 if (c > 0) return "done";
+                return "none";
+            }
+        }
+        public static async Task<string> AddNewMakine(makinelerViewModel m)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var c = await connection.QueryAsync<object>($"select * from  dbo.[10_MakinaListesiNew] where Machine_no =N'{m.machineNo}'");
+                if (c.AsList().Count > 0) return "exist";
+                else
+                {
+                    if (m.guc == null) m.guc = 0;
+                    int cc = await connection.ExecuteAsync(SqlQueryRepo.AddNewMakine(m));
+                    if (cc > 0) return "done";
+                    return "none";
+                }
+            }
+        }
+
+        public static async Task<string> UpdateMakine(makinelerViewModel m)
+        {
+            if (m.guc == null) m.guc = 0;
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                int cc = await connection.ExecuteAsync(SqlQueryRepo.UpdateMakine(m));
+                if (cc > 0) return "done";
                 return "none";
             }
         }

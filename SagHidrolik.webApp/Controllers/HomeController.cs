@@ -212,5 +212,13 @@ namespace SagHidrolik.webApp.Controllers
         {
             return View();
         }
+        public IActionResult AllBakimRecords()
+        {
+            return View();
+        }
+        public IActionResult BakimEtiketi()
+        {
+            return View();
+        }
     }
 }

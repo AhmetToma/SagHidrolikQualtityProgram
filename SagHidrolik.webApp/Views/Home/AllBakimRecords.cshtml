@@ -1,0 +1,146 @@
+﻿
+<div class="container-allBakimRecords" style="height:1500px">
+    <div class="alert defaultBackground" role="alert">
+        All Bakım Records
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-md-4" style="margin-top:1.7rem;">
+                <div class="input-group urunEtiketiSearchDiv">
+                    <span class="input-group-text " style="background-color:#2A3F54;color:white" id="basic-addon1">Machine No</span>
+                    <input autofocus type="search" id="inp-allBakimRecords-SearchMachineNo" class="form-control " placeholder="Makine No" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1" style="color:black">select table row count : </label>
+                    <select style="color:black" class="form-control" id="select-allBakimRecords-selectRowCount"></select>
+                </div>
+            </div>
+            <div class="col-md-2" style="margin-top:1.7rem;">
+                <div class="input-group">
+                    <button id="btn-allBakimRecords-reset" class="btn btn-danger ">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 allBakimRecordsTable">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">BakimID</th>
+                    <th scope="col">Machine No </th>
+                    <th scope="col">Tarih </th>
+                    <th scope="col">BakimTipi</th>
+                    <th scope="col">Balama Saat</th>
+                    <th scope="col">Bittis Saat</th>
+                    <th scope="col">Ariza Tanim</th>
+                    <th scope="col">Yapilan Islem</th>
+                    <th scope="col">Planlanan Tarih</th>
+                    <th scope="col">Planlanan Islem</th>
+                    <th scope="col">Tamamlanma</th>
+                    <th scope="col">Planlanan Bakimici</th>
+                    <th scope="col">Bakim Talep Eden</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="table-allBakimRecords" class=""></tbody>
+        </table>
+        <div id="recordNotFoundDiv_allBakimRecords" class="recordNotFoundDiv">
+            <h3>Hiç bir kayit bulunmamaktadır</h3>
+        </div>
+        <div class="clearFix">
+        </div>
+
+        <nav aria-label="Page navigation example" class="nav-review">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a id="btn-allBakimRecords-previous" class="page-link" href="" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a id="num-allBakimRecords-pageNumber" class="page-link" href="">1</a></li>
+                <li class="page-item">
+                    <a id="btn-allBakimRecords-next" class="page-link" href="" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="tableCount"> All Bakim Records Toplam : <span id="span-allBakimRecords-rowCount"></span></div>
+    </div>
+</div>
+
+
+@*<div class="modal fade" id="edt-MakinlerModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalCenterTitle">Adding Bakim Sorumlusu</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-form-label">Machine No</label>
+                    <input class="form-control" id="allBakimRecords-edit-machineNo" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Machine Adi</label>
+                    <input class="form-control" id="allBakimRecords-edit-machineAdi" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Model</label>
+                    <input class="form-control" id="allBakimRecords-edit-model" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Bolum</label>
+                    <input class="form-control" id="allBakimRecords-edit-bolum" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Uretici</label>
+                    <input class="form-control" id="allBakimRecords-edit-uretici" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">yil</label>
+                    <input class="form-control" id="allBakimRecords-edit-yil" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Yetkili servis</label>
+                    <input class="form-control" id="allBakimRecords-edit-yetkiliServis" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Elektrik Bağlantıları</label>
+                    <input class="form-control" id="allBakimRecords-edit-elec" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Guc</label>
+                    <input class="form-control" id="allBakimRecords-edit-guc" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Birim</label>
+                    <input class="form-control" id="allBakimRecords-edit-birim" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Planlı Bakım</label>
+                    <input type="checkbox" class="form-control" id="allBakimRecords-edit-planliBakim" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Aktif</label>
+                    <input type="checkbox" class="form-control" id="allBakimRecords-edit-aktif" value="">
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">uretim Makinesi</label>
+                    <input type="checkbox" class="form-control" id="allBakimRecords-edit-uretimMakinesi" value="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="allBakimRecords-edit-confirmEdit" class="btn btn-primary">Confirm Add</button>
+            </div>
+        </div>
+    </div>
+</div>*@

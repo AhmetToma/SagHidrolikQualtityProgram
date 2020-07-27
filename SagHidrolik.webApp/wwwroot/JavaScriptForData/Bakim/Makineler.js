@@ -4,24 +4,43 @@
     if (window.location.href === serverUrl) {
         GetAllMakineler();
         GetAllmakinelerCount();
+
+        $("#makineler-add-yil").datepicker({
+            dateFormat: 'yy'
+        });
+        $("#makineler-edit-yil").datepicker({
+            dateFormat: 'yy'
+        });
     }
 });
-let requestQueryForMakineler = {
+let _requestQueryForMakineler = {
     pageSize: 6,
     pageNumber: 1,
     machineNo: ""
 };
 let makinelerModel = {
-    sorumluId: 0,
-    departman: "",
-    bakimSorumlusu: ""
+
+    machineNo: "",
+    machineAdi: "",
+    model: "",
+    bolum: "",
+    uretici: "",
+    yil: "",
+    YetkiliServis: "",
+    elec: "",
+    guc: 0,
+    birim: "",
+    planliBakim: 0,
+    aktif: 0,
+    uretimMakinesi: 0,
+    machineId: 0,
 }
 let makinelerList = [];
 // #region ajaxcall ,create table ,records count  
 function GetAllMakineler() {
-    requestQueryForMakineler.machineNo = $(Inputs.makineler_searchMachineNo).val();
+    _requestQueryForMakineler.machineNo = $(Inputs.makineler_searchMachineNo).val();
     ShowLoader();
-    if (requestQueryForMakineler.pageNumber === 1) {
+    if (_requestQueryForMakineler.pageNumber === 1) {
         disableButton(PreviousButtons.makineler);
         ActiveButton(NextButtons.makineler);
     }
@@ -30,21 +49,21 @@ function GetAllMakineler() {
         ActiveButton(NextButtons.makineler);
     }
     $(TablesId.makineler).empty();
-    $(`${pageNumbers.makineler}`).text(requestQueryForMakineler.pageNumber);
+    $(`${pageNumbers.makineler}`).text(_requestQueryForMakineler.pageNumber);
 
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.GetAllMakineler,
-        data: JSON.stringify(requestQueryForMakineler),
+        data: JSON.stringify(_requestQueryForMakineler),
         success: (list) => {
             makinelerList = list;
             if (list.length !== 0) {
                 console.log('makineler', list);
                 makinelerList = list;
                 $(`${recordsNotFound.makineler}`).css('display', 'none');
-              
-                    CreateMakinelerTable(list, TablesId.makineler);
+
+                CreateMakinelerTable(list, TablesId.makineler);
             }
             else {
                 disableButton(NextButtons.makineler);
@@ -67,7 +86,7 @@ function CreateMakinelerTable(list, tableId) {
     <td>${element.elec ? element.elec : ""}</td>
     <td>${element.guc ? element.guc : ""}</td>
     <td>${element.Birim ? element.Birim : ""}</td>
- <td><i onclick="EditBakimSorumlusu(${index})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
+ <td><i onclick="EditMakine(${index})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
  <td><i onclick="DeleteMakine(${index})" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
              </tr>
 `);
@@ -98,15 +117,15 @@ function GetAllmakinelerCount() {
 $('#select-makineler-selectRowCount').on('change', () => {
     let selectedRowCount = $("#select-makineler-selectRowCount option:selected").val();
     selectedRowCount = parseInt(selectedRowCount);
-    requestQueryForMakineler.pageSize = selectedRowCount;
-    requestQueryForMakineler.pageNumber = 1;
+    _requestQueryForMakineler.pageSize = selectedRowCount;
+    _requestQueryForMakineler.pageNumber = 1;
     GetAllMakineler();
 });
 //#endregion
 //#region search
 $(Inputs.makineler_searchMachineNo).keyup(function () {
-    requestQueryForMakineler.pageNumber = 1;
-    $(pageNumbers.makineler).text(requestQueryForMakineler.pageNumber);
+    _requestQueryForMakineler.pageNumber = 1;
+    $(pageNumbers.makineler).text(_requestQueryForMakineler.pageNumber);
     clearTimeout(timer);
     timer = setTimeout(GetAllMakineler, doneTypingInterval);
 });
@@ -115,14 +134,14 @@ $(Inputs.makineler_searchMachineNo).keyup(function () {
 //#region Next-Previous Hanldler
 $(PreviousButtons.makineler).on('click', (event) => {
     event.preventDefault();
-    if (requestQueryForMakineler.pageNumber > 1) requestQueryForMakineler.pageNumber -= 1;
-    $(`${pageNumbers.makineler}`).text(requestQueryForMakineler.pageNumber);
+    if (_requestQueryForMakineler.pageNumber > 1) _requestQueryForMakineler.pageNumber -= 1;
+    $(`${pageNumbers.makineler}`).text(_requestQueryForMakineler.pageNumber);
     GetAllMakineler();
 });
 $(NextButtons.makineler).on('click', (event) => {
     event.preventDefault();
-    requestQueryForMakineler.pageNumber += 1;
-    $(`${pageNumbers.makineler}`).text(requestQueryForMakineler.pageNumber);
+    _requestQueryForMakineler.pageNumber += 1;
+    $(`${pageNumbers.makineler}`).text(_requestQueryForMakineler.pageNumber);
     GetAllMakineler();
 });
 //#endregion
@@ -131,29 +150,68 @@ $(NextButtons.makineler).on('click', (event) => {
 
 
 //#region Add New makineler
-$('#btn-makineler-addNewBakimSorumlu').click((event) => {
-    $('#BakimSorumluModal').modal('show');
+$('#btn-makineler-add').click((event) => {
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $('.tamirIsEmriCard').offset().top
+    }, 500);
+    $('.tamirIsEmriCard').css('opacity', '1').fadeIn();
+    $('#makineler-add-machineNo').val('');
+    $('#makineler-add-machineAdi').val('');
+    $('#makineler-add-model').val('');
+    $('#makineler-add-bolum').val('');
+    $('#makineler-add-uretici').val('');
+    $('#makineler-add-yil').val('');
+    $('#makineler-add-yetkiliServis').val('');
+    $('#makineler-add-elec').val('');
+    $('#makineler-add-guc').val('');
+    $('#makineler-add-birim').val('');
 });
-$('#btn-makineler-confrimAdd').click((event) => {
-    let bakimSorumlusu = $('#inp-makineler-add-bakimSorumlusu').val();
-    let departman = $('#inp-makineler-add-departman').val();
-    if (bakimSorumlusu === '' ||
-        departman === ''
+$('#makineler-add-confrimAdd').click((event) => {
+    let machineNo = $('#makineler-add-machineNo').val();
+    let machineAdi = $('#makineler-add-machineAdi').val();
+    let model = $('#makineler-add-model').val();
+    let bolum = $('#makineler-add-bolum').val();
+    let uretici = $('#makineler-add-uretici').val();
+    let yil = $('#makineler-add-yil').val();
+    let yetkiliServis = $('#makineler-add-yetkiliServis').val();
+    let elec = $('#makineler-add-elec').val();
+    let guc = parseInt($('#makineler-add-guc').val());
+    let birim = $('#makineler-add-birim').val();
+
+    let planliBakim = $('#makineler-add-planliBakim').is(':checked');
+    let aktif = $('#makineler-add-aktif').is(':checked');
+    let uretimMakinesi = $('#makineler-add-uretimMakinesi').is(':checked');
+    if (machineNo === '' ||
+        machineAdi === '' ||
+        model === '' ||
+        bolum === ''
     ) {
         Swal.fire({
             type: 'error',
             title: 'Oops...',
-            text: 'Tüm Inputlar Doldurmanız Gerekiyor',
-            timer: 1500
+            text: 'Machine No,machine Adi, model,bolum doldurmanız gerekiyor',
+            timer: 7000
         });
     }
     else {
-        makinelerModel.bakimSorumlusu = bakimSorumlusu;
-        makinelerModel.departman = departman;
+        makinelerModel.machineNo = machineNo;
+        makinelerModel.machineAdi = machineAdi;
+        makinelerModel.model = model;
+        makinelerModel.bolum = bolum;
+        makinelerModel.uretici = uretici;
+        makinelerModel.yil = yil;
+        makinelerModel.YetkiliServis = yetkiliServis;
+        makinelerModel.elec = elec;
+        makinelerModel.guc = guc;
+        makinelerModel.birim = birim;
+        planliBakim ? makinelerModel.planliBakim = 1 : makinelerModel.planliBakim = 0;
+        aktif ? makinelerModel.aktif = 1 : makinelerModel.aktif = 0;
+        uretimMakinesi ? makinelerModel.uretimMakinesi = 1 : makinelerModel.uretimMakinesi = 0;
+        console.log(makinelerModel);
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=utf-8",
-            url: HttpUrls.AddBakimSorumlu,
+            url: HttpUrls.AddNewMakine,
             data: JSON.stringify(makinelerModel),
             success: (message) => {
                 HideLoader();
@@ -167,22 +225,29 @@ $('#btn-makineler-confrimAdd').click((event) => {
                         timer: 3000
                     });
                 }
+
+                else if (message === 'exist')
+                    Swal.fire({
+                        title: 'Başarılı!',
+                        text: 'machine no kullanılmış',
+                        type: 'warning',
+                        timer: 5000
+                    });
+
                 else {
                     Swal.fire({
                         type: 'error',
                         title: 'Oops...',
-                        text: 'Beklenmeyen bir hata oluştu',
+                        text: 'Ayn',
                         timer: 3000
                     });
                 }
             }
         });
-        $('#BakimSorumluModal').modal('hide');
-        $('#inp-makineler-add-bakimSorumlusu').val('');
-        $('#inp-makineler-add-departman').val('');
     };
 });
 //#endregion
+
 // #region delete makineler
 function DeleteMakine(index) {
     let matched;
@@ -198,8 +263,8 @@ function DeleteMakine(index) {
         buttonsStyling: false
     });
     swalWithBootstrapButtons.fire({
-        title: ` machine :'${matched.Machine_Id}' silenecek!`,
-        text: `'${matched.Machine_Id}' silmek iseter misiniz?`,
+        title: `machine id'si olan: '${matched.Machine_Id}' silenecek!`,
+        text: `machine id'si olan:  '${matched.Machine_Id}' silmek iseter misiniz?`,
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Evet, sil !',
@@ -239,65 +304,100 @@ function DeleteMakine(index) {
 //#endregion
 
 
-
 //#region edit
-function EditBakimSorumlusu(index) {
+function EditMakine(index) {
     let matched;
     console.log(makinelerList.length);
     if (makinelerList.length > 0) {
         matched = makinelerList[index];
-        $('#inp-makineler-edt-bakimSorumlusu').val(matched.bakimSorumlusu);
-        $('#inp-makineler-edt-departman').val(matched.departman);
-        $('#edt-BakimSorumluModal').modal('show');
-        makinelerModel.sorumluId = matched.sorumluId;
+    
+        $('#makineler-edit-machineNo').val(matched.Machine_no);
+        $('#makineler-edit-machineAdi').val(matched.Machine_Name);
+        $('#makineler-edit-model').val(matched.model);
+        $('#makineler-edit-bolum').val(matched.bolum);
+        $('#makineler-edit-uretici').val(matched.Producer);
+        $('#makineler-edit-yil').val(matched.Yil);
+        $('#makineler-edit-yetkiliServis').val(matched.YetkiliServis);
+        $('#makineler-edit-elec').val(matched.elec);
+        $('#makineler-edit-guc').val(matched.guc);
+        $('#makineler-edit-planliBakim').prop('checked', matched.planliBakim);
+        $('#makineler-edit-aktif').prop('checked', matched.aktif);
+        $('#makineler-edit-uretimMakinesi').prop('checked', matched.uretimMakinesi);
+        makinelerModel.machineId = matched.Machine_Id;
+        $('#edt-MakinlerModel').modal('show');
     }
 }
-$('#btn-makineler-confirmEdit').click((e) => {
-    let bakimSorumlusu = $('#inp-makineler-edt-bakimSorumlusu').val();
-    let departman = $('#inp-makineler-edt-departman').val();
-    if (bakimSorumlusu === '' ||
-        departman === ''
+$('#makineler-edit-confirmEdit').click((e) => {
+    let machineNo = $('#makineler-edit-machineNo').val();
+    let machineAdi = $('#makineler-edit-machineAdi').val();
+    let model = $('#makineler-edit-model').val();
+    let bolum = $('#makineler-edit-bolum').val();
+    let uretici = $('#makineler-edit-uretici').val();
+    let yil = $('#makineler-edit-yil').val();
+    let yetkiliServis = $('#makineler-edit-yetkiliServis').val();
+    let elec = $('#makineler-edit-elec').val();
+    let guc = parseInt($('#makineler-edit-guc').val());
+    let birim = $('#makineler-edit-birim').val();
+
+    let planliBakim = $('#makineler-edit-planliBakim').is(':checked');
+    let aktif = $('#makineler-edit-aktif').is(':checked');
+    let uretimMakinesi = $('#makineler-edit-uretimMakinesi').is(':checked');
+    if (machineNo === '' ||
+        machineAdi === '' ||
+        model === '' ||
+        bolum === ''
     ) {
         Swal.fire({
             type: 'error',
             title: 'Oops...',
-            text: 'Tüm Inputlar Doldurmanız Gerekiyor',
-            timer: 1500
+            text: 'Machine No,machine Adi, model,bolum doldurmanız gerekiyor',
+            timer: 7000
         });
     }
     else {
-        makinelerModel.bakimSorumlusu = bakimSorumlusu;
-        makinelerModel.departman = departman;
+        makinelerModel.machineNo = machineNo;
+        makinelerModel.machineAdi = machineAdi;
+        makinelerModel.model = model;
+        makinelerModel.bolum = bolum;
+        makinelerModel.uretici = uretici;
+        makinelerModel.yil = yil;
+        makinelerModel.YetkiliServis = yetkiliServis;
+        makinelerModel.elec = elec;
+        makinelerModel.guc = guc;
+        makinelerModel.birim = birim;
+        planliBakim ? makinelerModel.planliBakim = 1 : makinelerModel.planliBakim = 0;
+        aktif ? makinelerModel.aktif = 1 : makinelerModel.aktif = 0;
+        uretimMakinesi ? makinelerModel.uretimMakinesi = 1 : makinelerModel.uretimMakinesi = 0;
         $.ajax({
             type: "POST",
             contentType: "application/json;charset=utf-8",
-            url: HttpUrls.EditBakimSorumlu,
+            url: HttpUrls.UpdateMakine,
             data: JSON.stringify(makinelerModel),
             success: (message) => {
                 HideLoader();
                 if (message === "done") {
-                    GetAllMakineler(true);
+                    GetAllMakineler();
                     GetAllmakinelerCount();
                     Swal.fire({
                         title: 'Başarılı!',
-                        text: 'yeni pa Başarı ile düzeltildi',
+                        text: 'düzeltme işlemleri başarıyla yapıldı',
                         type: 'success',
                         timer: 5000
                     });
                 }
+
                 else {
                     Swal.fire({
                         type: 'error',
                         title: 'Oops...',
-                        text: 'Beklenmeyen bir hata oluştu',
-                        timer: 5000
+                        text: 'beklenmyen bir hata oluştu',
+                        timer: 3000
                     });
                 }
             }
         });
-        $('#edt-BakimSorumluModal').modal('hide');
-        $('#inp-makineler-edt-bakimSorumlusu').val('');
-        $('#inp-makineler-edt-departman').val('');
+        $('#edt-MakinlerModel').modal('hide');
+        HideLoader();
     };
 })
 //#endregion
@@ -307,13 +407,13 @@ $('#btn-makineler-confirmEdit').click((e) => {
 
 $('#btn-makineler-reset').click(e => {
     e.preventDefault();
-    requestQueryForMakineler.machineNo = "";
-    requestQueryForMakineler.pageSize = 6;
-    requestQueryForMakineler.pageNumber = 1;
-    $('#select-makineler-selectRowCount').val(6);
+    _requestQueryForMakineler.pageSize = 6;
+    _requestQueryForMakineler.pageNumber = 1;
+    $('#select-makineler-selectRowCount').val('6');
     $(Inputs.makineler_searchMachineNo).val('');
     $('.bakimArizaCard').css('opacity', '0').fadeIn();
-    $(`${pageNumbers.makineler}`).text(requestQueryForMakineler.pageNumber);
+    $(`${pageNumbers.makineler}`).text(_requestQueryForMakineler.pageNumber);
     GetAllMakineler();
+    console.log(_requestQueryForMakineler);
 })
 //#endregion

@@ -48,6 +48,11 @@ const HttpUrls = {
     GetAllMakineler: BaseUrl + "BakimArizaCon/GetAllMakineler",
     GetAllMakinelerCount: BaseUrl + "BakimArizaCon/GetAllMakinelerCount",
     DeleteMakine: BaseUrl + "BakimArizaCon/DeleteMakine?machineId=",
+    AddNewMakine: BaseUrl + "BakimArizaCon/AddNewMakine",
+    UpdateMakine: BaseUrl + "BakimArizaCon/UpdateMakine",
+    GetAllBakimRecords: BaseUrl + "BakimArizaCon/GetAllBakimRecords",
+    GetAllBakimRecordsCount: BaseUrl + "BakimArizaCon/GetAllBakimRecordsCount",
+    DeleteFromTbleBakimKayit: BaseUrl + "BakimArizaCon/DeleteFromTbleBakimKayit?bakimId=",
 
     uretimPlani_GetAllUretimPlani: BaseUrl + "UretimData/GetAllUretimPlani",
     tamirIsEmri_GetTamirIsEmriAdimlari: BaseUrl + "UretimData/GetTamirIsEmriAdimlari",
@@ -425,6 +430,7 @@ const TablesId = {
     bakimGirisi: "#table-bakimGirisi",
     bakimPlanlama: "#table-bakimPlanlama",
     planliBakim: "#table-planliBakim",
+    allBakimRecords: "#table-allBakimRecords",
 
 };
 
@@ -432,6 +438,7 @@ const Inputs = {
     gunlukHatBazindaUretim_searchMachineNo: "#inp-gunlukHatBazindUretim-searchMakine",
     bakimOzeti_machineNo: "#inp-bakimOzeti-SearchMachineNo",
     bakimGirisi_machineNo: "#inp-bakimGirisi-SearchMachineNo",
+    allBakimRecords_searchMachineNo:"#inp-allBakimRecords-SearchMachineNo",
     bakimPlanlama_machineNo: "#inp-bakimPlanlama-SearchMachineNo",
     planliBakim_machineNo: "#inp-planliBakim-SearchMachineNo",
     makineler_searchMachineNo: "#inp-makineler-SearchMachineNo",
@@ -601,6 +608,7 @@ const recordsNotFound = {
     settingsReject: "#recordNotFound_settingsReject",
     settingsOperator: "#recordNotFound_settingsOperator",
     settingsOperatorPolivalance: "#recordNotFoundDiv_settingsOperatorPolivalance",
+    allBakimRecords: "#recordNotFoundDiv_allBakimRecords",
 
 
 
@@ -686,6 +694,7 @@ const PreviousButtons = {
     bakimPlanlama: "#btn-bakimPlanlama-previous",
     planliBakim: "#btn-planliBakim-previous",
     makineler: "#btn-makineler-previous",
+    allBakimRecords: "#btn-allBakimRecords-previous",
 
 };
 const Texts = {
@@ -770,6 +779,7 @@ const NextButtons = {
     bakimPlanlama: "#btn-bakimPlanlama-next",
     planliBakim: "#btn-planliBakim-next",
     makineler: "#btn-makineler-next",
+    allBakimRecords: "#btn-allBakimRecords-next",
 
 
 };
@@ -815,6 +825,7 @@ const pageNumbers = {
     systemUser: "#number-systemUser-pageNumber",
     bakimSorumlulari: "#num-bakimSorumlulari-pageNumber",
     makineler: "#num-makineler-pageNumber",
+    allBakimRecords: "#num-allBakimRecords-pageNumber",
 }
 
 function ShowLoader() {

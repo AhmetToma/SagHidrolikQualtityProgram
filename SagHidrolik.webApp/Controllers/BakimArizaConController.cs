@@ -131,7 +131,6 @@ namespace SagHidrolik.webApp.Controllers
             var list = MakinerlerData.GetAllMakineler(requestQuery).Result;
             return Json(list);
         }
-
         public JsonResult GetAllMakinelerCount()
         {
             var list = MakinerlerData.GetAllMakinelerCount().Result;
@@ -142,7 +141,34 @@ namespace SagHidrolik.webApp.Controllers
             var list = MakinerlerData.DeleteMakine(machineId).Result;
             return Json(list);
         }
+        public JsonResult AddNewMakine([FromBody] makinelerViewModel model)
+        {
+            var list = MakinerlerData.AddNewMakine(model).Result;
+            return Json(list);
+        }
+        public JsonResult UpdateMakine([FromBody] makinelerViewModel model)
+        {
+            var list = MakinerlerData.UpdateMakine(model).Result;
+            return Json(list);
+        }
+        #endregion
+        #region All Bakim Records
+        public JsonResult GetAllBakimRecords([FromBody] RequestQuery requestQuery)
+        {
+            var list = AllBakimRecordsData.GetAllBakimRecords(requestQuery).Result;
+            return Json(list);
+        }
+        public JsonResult GetAllBakimRecordsCount()
+        {
+            var list = AllBakimRecordsData.GetAllBakimRecordsCount().Result;
+            return Json(list);
+        }
 
+        public JsonResult DeleteFromTbleBakimKayit([FromQuery] int bakimId)
+        {
+            var list = AllBakimRecordsData.DeleteFromTbleBakimKayit(bakimId).Result;
+            return Json(list);
+        }
         #endregion
     }
 }
