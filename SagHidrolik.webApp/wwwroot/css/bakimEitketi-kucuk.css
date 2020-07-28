@@ -1,0 +1,48 @@
+﻿
+@media print {
+    .kucuk-container {
+        page-break-inside: avoid;
+    }
+    /* top-level divs with ids */
+
+    /*.seprator {
+        page-break-after: always;
+    }*/
+    .bakimEtiketiPrintModel {
+        display: block;
+        -ms-overflow-style: none;
+        overflow: hidden !important;
+    }
+}
+.kucuk-container p{
+    font-size:0.2rem;
+}
+.kucuk-container {
+    margin: 2rem 2rem 6rem 2rem;
+    width: 4.96062992125rem;
+    height: 2.066929133875rem;
+    border: 1px solid black;
+}
+    .kucuk-container .row {
+        display: block;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .kucuk-container .containq1 {
+        width: 13%;
+        height: 100%
+    }
+
+.kucuk-machineName, .kucuk-mahcineNo {
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid black;
+    height: 0.7rem;
+}
+
+.kucuk-Model {
+    text-align: center;
+    width: 100%;
+}

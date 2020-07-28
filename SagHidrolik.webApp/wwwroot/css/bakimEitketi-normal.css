@@ -1,0 +1,44 @@
+﻿
+@media print {
+    .normal-container {
+        page-break-inside: avoid;
+    }
+    /* top-level divs with ids */
+
+    /*.seprator {
+        page-break-after: always;
+    }*/
+    .bakimEtiketiPrintModel {
+        display: block;
+        -ms-overflow-style: none;
+        overflow: hidden !important;
+    }
+}
+.normal-container {
+    margin: 2rem 2rem 6rem 2rem;
+    width: 25.7502rem;
+    height: 7.5625rem;
+    border: 1px solid black;
+}
+    .normal-container .row {
+        display: block;
+        -ms-flex-wrap: wrap;
+      flex-wrap: wrap; 
+       margin-right: 0; 
+      margin-left: 0;
+    }
+    .normal-container .containq1 {
+        width: 13%;
+        height: 100%
+    }
+
+.normal-machineName, .normal-mahcineNo {
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid black
+}
+
+.normal-Model {
+    text-align: center;
+    width: 100%;
+}
