@@ -39,10 +39,9 @@ function GetAllUretimPlaniAjaxCall() {
 function CreateAllUretimPlaniTable(list, tableId) {
     $(tableId).empty();
     list.map((element, index) => {
-        let date = element.processDate.slice(0, 9);
         $(tableId).append(`
 <tr data-stk="${element.partNo}">
-  <td>${date}</td>
+  <td>${element.processDate}</td>
     <td>${element.group}</td>
     <td>${element.prosesAdi} </td>
     <td>${element.partNo}</td>

@@ -209,10 +209,30 @@ namespace SagHidrolik.webApp.Controllers
             var list = ProcessDetailsData.GetProcessFlowInProcessDetails(requestQuery).Result;
             return Json(list);
         }
+        public JsonResult DeleteFromProceesFlow([FromQuery]int flowId)
+        {
+            var message = ProcessDetailsData.DeleteFromProceesFlow(flowId).Result;
+            return Json(message);
+        }
+        public JsonResult UpdateProcessFlowInProcessDetails([FromBody]processFlowEditViewModel m)
+        {
+            var message = ProcessDetailsData.UpdateProcessFlowInProcessDetails(m).Result;
+            return Json(message);
+        }
         public JsonResult GetProcessFlowDetailsInProcessDetails([FromBody]RequestQuery requestQuery)
         {
             var list = ProcessDetailsData.GetProcessFlowDetailsInProcessDetails(requestQuery).Result;
             return Json(list);
+        }
+        public JsonResult DeleteFromProceesFlowDetails([FromQuery]int id)
+        {
+            var message = ProcessDetailsData.DeleteFromProceesFlowDetails(id).Result;
+            return Json(message);
+        }
+        public JsonResult UpdateProcessFlowDetailsInProcessDetails([FromBody]ProcessFlowDetailsEditViewModel m)
+        {
+            var message = ProcessDetailsData.UpdateProcessFlowDetailsInProcessDetails(m).Result;
+            return Json(message);
         }
         #endregion
 

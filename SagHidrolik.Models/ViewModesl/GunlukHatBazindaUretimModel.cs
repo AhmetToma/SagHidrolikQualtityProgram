@@ -17,6 +17,7 @@ namespace SagHidrolik.Models.ViewModesl
         public string Np_time { get; set; }
         public int? Ok_Qty { get; set; }
         public string Machine_no { get; set; }
+        public int? FlowDetailsId { get; set; }
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 
 <div class="container-setUp">
-    <div  class="alert defaultBackground" role="alert">
+    <div class="alert defaultBackground" role="alert">
         <h4>
             Process Details
         </h4>
@@ -10,8 +10,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="input-group urunEtiketiSearchDiv">
-                    <span class="input-group-text"  style="background-color:#2A3F54;color:white" >STK</span>
-                    <input autofocus id="inp-processDetails-inputSearch" type="text" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
+                    <span class="input-group-text" style="background-color:#2A3F54;color:white">STK</span>
+                    <input value="84312697" autofocus id="inp-processDetails-inputSearch" type="text" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
                 </div>
             </div>
         </div>
@@ -100,6 +100,8 @@
                             <th scope="col">Reject</th>
                             <th scope="col">Rework</th>
                             <th scope="col">Order No</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody id="table-processDetails-processFlow"></tbody>
@@ -138,10 +140,19 @@
                         <tr>
                             <th scope="col">Start Time</th>
                             <th scope="col">Finish Time</th>
-                            <th scope="col">Np Time</th>
                             <th scope="col">Ok Qty</th>
                             <th scope="col">Machine</th>
                             <th scope="col">Operator</th>
+                            <th scope="col">Np Time</th>
+                            <th scope="col">Np Def</th>
+                            <th scope="col">Defect1Qty</th>
+                            <th scope="col">Defect1Name</th>
+                            <th scope="col">Defect2Qty</th>
+                            <th scope="col">Defect2Name</th>
+                            <th scope="col">ReworkQty</th>
+                            <th scope="col">ReworkName</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody id="table-processDetails-processFlowDetails"></tbody>
@@ -168,6 +179,141 @@
                         </li>
                     </ul>
                 </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Process Flow-->
+<!--  edit -->
+<div class="modal fade" id="processFlow-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#b13e5b;color:white">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Bom process</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">FlowID   : </label>
+                        <input type="number" min="1" disabled class="form-control" id="inp-processFlow-edit-flowId">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Product Order Id   : </label>
+                        <input disabled type="number" min="0" class="form-control" id="inp-processFlow-edit-productOrderId">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Order No : </label>
+                        <input disabled type="number" min="0" class="form-control" id="inp-processFlow-edit-orderNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">ProcessName </label><br />
+                        <select id="inp-processFlow-edit-processName" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">process Qty  : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlow-edit-processQty">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Ok Qty : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlow-edit-okQty">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Reject   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlow-edit-reject">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Rework   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlow-edit-rework">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-processFlow-edit-saveEdit" type="button" class="btn btn-success">Save editing</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Process Flow Details-->
+<!--  edit -->
+<div class="modal fade" id="processFlowDetails-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#b13e5b;color:white">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Bom process</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">startTime   : </label>
+                        <input type="text"   class="form-control" id="inp-processFlowDetails-edit-startTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">finish Time   : </label>
+                        <input  type="text"  class="form-control" id="inp-processFlowDetails-edit-finishTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">ok Qty : </label>
+                        <input  type="number"  class="form-control" id="inp-processFlowDetails-edit-okQty">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Machine no </label><br />
+                        <select id="inp-processFlowDetails-edit-machineId" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Operator </label><br />
+                        <select id="inp-processFlowDetails-edit-operator" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Np Time  : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlowDetails-edit-npTime">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Np Def : </label>
+                        <input type="text" class="form-control" id="inp-processFlowDetails-edit-npDef">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Defect1Qty   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlowDetails-edit-defect1Qty">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Defect1Name   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlowDetails-edit-defect1Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Defect2Qty   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlowDetails-edit-defect2Qty">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Defect2Name   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlowDetails-edit-defect2Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">ReworkQty   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlowDetails-edit-reworkQty">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">ReworkName   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-processFlowDetails-edit-reworkName">
+                    </div>
+                    @*<div class="form-group">
+                        <label for="recipient-name" class="col-form-label">inputDate   : </label>
+                        <input type="text" class="form-control" id="inp-processFlowDetails-edit-inputDate">
+                    </div>*@
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-processFlowDetails-edit-saveEdit" type="button" class="btn btn-success">Save editing</button>
             </div>
         </div>
     </div>

@@ -3,8 +3,8 @@
     let urtetimBaslaUrl = BaseUrl + "Home/UretimBasla";
     if (window.location.href === urtetimBaslaUrl) {
         GetProcessFlow();
-        GetAktiveOperators();
-        GetAktiveMachine();
+        GetAktiveOperators('uretimBasla-activeOpertors');
+        GetAktiveMachine("uretimBasla-activeMachine");
     }
 });
 let  requestQueryForUretimBasla = {
@@ -126,6 +126,7 @@ function GetProcessFlow(pageNumber) {
     });
 
 }
+let AktifOpeartorList = [];
 function CreateUretimTableInUretim(list) {
     $('#table-uretimInUretim').empty();
     if (list !== null) list.map((element, index) => {
@@ -152,35 +153,36 @@ function SendStkAndLot(stk, lot, process) {
     $('#uretimBasla-baslasin-urunKod').val(stk);
     $('#uretimBasla-baslasin-process').val(process);
 }
-function GetAktiveOperators() {
+function GetAktiveOperators(id) {
     ShowLoader();
     $.ajax({
         type: "GET",
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.GetAktiveOperators,
         success: (list) => {
-            $('#uretimBasla-activeOpertors').empty();
-            console.log('oper',list);
+            $(`#${id}`).empty();
+            console.log('oper', list);
+            AktifOpeartorList = list;
             list.map((element) => {
-                $("#uretimBasla-activeOpertors").append("<option value='" + element.operator_ID + "'>" + element.operator_Name + "</option>");
-                $('#uretimBasla-activeOpertors').trigger('change');
+                $(`#${id}`).append("<option value='" + element.operator_ID + "'>" + element.operator_Name + "</option>");
+                $(`#${id}`).trigger('change');
             });
             HideLoader();
         }
     });
 }
-function GetAktiveMachine() {
+function GetAktiveMachine(id) {
     ShowLoader();
     $.ajax({
         type: "GET",
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.GetAktiveMachine,
         success: (list) => {
-            $('#uretimBasla-activeMachine').empty();
+            $(`#${id}`).empty();
             HideLoader();
             list.map((element) => {
-                $("#uretimBasla-activeMachine").append("<option value='" + element.machine_Id + "'>" + element.machine_no + "</option>");
-                $('#uretimBasla-activeMachine').trigger('change');
+                $(`#${id}`).append("<option value='" + element.machine_Id + "'>" + element.machine_no + "</option>");
+                $(`#${id}`).trigger('change');
             });
         }
     });

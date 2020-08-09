@@ -25,6 +25,7 @@ const HttpUrls = {
     GetProcessFlowClose: BaseUrl + "UretimData/GetProcessFlowClose",
     GetFire: BaseUrl + "UretimData/GetFire?Reject_ID=",
     UretimBitirConfirm: BaseUrl + "UretimData/UretimBitirConfirm",
+    DeleteFromProceeFlow: BaseUrl + "UretimData/DeleteFromProceesFlow?flowId=",
     GetproductFile: BaseUrl + "StokGetData/GetproductFile?Pid=",
     GetaltStokToplam: BaseUrl + "StokGetData/GetaltStokToplam?stk=",
     BakimAriza_GetAllMachines: BaseUrl + "BakimArizaCon/GetAllMachine",
@@ -87,6 +88,9 @@ const HttpUrls = {
 
     GetProcessFlowInProcessDetails: BaseUrl + "UretimData/GetProcessFlowInProcessDetails",
     GetProcessFlowDetailsInProcessDetails: BaseUrl + "UretimData/GetProcessFlowDetailsInProcessDetails",
+    UpdateProcessFlowInProcessDetails: BaseUrl + "UretimData/UpdateProcessFlowInProcessDetails",
+    DeleteFromProceesFlowDetails: BaseUrl + "UretimData/DeleteFromProceesFlowDetails?id=",
+    UpdateProcessFlowDetailsInProcessDetails: BaseUrl + "UretimData/UpdateProcessFlowDetailsInProcessDetails",
 
     GetAllFindInBom: BaseUrl + "StokGetData/GetAllFindInBom",
     GetAllFindInBomCount: BaseUrl + "StokGetData/GetAllFindInBomCount",

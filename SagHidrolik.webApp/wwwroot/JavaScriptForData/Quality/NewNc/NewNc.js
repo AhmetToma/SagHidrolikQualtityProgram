@@ -155,7 +155,6 @@ function GetAllPartNumbers(selectID) {
 
 function GetAllOperator(selectID) {
     $(`${selectID}`).empty();
-
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",

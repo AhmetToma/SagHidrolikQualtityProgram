@@ -228,7 +228,6 @@ function EditBomProcess(index) {
 }
 $('#btn-addOrUpdateProcess-edit-saveEdit').click((e) => {
     e.preventDefault();
-
     if ($('#inp-addOrUpdateProcess-edit-qty').val() === '' || afterEditModel.processNo === '') {
         Swal.fire({
             type: 'error',

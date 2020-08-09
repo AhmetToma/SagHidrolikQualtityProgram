@@ -20,6 +20,7 @@ namespace SagHidrolik.Models.SqlRepository
        public static string connctionString_SAG_HIDROLIK_ByYear() =>
         $"Server={ServerName};Database=SAG_HIDROLIK_{WorkingWithYears.currentYear}T;User Id='{userId}';Password='{password}';";
 
+       public  static string SagHidrolikAuthentication = $"Server={ServerName};Database=SagHidrolikAuthentication;User Id='{userId}';Password='{password}';";
       */
         public static string query;
         public const string ServerName = "AhmetPc\\SQLEXPRESS";
@@ -162,6 +163,8 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
 
         #region Uretim
 
+
+        #region uretim Basla-uretim Bitir
         public static string GetAktiveMachine = "SELECT  [dbo].[10_MakinaListesiNew].Machine_Id, " +
             "[dbo].[10_MakinaListesiNew].Machine_no,[dbo].[10_MakinaListesiNew].Machine_Name," +
             "[dbo].[10_MakinaListesiNew].Aktif2 FROM  [dbo].[10_MakinaListesiNew]" +
@@ -310,8 +313,14 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
 
         public static string GetAllUretimPlani(RequestQuery requestQuery)
         {
-            query = "SELECT ProcessPlanFollowTable.ID, ProcessPlanFollowTable.ProcessDate, " +
-                   " dbo.ProcessPlanFollowTable.[Group], ProcessPlanFollowTable.ProsesAdi, ProcessPlanFollowTable.PartNo, ProcessPlanFollowTable.WOLot, ProcessPlanFollowTable.RemainProcessqty, ProcessPlanFollowTable.WONewDate, ProcessPlanFollowTable.Balance, ProcessPlanFollowTable.Order_no, ProcessPlanFollowTable.ProcessNo_ID, ProcessPlanFollowTable.Qty, ProcessPlanFollowTable.Process_qty, ProcessPlanFollowTable.Ok_Qty, ProcessPlanFollowTable.Process_reject, ProcessPlanFollowTable.Process_Rework, ProcessPlanFollowTable.Complete " +
+            query = "SELECT ProcessPlanFollowTable.ID, " +
+                "  convert(varchar(10), cast(ProcessPlanFollowTable.ProcessDate As Date), 103) as ProcessDate, " +
+                   " dbo.ProcessPlanFollowTable.[Group], ProcessPlanFollowTable.ProsesAdi, ProcessPlanFollowTable.PartNo," +
+                   " ProcessPlanFollowTable.WOLot, ProcessPlanFollowTable.RemainProcessqty, " +
+                   "  convert(varchar(10), cast( ProcessPlanFollowTable.WONewDate As Date), 103) as WONewDate," +
+                   "ProcessPlanFollowTable.Balance, ProcessPlanFollowTable.Order_no, ProcessPlanFollowTable.ProcessNo_ID, " +
+                   "ProcessPlanFollowTable.Qty, ProcessPlanFollowTable.Process_qty, ProcessPlanFollowTable.Ok_Qty, " +
+                   "ProcessPlanFollowTable.Process_reject, ProcessPlanFollowTable.Process_Rework, ProcessPlanFollowTable.Complete " +
                    " FROM ProcessPlanFollowTable " +
                    " WHERE(((ProcessPlanFollowTable.RemainProcessqty) > 0)) " +
                    $" and ProcessPlanFollowTable.PartNo like N'%{requestQuery.Stk}%'" +
@@ -337,6 +346,7 @@ $" ,dbo.[10_MakinaListesiNew].Machine_no ORDER BY Finish_time DESC" +
 $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
             return query;
         }
+        #endregion
 
         #region Production Summary
         public static string GetProductionSummaryReport(RequestQuery r, string m)
@@ -372,7 +382,7 @@ $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS
         {
             query = $"Select Process_Planning.ProcessNo, BOM_Process.OrderNo, SubPartNo, PartNo_ID ,Qty,Quality,ProcessName, Process_Planning.ProsesAdi from BOM_Process inner join" +
                 $" Process_Planning on SubPartNo = Process_Planning.ProcessNo" +
-                $" where PartNo_ID = '{request.pid}'";
+                $" where PartNo_ID = '{request.pid}' order by BOM_Process.OrderNo ";
             return query;
         }
         public static string DeleteBomProcess(BomProcessViewModel bom) => $@"delete from BOM_Process where PartNo_ID ='{bom.PartNo_ID}' and OrderNo ={bom.OrderNo} and SubPartNo = {bom.SubPartNo}";
@@ -492,26 +502,50 @@ SubPartNo={bom.ProcessNo},Qty={bom.Qty} where OrderNo ={bom.OrderNo} and PartNo_
         #region processDetails
         public static string GetProcessFlowInProcessDetails(RequestQuery requestQuery)
         {
-            query = $"select Flow_ID,ProcessNo_ID,ProductOrder_ID,Ok_Qty,Process_qty,Process_reject,Process_Rework,Order_no ,ProsesAdi from ProcessFlow  inner join Process_Planning On  ProcessFlow.ProcessNo_ID =Process_Planning.ProcessNo where ProductOrder_ID={requestQuery.ProductOrderId} order by Flow_ID" +
+            query = $"select Flow_ID,ProcessNo_ID,ProductOrder_ID,Ok_Qty,Process_qty,Process_reject,Process_Rework,Order_no ," +
+                $"ProsesAdi from ProcessFlow  inner join Process_Planning On  ProcessFlow.ProcessNo_ID =Process_Planning.ProcessNo" +
+                $" where ProductOrder_ID={requestQuery.ProductOrderId} order by Flow_ID" +
                  $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
             return query;
         }
+        public static string DeleteFromProceeFlow(int flowId) => $"delete from ProcessFlow where Flow_ID = {flowId}";
+
+        public static string UpdateProcessFlowInProcessDetails(processFlowEditViewModel m) => $@"
+update ProcessFlow set Ok_Qty = {m.okQty},ProcessNo_ID={m.processNo},
+Process_qty={m.processQty},Process_reject = {m.reject},Process_Rework={m.rework}
+where Flow_ID = {m.flowId} and Order_no = {m.orderNo} and ProductOrder_ID = {m.productOrderId};
+";
 
 
         public static string GetProcessFlowDetailsInProcessDetails(RequestQuery requestQuery)
         {
-            query = $"select ProcessFlowDetail.Finish_time AS FinishTime,ProcessFlowDetail.Np_time," +
-                $" Process_Planning.ProsesAdi, ProcessFlowDetail.Ok_Qty," +
-                $" Operator.Operator_Name,ProcessFlowDetail.Start_time,dbo.[10_MakinaListesiNew].Machine_no" +
+            query = $"select   convert(varchar(10), cast(ProcessFlowDetail.Finish_time As Date), 103) as FinishTime," +
+                $"   ProcessFlowDetail.Np_time,ProcessFlowDetail.ID as FlowDetailsId, ProcessFlowDetail.Np_Def," +
+                $"ProcessFlowDetail.Defect1_qty,ProcessFlowDetail.Defect1_Name,ProcessFlowDetail.Defect2_qty,ProcessFlowDetail.Defect2_Name," +
+                $"ProcessFlowDetail.Rework_qty,ProcessFlowDetail.Rework_Name," +
+                $"convert(varchar(10), cast(ProcessFlowDetail.InputDate As Date), 103) as InputDate," +
+                $"Operator.Operator_ID," +
+                $" Process_Planning.ProsesAdi, ProcessFlowDetail.Ok_Qty,dbo.[10_MakinaListesiNew].Machine_Id," +
+                $" Operator.Operator_Name, convert(varchar(10), cast(ProcessFlowDetail.Start_time As Date), 103) as Start_time,dbo.[10_MakinaListesiNew].Machine_no" +
                 $" FROM(((ProcessFlowDetail INNER JOIN ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID)" +
                 $" INNER JOIN Process_Planning ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo)" +
                 $" inner join dbo.[10_MakinaListesiNew] on dbo.[10_MakinaListesiNew].Machine_Id = ProcessFlowDetail.Machine" +
                 $" inner join Local_ProductionOrders  ON ProcessFlow.ProductOrder_ID = Local_ProductionOrders.ProductOrderID)" +
                 $" INNER JOIN Operator ON ProcessFlowDetail.Operator = Operator.Operator_ID" +
-                $" where Local_ProductionOrders.ProductOrderID like N'%{requestQuery.ProductOrderId}%' " +
+                $" where Local_ProductionOrders.ProductOrderID ={requestQuery.ProductOrderId} " +
                 $" ORDER BY Finish_time DESC OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY;";
             return query;
         }
+        public static string DeleteFromProceesFlowDetails(int Id) => $"delete from ProcessFlowDetail where ID = {Id}";
+
+        public static string UpdateProcessFlowDetailsInProcessDetails(ProcessFlowDetailsEditViewModel m) => $@"
+set dateformat dmy;
+update ProcessFlowDetail set
+Start_time = '{m.startTime}', Finish_time ='{m.finishTime}',Ok_Qty={m.okQty},Machine={m.machineId},Operator={m.operatorId},
+Np_time={m.npTime},Np_Def='{m.npDef}',Defect1_qty={m.defect1Qty},Defect1_Name='{m.defect1Name}',Defect2_qty={m.defect2Qty},Defect2_Name='{m.defect2Name}',
+Rework_Name='{m.reworkName}',Rework_qty={m.reworkQty} where ID  ={m.flowDtailsId}
+";
+
         #endregion
 
         #region Production Start
