@@ -248,6 +248,12 @@ const HttpUrls = {
     AddToSettingOperator: BaseUrl + "SettingData/AddToSettingOperator",
     EditSettingsOperator: BaseUrl + "SettingData/EditSettingsOperator",
     DeleteSettingOperator: BaseUrl + "SettingData/DeleteSettingOperator?operatorId=",
+    DeleteOperatorPolivalance: BaseUrl + "SettingData/DeleteOperatorPolivalance?id=",
+    GetAktifAndUnAktifOperators: BaseUrl + "SettingData/GetAktifAndUnAktifOperators",
+    AddOperatorPolivalance: BaseUrl + "SettingData/AddOperatorPolivalance",
+    UpdateOperatorPolivalance: BaseUrl + "SettingData/UpdateOperatorPolivalance",
+
+
 
     GetGirisKontrol: BaseUrl + "EtiketlerGetData/GetGirisKontrol",
     UpdateKaliteKodu: BaseUrl + "EtiketlerGetData/UpdateKaliteKodu",

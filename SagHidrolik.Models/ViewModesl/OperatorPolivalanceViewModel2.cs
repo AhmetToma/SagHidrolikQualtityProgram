@@ -9,5 +9,7 @@ namespace SagHidrolik.Models.ViewModesl
         public int ProcessNo { get; set; }
         public int Level { get; set; }
         public string ProcessName { get; set; }
+        public int? ID { get; set; }
+        public int operatorNo { get; set; }
     }
 }

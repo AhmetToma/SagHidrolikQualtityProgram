@@ -28,6 +28,7 @@ $('#btn-login-submit').click((e) => {
 
                     window.open(`${BaseUrl}`, "_self")
                     HideLoader();
+                    window.localStorage.setItem(`${user.email}`, "2020");
 
                 }
                 else {

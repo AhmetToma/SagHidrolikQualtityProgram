@@ -26,6 +26,7 @@ namespace SagHidrolik.Models.ViewModesl
         public string email { get; set; }
         public string roleId { get; set; }
         public string material { get; set; }
+        public string currentYear { get; set; }
 
     }
 }

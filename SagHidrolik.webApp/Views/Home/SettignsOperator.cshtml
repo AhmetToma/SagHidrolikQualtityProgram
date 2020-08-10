@@ -4,7 +4,7 @@
     </div>
     <div class="teslimat">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="input-group" style="margin-top:1.7rem">
                     <div class="input-group-prepend">
                         <span class="input-group-text defaultBackground" id="basic-addon1">Operator Name</span>
@@ -12,16 +12,16 @@
                     <input id="inp-settingsOperator-searchOperatorName" style="border-radius:0.5rem;" type="text" class="form-control" placeholder="operator Name giriniz">
                 </div>
             </div>
-
-            <div class="col-md-4" style="margin-top:1.7rem">
+            <div class="col-md-3" style="margin-top:1.7rem">
                 <select class="custom-select" id="selectRowCount-settingsOperator">
                 </select>
             </div>
-            <div class="col-md-3">
-                <button style="margin-top: 7%;" class="btn btn-success" id="btn-settingsOperator-addNewOperator"> Add New Operator</button>
+            <div class="col-md-4" style="margin-top:1.7rem">
+                <button class="btn  btn-success" id="btn-settingsOperator-addNewOperator"> Add New Operator</button>
+                <button class="btn  btn-success" id="btn-settingsOperator-addNewOperatorPloivalance"> Add New Operator Polivalance</button>
             </div>
-            <div class="col-md-1">
-                <button style="margin-top: 21%;" class="btn btn-danger" id="btn-settingsOperator-reset"> Reset</button>
+            <div class="col-md-2" style="margin-top:1.7rem">
+                <button class="btn btn-danger" id="btn-settingsOperator-reset"> Reset</button>
             </div>
         </div>
         <div class="row">
@@ -77,6 +77,8 @@
                             <th scope="col">Process Name</th>
                             <th scope="col">Level</th>
                             <th scope="col">Açıklama</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody id="table-settingsOperatorPolivalance"></tbody>
@@ -93,7 +95,7 @@
 </div>
 
 
-
+<!-- Opetator-->
 <div class="modal fade" id="settingsOperator-AddModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -107,7 +109,7 @@
                 <form>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Opeartor Name : </label>
-                        <input type="text"  class="form-control" id="inp-settingsOperator-operatorName">
+                        <input type="text" class="form-control" id="inp-settingsOperator-operatorName">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Bolum</label>
@@ -120,7 +122,7 @@
 
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Aktif : </label>
-                        <input style="width:7%" id="inp-settingsOperator-aktif"  class="form-control" type="checkbox"  />
+                        <input style="width:7%" id="inp-settingsOperator-aktif" class="form-control" type="checkbox" />
                     </div>
                 </form>
             </div>
@@ -165,6 +167,87 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button id="edt-btn-settingsOperator-confirmEdit" type="button" class="btn btn-primary">Save Editing</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Opetator Polivalnace-->
+
+<div class="modal fade" id="settingsOperatorPolivalance-AddModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Operator Polivalance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Operator Name </label><br />
+                        <select id="inp-settingsOperatorPolivalance-add-operator" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Process</label><br />
+                        <select id="inp-settingsOperatorPolivalance-add-process" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Level : </label>
+                        <select class="custom-select" id="inp-settingsOperatorPolivalance-add-level">
+                            <option>Seçiniz</option>
+                            <option value="1">Temel Beceriler / Destek ve kontrol gerekli</option>
+                            <option value="2">Önemli bir kontrol olmaksızın yapabilir</option>
+                            <option value="3">Proses için yeterli / ek kontrol gerekmez</option>
+                            <option value="4">Çalışma alanındaki diğer çalışanlara eğitim verebilir/ süreç iyileştirmelerinin uygulayabilir</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-settingsOperatorPolivalance-confirmAdd" type="button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="settingsOperatorPolivalance-EdtiModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Operator Polivalance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>   
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Operator Name </label><br />
+                        <select disabled id="inp-settingsOperatorPolivalance-edit-operator" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Process</label><br />
+                        <select id="inp-settingsOperatorPolivalance-edit-process" class="limitedNumbSelect2 " multiple="true"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Level : </label>
+                        <select class="custom-select" id="inp-settingsOperatorPolivalance-edit-level">
+                            <option>Seçiniz</option>
+                            <option value="1">Temel Beceriler / Destek ve kontrol gerekli</option>
+                            <option value="2">Önemli bir kontrol olmaksızın yapabilir</option>
+                            <option value="3">Proses için yeterli / ek kontrol gerekmez</option>
+                            <option value="4">Çalışma alanındaki diğer çalışanlara eğitim verebilir/ süreç iyileştirmelerinin uygulayabilir</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btn-settingsOperatorPolivalance-confirmEdit" type="button" class="btn btn-primary">Add</button>
             </div>
         </div>
     </div>

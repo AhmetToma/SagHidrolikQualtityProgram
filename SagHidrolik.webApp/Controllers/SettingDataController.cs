@@ -109,6 +109,11 @@ namespace SagHidrolik.webApp.Controllers
             var list = OpertorData.GetSettingsOperator(requestQuery).Result;
             return Json(list);
         }
+        public JsonResult GetAktifAndUnAktifOperators()
+        {
+            var list = OpertorData.GetAktifAndUnAktifOperators().Result;
+            return Json(list);
+        }
         public JsonResult GetSettingsOperatorCount()
         {
             int count = OpertorData.GetSettingsOperatorCount().Result;
@@ -137,6 +142,23 @@ namespace SagHidrolik.webApp.Controllers
             var list = OpertorData.GetSettingsOperatorPolivalance(operatorId).Result;
             return Json(list);
         }
+        public JsonResult DeleteOperatorPolivalance([FromQuery]int id)
+        {
+            var list = OpertorData.DeleteOperatorPolivalance(id).Result;
+            return Json(list);
+        }
+
+        public JsonResult AddOperatorPolivalance([FromBody]OperatorPolivalanceViewModel2 m)
+        {
+            var list = OpertorData.AddOperatorPolivalance(m).Result;
+            return Json(list);
+        }
+        public JsonResult UpdateOperatorPolivalance([FromBody]OperatorPolivalanceViewModel2 m)
+        {
+            var list = OpertorData.UpdateOperatorPolivalance(m).Result;
+            return Json(list);
+        }
+
         #endregion
     }
 }

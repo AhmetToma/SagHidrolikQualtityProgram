@@ -3,6 +3,9 @@
 
     let serverUrl = BaseServerUrl + dataUrl;
     if (window.location.href === serverUrl) {
+        GetProcessPlanningInProcessDetails("inp-settingsOperatorPolivalance-add-process");
+        GetProcessPlanningInProcessDetails("inp-settingsOperatorPolivalance-edit-process");
+        GetAktifAndUnAktifOperators(["inp-settingsOperatorPolivalance-add-operator","inp-settingsOperatorPolivalance-edit-operator"]);
         GetSettingsOperatorAjaxCall();
         GetAllsettingsOperatorsCount();
         $('#inp-settingsOperator-girisTarihi').datepicker({
@@ -11,6 +14,10 @@
         $('#edt-inp-settingsOperator-girisTarihi').datepicker({
             dateFormat: 'dd/mm/yy'
         });
+        $(".limitedNumbSelect2").select2({
+            maximumSelectionLength: 1,
+            placeholder: "Seçiniz"
+        })
     }
 });
 
@@ -26,6 +33,14 @@ let settingsOperatorModel = {
     GirisTarihi: "",
     Aktif:""
 };
+   
+let operatorPolivaceModel = {
+    Level: 0,
+    ProcessNo:0,
+    ProcessName: "",
+    ID: 0,
+    operatorNo:0
+}
 let settingsOperatorList = [];
 
 
@@ -124,27 +139,29 @@ $('#selectRowCount-settingsOperator').on('change', () => {
 
 //#region OperatorPolivalance
 //SelectRow 
+let _operatorId;
 $(TablesId.settingsOperator).on('click', 'tr', function () {
-    let operatorId = $(this).attr('id');
-    GetOperatorPolivalance(operatorId);
+     _operatorId = $(this).attr('id');
+    GetOperatorPolivalance(_operatorId);
 });
-
-
+let operatorPolivanceList = [];
 function GetOperatorPolivalance(operatorId) {
     $(TablesId.settingsOperatorPolivalance).empty();
     $.getJSON(HttpUrls.GetSettingsOperatorPolivalance + operatorId, (list) => {
-
         if (list.length !== 0) {
+            operatorPolivanceList = list;
+            console.log(operatorPolivanceList);
             $(`${recordsNotFound.settingsOperatorPolivalance}`).css('display', 'none');
-            list.map((element) => {
+            list.map((element,index) => {
                 let levelDescription = GetLevelDescription(element.level);
                 $(TablesId.settingsOperatorPolivalance).append(`
-
 <tr>
 <td>${element.processNo}</td>
 <td>${element.processName}</td>
 <td>${element.level}</td>
 <td>${levelDescription}</td>
+<td><i onclick="EditOpearatorPolivalance(${index})" class="fas fa-edit fa-2x  text-primary"  aria-hidden="true"></td>
+ <td><i onclick="DeleteOpearatorPolivalance(${index})" class="fa fa-2x fa-trash text-danger"  aria-hidden="true"></td>
 </tr>
 `)
             })
@@ -167,17 +184,191 @@ function GetLevelDescription(levelId) {
         default: return "----";
     }
 }
-//#endregion
-//#region search
 
-let timerForsettingsOperator;
-$(Inputs.settingsOperator_searchOperatorName).keyup(function () {
-    requestQueryForSettingOperator.pageNumber = 1;
-    $(pageNumbers.settingsOperator).text(requestQueryForSettingOperator.pageNumber);
-    clearTimeout(timer);
-    timer = setTimeout(GetSettingsOperatorAjaxCall, typingInterval);
+
+// #region  Delete Operator Polivalance
+function DeleteOpearatorPolivalance(index) {
+    let matched;
+    if (operatorPolivanceList.length > 0) {
+        matched = operatorPolivanceList[index];
+    }
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+        title: `id'si olan'${matched.id}' silenecek!`,
+        text: `id'si olan'${matched.id}' silmek iseter misiniz?`,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Evet, sil !',
+        cancelButtonText: 'Hayır , silme!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                url: HttpUrls.DeleteOperatorPolivalance + matched.id,
+                success: (message) => {
+                    if (message === "done") {
+                        GetOperatorPolivalance(_operatorId)
+                        Swal.fire({
+                            title: 'Başarılı!',
+                            text: ' Başarı ile Silendi',
+                            type: 'success',
+                            timer: 5000
+                        });
+                    }
+                    else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Oops...',
+                            text: 'Beklenmeyen bir hata oluştu',
+                            timer: 5000
+                        });
+                    }
+                }
+
+            });
+        }
+    });
+}
+//#endregion
+
+
+
+//#region Add New Operator polivalance
+$('#btn-settingsOperator-addNewOperatorPloivalance').click((event) => {
+    $('#settingsOperatorPolivalance-AddModel').modal('show');
+});
+$('#btn-settingsOperatorPolivalance-confirmAdd').click((event) => {
+    let operator = $("#inp-settingsOperatorPolivalance-add-operator").val()
+    let process = $("#inp-settingsOperatorPolivalance-add-process").val();
+    let level = $('#inp-settingsOperatorPolivalance-add-level').val();
+
+    if (operator === null ||
+        process === null ||
+        level==='' 
+    ) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Tüm Inputlar Doldurmanız Gerekiyor',
+            timer: 1500
+        });
+    }
+    else {
+        operatorPolivaceModel.operatorNo = parseInt(operator);
+        operatorPolivaceModel.ProcessNo = parseInt(process);
+        operatorPolivaceModel.level = parseInt(level);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: HttpUrls.AddOperatorPolivalance,
+            data: JSON.stringify(operatorPolivaceModel),
+            success: (message) => {
+                HideLoader();
+                if (message === "done") {
+                    GetOperatorPolivalance(parseInt(operator))
+                    Swal.fire({
+                        title: 'Başarılı!',
+                        text: 'yeni element Başarı ile eklendi',
+                        type: 'success',
+                        timer: 5000
+                    });
+                }
+                else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Beklenmeyen bir hata oluştu',
+                        timer: 5000
+                    });
+                }
+            }
+        });
+        $('#settingsOperatorPolivalance-AddModel').modal('hide');
+        $(".limitedNumbSelect2").val(null).trigger("change");
+        $('#inp-settingsOperatorPolivalance-add-level').val('');
+    };
 });
 //#endregion
+
+
+
+//#region edit  Operator polivalance
+function EditOpearatorPolivalance(index) {
+    let matched;
+    if (operatorPolivanceList.length > 0) {
+        matched = operatorPolivanceList[index];
+        console.log(matched)
+        $('#inp-settingsOperatorPolivalance-edit-operator').val(`${_operatorId}`).trigger('change');
+        $('#inp-settingsOperatorPolivalance-edit-process').val(`${matched.processNo}`).trigger('change');
+        $('#inp-settingsOperatorPolivalance-edit-level').val(matched.level);
+        operatorPolivaceModel.ID = matched.id;
+        $('#settingsOperatorPolivalance-EdtiModel').modal('show');
+    }
+}
+$('#btn-settingsOperatorPolivalance-confirmEdit').click((event) => {
+    let operator = $("#inp-settingsOperatorPolivalance-edit-operator").val()
+    let process = $("#inp-settingsOperatorPolivalance-edit-process").val();
+    let level = $('#inp-settingsOperatorPolivalance-edit-level').val();
+
+    if (operator === null ||
+        process === null ||
+        level === ''
+    ) {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Tüm Inputlar Doldurmanız Gerekiyor',
+            timer: 1500
+        });
+    }
+    else {
+        operatorPolivaceModel.operatorNo = parseInt(operator);
+        operatorPolivaceModel.ProcessNo = parseInt(process);
+        operatorPolivaceModel.level = parseInt(level);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            url: HttpUrls.UpdateOperatorPolivalance,
+            data: JSON.stringify(operatorPolivaceModel),
+            success: (message) => {
+                HideLoader();
+                if (message === "done") {
+                    GetOperatorPolivalance(parseInt(operator))
+                    Swal.fire({
+                        title: 'Başarılı!',
+                        text: 'element Başarı ile düzeltildi',
+                        type: 'success',
+                        timer: 5000
+                    });
+                }
+                else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Beklenmeyen bir hata oluştu',
+                        timer: 5000
+                    });
+                }
+            }
+        });
+        $('#settingsOperatorPolivalance-EdtiModel').modal('hide');
+        $(".limitedNumbSelect2").val(null).trigger("change");
+        $('#inp-settingsOperatorPolivalance-edit-level').val('');
+    };
+});
+//#endregion
+
+//#endregion
+
 
 //#region Next-Previous Hanldler
 $(PreviousButtons.settingsOperator).on('click', (event) => {
@@ -417,3 +608,38 @@ $('#btn-settingsOperator-reset').click(() => {
 
 
 
+//#region search
+
+let timerForsettingsOperator;
+$(Inputs.settingsOperator_searchOperatorName).keyup(function () {
+    requestQueryForSettingOperator.pageNumber = 1;
+    $(pageNumbers.settingsOperator).text(requestQueryForSettingOperator.pageNumber);
+    clearTimeout(timer);
+    timer = setTimeout(GetSettingsOperatorAjaxCall, typingInterval);
+});
+//#endregion
+
+
+
+// #region Aktif And Un Aktif Operator 
+let _allOperatorsList=[];
+function GetAktifAndUnAktifOperators(arry) {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        url: HttpUrls.GetAktifAndUnAktifOperators,
+        success: (list) => {
+            _allOperatorsList = list;
+            for (let i = 0; i < arry.length; i++) {
+                $(`#${arry[i]}`).empty();
+                list.map(p => {
+                    $(`#${arry[i]}`).append(`
+<option value="${p.Operator_ID}" >${p.Operator_Name}</option>
+`)
+                })
+            }
+        }
+    });
+}
+
+// #endregion

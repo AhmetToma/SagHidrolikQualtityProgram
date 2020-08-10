@@ -19,6 +19,16 @@ namespace SagHidrolik.DataAccesslayer.Settings
                 return list;
             }
         }
+        public static async Task<IEnumerable<object>> GetAktifAndUnAktifOperators()
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                var list = await connection.QueryAsync<object>("select * from Operator");
+                return list;
+            }
+        }
+
         public static async Task<int> GetSettingsOperatorCount()
         {
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
@@ -68,6 +78,38 @@ namespace SagHidrolik.DataAccesslayer.Settings
                 await connection.OpenAsync();
                 var list = await connection.QueryAsync<OperatorPolivalanceViewModel2>(SqlQueryRepo.GetSettingsOperatorPolivalance(operatorId));
                 return list;
+            }
+        }
+
+        public static async Task<string> DeleteOperatorPolivalance(int id)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                int c = await connection.ExecuteAsync(SqlQueryRepo.DeleteOperatorPolivalance(id));
+                if (c > 0) return "done";
+                return "none";
+            }
+        }
+
+        public static async Task<string> AddOperatorPolivalance(OperatorPolivalanceViewModel2 m)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                int c = await connection.ExecuteAsync(SqlQueryRepo.AddOperatorPolivalance(m));
+                if (c > 0) return "done";
+                return "none";
+            }
+        }
+        public static async Task<string> UpdateOperatorPolivalance(OperatorPolivalanceViewModel2 m)
+        {
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+            {
+                await connection.OpenAsync();
+                int c = await connection.ExecuteAsync(SqlQueryRepo.UpdateOperatorPolivalance(m));
+                if (c > 0) return "done";
+                return "none";
             }
         }
     }

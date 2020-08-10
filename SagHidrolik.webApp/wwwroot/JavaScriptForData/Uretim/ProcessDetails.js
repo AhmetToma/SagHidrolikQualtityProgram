@@ -10,7 +10,7 @@
             $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
         }
         SerachStokInAddOrUpdateProcess();
-        GetProcessPlanningInProcessDetails();
+        GetProcessPlanningInProcessDetails("inp-processFlow-edit-processName");
         GetAktiveOperators("inp-processFlowDetails-edit-operator");
         GetAktiveMachine("inp-processFlowDetails-edit-machineId");
         //$("#inp-processFlowDetails-edit-inputDate").datepicker({
@@ -163,21 +163,20 @@ $(TablesId.processDetails_ProductionOrders).on('click', 'tr', function () {
 
 // #region Process Flow 
 
-function GetProcessPlanningInProcessDetails() {
+function GetProcessPlanningInProcessDetails(id) {
     $.ajax({
         type: "GET",
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.GetProcessPlanning,
         success: (list) => {
             processPlaningList = list;
-            $('#inp-processFlow-edit-processName').empty();
+            $(`#${id}`).empty();
             list.map(p => {
-                $('#inp-processFlow-edit-processName').append(`
+                $(`#${id}`).append(`
 <option value="${p.processNo}" >${p.prosesAdi}</option>
 `)
             })
         }
-
     });
 }
 function GetProcessFlowInProcessDetailsAjaxCall(tableId, notFoundId) {

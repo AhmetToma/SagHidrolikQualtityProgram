@@ -100,10 +100,7 @@ namespace SagHidrolik.DataAccesslayer.Uretim
                 await connection.OpenAsync();
                 Roles = await connection.QueryAsync<UserRolesViewModel>(SqlQueryRepo.GetAllUsersRoles());
             }
-
             var RoleModel = Roles.Where(x => x.RoleName == rolName).SingleOrDefault();
-            
-
             string message = "";
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
@@ -148,7 +145,6 @@ namespace SagHidrolik.DataAccesslayer.Uretim
                 var response1 = await connection.ExecuteAsync(SqlQueryRepo.UpdateRevisedDateInLocalProductionOrders());
                 // var response2 = await connection.ExecuteScalarAsync<int>(SqlQueryRepo.InsertIntoProcessFlowInProductionStart());
               var response3 = await connection.ExecuteAsync(SqlQueryRepo.DeleteAllProductionStatus(RoleModel.RoleId));
-                int x = 5;
                 message = "Successfuly Done!";
             }
             return message;

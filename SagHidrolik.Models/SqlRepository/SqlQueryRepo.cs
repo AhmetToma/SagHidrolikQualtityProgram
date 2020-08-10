@@ -1753,7 +1753,7 @@ CAST(GirisTarihi AS date)GirisTarihi,Aktif FROM Operator )countNumber
 
         public static string AddToSettingOperator(SettingsOperatorViewModel s) => $@"SET DATEFORMAT dmy insert into Operator (Operator_Name,Bolum,GirisTarihi,Aktif)
 values ('{s.Operator_Name}','{s.Bolum}','{s.GirisTarihi}','{s.Aktif}')";
-        public static string GetSettingsOperatorPolivalance(int operatorId) => $@"select PP.ProcessNo,Op.Level,PP.ProcessName 
+        public static string GetSettingsOperatorPolivalance(int operatorId) => $@"select PP.ProcessNo,Op.Level,PP.ProcessName ,Op.ID
 from OperatorPolivalance Op
  inner join Process_Planning PP on  Op.ProcessNo = PP.ProcessNo
  where Op.OperatorNo={operatorId}";
@@ -1764,6 +1764,13 @@ from OperatorPolivalance Op
 where Operator_ID ={s.Operator_ID}";
         #endregion
 
+
+        public static string DeleteOperatorPolivalance(int id) => $"delete  from dbo.OperatorPolivalance where ID ={id}";
+        public static string AddOperatorPolivalance(OperatorPolivalanceViewModel2 m) => $@"insert into dbo.OperatorPolivalance (Level,OperatorNo,ProcessNo)
+values ({m.Level},{m.operatorNo},{m.ProcessNo})";
+        public static string UpdateOperatorPolivalance(OperatorPolivalanceViewModel2 m ) => $@"update OperatorPolivalance
+set Level = {m.Level},OperatorNo={m.operatorNo},ProcessNo={m.ProcessNo}
+where ID = {m.ID}";
 
         #region #systemUsers
         public static string GetAllSyetemUsers(RequestQuery requestQuery) => $@"
