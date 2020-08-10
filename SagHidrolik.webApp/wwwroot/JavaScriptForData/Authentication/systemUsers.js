@@ -189,6 +189,15 @@ $('#btn-systemUser-confirmAdd').click((event) => {
             timer: 1500
         });
     }
+    else if (password.length <= 4)
+    {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'password should be at least 5 character',
+            timer: 1500
+        });
+    }
     else {
         systemUserModel.Email = email;
         systemUserModel.PassWord = password;
@@ -205,7 +214,7 @@ $('#btn-systemUser-confirmAdd').click((event) => {
                     GetAllSyetemUsersCount();
                     Swal.fire({
                         title: 'Başarılı!',
-                        text: 'yeni pa Başarı ile eklendi',
+                        text: 'yeni user Başarı ile eklendi',
                         type: 'success',
                         timer: 3000
                     });

@@ -145,6 +145,7 @@ namespace SagHidrolik.DataAccesslayer.Uretim
                 var response1 = await connection.ExecuteAsync(SqlQueryRepo.UpdateRevisedDateInLocalProductionOrders());
                 // var response2 = await connection.ExecuteScalarAsync<int>(SqlQueryRepo.InsertIntoProcessFlowInProductionStart());
               var response3 = await connection.ExecuteAsync(SqlQueryRepo.DeleteAllProductionStatus(RoleModel.RoleId));
+                int x = 5;
                 message = "Successfuly Done!";
             }
             return message;
