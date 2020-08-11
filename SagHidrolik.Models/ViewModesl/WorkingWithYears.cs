@@ -11,7 +11,9 @@ namespace SagHidrolik.Models.ViewModesl
         public static void GetcurrentYear()
         {
 
-         currentYear = DateTime.Now.Year.ToString();
+            //currentYear = DateTime.Now.Year.ToString();
+            currentYear = "2019";
+
         }
         public static void changeYear(string year)
         {

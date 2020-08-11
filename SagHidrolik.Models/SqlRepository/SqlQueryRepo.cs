@@ -2002,6 +2002,44 @@ Having  dbo.SIPARIS_ALT.MIKTAR -isnull( Sum(dbo.STOK_ALT.MIKTAR),0)>0
 	[BomLevel] [int] NULL,
 	[WOPlanned] [int] NULL
 ) ";
+
+        public static string CreateTTdFixOrdersListTable(string userName) => $@"
+CREATE TABLE [dbo].[TTFfixordersListe_{userName}](
+	[Location] [nvarchar](255) NULL,
+	[PartNo] [nvarchar](255) NULL,
+	[RequireDate] [datetime] NULL,
+	[RequireQTY] [int] NULL,
+	[TotalStock] [float] NULL,
+	[Balance] [int] NULL,
+	[WOLot] [int] NULL,
+	[WONewDate] [datetime] NULL,
+	[WOLotSize] [int] NULL,
+	[WoPlanned] [int] NULL
+) ON [PRIMARY]
+GO
+";
+
+        public static string CreateTTdFixOrdersListWoTable(string userName) => $@"
+CREATE TABLE [dbo].[TTFFixordersListeWO_{userName}](
+	[PartNo] [nvarchar](255) NULL,
+	[WOLot] [int] NULL,
+	[WONewDate] [datetime] NULL,
+	[Balance] [int] NULL,
+	[Order_no] [int] NULL,
+	[ProcessNo_ID] [int] NULL,
+	[Qty] [int] NULL,
+	[Process_qty] [int] NULL,
+	[Ok_Qty] [int] NULL,
+	[ProsessDay] [real] NULL,
+	[Process_reject] [int] NULL,
+	[Process_Rework] [int] NULL,
+	[RemainProcessqty] [int] NULL,
+	[ProcessDate] [datetime] NULL,
+	[CompleteRatio] [real] NULL,
+	[Process_Manhour] [int] NULL,
+[id] [int] IDENTITY(1,1) NOT NULL
+) ON [PRIMARY]
+GO";
         public static string GetAllTTFixorders(string userName) => $@"set dateformat dmy;SELECT TTFixOrders_{userName}.PartNo,
    convert(varchar(10), cast( dbo.TTFixOrders_{userName}.RequireDate As Date), 103) as RequireDate,
  Sum(TTFixOrders_{userName}.RequireQTY) AS RequireQTY,
@@ -2368,8 +2406,17 @@ WHERE (((TTFixOrdersList1_{userName}.WOPlanned)<>0))
                PIVOT(SUM(WOPlanned) 
 			   FOR WONewDate IN ('+ @cols+' )) P; '
 		  EXECUTE sp_executesql @query;
+";
 
-
+        public static string PlaningMrp1(string userName) => $@"
+SELECT TTFixOrdersList1_superAdmin.PartNo, TTFixOrdersList1_superAdmin.RequireDate, 
+            Sum([TTFixOrdersList1_superAdmin].[Balance]*-1) AS RequireQTY,
+             isnull(StokProduction_superAdmin.Warehouse,0)+isnull(StokProduction_superAdmin.Prod,0)+isnull(StokProduction_superAdmin.[PackToday],0)
+              AS TotalStock, 0 AS Balance FROM TTFixOrdersList1_superAdmin LEFT JOIN StokProduction_superAdmin ON TTFixOrdersList1_superAdmin.PartNo =
+			   StokProduction_superAdmin.STK 
+              GROUP BY TTFixOrdersList1_superAdmin.PartNo, TTFixOrdersList1_superAdmin.RequireDate, isnull(StokProduction_superAdmin.[Warehouse],0)+
+			  isnull(StokProduction_superAdmin.[Prod],0)
+              +isnull(StokProduction_superAdmin.[PackToday],0) ORDER BY TTFixOrdersList1_superAdmin.PartNo, TTFixOrdersList1_superAdmin.RequireDate;
 ";
         #endregion
 

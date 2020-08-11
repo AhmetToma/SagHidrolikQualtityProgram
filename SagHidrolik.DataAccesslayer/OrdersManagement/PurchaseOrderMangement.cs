@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System;
 using SagHidrolik.DataAccesslayer.Stok;
 using System.Linq;
+using System.Collections;
+using SagHidrolik.Models;
+using SagHidrolik.ViewModels;
 
 namespace SagHidrolik.DataAccesslayer.OrdersManagement
 {
@@ -32,6 +35,8 @@ namespace SagHidrolik.DataAccesslayer.OrdersManagement
             if (type == 3) query = SqlQueryRepo.CreateStokProductionTable(userName);
             if (type == 4) query = SqlQueryRepo.CreateMrpWeekLast(userName);
             if (type == 5) query = SqlQueryRepo.CreateMrpWeekCalc(userName);
+            if (type == 6) query = SqlQueryRepo.CreateTTdFixOrdersListTable(userName);
+            if (type == 7) query = SqlQueryRepo.CreateTTdFixOrdersListWoTable(userName);
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
@@ -51,7 +56,7 @@ namespace SagHidrolik.DataAccesslayer.OrdersManagement
 
         public static void CreateAllTable(string userName)
         {
-            for (int i = 1; i <= 5; i++)
+            for (int i = 1; i <= 7; i++)
             {
                 CreateTableByName(userName, i);
             }
@@ -657,7 +662,260 @@ ORDER BY TTFfixordersListe1.PartNo
 
 
 
+        #region Planing Mrp 
+        public static async Task<string> PalningMrp(string userName)
+        {
+            IEnumerable<TTFfixordersListe1> TTFfixordersListe1;
+            IEnumerable<TTfixOrdersModel> TTfixOrdersList;
+            IEnumerable<DboLocalProductionOrders_Stogken> local_stokgen=null;
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"StokProduction_{userName}"));
+            }
+            // stokWare Pack Coat
+
+            string partNo = "";
+            double stoksay = 0;
+            double remain =0;
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                TTFfixordersListe1 = await connection.QueryAsync<TTFfixordersListe1>(SqlQueryRepo.PlaningMrp1(userName));
+            }
+
+            if(TTFfixordersListe1.Count()>0)
+            {
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                {
+                    await connection.OpenAsync();
+                    await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"TTFixOrders_{userName}"));
+                    TTfixOrdersList= await connection.QueryAsync<TTfixOrdersModel>(SqlQueryRepo.deleteFrom($"TTFixOrders_{userName}"));
+                }
+
+                foreach (var item in TTFfixordersListe1)
+                {
+                    if(partNo !=item.PartNo)
+                    {
+                        using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                        {
+                            await connection.OpenAsync();
+                            local_stokgen = await connection.QueryAsync<DboLocalProductionOrders_Stogken>($@"
+SELECT SAG_PRODUCTION.dbo.Local_ProductionOrders.ProductOrderID, 
+                            dbo.STOKGEN.STK, 
+
+convert(varchar(10), cast(SAG_PRODUCTION.dbo.Local_ProductionOrders.IssueDate As Date), 103) as IssueDate,
+SAG_PRODUCTION.dbo.Local_ProductionOrders.Status,
+                             IIf((SAG_PRODUCTION.dbo.Local_ProductionOrders.Qty-isnull(SAG_PRODUCTION.dbo.Local_ProductionOrders.Completed_Qty,0))<0,0,
+                             SAG_PRODUCTION.dbo.Local_ProductionOrders.Qty-isnull(SAG_PRODUCTION.dbo.Local_ProductionOrders.Completed_Qty,0)) AS remainQty
+                              FROM dbo.STOKGEN INNER JOIN SAG_PRODUCTION.dbo.Local_ProductionOrders 
+							  ON dbo.STOKGEN.P_ID = SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID
+                               WHERE (((dbo.STOKGEN.STK) = '{item.PartNo}') And ((SAG_PRODUCTION.dbo.Local_ProductionOrders.Status) = 2))ORDER BY
+                                dbo.STOKGEN.STK, SAG_PRODUCTION.dbo.Local_ProductionOrders.IssueDate;
+");
+                        }
+
+                        if (local_stokgen.Count() > 0)
+                        {
+                            stoksay = 0;
+                        }
+                    }
+
+                    if(stoksay-item.RequireQTY>=0)
+                    {
+                        var balnace = remain-item.RequireQTY;
+                        using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                        {
+                            await connection.OpenAsync();
+                            int c = await connection.ExecuteAsync($@"
+insert into TTFfixordersListe_superAdmin (TotalStock,WONewDate,Balance,
+PartNo,RequireDate,RequireQTY) values
+({stoksay},'{item.RequireDate}',,'{item.PartNo}','{item.RequireDate}',{remain})
+");
+                            stoksay = stoksay - item.RequireQTY;
+                            remain = stoksay;
+                           
+                        }
+                    }
+                    else
+                    {
+                        if(local_stokgen.Count()>0)
+                        {
+
+                            foreach (var lo in local_stokgen)
+                            {
+                                TTFixOrdersListModel m = new TTFixOrdersListModel();
+                                stoksay = stoksay + lo.remainQty;
+                                m.WOLotSize = lo.remainQty;
+                                m.TotalStock = stoksay;
+                                remain = stoksay - item.RequireQTY;
+                                stoksay = stoksay - item.RequireQTY;
+                                m.WOLot = lo.remainQty;
+                                m.WONewDate = item.RequireDate;
+                                m.WOLot =lo.ProductOrderID;
+                                m.Balance = Convert.ToInt16(stoksay);
+                                m.PartNo = item.PartNo;
+                                m.RequireDate = item.RequireDate;
+                                m.RequireQTY = item.RequireQTY;
+                                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                                {
+                                    await connection.OpenAsync();
+                                    int c = await connection.ExecuteAsync($@"
+insert into TTFfixordersListe_superAdmin (WOLotSize,TotalStock,WOLot,WONewDate,
+Balance,PartNo,RequireDate,RequireQTY) values
+({m.WOLotSize},{m.TotalStock},{m.WOLot},'{m.WONewDate}',{m.Balance},{m.PartNo},{m.RequireDate},{m.RequireQTY})
+");
+                                }
+                                if (stoksay < 0)
+                                {
+                                    stoksay = stoksay + lo.remainQty;
+                                    m.WOLotSize = lo.remainQty;
+                                    m.TotalStock = stoksay;
+                                    m.WOLot = lo.ProductOrderID;
+                                    m.WONewDate = m.RequireDate;
+                                    m.Balance = Convert.ToInt16(stoksay);
+                                    m.PartNo = item.PartNo;
+                                    m.RequireDate = item.RequireDate;
+                                    m.RequireQTY = Convert.ToInt16(remain);
+                                    using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                                    {
+                                        await connection.OpenAsync();
+                                        int c = await connection.ExecuteAsync($@"
+insert into TTFfixordersListe_superAdmin (WOLotSize,TotalStock,WOLot,WONewDate,
+Balance,PartNo,RequireDate,RequireQTY) values
+({m.WOLotSize},{m.TotalStock},{m.WOLot},'{m.WONewDate}',{m.Balance},{m.PartNo},{m.RequireDate},{m.RequireQTY})
+");
+                                    }
+                                }
+                                if (stoksay + lo.remainQty < 0)
+                                {
+                                    stoksay = stoksay + lo.remainQty;
+                                    m.WOLotSize = lo.remainQty;
+                                    m.TotalStock = stoksay;
+                                    m.WOLot = lo.ProductOrderID;
+                                    m.WONewDate = m.RequireDate;
+                                    m.Balance = Convert.ToInt16(stoksay - remain);
+                                    m.PartNo = item.PartNo;
+                                    m.RequireDate = item.RequireDate;
+                                    m.RequireQTY = Convert.ToInt16(remain);
+                                }
+                                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                                {
+                                    await connection.OpenAsync();
+                                    int c = await connection.ExecuteAsync($@"
+insert into TTFfixordersListe_superAdmin (WOLotSize,TotalStock,WOLot,WONewDate,
+Balance,PartNo,RequireDate,RequireQTY) values
+({m.WOLotSize},{m.TotalStock},{m.WOLot},'{m.WONewDate}',{m.Balance},{m.PartNo},{m.RequireDate},{m.RequireQTY})
+");
+                                }
+                                m.TotalStock = stoksay;
+                                    m.WONewDate = item.RequireDate;
+                                    m.Balance =  Convert.ToInt16(remain - item.RequireQTY);
+                                    m.PartNo = item.PartNo;
+                                    m.RequireDate = item.RequireDate;
+                                    m.RequireQTY = m.RequireQTY;
+                                    remain = remain - item.RequireQTY;
+                                if (stoksay - item.RequireQTY < 0) stoksay = 0;
 
 
-    }
+   using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                                {
+                                    await connection.OpenAsync();
+                                    int c = await connection.ExecuteAsync($@"
+insert into TTFfixordersListe_superAdmin (WOLotSize,TotalStock,WOLot,WONewDate,
+Balance,PartNo,RequireDate,RequireQTY) values
+({m.WOLotSize},{m.TotalStock},{m.WOLot},'{m.WONewDate}',{m.Balance},{m.PartNo},{m.RequireDate},{m.RequireQTY})
+");
+                                }
+
+                            }
+
+
+
+                        }
+                        partNo = item.PartNo;
+                    }
+                    return "done";
+                }
+            }
+
+            return "none";
+           
+        }
+        #endregion
+
+
+        #region Process Data
+
+        public static async Task<string> ProcessDates(string userName)
+        {
+
+            IEnumerable<TTFFixordersListeWOModel> list = null;
+            int lotNo = 0;
+            double k =0;
+            string ProcessDate = "";
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"StokProduction_{userName}"));
+                await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"ProcessPlanFollowTable"));
+            }
+            //   *****process PlangingFlowDates Querry ****** // 
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                list =  await connection.QueryAsync<TTFFixordersListeWOModel>($"select * from TTFFixordersListeWO_{userName}");
+            }
+
+            foreach (var item in list)
+            {
+                item.Qty = Convert.ToInt16(item.Qty);
+                item.Process_Manhour = Convert.ToInt16(item.Process_Manhour);
+                item.ProsessDay = Convert.ToInt16(item.ProsessDay);
+
+                if (lotNo!=item.WOLot)
+                {
+                    k = -(item.Process_Manhour / 3600 * (item.Qty / 8));
+                    ProcessDate= DateTime.Parse(item.WONewDate).AddDays(item.ProsessDay - k).ToString();
+
+                }
+                else
+                {
+                    DateTime newDate = new DateTime();
+                  string ConvertedDate =  newDate.ToString("dd-MM-yyyy");
+                    k = -(item.Process_Manhour / 3600 * (item.Qty / 8));
+                    ProcessDate= DateTime.Parse(ConvertedDate).AddDays(item.ProsessDay - k).ToString();
+                }
+                item.ProcessDate = ProcessDate;
+
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                {
+                    await connection.OpenAsync();
+
+                    int c = await connection.ExecuteAsync($@"
+
+UPDATE [dbo].[TTFFixordersListeWO_{userName}]
+   SET [PartNo] = {item.PartNo},[WOLot] = {item.WOLot}   ,[WONewDate] ='{item.WONewDate}'  ,[Balance] = {item.Balance} ,[Order_no] = {item.Order_no}
+      ,[ProcessNo_ID] = {item.ProcessNo_ID} ,[Qty] = {item.Qty} ,[Process_qty] = {item.Process_qty} ,
+[Ok_Qty] = {item.Ok_Qty} ,[ProsessDay] = {item.ProsessDay} ,[Process_reject] = {item.Process_reject} ,[Process_Rework] = {item.Process_Rework}
+      ,[RemainProcessqty] = {item.RemainProcessqty},[ProcessDate] = {item.ProcessDate} ,[CompleteRatio] = {item.CompleteRatio},[Process_Manhour] = {item.Process_Manhour}
+ WHERE id={item.id}
+");
+                }
+
+                lotNo = item.WOLot;
+
+
+            }
+
+
+            // ** ProcessplanLast query  **//
+
+
+            return "none";
+        }
+            #endregion
+
+
+        }
 }
