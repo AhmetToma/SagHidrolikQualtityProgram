@@ -675,6 +675,12 @@ ORDER BY TTFfixordersListe1.PartNo
             }
             // stokWare Pack Coat
 
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                int z = await connection.ExecuteAsync(SqlQueryRepo.stokWarepackCoat(userName));
+            }
+
             string partNo = "";
             double stoksay = 0;
             double remain =0;
@@ -860,7 +866,13 @@ Balance,PartNo,RequireDate,RequireQTY) values
                 await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"StokProduction_{userName}"));
                 await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"ProcessPlanFollowTable"));
             }
-            //   *****process PlangingFlowDates Querry ****** // 
+
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                int z = await connection.ExecuteAsync(SqlQueryRepo.ProcessPlaningFlowDates(userName));
+            }
+
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
@@ -908,9 +920,12 @@ UPDATE [dbo].[TTFFixordersListeWO_{userName}]
 
             }
 
-
-            // ** ProcessplanLast query  **//
-
+      
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                int z = await connection.ExecuteAsync(SqlQueryRepo.ProcessplanLast(userName));
+            }
 
             return "none";
         }

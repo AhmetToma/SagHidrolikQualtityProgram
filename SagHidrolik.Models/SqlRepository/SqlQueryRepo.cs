@@ -2409,14 +2409,108 @@ WHERE (((TTFixOrdersList1_{userName}.WOPlanned)<>0))
 ";
 
         public static string PlaningMrp1(string userName) => $@"
-SELECT TTFixOrdersList1_superAdmin.PartNo, TTFixOrdersList1_superAdmin.RequireDate, 
-            Sum([TTFixOrdersList1_superAdmin].[Balance]*-1) AS RequireQTY,
-             isnull(StokProduction_superAdmin.Warehouse,0)+isnull(StokProduction_superAdmin.Prod,0)+isnull(StokProduction_superAdmin.[PackToday],0)
-              AS TotalStock, 0 AS Balance FROM TTFixOrdersList1_superAdmin LEFT JOIN StokProduction_superAdmin ON TTFixOrdersList1_superAdmin.PartNo =
-			   StokProduction_superAdmin.STK 
-              GROUP BY TTFixOrdersList1_superAdmin.PartNo, TTFixOrdersList1_superAdmin.RequireDate, isnull(StokProduction_superAdmin.[Warehouse],0)+
-			  isnull(StokProduction_superAdmin.[Prod],0)
-              +isnull(StokProduction_superAdmin.[PackToday],0) ORDER BY TTFixOrdersList1_superAdmin.PartNo, TTFixOrdersList1_superAdmin.RequireDate;
+SELECT TTFixOrdersList1_{userName}.PartNo, TTFixOrdersList1_{userName}.RequireDate, 
+            Sum([TTFixOrdersList1_{userName}].[Balance]*-1) AS RequireQTY,
+             isnull(StokProduction_{userName}.Warehouse,0)+isnull(StokProduction_{userName}.Prod,0)+
+isnull(StokProduction{userName}.[PackToday],0)
+              AS TotalStock, 0 AS Balance FROM TTFixOrdersList1_{userName}LEFT 
+JOIN StokProduction_{userName} ON TTFixOrdersList1_{userName}.PartNo =
+			   StokProduction_{userName}.STK 
+              GROUP BY TTFixOrdersList1_{userName}.PartNo, TTFixOrdersList1_{userName}.RequireDate, isnull(StokProduction_{userName}.[Warehouse],0)+
+			  isnull(StokProduction_{userName}.[Prod],0)
+              +isnull(StokProduction_{userName}.[PackToday],0) ORDER BY TTFixOrdersList1_{userName}.PartNo, TTFixOrdersList1_{userName}.RequireDate;
+";
+
+
+        public static string stokWarepackCoat(string userName) => $@"
+
+--stok all
+
+INSERT INTO StokProduction_{userName}( STK, P_ID, Warehouse, TUR, Prod, PackToday, WOInprogress )
+select StokMerkez.STK ,StokMerkez.STOKP_ID,StokMerkez.totalStok,StokMerkez.TUR,
+ProductionStatus_Planning.Miktar,lastStatusInProgrss.WoInProgress,StokPackToday.qty
+from(
+SELECT  dbo.STOK_ALT.STK,dbo.STOKGEN.TUR, STOK_ALT.STOKP_ID,
+sum ( isnull((dbo.STOK_ALT.GRMIK-dbo.STOK_ALT.CKMIK),0)) as totalStok
+ FROM dbo.STOK_ALT left JOIN dbo.STOKGEN ON dbo.STOK_ALT.STOKP_ID = dbo.STOKGEN.P_ID 
+   GROUP BY STOK_ALT.STK, STOKGEN.TUR,STOK_ALT.STOKP_ID
+   ) StokMerkez
+ LEFT JOIN 
+--production Status
+(SELECT sum([Process_qty]-[Ok_Qty]-[Process_reject]-[Process_Rework]) AS Miktar, 
+SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID
+FROM SAG_PRODUCTION.dbo.Local_ProductionOrders INNER JOIN SAG_PRODUCTION.dbo.ProcessFlow 
+ON ProcessFlow.ProductOrder_ID = SAG_PRODUCTION.dbo.Local_ProductionOrders.ProductOrderID
+ INNER JOIN SAG_PRODUCTION.dbo.Process_Planning ON ProcessFlow.ProcessNo_ID = Process_Planning.ProcessNo
+WHERE ((([Process_qty]-[Ok_Qty]-[Process_reject]-[Process_Rework])>0) AND ((SAG_PRODUCTION.dbo.Local_ProductionOrders.Status)=2) 
+AND ((Process_Planning.[Group])='06_Paketleme' 
+Or (Process_Planning.[Group])='09_Kaplama' Or (Process_Planning.[Group])='06_test'))
+Group by  PartNo_ID )ProductionStatus_Planning
+on StokMerkez.STOKP_ID =ProductionStatus_Planning.PartNo_ID
+
+left join
+
+ -- stak pack today
+( SELECT SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID, Sum(ProcessFlowDetail.Ok_Qty) AS qty
+FROM (SAG_PRODUCTION.dbo.ProcessFlowDetail INNER JOIN SAG_PRODUCTION.dbo.ProcessFlow ON ProcessFlowDetail.Flow_ID = ProcessFlow.Flow_ID)
+ INNER JOIN SAG_PRODUCTION.dbo.Local_ProductionOrders ON ProcessFlow.ProductOrder_ID = SAG_PRODUCTION.dbo.Local_ProductionOrders.ProductOrderID
+GROUP BY SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID, ProcessFlow.ProcessNo_ID, Format([Finish_time],'Short Date')
+HAVING (((ProcessFlow.ProcessNo_ID)=55) AND ((Format([Finish_time],'Short Date'))=Format(getDate(),'Short Date'))))StokPackToday
+on StokPackToday.PartNo_ID= ProductionStatus_Planning.PartNo_ID
+
+ LEFT JOIN 
+-- status In Progress
+ (SELECT 
+SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID,
+  sum(IIf(([Qty]-isnull([Completed_Qty],0))<0,0,[Qty]-isnull([Completed_Qty],0))) AS WoInProgress
+FROM SAG_PRODUCTION.dbo.Local_ProductionOrders
+WHERE (((SAG_PRODUCTION.dbo.Local_ProductionOrders.Status)=2))
+group by  
+ SAG_PRODUCTION.dbo.Local_ProductionOrders.PartNo_ID ) lastStatusInProgrss
+ on  lastStatusInProgrss.PartNo_ID=ProductionStatus_Planning.PartNo_ID
+
+";
+
+        public static string ProcessPlaningFlowDates(string userName) => $@"
+INSERT INTO TTFFixordersListeWO_{userName} ( PartNo, WOLot, WONewDate, Balance,
+ Order_no, ProcessNo_ID, Qty, Process_qty, Ok_Qty, ProsessDay, Process_reject, Process_Rework, RemainProcessqty, Process_Manhour )
+SELECT TTFfixordersListe.PartNo, TTFfixordersListe.WOLot,
+ TTFfixordersListe.WONewDate, TTFfixordersListe.Balance,
+  SAG_PRODUCTION.dbo.ProcessFlow.Order_no,  SAG_PRODUCTION.dbo.ProcessFlow.ProcessNo_ID, 
+   SAG_PRODUCTION.dbo.Local_ProductionOrders.Qty, 
+  SAG_PRODUCTION.dbo.ProcessFlow.Process_qty, SAG_PRODUCTION.dbo.ProcessFlow.Ok_Qty,
+   SAG_PRODUCTION.dbo.Process_Planning.ProsessDay,
+   SAG_PRODUCTION.dbo.ProcessFlow.Process_reject, SAG_PRODUCTION.dbo.ProcessFlow.Process_Rework, 
+   IIf((([Ok_Qty]+[Process_reject]+[Process_Rework])/[Qty])>=0.95,0,
+   [Qty]-[Ok_Qty]-[Process_reject]-[Process_Rework])
+    AS RemainProcessqty, SAG_PRODUCTION.dbo.Process_Planning.Manhour
+FROM ((TTFfixordersListe LEFT JOIN SAG_PRODUCTION.dbo.Local_ProductionOrders 
+ON TTFfixordersListe.WOLot = SAG_PRODUCTION.dbo.Local_ProductionOrders.ProductOrderID) 
+LEFT JOIN SAG_PRODUCTION.dbo.ProcessFlow ON TTFfixordersListe.WOLot = ProcessFlow.ProductOrder_ID) 
+LEFT JOIN SAG_PRODUCTION.dbo.Process_Planning ON ProcessFlow.ProcessNo_ID = 
+SAG_PRODUCTION.dbo.Process_Planning.ProcessNo
+ORDER BY TTFfixordersListe.WOLot, ProcessFlow.Order_no DESC;
+
+";
+
+        public static string ProcessplanLast(string userName) => $@"
+INSERT INTO SAG_PRODUCTION.dbo.ProcessPlanFollowTable
+ ( ProcessDate, [Group], ProsesAdi, PartNo, WOLot, RemainProcessqty, WONewDate, Balance, Order_no, ProcessNo_ID, Qty, Process_qty, Ok_Qty, Process_reject, Process_Rework,Complete )
+SELECT TTFFixordersListeWO_{userName}.ProcessDate,
+ SAG_PRODUCTION.dbo.Process_Planning.[Group],
+ SAG_PRODUCTION.dbo.Process_Planning.ProsesAdi, 
+ TTFFixordersListeWO_{userName}_{userName}.PartNo, TTFFixordersListeWO_{userName}.WOLot, TTFFixordersListeWO_{userName}.RemainProcessqty, 
+ TTFFixordersListeWO_{userName}.WONewDate, TTFFixordersListeWO_{userName}.Balance,
+  TTFFixordersListeWO_{userName}.Order_no, TTFFixordersListeWO_{userName}.ProcessNo_ID, 
+  TTFFixordersListeWO_{userName}.Qty, TTFFixordersListeWO_{userName}.Process_qty,
+   TTFFixordersListeWO_{userName}.Ok_Qty, TTFFixordersListeWO_{userName}.Process_reject, 
+   TTFFixordersListeWO_{userName}.Process_Rework,0
+FROM TTFFixordersListeWO_{userName} LEFT JOIN SAG_PRODUCTION.dbo.Process_Planning 
+ON TTFFixordersListeWO_{userName}.ProcessNo_ID = SAG_PRODUCTION.dbo.Process_Planning .ProcessNo
+WHERE (((TTFFixordersListeWO_{userName}.RemainProcessqty)>0))
+ORDER BY TTFFixordersListeWO_{userName}.ProcessDate, SAG_PRODUCTION.dbo.Process_Planning.[Group],
+ TTFFixordersListeWO_{userName}.PartNo;
+
 ";
         #endregion
 
