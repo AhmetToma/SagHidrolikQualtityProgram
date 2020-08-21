@@ -50,6 +50,8 @@ namespace SagHidrolik.DataAccesslayer.OrdersManagement
             var m2 = await DropTableByName($"TTFixOrdersList1_{userName}");
             var m3 = await DropTableByName($"MRPWEEKCALC_Last_{userName}");
             var m4 = await DropTableByName($"MRPWEEKCALC_{userName}");
+            var m5 = await DropTableByName($"TTFFixordersListeWO_{userName}");
+            var m6 = await DropTableByName($"TTFfixordersListe_{userName}");
             if (m == "done" && m1 == "done" && m2 == "done" && m4 == "done") return "done";
             return "not completed";
         }
@@ -645,7 +647,7 @@ ORDER BY TTFfixordersListe1.PartNo
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
-                var list = await connection.QueryAsync<object>(SqlQueryRepo.GetNewWoListInPurchaseOrders(userName,WorkingWithYears.currentYear));
+                var list = await connection.QueryAsync<object>(SqlQueryRepo.GetNewWoListInPurchaseOrders(userName, WorkingWithYears.currentYear));
                 return list;
             }
         }
@@ -667,7 +669,7 @@ ORDER BY TTFfixordersListe1.PartNo
         {
             IEnumerable<TTFfixordersListe1> TTFfixordersListe1;
             IEnumerable<TTfixOrdersModel> TTfixOrdersList;
-            IEnumerable<DboLocalProductionOrders_Stogken> local_stokgen=null;
+            IEnumerable<DboLocalProductionOrders_Stogken> local_stokgen = null;
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
@@ -683,25 +685,25 @@ ORDER BY TTFfixordersListe1.PartNo
 
             string partNo = "";
             double stoksay = 0;
-            double remain =0;
+            double remain = 0;
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
                 TTFfixordersListe1 = await connection.QueryAsync<TTFfixordersListe1>(SqlQueryRepo.PlaningMrp1(userName));
             }
 
-            if(TTFfixordersListe1.Count()>0)
+            if (TTFfixordersListe1.Count() > 0)
             {
                 using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
                 {
                     await connection.OpenAsync();
                     await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"TTFixOrders_{userName}"));
-                    TTfixOrdersList= await connection.QueryAsync<TTfixOrdersModel>(SqlQueryRepo.deleteFrom($"TTFixOrders_{userName}"));
+                    TTfixOrdersList = await connection.QueryAsync<TTfixOrdersModel>(SqlQueryRepo.deleteFrom($"TTFixOrders_{userName}"));
                 }
 
                 foreach (var item in TTFfixordersListe1)
                 {
-                    if(partNo !=item.PartNo)
+                    if (partNo != item.PartNo)
                     {
                         using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
                         {
@@ -727,25 +729,25 @@ SAG_PRODUCTION.dbo.Local_ProductionOrders.Status,
                         }
                     }
 
-                    if(stoksay-item.RequireQTY>=0)
+                    if (stoksay - item.RequireQTY >= 0)
                     {
-                        var balnace = remain-item.RequireQTY;
+                        var balnace = remain - item.RequireQTY;
                         using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
                         {
                             await connection.OpenAsync();
                             int c = await connection.ExecuteAsync($@"
 insert into TTFfixordersListe_superAdmin (TotalStock,WONewDate,Balance,
 PartNo,RequireDate,RequireQTY) values
-({stoksay},'{item.RequireDate}',,'{item.PartNo}','{item.RequireDate}',{remain})
+({stoksay},'{item.RequireDate}',{item.Balance},'{item.PartNo}','{item.RequireDate}',{remain})
 ");
                             stoksay = stoksay - item.RequireQTY;
                             remain = stoksay;
-                           
+
                         }
                     }
                     else
                     {
-                        if(local_stokgen.Count()>0)
+                        if (local_stokgen.Count() > 0)
                         {
 
                             foreach (var lo in local_stokgen)
@@ -758,7 +760,7 @@ PartNo,RequireDate,RequireQTY) values
                                 stoksay = stoksay - item.RequireQTY;
                                 m.WOLot = lo.remainQty;
                                 m.WONewDate = item.RequireDate;
-                                m.WOLot =lo.ProductOrderID;
+                                m.WOLot = lo.ProductOrderID;
                                 m.Balance = Convert.ToInt16(stoksay);
                                 m.PartNo = item.PartNo;
                                 m.RequireDate = item.RequireDate;
@@ -815,16 +817,16 @@ Balance,PartNo,RequireDate,RequireQTY) values
 ");
                                 }
                                 m.TotalStock = stoksay;
-                                    m.WONewDate = item.RequireDate;
-                                    m.Balance =  Convert.ToInt16(remain - item.RequireQTY);
-                                    m.PartNo = item.PartNo;
-                                    m.RequireDate = item.RequireDate;
-                                    m.RequireQTY = m.RequireQTY;
-                                    remain = remain - item.RequireQTY;
+                                m.WONewDate = item.RequireDate;
+                                m.Balance = Convert.ToInt16(remain - item.RequireQTY);
+                                m.PartNo = item.PartNo;
+                                m.RequireDate = item.RequireDate;
+                                m.RequireQTY = m.RequireQTY;
+                                remain = remain - item.RequireQTY;
                                 if (stoksay - item.RequireQTY < 0) stoksay = 0;
 
 
-   using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+                                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
                                 {
                                     await connection.OpenAsync();
                                     int c = await connection.ExecuteAsync($@"
@@ -841,12 +843,12 @@ Balance,PartNo,RequireDate,RequireQTY) values
                         }
                         partNo = item.PartNo;
                     }
-                    return "done";
+
                 }
             }
 
-            return "none";
-           
+            return "done";
+
         }
         #endregion
 
@@ -858,13 +860,13 @@ Balance,PartNo,RequireDate,RequireQTY) values
 
             IEnumerable<TTFFixordersListeWOModel> list = null;
             int lotNo = 0;
-            double k =0;
+            double k = 0;
             string ProcessDate = "";
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
                 await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"StokProduction_{userName}"));
-                await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"ProcessPlanFollowTable"));
+                await connection.ExecuteAsync(SqlQueryRepo.deleteFrom($"SAG_PRODUCTION.dbo.ProcessPlanFollowTable"));
             }
 
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
@@ -876,61 +878,70 @@ Balance,PartNo,RequireDate,RequireQTY) values
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
-                list =  await connection.QueryAsync<TTFFixordersListeWOModel>($"select * from TTFFixordersListeWO_{userName}");
+                list = await connection.QueryAsync<TTFFixordersListeWOModel>($@"select [PartNo]
+,[WOLot]      ,convert(varchar(10), cast(WONewDate As Date), 103) as WONewDate     ,[Balance]
+      ,[Order_no] ,[ProcessNo_ID] ,[Qty] ,[Process_qty]
+      ,[Ok_Qty] ,[ProsessDay] ,[Process_reject] ,[Process_Rework] ,[RemainProcessqty]
+      ,convert(varchar(10), cast(ProcessDate As Date), 103) as ProcessDate,[CompleteRatio]
+     ,[Process_Manhour],[id] from TTFFixordersListeWO_{userName}");
             }
-
+            int i = 0;
+            string allQuerys = "";
             foreach (var item in list)
             {
+
                 item.Qty = Convert.ToInt16(item.Qty);
                 item.Process_Manhour = Convert.ToInt16(item.Process_Manhour);
                 item.ProsessDay = Convert.ToInt16(item.ProsessDay);
 
-                if (lotNo!=item.WOLot)
+                if (lotNo != item.WOLot)
                 {
                     k = -(item.Process_Manhour / 3600 * (item.Qty / 8));
-                    ProcessDate= DateTime.Parse(item.WONewDate).AddDays(item.ProsessDay - k).ToString();
+                    ProcessDate = DateTime.Parse(item.WONewDate).AddDays(item.ProsessDay - k).ToString("dd-MM-yyyy");
 
                 }
                 else
                 {
-                    DateTime newDate = new DateTime();
-                  string ConvertedDate =  newDate.ToString("dd-MM-yyyy");
+                    DateTime newDate = DateTime.Now;
+
                     k = -(item.Process_Manhour / 3600 * (item.Qty / 8));
-                    ProcessDate= DateTime.Parse(ConvertedDate).AddDays(item.ProsessDay - k).ToString();
+
+                    ProcessDate = newDate.AddDays(item.ProsessDay - k).ToString("dd-MM-yyyy");
                 }
                 item.ProcessDate = ProcessDate;
 
-                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
-                {
-                    await connection.OpenAsync();
+                string query = $"set dateFormat dmy;UPDATE [dbo].[TTFFixordersListeWO_{userName}]" +
+                    $"SET [PartNo] = '{item.PartNo}',[WOLot] = {item.WOLot}   ,[WONewDate] ='{item.WONewDate}'  ,[Balance] = {item.Balance} ,[Order_no] = {item.Order_no}" +
+                    $",[ProcessNo_ID] = {item.ProcessNo_ID} ,[Qty] = {item.Qty} ,[Process_qty] = {item.Process_qty} ," +
+                    $" [Ok_Qty] = {item.Ok_Qty} ,[ProsessDay] = {item.ProsessDay} ,[Process_reject] = {item.Process_reject} ,[Process_Rework] = {item.Process_Rework}" +
+                    $",[RemainProcessqty] = {item.RemainProcessqty},[ProcessDate] = '{item.ProcessDate}' ,[CompleteRatio] = {item.CompleteRatio},[Process_Manhour] = {item.Process_Manhour} " +
+                    $"WHERE id={item.id}";
 
-                    int c = await connection.ExecuteAsync($@"
 
-UPDATE [dbo].[TTFFixordersListeWO_{userName}]
-   SET [PartNo] = {item.PartNo},[WOLot] = {item.WOLot}   ,[WONewDate] ='{item.WONewDate}'  ,[Balance] = {item.Balance} ,[Order_no] = {item.Order_no}
-      ,[ProcessNo_ID] = {item.ProcessNo_ID} ,[Qty] = {item.Qty} ,[Process_qty] = {item.Process_qty} ,
-[Ok_Qty] = {item.Ok_Qty} ,[ProsessDay] = {item.ProsessDay} ,[Process_reject] = {item.Process_reject} ,[Process_Rework] = {item.Process_Rework}
-      ,[RemainProcessqty] = {item.RemainProcessqty},[ProcessDate] = {item.ProcessDate} ,[CompleteRatio] = {item.CompleteRatio},[Process_Manhour] = {item.Process_Manhour}
- WHERE id={item.id}
-");
-                }
-
+                allQuerys += query;
+                i++;
                 lotNo = item.WOLot;
-
 
             }
 
-      
+
+            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
+            {
+                await connection.OpenAsync();
+                int c = await connection.ExecuteAsync(allQuerys);
+            }
+
+
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_HIDROLIK_ByYear()))
             {
                 await connection.OpenAsync();
                 int z = await connection.ExecuteAsync(SqlQueryRepo.ProcessplanLast(userName));
             }
 
-            return "none";
+            return "done";
         }
-            #endregion
+        #endregion
 
 
-        }
+    }
 }

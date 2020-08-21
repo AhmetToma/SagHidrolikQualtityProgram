@@ -1069,7 +1069,7 @@ dbo.[10_MakinaListesiNew].Machine_no,
                 " B_NonConformityReport.NC_Responsible = F_Operator.Op_ID left join dbo.D_Company on B_NonConformityReport.NC_Customer_Supplier = D_Company.Id_Cust " +
                 " left join E_Department on B_NonConformityReport.Department = E_Department.DEPT_ID " +
                 " left join G_PartNumbers on PartNo=G_PartNumbers.ID" +
-                $" where STK like N'%{requestQuery.Stk}%'  ORDER BY B_NonConformityReport.NC_TargetDate DESC" +
+                $" where STK like N'%{requestQuery.Stk}%'  and F_Operator.OperatorName like N'%{requestQuery.operatorName}%'   ORDER BY B_NonConformityReport.NC_TargetDate DESC" +
               $" OFFSET {requestQuery.pageNumber} ROWS FETCH NEXT {requestQuery.pageSize} ROWS ONLY; ";
 
             return query;
@@ -1092,11 +1092,11 @@ dbo.[10_MakinaListesiNew].Machine_no,
         {
             query = "SELECT B_NonConformityReport.NC_ID,B_NonConformityReport.Nc_desc2,G_PartNumbers.STK,B_NonConformityReport.NonConformity,B_NonConformityReport.PartNo," +
                 " B_NonConformityReport.Nc_OpenedBy,CorrectiveAction,PreventativeAction,Repetitive,I_Process.Process as processName," +
-                " B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Type as NcTypeId,  dbo.A_NCType.ClaimType as TypeName,A_NCType.ClaimType_a as TypeNameTr, " +
+                "convert(varchar(10), cast(B_NonConformityReport.NC_TargetDate As Date), 103) as NC_TargetDate , B_NonConformityReport.NC_Type as NcTypeId,  dbo.A_NCType.ClaimType as TypeName,A_NCType.ClaimType_a as TypeNameTr, " +
                 " B_NonConformityReport.NC_Responsible as responsibleId," +
                 " F_Operator.OperatorName as resbonsibleName, B_NonConformityReport.Process as ProcessId, B_NonConformityReport.Nc_OpenedBy as OpenById, " +
-                " B_NonConformityReport.NC_OpenDate,B_NonConformityReport.NC_Id_Def, B_NonConformityReport.NC_RootCauseAnalysis, " +
-                " B_NonConformityReport.NC_CloseDate,B_NonConformityReport.NonConformty_qty as qty," +
+                " convert(varchar(10), cast(B_NonConformityReport.NC_OpenDate As Date), 103) as NC_OpenDate,B_NonConformityReport.NC_Id_Def, B_NonConformityReport.NC_RootCauseAnalysis, " +
+                " convert(varchar(10), cast(B_NonConformityReport.NC_CloseDate As Date), 103) as NC_CloseDate,B_NonConformityReport.NonConformty_qty as qty," +
                 " B_NonConformityReport.NC_Status,NC_Customer_Supplier as CompanyId,CompanyName,CompanyType,B_NonConformityReport.Department as DepartmentId," +
                 " E_Department.Department as DepartmentName ,E_Department.Depatrment_1 as DepatrmentTr FROM B_NonConformityReport left join dbo.A_NCType " +
                 " on B_NonConformityReport.NC_Type = dbo.A_NCType.ClaimTypeID left join " +
@@ -1135,12 +1135,12 @@ dbo.[10_MakinaListesiNew].Machine_no,
         }
         public static string SaveReviewDetalis(ReviewViewModel rev)
         {
-            query = $"update B_NonConformityReport  set NC_Type={rev.NcTypeId},  NC_Id_Def='{rev.NC_Id_Def}',CorrectiveAction={rev.CorrectiveAction},PreventativeAction={rev.PreventativeAction}," +
+            query = $"set dateFormat dmy; update B_NonConformityReport  set NC_Type={rev.NcTypeId},  NC_Id_Def='{rev.NC_Id_Def}',CorrectiveAction={rev.CorrectiveAction},PreventativeAction={rev.PreventativeAction}," +
                 $" Repetitive={rev.Repetitive},NC_Customer_Supplier = {rev.CompanyId},Department = {rev.DepartmentId},Process = {rev.ProcessId},PartNo = {rev.PartNo}," +
                 $" NonConformity = '{rev.NonConformity}',NonConformty_qty = {rev.qty}, " +
-                $" Nc_OpenedBy = {rev.OpenById},NC_OpenDate = '{rev.NC_OpenDate}',NC_TargetDate = '{rev.NC_TargetDate}',NC_Responsible = {rev.responsibleId},NC_CloseDate = {rev.NC_CloseDate}," +
+                $" Nc_OpenedBy = {rev.OpenById},NC_OpenDate = '{rev.NC_OpenDate}',NC_TargetDate = '{rev.NC_TargetDate}',NC_Responsible = {rev.responsibleId},NC_CloseDate ='{rev.NC_CloseDate}'," +
                 $" Nc_desc2='{rev.Nc_desc2}',NC_Status = 0 ,NC_RootCauseAnalysis = '{rev.NC_RootCauseAnalysis}',ActionImme = 1,ActionPer = 2 " +
-                $" where NC_ID = ${rev.NC_ID}; ";
+                $" where NC_ID ={rev.NC_ID};";
             return query;
         }
 
@@ -1216,7 +1216,7 @@ dbo.[10_MakinaListesiNew].Machine_no,
             query = $"SELECT C_ActionList.ACTN_ID,C_ActionList.NC_ID, C_ActionList.Action_Type, C_ActionList.Actin_Def, C_ActionList.Responsible, C_ActionList.TargetDate, C_ActionList.CloseDate, C_ActionList.Status, B_NonConformityReport.NC_Type, B_NonConformityReport.NC_Id_Def," +
                 $"B_NonConformityReport.NC_Customer_Supplier as CompanyId," +
                 $" F_Operator.OperatorName as resbonsibleName,D_Company.CompanyName,E_Department.Department as DepartmentName," +
-                $" B_NonConformityReport.Department, B_NonConformityReport.Process, B_NonConformityReport.PartNo as STK, B_NonConformityReport.Nc_OpenedBy, B_NonConformityReport.NC_OpenDate, B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Responsible,  C_ActionList.Status FROM C_ActionList INNER JOIN B_NonConformityReport ON C_ActionList.NC_ID = B_NonConformityReport.NC_ID" +
+                $" B_NonConformityReport.Department, B_NonConformityReport.Process, B_NonConformityReport.PartNo as STK, B_NonConformityReport.Nc_OpenedBy, B_NonConformityReport.NC_OpenDate, B_NonConformityReport.NC_TargetDate, B_NonConformityReport.NC_Responsible FROM C_ActionList INNER JOIN B_NonConformityReport ON C_ActionList.NC_ID = B_NonConformityReport.NC_ID" +
                 $" left join F_Operator on C_ActionList.Responsible = Op_ID" +
                 $" left Join D_Company on D_Company.Id_Cust = NC_Customer_Supplier" +
                 $" left Join E_Department on E_Department.DEPT_ID = NC_Customer_Supplier" +
@@ -1756,7 +1756,7 @@ values ('{s.Operator_Name}','{s.Bolum}','{s.GirisTarihi}','{s.Aktif}')";
         public static string GetSettingsOperatorPolivalance(int operatorId) => $@"select PP.ProcessNo,Op.Level,PP.ProcessName ,Op.ID
 from OperatorPolivalance Op
  inner join Process_Planning PP on  Op.ProcessNo = PP.ProcessNo
- where Op.OperatorNo={operatorId}";
+ where Op.OperatorNo={operatorId} order by Op.ProcessNo ";
 
         public static string DeleteSettingOperator(int opertorId) => $"delete from Operator where Operator_ID ={opertorId}";
         public static string EditSettingsOperator(SettingsOperatorViewModel s) => $@"SET DATEFORMAT dmy;update Operator set Operator_Name='{s.Operator_Name}' ,Bolum='{s.Bolum}', GirisTarihi='{s.GirisTarihi}'
@@ -2015,8 +2015,8 @@ CREATE TABLE [dbo].[TTFfixordersListe_{userName}](
 	[WONewDate] [datetime] NULL,
 	[WOLotSize] [int] NULL,
 	[WoPlanned] [int] NULL
-) ON [PRIMARY]
-GO
+)
+
 ";
 
         public static string CreateTTdFixOrdersListWoTable(string userName) => $@"
@@ -2038,8 +2038,7 @@ CREATE TABLE [dbo].[TTFFixordersListeWO_{userName}](
 	[CompleteRatio] [real] NULL,
 	[Process_Manhour] [int] NULL,
 [id] [int] IDENTITY(1,1) NOT NULL
-) ON [PRIMARY]
-GO";
+)";
         public static string GetAllTTFixorders(string userName) => $@"set dateformat dmy;SELECT TTFixOrders_{userName}.PartNo,
    convert(varchar(10), cast( dbo.TTFixOrders_{userName}.RequireDate As Date), 103) as RequireDate,
  Sum(TTFixOrders_{userName}.RequireQTY) AS RequireQTY,
@@ -2412,8 +2411,8 @@ WHERE (((TTFixOrdersList1_{userName}.WOPlanned)<>0))
 SELECT TTFixOrdersList1_{userName}.PartNo, TTFixOrdersList1_{userName}.RequireDate, 
             Sum([TTFixOrdersList1_{userName}].[Balance]*-1) AS RequireQTY,
              isnull(StokProduction_{userName}.Warehouse,0)+isnull(StokProduction_{userName}.Prod,0)+
-isnull(StokProduction{userName}.[PackToday],0)
-              AS TotalStock, 0 AS Balance FROM TTFixOrdersList1_{userName}LEFT 
+isnull(StokProduction_{userName}.[PackToday],0)
+              AS TotalStock, 0 AS Balance FROM TTFixOrdersList1_{userName} LEFT 
 JOIN StokProduction_{userName} ON TTFixOrdersList1_{userName}.PartNo =
 			   StokProduction_{userName}.STK 
               GROUP BY TTFixOrdersList1_{userName}.PartNo, TTFixOrdersList1_{userName}.RequireDate, isnull(StokProduction_{userName}.[Warehouse],0)+
@@ -2474,8 +2473,8 @@ group by
         public static string ProcessPlaningFlowDates(string userName) => $@"
 INSERT INTO TTFFixordersListeWO_{userName} ( PartNo, WOLot, WONewDate, Balance,
  Order_no, ProcessNo_ID, Qty, Process_qty, Ok_Qty, ProsessDay, Process_reject, Process_Rework, RemainProcessqty, Process_Manhour )
-SELECT TTFfixordersListe.PartNo, TTFfixordersListe.WOLot,
- TTFfixordersListe.WONewDate, TTFfixordersListe.Balance,
+SELECT TTFfixordersListe_{userName}.PartNo, TTFfixordersListe_{userName}.WOLot,
+ TTFfixordersListe_{userName}.WONewDate, TTFfixordersListe_{userName}.Balance,
   SAG_PRODUCTION.dbo.ProcessFlow.Order_no,  SAG_PRODUCTION.dbo.ProcessFlow.ProcessNo_ID, 
    SAG_PRODUCTION.dbo.Local_ProductionOrders.Qty, 
   SAG_PRODUCTION.dbo.ProcessFlow.Process_qty, SAG_PRODUCTION.dbo.ProcessFlow.Ok_Qty,
@@ -2484,12 +2483,12 @@ SELECT TTFfixordersListe.PartNo, TTFfixordersListe.WOLot,
    IIf((([Ok_Qty]+[Process_reject]+[Process_Rework])/[Qty])>=0.95,0,
    [Qty]-[Ok_Qty]-[Process_reject]-[Process_Rework])
     AS RemainProcessqty, SAG_PRODUCTION.dbo.Process_Planning.Manhour
-FROM ((TTFfixordersListe LEFT JOIN SAG_PRODUCTION.dbo.Local_ProductionOrders 
-ON TTFfixordersListe.WOLot = SAG_PRODUCTION.dbo.Local_ProductionOrders.ProductOrderID) 
-LEFT JOIN SAG_PRODUCTION.dbo.ProcessFlow ON TTFfixordersListe.WOLot = ProcessFlow.ProductOrder_ID) 
+FROM ((TTFfixordersListe_{userName} LEFT JOIN SAG_PRODUCTION.dbo.Local_ProductionOrders 
+ON TTFfixordersListe_{userName}.WOLot = SAG_PRODUCTION.dbo.Local_ProductionOrders.ProductOrderID) 
+LEFT JOIN SAG_PRODUCTION.dbo.ProcessFlow ON TTFfixordersListe_{userName}.WOLot = ProcessFlow.ProductOrder_ID) 
 LEFT JOIN SAG_PRODUCTION.dbo.Process_Planning ON ProcessFlow.ProcessNo_ID = 
 SAG_PRODUCTION.dbo.Process_Planning.ProcessNo
-ORDER BY TTFfixordersListe.WOLot, ProcessFlow.Order_no DESC;
+ORDER BY TTFfixordersListe_{userName}.WOLot, ProcessFlow.Order_no DESC;
 
 ";
 
@@ -2499,7 +2498,7 @@ INSERT INTO SAG_PRODUCTION.dbo.ProcessPlanFollowTable
 SELECT TTFFixordersListeWO_{userName}.ProcessDate,
  SAG_PRODUCTION.dbo.Process_Planning.[Group],
  SAG_PRODUCTION.dbo.Process_Planning.ProsesAdi, 
- TTFFixordersListeWO_{userName}_{userName}.PartNo, TTFFixordersListeWO_{userName}.WOLot, TTFFixordersListeWO_{userName}.RemainProcessqty, 
+ TTFFixordersListeWO_{userName}.PartNo, TTFFixordersListeWO_{userName}.WOLot, TTFFixordersListeWO_{userName}.RemainProcessqty, 
  TTFFixordersListeWO_{userName}.WONewDate, TTFFixordersListeWO_{userName}.Balance,
   TTFFixordersListeWO_{userName}.Order_no, TTFFixordersListeWO_{userName}.ProcessNo_ID, 
   TTFFixordersListeWO_{userName}.Qty, TTFFixordersListeWO_{userName}.Process_qty,

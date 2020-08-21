@@ -50,14 +50,16 @@ function GetAllOpenActionAjaxCall() {
 }
 function CreateOpenActionTable(list, tableId) {
     $(tableId).empty();
+    console.log(list);
+
     let color = "";
     let stk;
-        list.map((element, index) => {
+    list.map((element, index) => {
             let today = new Date();
             let lastDate = new Date(`${element.nC_TargetDate}`);
             let status = "";
             element.stk ? stk = element.stk : stk = "";
-            element.nC_Status ? status = 'fa fa-2x fa-check-circle text-danger' : status = 'fa fa-2x fa-ban text-danger'
+        element.nC_Status ? status = 'fa  fa-2x fa-check-circle text-success' : status = 'fa fa-2x fa-ban text-danger'
             $(tableId).append(`
 <tr onclick='openPage(${element.nC_ID})'>
   <td>${element.nC_ID}</td>
@@ -101,7 +103,10 @@ $('#selectRowCount-openAction').on('change', () => {
     requestQueryForOpenAction.pageNumber = 1;
     GetAllOpenActionAjaxCall();
 });
-//#endregion//#region search
+//#endregion
+
+
+//#region search
 
 let timerForOpenAction;
 let TypingIntervalForOpenAction = 500;
@@ -111,7 +116,10 @@ $(Inputs.openAction_searchStk).keyup(function () {
     clearTimeout(timerForOpenAction);
     timerForOpenAction = setTimeout(GetAllOpenActionAjaxCall, TypingIntervalForOpenAction);
 });
-//#endregion//#region Next-Previous Hanldler
+//#endregion
+
+
+//#region Next-Previous Hanldler
 $(PreviousButtons.openAction).on('click', (event) => {
     event.preventDefault();
     if (requestQueryForOpenAction.pageNumber > 1) requestQueryForOpenAction.pageNumber -= 1;
@@ -124,4 +132,5 @@ $(NextButtons.openAction).on('click', (event) => {
     $(`${pageNumbers.openAction}`).text(requestQueryForOpenAction.review);
     GetAllOpenActionAjaxCall();
 });
-//#endregion
+//#endregion
+

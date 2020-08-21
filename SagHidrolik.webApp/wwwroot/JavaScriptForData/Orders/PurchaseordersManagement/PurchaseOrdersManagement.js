@@ -126,7 +126,15 @@ $('#btn-purchaseOrderMangemnet-runMrp').click(() => {
                     timer: 5000
                 });
             },
-            error: (error) => console.log(error)
+            error: (error) => {
+                console.log(error);
+                Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong',
+                    timer: 5000
+                });
+            }
         });
     }
 
@@ -347,7 +355,7 @@ ${dataWithTime}
 }
 //#endregion
 
-
+    
 // #region NewWo  - WoPlan
 // new Wo
 $("#btn-purchaseOrderMangemnet-newWoList").click(e => {
@@ -467,6 +475,68 @@ ${dataWithTime}
 
 // #endregion
 
+
+
+
+//#region Planing Mrp
+
+$("#btn-purchaseOrderMangemnet-planingMrp").click(e => {
+    ShowLoader();
+    e.preventDefault();
+    $.ajax({
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        url: HttpUrls.PalningMrp,
+        success: (message) => {
+            HideLoader();
+            Swal.fire({
+                title: 'Başarılı!',
+                text: 'Data is Ready',
+                type: 'success',
+                timer: 5000
+            });
+        },
+        error: (e) => {
+            HideLoader();
+            console.log(e);
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong',
+                timer: 5000
+            });
+        }
+    });
+})
+//#endregion
+
+
+
+//#region ProcessDates
+$("#btn-purchaseOrderMangemnet-processDates").click(e => {
+    ShowLoader();
+    e.preventDefault();
+    $.ajax({
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        url: HttpUrls.ProcessDates,
+        success: (message) => {
+            HideLoader();
+            window.open(`${BaseUrl}Home/UretimPlani`);
+        },
+        error: (e) => {
+            HideLoader();
+            console.log(e);
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong',
+                timer: 5000
+            });
+        }
+    });
+})
+//#endregion
 //const checkReload = window.addEventListener('beforeunload', function (e) {
 
 //    let b = BaseUrl + "Home/PurchaseOrderMangement";

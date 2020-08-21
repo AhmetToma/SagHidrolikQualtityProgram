@@ -86,12 +86,8 @@ function GetReviewDetails() {
         url: HttpUrls.GetReviewDetails + ncId,
         success: (model) => {
             genelBilgiler = { ...model };
-
-            if (genelBilgiler.nC_CloseDate !== null) genelBilgiler.nC_CloseDate = genelBilgiler.nC_CloseDate.slice(0, -12) 
-            if (genelBilgiler.nC_TargetDate !== null) genelBilgiler.nC_TargetDate = genelBilgiler.nC_TargetDate.slice(0, -12) 
-            if (genelBilgiler.nC_OpenDate !== null) genelBilgiler.nC_OpenDate = genelBilgiler.nC_OpenDate.slice(0, -12) 
-
-            genelBilgiler.nC_RootCauseAnalysis ? genelBilgiler.nC_RootCauseAnalysis = genelBilgiler.nC_RootCauseAnalysis : genelBilgiler.nC_RootCauseAnalysis = "";
+            console.log(genelBilgiler);
+            genelBilgiler.nC_RootCauseAnalysis ? genelBilgiler.nC_RootCauseAnalysis =genelBilgiler.nC_RootCauseAnalysis : genelBilgiler.nC_RootCauseAnalysis = "";
             genelBilgiler.nonConformity ? genelBilgiler.nonConformity = genelBilgiler.nonConformity : genelBilgiler.nonConformity = "";
             genelBilgiler.nc_desc2 ? genelBilgiler.nc_desc2 = genelBilgiler.nc_desc2 : genelBilgiler.nc_desc2 = "";
             updatedGeneBilgiler = { ...genelBilgiler };
@@ -1212,8 +1208,8 @@ function ActionTableSummary(element,tableId) {
                         <td>${actionType}</td>
                         <td>${element.resposibleName} </td>
                         <td>${element.actin_Def}</td>
-                        <td> ${targetDate.slice(0, -11)}</td>
-                        <td>${closeDate.slice(0, -11)}</td>
+                        <td> ${targetDate}</td>
+                        <td>${closeDate}</td>
                         <td><i class="${status}" aria-hidden="true"></i></td>
                         
                     </tr>
@@ -1252,7 +1248,7 @@ function DocuemtnControlTableSummary(element, tableId) {
 <tr>
 
 <td>${element.documentType}</td>
-<td>${element.changeDate.slice(0, -11)}</td>
+<td>${element.changeDate}</td>
 <td>${element.newRev}</td>
 <td>${element.notes}</td>
 </tr>

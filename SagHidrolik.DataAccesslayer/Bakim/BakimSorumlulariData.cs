@@ -5,7 +5,6 @@ using Dapper;
 using SagHidrolik.Models.SqlRepository;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-
 namespace SagHidrolik.DataAccesslayer.Bakim
 {
    public static class BakimSorumlulariData

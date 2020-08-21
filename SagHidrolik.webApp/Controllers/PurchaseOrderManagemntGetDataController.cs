@@ -132,6 +132,8 @@ namespace SagHidrolik.webApp.Controllers
             var findedUser = await _userManager.FindByIdAsync(userId);
             return Json(await PurchaseOrderMangement.PalningMrp(findedUser.UserName));
         }
+        #endregion
+        #region ProcessDates
         public async Task<JsonResult> ProcessDates()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;

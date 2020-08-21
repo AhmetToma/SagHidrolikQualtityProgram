@@ -63,7 +63,7 @@ namespace SagHidrolik.webApp.Controllers
 
         public JsonResult SaveReviewDetalis([FromBody]ReviewViewModel reviewViewModel)
         {
-            var model = ReviewData.SaveReviewDetalis(reviewViewModel);
+            var model = ReviewData.SaveReviewDetalis(reviewViewModel).Result;
             return Json("");
         }
 

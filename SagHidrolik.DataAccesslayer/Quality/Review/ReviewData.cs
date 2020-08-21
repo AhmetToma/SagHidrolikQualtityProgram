@@ -102,12 +102,14 @@ namespace SagHidrolik.DataAccesslayer.Quality.Review
 
 
 
-        public static async Task SaveReviewDetalis(ReviewViewModel reviewViewModel)
+        public static async Task<string> SaveReviewDetalis(ReviewViewModel reviewViewModel)
         {
             using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
             {
                 await connection.OpenAsync();
-                  await connection.ExecuteAsync(SqlQueryRepo.SaveReviewDetalis(reviewViewModel));
+                 int c=  await connection.ExecuteAsync(SqlQueryRepo.SaveReviewDetalis(reviewViewModel));
+                if (c > 0) return "done";
+                return "non completed";
                
             }
         }

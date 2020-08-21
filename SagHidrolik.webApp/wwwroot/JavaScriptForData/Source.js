@@ -277,6 +277,8 @@ const HttpUrls = {
     GetWeeklyMaterialUsage: BaseUrl + "PurchaseOrderManagemntGetData/GetWeeklyMaterialUsage",
     GetNewWoListInPurchaseOrders: BaseUrl + "PurchaseOrderManagemntGetData/GetNewWoListInPurchaseOrders",
     GetWoPlanListInPurchaseOrders: BaseUrl + "PurchaseOrderManagemntGetData/GetWoPlanListInPurchaseOrders",
+    PalningMrp: BaseUrl + "PurchaseOrderManagemntGetData/PalningMrp",
+    ProcessDates: BaseUrl + "PurchaseOrderManagemntGetData/ProcessDates",
 
 
 

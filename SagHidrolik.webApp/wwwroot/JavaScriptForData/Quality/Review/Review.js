@@ -9,7 +9,8 @@
 let requestQueryForReview = {
     pageSize: 4,
     pageNumber: 1,
-    STK:"",
+    STK: "",
+    operatorName:""
 }
 let reviewList = [];
 // #region ajaxcall ,create table ,records count  
@@ -25,6 +26,7 @@ function GetAllReviewAjaxCall() {
     $(TablesId.review).empty();
     $(`${pageNumbers.review}`).text(requestQueryForReview.pageNumber);
     requestQueryForReview.STK= $(Inputs.review_searchStk).val();
+    requestQueryForReview.operatorName = $("#inp-review-responsibleName").val();
     ShowLoader();
     $.ajax({
         type: "POST",
@@ -135,6 +137,12 @@ $('#selectRowCount-review').on('change', () => {
 let timerForReview;
 let TypingIntervalForReview = 500;
 $(Inputs.review_searchStk).keyup(function () {
+    requestQueryForReview.pageNumber = 1;
+    $(pageNumbers.review).text(requestQueryForReview.pageNumber);
+    clearTimeout(timerForReview);
+    timerForReview = setTimeout(GetAllReviewAjaxCall, TypingIntervalForReview);
+});
+$("#inp-review-responsibleName").keyup(function () {
     requestQueryForReview.pageNumber = 1;
     $(pageNumbers.review).text(requestQueryForReview.pageNumber);
     clearTimeout(timerForReview);
