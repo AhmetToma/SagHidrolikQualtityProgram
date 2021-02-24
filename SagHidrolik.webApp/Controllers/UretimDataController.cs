@@ -105,8 +105,13 @@ namespace SagHidrolik.webApp.Controllers
         }
         public IActionResult UretimBitirConfirm([FromBody]UretimBitirViewModel uretimBitirViewModel)
         {
-            var done = UretimData.UretimBitirConfirm(uretimBitirViewModel);
-            return Json("");
+
+            if(uretimBitirViewModel!=null)
+            {
+                var done =  UretimData.UretimBitirConfirm(uretimBitirViewModel).Result;
+                return Json(done);
+            }
+            return Json("not comolete");
         }
 
         #endregion

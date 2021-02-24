@@ -259,9 +259,9 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
                 $"  ProcessFlowDetail.Ok_Qty = {ubvm.Miktar} WHERE ProcessFlowDetail.ID ={ubvm.FlowDetailsId}";
             return query;
         }
-        public static string uretimBitir3_processFlow(string flowId)
+        public static string uretimBitir3_processFlow(int flowId)
         {
-            query = $" SELECT  * FROM ProcessFlow WHERE ProcessFlow.Flow_ID='{flowId}'";
+            query = $" SELECT  * FROM ProcessFlow WHERE ProcessFlow.Flow_ID={flowId}";
             return query;
 
         }
@@ -294,7 +294,7 @@ Printed,[Status],Remark from dbo.Local_ProductionOrders where dbo.Local_Producti
         public static string uretimBitir6_ProductionOrdersStatus()
         {
             var now = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-            query = $"UPDATE dbo.Local_ProductionOrders SET dbo.Local_ProductionOrders.Status = 3, dbo.Local_ProductionOrders.CloseDate ='{now}' where " +
+            query = $"UPDATE dbo.Local_ProductionOrders SET dbo.Local_ProductionOrders.Status = 3, dbo.Local_ProductionOrders.CloseDate =GetDate() where " +
                 $"dbo.Local_ProductionOrders.Status = 2 AND IIf((dbo.Local_ProductionOrders.Completed_Qty / dbo.Local_ProductionOrders.Qty) > 0.95, 1, 0) = 1";
             return query;
         }

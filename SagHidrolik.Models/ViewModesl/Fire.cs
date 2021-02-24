@@ -8,7 +8,7 @@ namespace SagHidrolik.Models.ViewModesl
     public class Fire
     {
         public int? selected { get; set; }
-        public string id { get; set; }
-        public int? inpValue { get; set; }
+        public int id { get; set; } = 0;
+        public int? inpValue { get; set; } = 0;
     }
 }

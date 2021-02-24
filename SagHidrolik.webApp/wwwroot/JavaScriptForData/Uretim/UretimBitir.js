@@ -14,35 +14,35 @@ let requestQueryForUretimBitir = {
     pageNumber: 1,
     Pid: "",
     lotNo: "",
-    Stk:""
+    Stk: ""
 };
 var uretimBitirObject = {
-    urunKodu: 0,
+    urunKodu: "",
     lotNo: 0,
     flow_Id: "",
-    FlowDetailsId:"",
-    MakineId:0,
+    FlowDetailsId: "",
+    MakineId: 0,
     baslaUretimOperatorId: 0,
     uretimBitirOpertorId: -1,
     Miktar: 0,
     fire1: {
         selected: 0,
         id: 0,
-        inpValue:""
+        inpValue: ""
     },
     fire2: {
         selected: 0,
         id: 0,
-        inpValue:""
+        inpValue: ""
     },
     tamir: {
         selected: 0,
         id: 0,
-        inpValue:""
+        inpValue: ""
     },
     durus: {
         dk: 0,
-        note:""
+        note: ""
     }
 }
 let uretimBitirfire1 = $('#inp-uretimBitir-fire1');
@@ -89,7 +89,7 @@ urunNoUretimBitir.keyup(function () {
 
 
 lotNoUretimBitir.keyup(function () {
-   
+
 
     clearTimeout(typingTimer);
     if (lotNoUretimBitir.val()) {
@@ -127,8 +127,8 @@ $('#uretimBitirTable').on('click', 'tr', function () {
     uretimBitirObject.Miktar = $(this).data('miktar');
     uretimBitirObject.baslaUretimOperatorId = operatorId;
     uretimBitirObject.flow_Id = flow_id;
-    uretimBitirObject.MakineId = machine_no;
-    uretimBitirObject.urunKodu = stk;
+    uretimBitirObject.MakineId = machine_no.toString();
+    uretimBitirObject.urunKodu = stk.toString();
     uretimBitirObject.lotNo = lot;
     $('#uretimBitir-miktar').text(miktar);
     $('#uretimBitir-operatorId').text(operatorId);
@@ -158,11 +158,11 @@ function Getfire() {
     $.ajax({
         type: "GET",
         contentType: "application/json;charset=utf-8",
-        url: HttpUrls.GetFire+"",
+        url: HttpUrls.GetFire + "",
         success: (list) => {
             $('#uretimBitir-fir1-all').empty();
             $('#uretimBitir-fir2-all').empty();
-      
+
             list.map((element) => {
                 $("#uretimBitir-fir1-all").append("<option value='" + element.reject_ID + "'>" + element.rEject_Name + "</option>");
                 $("#uretimBitir-fir2-all").append("<option value='" + element.reject_ID + "'>" + element.rEject_Name + "</option>");
@@ -197,7 +197,7 @@ function GetProcessFlowClose() {
                 $(`${recordsNotFound.uretimBitir} h3`).text('Hiç Bir Kayit Bulunmamaktadır');
                 $(`${recordsNotFound.uretimBitir}`).css('display', 'block');
             }
-         
+
         }
     });
 }
@@ -243,7 +243,7 @@ $("#uretimBitir-activeOpertors").select2()
         var selected_element = $(e.currentTarget);
         var uretimBitirOpertorId = selected_element.val();
 
-        uretimBitirObject.uretimBitirOpertorId = uretimBitirOpertorId[0];
+        uretimBitirObject.uretimBitirOpertorId = parseInt(uretimBitirOpertorId[0]);
     });
 
 $("#uretimBitir-activeOpertors").select2()
@@ -258,8 +258,8 @@ $("#uretimBitir-fir1-all").select2()
     .on("select2:select", function (e) {
         var selected_element = $(e.currentTarget);
         var fire1 = selected_element.val();
-        uretimBitirObject.fire1.id = fire1[0];
-        uretimBitirObject.fire1.selected=1;
+        uretimBitirObject.fire1.id = fire1[0] ? parseInt(fire1[0]) :0;
+        uretimBitirObject.fire1.selected = 1;
     });
 
 $("#uretimBitir-fir1-all").select2()
@@ -275,7 +275,7 @@ $("#uretimBitir-fir2-all").select2()
     .on("select2:select", function (e) {
         var selected_element = $(e.currentTarget);
         var fire2 = selected_element.val();
-        uretimBitirObject.fire2.id = fire2[0];
+        uretimBitirObject.fire2.id = fire2[0]? parseInt(fire2[0]):0;
         uretimBitirObject.fire2.selected = 1;
     });
 
@@ -291,7 +291,7 @@ $("#uretimBitir-tamir").select2()
     .on("select2:select", function (e) {
         var selected_element = $(e.currentTarget);
         var tamir = selected_element.val();
-        uretimBitirObject.tamir.id = tamir[0];
+        uretimBitirObject.tamir.id = tamir[0] ? parseInt(tamir[0]): 0;
         uretimBitirObject.tamir.selected = 1;
     });
 
@@ -332,7 +332,7 @@ $('#btn-uretimBitir-submit').click((event) => {
     }
     //#region fires Controls
     // fire1
-    if (uretimBitirfire1.val() ==="" && uretimBitirObject.fire1.selected == 1 ) {
+    if (uretimBitirfire1.val() === "" && uretimBitirObject.fire1.selected == 1) {
         Swal.fire({
             type: 'error',
             title: 'Fire Hata',
@@ -407,27 +407,39 @@ $('#btn-uretimBitir-submit').click((event) => {
 
 $('#uretimBitir-confirmSubmiting').click((event) => {
     event.preventDefault();
-    uretimBitirObject.Miktar=$('#inp-uretimBitir-miktar').val();
+    uretimBitirObject.Miktar = parseInt($('#inp-uretimBitir-miktar').val());
     let dk = $('#uretimBitir-durus-dk');
     let note = $('#uretimBitir-durus-note');
-    uretimBitirObject.durus.dk = $('#uretimBitir-durus-dk').val();
+    uretimBitirObject.durus.dk = $('#uretimBitir-durus-dk').val() ? parseInt($('#uretimBitir-durus-dk').val()) : 0;
     uretimBitirObject.durus.note = $('#uretimBitir-durus-note').val();
-    uretimBitirObject.fire1.inpValue = $('#inp-uretimBitir-fire1').val();
-    uretimBitirObject.fire2.inpValue = $('#inp-uretimBitir-fire2').val();
-    uretimBitirObject.tamir.inpValue = $('#inp-uretimBitir-tamir').val();
+    uretimBitirObject.fire1.inpValue = $('#inp-uretimBitir-fire1').val() ? parseInt($('#inp-uretimBitir-fire1').val()) : 0;
+    uretimBitirObject.fire2.inpValue = $('#inp-uretimBitir-fire2').val() ? parseInt($('#inp-uretimBitir-fire2').val()) : 0;
+    uretimBitirObject.tamir.inpValue = $('#inp-uretimBitir-tamir').val() ? parseInt($('#inp-uretimBitir-tamir').val()):0;
     let uretimBitirViewModel = uretimBitirObject;
+
+    console.log('uretim', uretimBitirViewModel);
     $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
         url: HttpUrls.UretimBitirConfirm,
         data: JSON.stringify(uretimBitirViewModel),
-        success: (list) => {
+        success: (message) => {
+            console.log(message);
+            if (message === "done") {
+                Swal.fire(
+                    'Başarıyla uretim Bitirilid',
+                    '',
+                    'success'
+                );
+            }
+            else {
+                Swal.fire(
+                    'bir hata olustu',
+                    '',
+                    'error'
+                );
+            }
             $('.modal').modal('hide');
-            Swal.fire(
-                'Başarıyla uretim Bitirilid',
-                '',
-                'success'
-            );
             uretimBitirReset();
             GetProcessFlowClose();
         }
@@ -448,9 +460,9 @@ function uretimBitirReset() {
         .prop('checked', false)
         .prop('selected', false);
 
-  
+
     uretimBitirObject = {
-        urunKodu: 0,
+        urunKodu: "",
         lotNo: 0,
         flow_Id: "",
         FlowDetailsId: "",
@@ -482,8 +494,8 @@ function uretimBitirReset() {
     requestQueryForUretimBitir.pageSize = 10;
     requestQueryForUretimBitir.Stk = "";
     requestQueryForUretimBitir.Pid = "";
-   
-   
+
+
 }
 requestQueryForUretimBitir.lotNo = "";
 
@@ -502,7 +514,7 @@ $('#btn-uretimBitirReset').click((event) => {
 //    if ($('#inp-uretimBitir-miktar').val()) {
 //        typingTimer = setTimeout(setMiktarvalidOrNot, _doneTypingInterval);
 //    }
-  
+
 //});
 //function setMiktarvalidOrNot() {
 //    let mkNumber = $('#inp-uretimBitir-miktar').val();

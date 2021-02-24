@@ -175,7 +175,7 @@ namespace SagHidrolik.DataAccesslayer.Uretim
         }
 
 
-        public static async Task UretimBitirConfirm(UretimBitirViewModel uretimBitirViewModel)
+        public static async Task <string> UretimBitirConfirm(UretimBitirViewModel uretimBitirViewModel)
         {
             var fire1 = uretimBitirViewModel.fire1.inpValue;
             var fire2 = uretimBitirViewModel.fire2.inpValue;
@@ -186,36 +186,48 @@ namespace SagHidrolik.DataAccesslayer.Uretim
             if (tamir == null) tamir = 0;
             if (Miktar == 0) Miktar = 0;
 
-            using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
+
+
+            try
             {
-                if (uretimBitirViewModel.fire1.inpValue == null) uretimBitirViewModel.fire1.inpValue = 0;
-                if (uretimBitirViewModel.fire2.inpValue == null) uretimBitirViewModel.fire2.inpValue = 0;
-                if (uretimBitirViewModel.tamir.inpValue == null) uretimBitirViewModel.tamir.inpValue = 0;
-                if (uretimBitirViewModel.durus.dk == null) uretimBitirViewModel.durus.dk = 0;
-
-
-                await connection.OpenAsync();
-                var list = connection.Execute(SqlQueryRepo.uretimBitir1_processflow(uretimBitirViewModel));
-                var list2 = connection.Execute(SqlQueryRepo.uretimBitir2_processflowDetails(uretimBitirViewModel));
-                ProcessFlowViewModel processFlowViewModel = connection.QuerySingle<ProcessFlowViewModel>(SqlQueryRepo.uretimBitir3_processFlow(uretimBitirViewModel.flow_Id));
-                var CurrentProcess = processFlowViewModel.ProcessNo_ID;
-                var WoNo = processFlowViewModel.ProductOrder_ID;
-                var NextProcess = processFlowViewModel.ProcessNo_next;
-                if (NextProcess == null) NextProcess = "0";
-                var processFlowTableUpdate = connection.Execute(SqlQueryRepo.uretimBitir4_ProcessPlanFollowTable(uretimBitirViewModel.Miktar, uretimBitirViewModel.lotNo, CurrentProcess));
-                if (NextProcess == "0" || NextProcess == null)
+                using (var connection = new SqlConnection(SqlQueryRepo.connctionString_SAG_PRODUCTION))
                 {
+                    if (uretimBitirViewModel.fire1.inpValue == null) uretimBitirViewModel.fire1.inpValue = 0;
+                    if (uretimBitirViewModel.fire2.inpValue == null) uretimBitirViewModel.fire2.inpValue = 0;
+                    if (uretimBitirViewModel.tamir.inpValue == null) uretimBitirViewModel.tamir.inpValue = 0;
+                    if (uretimBitirViewModel.durus.dk == null) uretimBitirViewModel.durus.dk = 0;
 
-                    var ProductionOrdersQty1 = connection.Execute(SqlQueryRepo.uretimBitir5_ProductionOrdersQty1(uretimBitirViewModel.Miktar, WoNo));
-                    var ProductionOrdersQty2 = connection.Execute(SqlQueryRepo.uretimBitir6_ProductionOrdersQty2(fire1, fire2, tamir, WoNo));
-                    var ProductionOrdersStatus = connection.Execute(SqlQueryRepo.uretimBitir6_ProductionOrdersStatus());
-                }
-                else
-                {
-                    var ProductionOrdersQty2 = connection.Execute(SqlQueryRepo.uretimBitir6_ProductionOrdersQty2(fire1, fire2, tamir, WoNo));
-                    var processFlowWithNextProcess = connection.Execute(SqlQueryRepo.uretimBitir7ProcessFlowWithNextProcess(Miktar, WoNo, NextProcess));
-                }
 
+                    await connection.OpenAsync();
+                    var list = connection.Execute(SqlQueryRepo.uretimBitir1_processflow(uretimBitirViewModel));
+                    var list2 = connection.Execute(SqlQueryRepo.uretimBitir2_processflowDetails(uretimBitirViewModel));
+                    ProcessFlowViewModel processFlowViewModel = connection.QuerySingle<ProcessFlowViewModel>(SqlQueryRepo.uretimBitir3_processFlow(uretimBitirViewModel.flow_Id));
+                    var CurrentProcess = processFlowViewModel.ProcessNo_ID;
+                    var WoNo = processFlowViewModel.ProductOrder_ID;
+                    var NextProcess = processFlowViewModel.ProcessNo_next;
+                    if (NextProcess == null) NextProcess = "0";
+                    var processFlowTableUpdate = connection.Execute(SqlQueryRepo.uretimBitir4_ProcessPlanFollowTable(uretimBitirViewModel.Miktar, uretimBitirViewModel.lotNo, CurrentProcess));
+                    if (NextProcess == "0" || NextProcess == null)
+                    {
+
+                        var ProductionOrdersQty1 = connection.Execute(SqlQueryRepo.uretimBitir5_ProductionOrdersQty1(uretimBitirViewModel.Miktar, WoNo));
+                        var ProductionOrdersQty2 = connection.Execute(SqlQueryRepo.uretimBitir6_ProductionOrdersQty2(fire1, fire2, tamir, WoNo));
+                        var ProductionOrdersStatus = connection.Execute(SqlQueryRepo.uretimBitir6_ProductionOrdersStatus());
+                    }
+                    else
+                    {
+                        var ProductionOrdersQty2 = connection.Execute(SqlQueryRepo.uretimBitir6_ProductionOrdersQty2(fire1, fire2, tamir, WoNo));
+                        var processFlowWithNextProcess = connection.Execute(SqlQueryRepo.uretimBitir7ProcessFlowWithNextProcess(Miktar, WoNo, NextProcess));
+                    }
+
+                    return "done";
+
+                }
+            }
+            catch (Exception e )
+            {
+                throw e;
+                return "not";
             }
 
 
