@@ -314,7 +314,8 @@ $('#btn-addOrUpdateProcess-add-confirmAdd').click((e) => {
     e.preventDefault();
     let qty = $('#inp-addOrUpdateProcess-add-qty').val();
     let quality = $('#inp-addOrUpdateProcess-add-quality').val();
-   
+    let OrderNo = $('#inp-addOrUpdateProcess-add-orderNo').val();
+
 
     let subpartNo = $("#inp-addOrUpdateProcess-add-subPartNo-processAdi").val();
     let subpartNoNext = $("#inp-addOrUpdateProcess-add-subPartNoNext-processAdi").val();
@@ -323,17 +324,22 @@ $('#btn-addOrUpdateProcess-add-confirmAdd').click((e) => {
     if (addModel.partNo_ID === '' || addModel.partNo_ID === null) Swal.fire({
         type: 'error',
         title: "you should selected STK",
-        timer: 3000
+        timer: 5000
     });
    else if (qty === "") Swal.fire({
         type: 'error',
         title: "you should enter Quantiy",
-        timer: 3000
+       timer: 5000
     });
     else if (subpartNo === null || subpartNoNext === null) Swal.fire({
         type: 'error',
         title: "you should enter sup part No and sup part No next",
-        timer: 3000
+        timer: 5000
+    });
+    else if (OrderNo === "") Swal.fire({
+        type: 'error',
+        title: "you should enter Order No",
+        timer: 5000
     });
     else {
        let subpartNo = $("#inp-addOrUpdateProcess-add-subPartNo-processAdi").select2('data')[0].id;
@@ -345,6 +351,7 @@ $('#btn-addOrUpdateProcess-add-confirmAdd').click((e) => {
         addModel.qty = parseInt(qty);
         addModel.quality= quality;
         addModel.subPartNo= parseInt(subpartNo);
+        addModel.OrderNo = parseInt(OrderNo);
         addModel.subpartNoNext=parseInt(subpartNoNext);
         addModel.subPartNoName= subPartNoName;
         addModel.subpartNoNextName= subpartNoNextName;
@@ -394,8 +401,8 @@ function CreateSummaryModel(stk, model, type) {
     }
 
     if (type === "confrim Add") {
-        
         $('#addOrUpdateProcess-summary .modal-body').append(`
+           <h4 style="color:#b13e5b">OrderNo  :  <span style="color:black">${model.OrderNo}</span></h4>
                 <h4 style="color:#b13e5b">STK  :  <span style="color:black">${stk ? stk : ""}</span></h4>
                 <h4 style="color:#b13e5b">Sub Part No Adi :  <span style="color:black">${model.subPartNoName ? model.subPartNoName : ""}</span></h4>
                 <h4 style="color:#b13e5b">qty :  <span style="color:black">${model.qty ? model.qty : ""}</span></h4>
@@ -466,9 +473,8 @@ function CreateSummaryModel(stk, model, type) {
             $('#addOrUpdateProcess-summary').modal('hide');
             $('#addOrUpdateProcess-summary .modal-body').empty();
         }
-
         if (type === 'confrim Add') {
-            console.log(model);
+            alert('adding');
             $.ajax({
                 type: "POST",
                 contentType: "application/json;charset=utf-8",

@@ -10,7 +10,7 @@
             <form>
                 <div class="input-group urunEtiketiSearchDiv">
                     <span class="input-group-text " style="background-color:#2A3F54;color:white" id="basic-addon1">STK</span>
-                    <input autofocus id="inp-addOrUpdateProcess-stokSearch" value="84214788" type="search" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
+                    <input autofocus id="inp-addOrUpdateProcess-stokSearch" value="" type="search" class="form-control" placeholder="ürün kodu" aria-describedby="basic-addon1">
                 </div>
             </form>
         </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-md-7">
                     <div class="form-group" style="margin-top:1.7rem;">
-                        <a href="" target="_blank" id="btn-addOrUpdateProcess-addNewBomProcess" class="btn btn-success" >Add  New Bom Process</a>
+                        <a href="" target="_blank" id="btn-addOrUpdateProcess-addNewBomProcess" class="btn btn-success">Add  New Bom Process</a>
                         <a href="" target="_blank" id="btn-addOrUpdateProcess-dosya" class="btn" style="background-color:#18375d;color:white;">Dosya Aç</a>
                         <a id="btn-addOrUpdateProcess-reset" style="color:white" class="btn btn-danger">Reset seacrh</a>
                     </div>
@@ -66,7 +66,6 @@
             </div>
             <div class="">
                 <table class="table table-bordered">
-                    <caption> toplam count : 15</caption>
                     <thead>
                         <tr>
 
@@ -150,9 +149,13 @@
             <div class="modal-body">
                 <form>
                     @*<div class="form-group">
-                        <label for="recipient-name" class="col-form-label">OrderNo   : </label>
-                        <input type="number" min="1" disabled class="form-control" id="inp-addOrUpdateProcess-add-orderNo">
-                    </div>*@
+                            <label for="recipient-name" class="col-form-label">OrderNo   : </label>
+                            <input type="number" min="1" disabled class="form-control" id="inp-addOrUpdateProcess-add-orderNo">
+                        </div>*@
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Order No   : </label>
+                        <input type="number" min="0" class="form-control" id="inp-addOrUpdateProcess-add-orderNo">
+                    </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Qty   : </label>
                         <input type="number" min="0" class="form-control" id="inp-addOrUpdateProcess-add-qty">
@@ -178,11 +181,11 @@
         </div>
     </div>
 </div>
- <!-- add edit -->
+<!-- add edit -->
 <div class="modal fade" id="addOrUpdateProcess-editModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header"  style="background-color:#b13e5b;color:white">
+            <div class="modal-header" style="background-color:#b13e5b;color:white">
                 <h5 class="modal-title" id="exampleModalLabel">Edit Bom process</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -192,15 +195,15 @@
                 <form>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">OrderNo   : </label>
-                        <input type="number" min="1"  disabled class="form-control" id="inp-addOrUpdateProcess-edit-orderNo">
+                        <input type="number" min="1" disabled class="form-control" id="inp-addOrUpdateProcess-edit-orderNo">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Qty   : </label>
-                        <input type="number" min="0"  class="form-control" id="inp-addOrUpdateProcess-edit-qty">
+                        <input type="number" min="0" class="form-control" id="inp-addOrUpdateProcess-edit-qty">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Quality   : </label>
-                        <input type="text"  class="form-control" id="inp-addOrUpdateProcess-edit-quality">
+                        <input type="text" class="form-control" id="inp-addOrUpdateProcess-edit-quality">
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Sub part No - Process Name : </label><br />
